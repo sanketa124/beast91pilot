@@ -1,0 +1,51 @@
+.header {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  padding-top: 1.2rem;
+}
+.header-text {
+  font-size: 16px;
+  font-weight: 500;
+}
+.header-forward-backward-icon-wrapper {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  gap: 4rem;
+}
+.task-wrapper {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border: 1px solid #808080;
+  height: 4.5rem;
+  width: 100%;
+  margin: auto;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.content-wrapper input {
+  width: 100%;
+  height: inherit;
+  padding-left: 1rem;
+}
+.content-wrapper input ::placeholder {
+  padding-left: 1rem;
+}
+.content-wrapper input:focus {
+  border: 1px solid #0000ff;
+}
+.form-control {
+  border: transparent;
+  height: inherit;
+}
+
+.date-picker {
+  border: transparent;
+}

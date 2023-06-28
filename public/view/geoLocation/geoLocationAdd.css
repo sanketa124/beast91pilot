@@ -1,0 +1,78 @@
+.mainDiv {
+    padding: 20px;
+    padding-top: 150px;
+}
+
+.cancelDiv {
+    border-width: 2px;
+    padding-top: 60px;
+}
+
+.headerTitle {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    align-items: center !important;
+    text-align: center !important;
+    color: #FFFFFF !important;
+    text-transform: capitalize !important
+}
+
+#searchIco i {
+    font-size: 24px;
+    color: #fff;
+    margin: 2px 0 0 0;
+}
+
+.cancelBtn {
+    color: #3274CC;
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    padding-left: 40px;
+}
+
+.finishBtnTxt {
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.finishBtn {
+    width: 92px;
+    height: 35px;
+    background: #255CBF;
+    border-radius: 10px;
+    border-style: solid;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.hrColor {
+    border: 1px solid #000 !important;
+}
+
+.geoLocationText{
+    
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;    
+    color: #585858;
+    text-transform:none !important
+}
+.latLongText{
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;    
+    color: #585858;
+    text-transform:none !important
+}

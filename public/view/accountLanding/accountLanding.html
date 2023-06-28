@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BIRA91</title>
+    <!--Manifest-->
+    <link rel="manifest" href="/manifest.json" />
+    <!--Manifest-->
+    <!--Imported Design library-->
+    <!--MDL-->
+    <link rel="stylesheet" href="../globalCSS/bootstrap.min.css" />
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <!--Imported link for App for Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="BIRA91" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-57x57.png" sizes="57x57" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-60x60.png" sizes="60x60" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-72x72.png" sizes="72x72" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-76x76.png" sizes="76x76" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-114x114.png" sizes="114x114" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-120x120.png" sizes="120x120" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-144x144.png" sizes="144x144" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-152x152.png" sizes="152x152" />
+    <link rel="apple-touch-icon" href="/media/icons/manifest2/apple-icon-180x180.png" sizes="180x180" />
+    <meta name="msapplication-TileImage" content="/media/icons/manifest2/app-icon-48x48.png" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="theme-color" content="#3f51b5" />
+    <!--Imported link for App for Apple and android-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
+        integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
+        integrity="sha256-4hqlsNP9KM6+2eA8VUT0kk4RsMRTeS7QGHIM+MZ5sLY=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../globalCSS/inhousestyle.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+    <!-- Internal Css -->
+    <link rel="stylesheet" href="accountLanding.css" />
+</head>
+
+<body>
+    <div class="app">
+        <nav class="navbar navbar-default nav-custom navbar-fixed-top">
+            <div class="container-fluid">
+                <header class="index-header">
+                    <!-- <div class="toggle-btn text-left" onclick="openNav()">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div> -->
+                    <div class="toggle-btn text-left" id="searchIco">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="logoSection nav-logo text-left">
+                        <h3>Nando's</h3>
+                    </div>
+                </header>
+            </div>
+        </nav>
+        <!-- Collapsable header with Icon for navigation -->
+        <div class="sub-header-navigation-container">
+            <a class="blackClr">
+                <div class="sub-menu-icon-text-wrapper" onclick="gotoCheckin()">
+                    <img src="../../media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
+                        height="40vh" />
+                    <h4>Check-In</h4>
+                </div>
+            </a>
+
+            <a class="blackClr" href="/view/geoLocation/geoLocationAdd.html">
+
+                <div class="sub-menu-icon-text-wrapper">
+                    <img src="../../media/icons/account/geo_location.svg" loading="lazy" alt="geo"
+                        style="mix-blend-mode: multiply" width="40vw" height="40vh" />
+                    <h4>Geo Location</h4>
+
+                </div>
+            </a>
+
+            <div class="sub-menu-icon-text-wrapper">
+                <img src="../../media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
+                    height="40vh" />
+                <h4>Order</h4>
+            </div>
+            <div class="sub-menu-icon-text-wrapper">
+                <i style="cursor: pointer; padding: 2rem 1rem" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                    class="fa-solid fa-ellipsis fa-2xl"></i>
+            </div>
+            <!-- Hidden Menu Show Expandable Menu-->
+            <div class="collapse" id="collapseExample" style="width: 100%">
+                <div class="expanded-menu-container">
+                    <div class="sub-menu-icon-text-wrapper">
+                        <a class="blackClr" onclick="openMeetAndGreet()">
+                            <img src="../../media/icons/account/people_icon.svg" loading="lazy" alt="Meet &Greet"
+                                width="40vw" height="40vh" />
+                            <h4>
+                                Meet & <br />
+                                Greet
+                            </h4>
+                        </a>
+                    </div>
+                    <div class="sub-menu-icon-text-wrapper">
+                        <img src="../../media/icons/account/stock_at_outlet_icon.svg" loading="lazy"
+                            alt="stock at outlet" width="40vw" height="40vh" />
+                        <h4>
+                            Stock at <br />
+                            Outlet
+                        </h4>
+                    </div>
+                    <div class="sub-menu-icon-text-wrapper">
+                        <img src="../../media/icons/account/sampling_testing_icon.svg" loading="lazy"
+                            alt="sampling testing" width="40vw" height="40vh" />
+                        <h4>
+                            Sampling <br />
+                            Testing
+                        </h4>
+                    </div>
+                    <div class="sub-menu-icon-text-wrapper">
+                        <img src="../../media/icons/account/initiate_contact_icon.svg" loading="lazy"
+                            alt="initiate  contract" width="40vw" height="40vh" />
+                        <h4>
+                            Initiate <br />
+                            Contract
+                        </h4>
+                    </div>
+                </div>
+                <div class="expanded-menu-container">
+                    <div class="sub-menu-icon-text-wrapper">
+                        <img src="../../media/icons/account/visiblity_icon.svg" loading="lazy" alt="visibility"
+                            width="40vw" height="40vh" />
+                        <h4>Visibility</h4>
+                    </div>
+                    <div class="sub-menu-icon-text-wrapper">
+                        <img src="../../media/icons/account/posm-assets-icon.svg" loading="lazy" alt="posm assets"
+                            width="40vw" height="40vh" style="mix-blend-mode: multiply" />
+                        <h4>
+                            Posm / <br />
+                            Assets
+                        </h4>
+                    </div>
+                    <div class="sub-menu-icon-text-wrapper">
+                        <img src="../../media/icons/account/competitor-insights-icon.svg" loading="lazy"
+                            alt="competitor insights" width="40vw" height="40vh" style="mix-blend-mode: multiply" />
+                        <h4>
+                            Competitor <br />
+                            Insights
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section style="padding: 0rem 1rem;">
+            <div>
+                <h3 style="color: #e61b23; font-weight: 700">Nando's</h3>
+                <p style="color: #00000080; font-size: 16px; font-weight: 600">
+                    On-Premise/ Restaurant
+                </p>
+                <p>
+                    <span>icon 1</span>
+                    <span>icon 2</span>
+                    <span>icon 3</span>
+                </p>
+            </div>
+            <!-- 360 Dashboard -->
+            <!-- <div>
+                <h3 style="color: #e61b23; font-weight: 700">360 Degree Dashboard</h3>
+                <div class="account-target-wrapper">
+                    <div style="display: flex; align-items: center">Account Target (Prem)</div>
+                    <div class="account-target-case-share" ">
+                        35 cases
+                    </div>
+                    <div class=" account-target-case-share">
+                        15% Share
+                    </div>
+                </div>
+
+                <div class="volume-target-wrapper">
+                    <div style="display: flex; align-items: center">Volume Target for this visit</div>
+                    <div class="account-target-case-share">
+                        20 CE
+                    </div>
+                </div>
+                <div class="volume-target-wrapper">
+                    <div style="display: flex; align-items: center">Account Settlement</div>
+                    <div class="account-target-case-share">
+                        20 CE
+                    </div>
+                </div>
+
+               
+            </div> -->
+        </section>
+
+        <!--List of Items  -->
+        <section style="padding: 0rem 1rem; margin-bottom: 25%;">
+            <div class="bottom-section-navigation-wrapper" onclick="showAccountDetails()">
+                <p class="bottom-section-navigation-text">
+                    Details
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Opportunities (1)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Follow-ups/ Tasks (0)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Order History (3)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Stock (5)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Assets & Visibility (3)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Draft (0)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Customer Service (0)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Competitor Insights (1)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    KYC Details (2)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Contacts (3)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+            <div class="bottom-section-navigation-wrapper">
+                <p class="bottom-section-navigation-text">
+                    Files (1)
+                </p>
+                <p class="bottom-section-navigation-icon">
+                    <i class="fa-light fa-greater-than fa-lg"></i>
+                </p>
+            </div>
+        </section>
+        <!-- Footer Starts -->
+        <ul class="bottom-nav mdl-layout--fixed-header">
+            <li class="nav-img">
+                <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="../dashboard/todaysVisits/todaysVisits.html"><i
+                        class="fas fa-users"></i><span>Visits</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;"><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="../objectives/posm/posm.html"><i class="fas fa-cocktail"></i><span>POSM</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                        class="fas fa-bars"></i><span>Menu</span></a>
+            </li>
+        </ul>
+
+
+        <!--Script imported-->
+        <!-- Start More menu options Modal -->
+        <div id="moreMenu" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                                    Sheets</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                                    Marketing Inventory</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                                    Inventory</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                            </li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-calendar-alt"></i>Calendar</a></li>
+                            <li class="list-group-item"><a href="../accountList/accountListView.html"><i
+                                        class="fas fa-user-alt"></i>Accounts</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-file-contract"></i>Reports</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-crown"></i>Opportunities</a></li>
+                            <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                                    data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                            <li class="list-group-item"><a href="../../../view/syncPage/loadingPage.html"><i
+                                        class="fas fa-sync"></i>Sync</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End More menu options Modal -->
+        <!-- End Visit Modal -->
+        <div id="endVisit" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Are you sure you want to end your visit ? </h5>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" data-dismiss="modal" onclick="handleEndDayHandler()"
+                            class="btn btn-success">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Visit Modal -->
+        <!-- Start Visit Modal -->
+        <div id="startVisit" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Are you sure you want to start your visits ?</h5>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" onclick="handleStartDayHandler()" data-dismiss="modal"
+                            class="btn btn-success">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Visit Modal -->
+
+        <!-- Start Visit Modal -->
+        <div id="todaysMeetingModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="text-center">Meeting Details</h4>
+                    </div>
+                    <div class="modal-body text-left">
+                    </div>
+                    <div class="modal-footer text-right" style="text-align: right;">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!--Front End script-->
+
+<script src="../globalJS/jquery-3.4.1.min.js"></script>
+<script src="../globalJS/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
+    integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
+<script src="../globalJS/main.js"></script>
+
+<!--Front End script-->
+<!--Backend Scripts-->
+<script src="../../controller/indexedDB/idb.js"></script>
+<script src="../../controller/indexedDB/utility.js"></script>
+<script src="../../controller/sync/sync.js"></script>
+<script src="../../controller/homePage/homePage.js"></script>
+<script src="../../controller/globalJS/globalJS.js"></script>
+<script src="accountLanding.js"></script>
+<!--Backend Scripts-->
+<!--Script imported-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+
+</html>

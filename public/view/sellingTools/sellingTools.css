@@ -1,0 +1,15 @@
+.objectives{
+    margin: 12rem 0;
+}
+
+.objective{
+    text-align: center;
+    color: #fff;
+    background-color: #6600ff;
+    margin: 30px;
+    border-radius: 15px;
+}
+
+.objective h4{
+    padding: 10px;
+}

@@ -1,0 +1,16 @@
+.btnSubmit{
+    background: #6600ff;
+    border-color: #6600ff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    margin: auto;
+}
+.form-group{
+    margin-bottom: 20px;
+}
+.form-control{
+    height:40px !important;
+}

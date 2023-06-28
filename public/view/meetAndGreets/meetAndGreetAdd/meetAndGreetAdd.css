@@ -1,0 +1,147 @@
+.mainDiv {
+    padding: 20px;
+}
+
+.cancelDiv {
+    border-width: 2px;
+    padding-top: 60px;
+}
+
+.headerTitle {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    align-items: center !important;
+    text-align: center !important;
+    color: #FFFFFF !important;
+    text-transform: capitalize !important
+}
+
+#searchIco i {
+    font-size: 24px;
+    color: #fff;
+    margin: 2px 0 0 0;
+}
+
+.cancelBtn {
+    color: #3274CC;
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    padding-left: 40px;
+}
+
+.contactsText {
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000
+}
+
+.existingCountText {
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    color: #6600FF
+}
+
+.existingCountValue {
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    color: #000
+}
+
+.addNewContactBtn {
+    width: 201px;
+    height: 35px;
+    background: #6600FF;
+    border-radius: 10px;
+    border-color: #6600FF;
+    border-style: solid;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.addNewContactBtnTxt {
+    
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-bottom: 0;
+    line-height: 23px;
+}
+
+.saveBtnTxt {
+    
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-bottom: 0;
+    line-height: 23px;
+}
+
+.saveBtn {
+    width: 92px;
+    height: 35px;
+    background: #6600FF;
+    border-radius: 10px;
+    border-style: none;
+    justify-content: center;
+}
+.previousBtnTxt {
+    
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+.previousBtn {
+    width: 92px;
+    height: 35px;
+    background: #82A2DC;
+    border-radius: 10px;
+    border-style: none;
+}
+
+.contactDetailsBorder {
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+    padding: 30px;
+}
+
+.hrColor {
+    border: 1px solid #000 !important;
+}
+
+.contactDetailsTxt {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: #212121;
+    margin-bottom: 0;
+    line-height: 23px;
+}
+.saveBtnPadding{
+    padding-left: 70px;
+}
+.bottomBtnDiv{
+    padding-top: 30px;
+}
+.fieldPadding{
+    padding-bottom: 10px;
+}
+.borderStyle{
+    width:30px;
+    height:30px
+}
