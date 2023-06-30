@@ -84,7 +84,7 @@
                     </div>
                     <div class="arrowIcons">
                         <a href="../meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html" class="leftArrow fas fa-chevron-left"></a>
-                        <a href="../sales/stockatRisk.html" class="rightArrow fas fa-chevron-right"></a>
+                        <a href="javascript:void()" class="rightArrow fas fa-chevron-right" onclick="saveStockOutlet()"></a>
                     </div>
                 </header>
             </div>
@@ -110,7 +110,7 @@
                                 <tbody>
                                
                                
-                                <tr>
+                                
                                     <!-- <td>
                                         <select name="selectSearch" id="selectSearch" class="form-control">
                                             <option value='0' selected='true'> Search SKU</option>
@@ -122,6 +122,12 @@
                                         </select>
                                     </td>
                                     <td><input type="text" class="form-control"></td> -->
+                                    <tr id="newEntry">
+                                        <td class="wd-80"><input class="wd-50" id="productSearch" type="text" placeholder="search" />
+                                        <div id="productList"></div>
+                                        </td>
+                                        <td class="wd-20"><input class="wd-50 cartQtyChange" id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  <i class="fa fas fa-exclamation"></i></td>
+                                        </tr>
                                 </tr>
                                 </tbody>
                             </table>
@@ -129,16 +135,23 @@
                         <div class="totalSec">
                             <dic class="row">
                                 <div class="col-xs-6">
-                                    <button class="addBtn" onclick="addProduct()"><i class="fas fa-plus"></i></button>
+                                    <button class="addBtn" onclick="openSearch()"><i class="fas fa-plus"></i></button>
                                 </div>
                                 <div class="col-xs-6 text-right">
-                                    <div class="total">
-                                        <label>Toatal Quantity: <span>11</span></label>
+                                    <div class="total" id="cartTotal">
+                                        <label>Total Quantity: <span>0</span></label>
                                     </div>
                                 </div>
                             </dic>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-3" id="finishBtn" style="display: none;">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button class="btn finishBtn" onclick="submit()">Finish</button>
                 </div>
             </div>
         </div>

@@ -1,3 +1,21 @@
+$(document).ready(function(){
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  const individual = urlParam.get('individual')
+  console.log(individual, 'individual')
+  if(individual == 'true'){
+    $('#closeIco').hide();
+    $('.arrowIcons').hide();
+    $('.logoSection').css('width','93%')
+    $('#finishBtn').show();
+  }
+})
+
+gotoCompitation1 = () => {
+  localStorage.getItem('accountId')
+  const accountID = localStorage.getItem('accountId') 
+  window.location.href = `../objectives/competitorInsights/competitionInsightsPage1.html?accountId=${accountID}`
+}
 $(function () {
     $("#selectSearch").select2();
   });
@@ -42,3 +60,4 @@ $(function () {
     icon.css('color', '#5cb85c');
   };
   
+

@@ -1,64 +1,148 @@
+$(document).ready(function(){
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  const individual = urlParam.get('individual')
+  console.log(individual, 'individual')
+  if(individual == 'true'){
+    $('#closeIco').hide();
+    $('.arrowIcons').hide();
+    $('.logoSection').css('width','93%')
+    $('#finishBtn').show();
+  }
+})
 $(function () {
     $("#selectSearch").select2();
   });
   
-
+  let items = [];
   let itemValueMap = new Map();
-let productSelectedTotal = new Set();
+  let addedProducts = [];
+  let addedProductIds = [];
+  let productSelectedTotal = new Set();
 
   searchableProducts = (itemList) => {
     itemsBackend = itemList;
     itemsBackend.forEach(ele => {
       itemValueMap.set(ele.Product__c, ele);
     });
-    console.log('itemList', itemList);
+    getProduct();
+   // return itemList;
+    
     
   
   
   };
-  
+  getProduct = () => {
+    console.log('itemList', itemsBackend);
+  }
+ 
 let stockOutletList = [];
 getStockOutletList = () => {
 
   for (var i = 0; i < retailDepletionData.length; i++) {
-    $("#stckOutletTbl tbody").prepend(' <tr>\
+    let productsAdded = {
+      Item_Master: retailDepletionData[i].Item__c,
+      Quantity: 0,
+      mrp: 0,
+      name: retailDepletionData[i].Item__r.Display_Name__c,
+      Stock_at_risk__c: 1
+    }
+    addedProducts.push(productsAdded)
+    addedProductIds.push(retailDepletionData[i].Item__c);
+    $("#stckOutletTbl tbody").prepend(' <tr data-id="'+retailDepletionData[i].Item__c+'">\
     <td>'+retailDepletionData[i].Item__r.Display_Name__c+'</td>\
-    <td><input type="number" class="form-control" min="0" value="0"></td>\
+    <td><input type="number" class="form-control cartQtyChange" min="0" value="0" onkeyup="qtyTotalUpdate(`'+retailDepletionData[i].Item__c+'`)"></td>\
     </tr>')
     //console.log(retailDepletionData[i].Item__r.Display_Name__c)
   }
+  getProduct();
 }
 
-addProduct = () =>{
-  $("#stckOutletTbl tbody").append(
-    '<tr class="newEntry">\
-    <td class="wd-80"><input class="wd-50" type="text" placeholder="search" /></td>\
-    <td class="wd-20"><input class="wd-50" type="number" min="0" value="0"/>  <i class="fa fas fa-exclamation"></i></td>\
-    </tr>')
+const productClicked = (name, id) => {
+  addedProductIds.push(id);
+  $("#productList").empty();
+  var quantity = $("#newEntry #prodQ").val();
+  $("#stckOutletTbl tbody tr").filter(":last").before(' <tr data-id="'+id+'">\
+  <td>'+name+'</td>\
+  <td><input type="number" class="form-control cartQtyChange" min="0" value="'+quantity+'"  onkeyup="qtyTotalUpdate(`'+id+'`)"></td>\
+  </tr>')
+  let productsAdded = {
+    Item_Master: id,
+    Quantity: quantity,
+    mrp: 0,
+    name: name
+  }
+  addedProducts.push(productsAdded)
+  $("#newEntry").hide();
+
+};
+
+openSearch = () =>{
+  if($("#newEntry").is(":hidden")){
+    $("#newEntry #productSearch").val("");
+    $("#newEntry #prodQ").val(0);
+    $("#newEntry").show();
+  }
 }
 
-function localSearch(array, searchKey, searchValue) {
-  for (var key in array) {
-    if (typeof array[key] === 'object') {
-      var result = localSearch(array[key], searchKey, searchValue);
-      if (result) {
-        return result;
-      }
-    } else if (key === searchKey && array[key] === searchValue) {
-      return array;
+
+//$(document).ready(function() {
+  $('#productSearch').keyup(function() {
+    console.log('sss',addedProductIds)
+    var query = $(this).val().toLowerCase();
+    var results = [];
+    console.log('itemsBackend',itemsBackend)
+    if (query.length > 0) {
+      // Perform the search
+      var value = $(this).val().toLowerCase();
+      items = itemsBackend.filter(ele => {
+        console.log(ele.Product__c)
+        if(!addedProductIds.includes(ele.Product__c)){
+          let displayName = (ele.Product__c ? (ele.Product__r.Display_Name__c) : '');
+          displayName = displayName.toLowerCase();
+          const obj = { id: ele.Product__c, name: displayName.indexOf(value) > -1 ? displayName : '' };
+          results.push(obj); // Add the object to the array
+          //results.push(displayName.indexOf(value) > -1 ? displayName : '');
+        }
+       
+      });
+    }
+    getProduct()
+    // Display the autocomplete suggestions
+    displayAutocomplete(results);
+  });
+  
+  // Function to display the autocomplete suggestions
+  function displayAutocomplete(results) {
+    console.log(results)
+    var autocompleteList = $('#productList');
+    autocompleteList.empty();
+    
+    for (var i = 0; i < results.length; i++) {
+      var suggestion = $('<div  onclick="productClicked(`'+results[i].name+'`,`'+results[i].id+'`)">').addClass('autocomplete-item').text(results[i].name);
+      autocompleteList.append(suggestion);
     }
   }
+//});
 
-  return null;
+qtyTotalUpdate = (prodId) =>{
+
+let sum = 0;
+$(".cartQtyChange").each(function() {
+  var thisId = $(this).parent().parent().attr("data-id");
+  var value = parseInt($(this).val());  
+  if(thisId == prodId){
+    $.each(addedProducts, function(index, obj) {
+      if (obj.Item_Master == prodId) {
+        obj.Quantity = value;
+      }
+    });
+  }
+  if (!isNaN(value)) {
+    sum += value;
+  }
+});
+console.log(addedProducts)
+console.log('sum',sum)
+$('#cartTotal label span').html(sum)
 }
-
-// Example usage:
-var data = [
-  { name: 'John', age: 25 },
-  { name: 'Jane', age: 30 },
-  { name: 'Bob', age: 35 },
-  { name: 'Alice', age: 25 }
-];
-
-var result = localSearch(data, 'name', 'Bob');
-console.log(result); // { name: 'Bob', age: 35 }

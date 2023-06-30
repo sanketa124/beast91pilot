@@ -1,5 +1,9 @@
 
-
+goBack = () => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `competitionInsightsPage1.html?accountId=${accountId}`
+}
 
 const competitorLableChange = new Map([
   ['UB','UB'],

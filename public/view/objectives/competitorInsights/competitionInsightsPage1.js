@@ -1,3 +1,16 @@
+$(document).ready(function(){
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  const individual = urlParam.get('individual')
+  console.log(individual, 'individual')
+  if(individual == 'true'){
+    $('#closeIco').hide();
+    $('.arrowIcons').hide();
+    $('.logoSection').css('width','93%')
+    $('#finishBtn').show();
+  }
+})
+
 const fieldTypeMap = new Map([
   ['Contract_Type', 'picklist'],
   ['Contract_Type_Text', 'text'],
@@ -533,6 +546,11 @@ const handleCompetitorVolumeSubmit = async() =>{
     $('#showAlertmsg h5').html('')
     $('#showAlertmsg h5').append(`"Please  fill information related to${competitorName} !"`);
   }
+
+    // let urlParams = new URLSearchParams(window.location.search);
+    // const accountId = urlParams.get('accountId');
+    // window.location.href = `competitionInsightsPage2.html?accountId=${accountId}`
+  
 }
 
 

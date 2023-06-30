@@ -5,6 +5,8 @@ exports.fetchAccounts = async(req, res) => {
     try {
         let sfConnection = req.conn;
         let contacts = req.body.contacts;
+        console.log("****************** Accounts SYNC ***********")
+        console.log(contacts)
         let leads = req.body.leads;
         contacts = contacts.map(ele => {
             if('Account' in ele){
@@ -22,8 +24,17 @@ exports.fetchAccounts = async(req, res) => {
             return ele;
         });
         
-        if(contacts.length>0)
-            await sfConnection.sobject("Contact").update(contacts);
+        if(contacts.length>0){
+            const contactUpdate = contacts.filter(ele =>  !ele.newContact);
+            const contactInsert = contacts.filter(ele =>  ele.newContact).map(ele =>  {
+                delete ele.Id;
+                delete ele.newContact;
+                return ele;
+            });
+            await sfConnection.sobject("Contact").update(contactUpdate);
+            await sfConnection.sobject("Contact").insert(contactInsert);
+        }
+            
         if(leads.length>0){
             let recordTypeId = await sfConnection.query("SELECT Id FROM RecordType WHERE SobjectType='Account' AND DeveloperName='Lead'");
             leads = leads.map(ele => {
@@ -185,7 +196,7 @@ const preSalesItems = async (req,res,sfConnection,userId) => {
         
 };
 const stockVisibilitItems = async (req,res,sfConnection,userId) => {
-    let queryString = `SELECT Id, Item_Master__r.Name, Quantity__c, Name, Stock_Visibility_Survey__c, Stock_Visibility_Survey__r.Account__c FROM Stock_Visibility_Survey_Child__c `;
+    let queryString = `SELECT Id, Item_Master__r.Name, Quantity__c,Stock_at_Risk__c, Name, Stock_Visibility_Survey__c, Stock_Visibility_Survey__r.Account__c FROM Stock_Visibility_Survey_Child__c `;
     if (req.body.syncDateTime) {
         queryString += "  WHERE ( LastModifiedDate >= " + req.body.syncDateTime+")";
     }

@@ -52,22 +52,22 @@ showAccount = () => {
         tmp += '       <div class="feat">';
         tmp += '         <div>';
         
-        if(accountRec.Bira_Segment__c != null)
-        {   
-            if(accountRec.Bira_Segment__c === "A+"){
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
-            }else if(accountRec.Bira_Segment__c === "A"){
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
-            }else if(accountRec.Bira_Segment__c === "B"){
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
-            }else {
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
-            }
+        // if(accountRec.Bira_Segment__c != null)
+        // {   
+        //     if(accountRec.Bira_Segment__c === "A+"){
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
+        //     }else if(accountRec.Bira_Segment__c === "A"){
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
+        //     }else if(accountRec.Bira_Segment__c === "B"){
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
+        //     }else {
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
+        //     }
            
-        }
-        else {
-            tmp += '  <span class="name"></span>';
-        }
+        // }
+        // else {
+        //     tmp += '  <span class="name"></span>';
+        // }
 
         if(accountRec.Industry_Segment__c != null)
         {
@@ -85,22 +85,22 @@ showAccount = () => {
             tmp += '  <span class="name"></span>';
         }
 
-        if(accountRec.Industry_Segment_Mass__c != null)
-        {
-            if(accountRec.Industry_Segment_Mass__c === "M0"){
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
-            }else if(accountRec.Industry_Segment_Mass__c === "M1"){
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
-            }else if(accountRec.Industry_Segment_Mass__c === "M2"){
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
-            }else {
-                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
-            }
+        // if(accountRec.Industry_Segment_Mass__c != null)
+        // {
+        //     if(accountRec.Industry_Segment_Mass__c === "M0"){
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
+        //     }else if(accountRec.Industry_Segment_Mass__c === "M1"){
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
+        //     }else if(accountRec.Industry_Segment_Mass__c === "M2"){
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
+        //     }else {
+        //         tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
+        //     }
             
-        }
-        else {
-            tmp += '  <span class="name"></span>';
-        }
+        // }
+        // else {
+        //     tmp += '  <span class="name"></span>';
+        // }
 
         tmp += '         </div>';
         

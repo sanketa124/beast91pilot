@@ -152,7 +152,7 @@ const fetchAppropriateFile = (req) => {
         return 'sandbox.xml';
     }
     else {
-        return 'prodwsdl.xml';
+        return 'sandbox.xml';
     }
 };
 

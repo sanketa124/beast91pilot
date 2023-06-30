@@ -206,12 +206,26 @@ showSliderData = (targetnAchieved) => {
           const podTarget = parseFloat((targetnAchieved[6].target).toFixed(2));
           const overallVolumePercent = Math.round(parseFloat((targetnAchieved[0].achievement / (targetnAchieved[0].target === 0 ? 1 : targetnAchieved[0].target)) * 100).toFixed(2));
           const podPercent = Math.round(parseFloat((targetnAchieved[6].achievement / (targetnAchieved[6].target === 0 ? 1 : targetnAchieved[6].target)) * 100).toFixed(2));
+            if(overallVolumePercent > 100){
+                graphValue = 100;
+                console.log(graphValue, 'overallVolumeValue')
+            }else{
+                graphValue = overallVolumePercent;
+                console.log(graphValue, 'overallVolumeValue')
+            }
+
+            if(podPercent > 100){
+                $('#distributionProgress').css('width','100%')
+            }else{
+                $('#distributionProgress').css('width',`${podPercent}%`)
+            }
+         
           $("#volAch").html('Ach: '+volumeAch);
           $("#volTarget").html('Target: '+volumeTarget);
           $("#volPercent").html('('+overallVolumePercent+')%');
           $("#podAch").html('Ach: '+podAch);
           $("#podTarget").html('Target: '+podTarget);
-          $("#podPercent").html('('+podPercent+')%');
+          $("#podPercent").html(`(${podPercent}%)`);
           $('#targetNAchieved').prepend(tmp);
          
   

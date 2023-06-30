@@ -47,24 +47,17 @@
         <nav class="navbar navbar-default nav-custom navbar-fixed-top">
             <div class="container-fluid">
                 <header class="index-header">
-                    <div class="toggle-btn text-left" onclick="openNav()">
+                    <!-- <div class="toggle-btn text-left" onclick="openNav()">
                         <div class="bar"></div>
                         <div class="bar"></div>
                         <div class="bar"></div>
+                    </div> -->
+                    <div class="toggle-btn text-left" id="searchIco">
+                        <!-- <i class="fas fa-search"></i> -->
                     </div>
                     <div class="logoSection nav-logo text-left">
-                        <h3>Beast <span id=userName></span></h3>
+                        <h3>Hi <span id=userName></span></h3>
                     </div>
-                    <div class="dropdown-toggle showDropdown" data-toggle="dropdown">
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                        <div class="dot"></div>
-                    </div>
-                    <ul class="dropdown-menu">
-                        <li><a onclick="handlePageRedirect('Home')">Home</a></li>
-                        <li><a onclick="handlePageRedirect('Detail')">Detail</a></li>
-                        <li><a onclick="handlePageRedirect('Media')">Media</a></li>
-                      </ul>
                 </header>
             </div>
         </nav>
@@ -99,7 +92,7 @@
                         </div>
                     </div>
     
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;">
                         <div class="panel panel-default">
                             <div class="information-section">
                                 <div class="panel-heading">
@@ -107,7 +100,7 @@
                                         Retail Depletions <span id="countRetail"></span>
                                     </h4>
                                 </div>
-                                <div id="collapseOne" class="panel-collapse collapse">
+                                <div id="collapseOne" class="panel-collapse collapse show">
                                     <div class="panel-body">
                                         <div class="row" id="retailPanel">
     
@@ -117,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;" id="contact">
                         <div class="panel panel-default">
                             <div class="address-section">
                                 <div class="panel-heading">
@@ -125,7 +118,7 @@
                                         Contact <span id="countContact"></span>
                                     </h4>
                                 </div>
-                                <div id="collapseTwo" class="panel-collapse collapse">
+                                <div id="collapseTwo" class="panel-collapse collapse show">
                                     <div class="panel-body">
                                         <div class="row" id="contactPanel">
     
@@ -136,14 +129,14 @@
                         </div>
                     </div>
     
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;" id="order">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseThree">
                                     Sales Order <span id="countOrder"></span>
                                 </h4>
                             </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
+                            <div id="collapseThree" class="panel-collapse collapse show">
                                 <div class="panel-body">
                                     <div class="row" id="salesOrder">
     
@@ -152,14 +145,14 @@
                             </div>
                         </div>    
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;" id="draft">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseFour">
                                     Draft Requisition <span id="draftRequest"></span>
                                 </h4>
                             </div>
-                            <div id="collapseFour" class="panel-collapse collapse">
+                            <div id="collapseFour" class="panel-collapse collapse show">
                                 <div class="panel-body">
                                     <div class="row" id="pastDraftRequest">
     
@@ -168,14 +161,14 @@
                             </div>
                         </div>    
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseFive">
                                     Account Visits <span id="eventsCount"></span>
                                 </h4>
                             </div>
-                            <div id="collapseFive" class="panel-collapse collapse">
+                            <div id="collapseFive" class="panel-collapse collapse show">
                                 <div class="panel-body">
                                     <div class="row" id="events">
     
@@ -186,14 +179,14 @@
                     </div>
 
                    
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;" id="stock">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseSix">
                                     Stock Visibility <span id="stockCount"></span>
                                 </h4>
                             </div>
-                            <div id="collapseSix" class="panel-collapse collapse">
+                            <div id="collapseSix" class="panel-collapse collapse show">
                                 <div class="panel-body">
                                     <div class="row" id="stockVisibility">
     
@@ -203,14 +196,14 @@
                         </div>    
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseSeven">
                                     Product Pre Sales Sampling  <span id="preSalesCount"></span>
                                 </h4>
                             </div>
-                            <div id="collapseSeven" class="panel-collapse collapse">
+                            <div id="collapseSeven" class="panel-collapse collapse show">
                                 <div class="panel-body">
                                     <div class="row" id="preSalesSampling">
     
@@ -219,14 +212,14 @@
                             </div>
                         </div>    
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-12" style="display: none;">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title" data-toggle="collapse" data-target="#collapseEight">
                                     POSM Requisition  <span id="posmCount"></span>
                                 </h4>
                             </div>
-                            <div id="collapseEight" class="panel-collapse collapse">
+                            <div id="collapseEight" class="panel-collapse collapse show">
                                 <div class="panel-body">
                                     <div class="row" id="posmRequisition">
     
@@ -260,20 +253,125 @@
     </div>
   </div>
 
-        <footer class="bottom-nav mdl-layout--fixed-header">
-            <div class="nav-img">
-                <img src="../../../media/images/homePage/rsz_icons-07.png" alt="">
+        <!-- Footer Starts -->
+        <ul class="bottom-nav mdl-layout--fixed-header">
+            <li class="nav-img">
+                <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="../dashboard/todaysVisits/todaysVisits.html"><i
+                        class="fas fa-users"></i><span>Visits</span></a>
+            </li>
+            <li class="nav-img">
+                <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+            </li>
+            <li class="nav-img">
+                <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                        class="fas fa-bars"></i><span>Menu</span></a>
+            </li>
+        </ul>
+
+
+        <!--Script imported-->
+        <!-- Start More menu options Modal -->
+        <div id="moreMenu" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                                    Sheets</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                                    Marketing Inventory</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                                    Inventory</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                            </li>
+                            <li class="list-group-item"><a href="../calendar/calendar2.html"><i
+                                        class="fas fa-calendar-alt"></i>Calendar</a></li>
+                            <li class="list-group-item"><a href="../accountList/accountListView.html"><i
+                                        class="fas fa-user-alt"></i>Accounts</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-file-contract"></i>Reports</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-crown"></i>Opportunities</a></li>
+                            <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                                    data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                            <li class="list-group-item"><a href="../../../view/syncPage/loadingPage.html"><i
+                                        class="fas fa-sync"></i>Sync</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="nav-img">
-                <img src="../../../media/images/homePage/rsz_icons-08.png" alt="">
+        </div>
+
+        <!-- End More menu options Modal -->
+        <!-- End Visit Modal -->
+        <div id="endVisit" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Are you sure you want to end your visit ? </h5>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" data-dismiss="modal" onclick="handleEndDayHandler()"
+                            class="btn btn-success">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
-            <div class="nav-img">
-                <img src="../../../media/images/homePage/rsz_icons-09.png" alt="">
+        </div>
+
+        <!-- End Visit Modal -->
+        <!-- Start Visit Modal -->
+        <div id="startVisit" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <h5>Are you sure you want to start your visits ?</h5>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" onclick="handleStartDayHandler()" data-dismiss="modal"
+                            class="btn btn-success">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
             </div>
-            <div class="nav-img">
-                <img src="../../../media/images/homePage/rsz_icons-10.png" alt="">
+        </div>
+
+        <!-- Start Visit Modal -->
+
+        <!-- Start Visit Modal -->
+        <div id="todaysMeetingModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="text-center">Meeting Details</h4>
+                    </div>
+                    <div class="modal-body text-left">
+                    </div>
+                    <div class="modal-footer text-right" style="text-align: right;">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
-        </footer>
+        </div>
     </div>
 
     <!--Script imported-->

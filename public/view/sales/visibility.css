@@ -1,3 +1,7 @@
-hr{
-    border-top: 1px solid #aaa;
+hr {
+  border-top: 1px solid #aaa;
+}
+
+.hide-element {
+  display: none;
 }

@@ -1,9 +1,16 @@
 .contact-detail{
-  margin-top: 80px;
+  margin-top: 0px;
 }
 
 .main-head{
   margin: 20px 0;
+}
+
+.btnSubmit{
+  background: #6600ff;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 h4{

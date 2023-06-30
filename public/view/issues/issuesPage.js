@@ -1,3 +1,9 @@
+
+goBack = () => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `../objectives/competitorInsights/competitionInsightsPage3.html?accountId=${accountId}`
+}
 const issueList = document.querySelector('.issueList');
 
 function addElement() {

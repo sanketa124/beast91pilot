@@ -50,7 +50,7 @@
     border-radius: 10px;
     border-style: solid;
     position: absolute;
-    bottom: 0;
+    bottom: 70px;
     right: 0;
     margin-right: 20px;
     margin-bottom: 20px;
@@ -75,4 +75,7 @@
     font-size: 24px;    
     color: #585858;
     text-transform:none !important
+}
+.nav-logo{
+    width: 93%;
 }

@@ -448,3 +448,12 @@ input:checked + .slider:before {
 .panel-title[aria-expanded='true']::after {
   content: '\f107';
 }
+.panel-body{
+  margin: 0;
+}
+.panel-heading{
+  margin: 0 15px;
+}
+.information-section{
+  margin-top: 0;
+}

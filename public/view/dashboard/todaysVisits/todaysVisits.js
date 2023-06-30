@@ -135,5 +135,5 @@ getLapsedDate = (target) => {
 handleCheckIn = (eventId,accountId) => {
     sessionStorage.setItem('checkinPlace','firstCheckin')
     //checkInFucn(eventId,accountId)
-    window.location.href = `/view/checkIn/checkIn.html?Id=${accountId}&eventId=${eventId}`;
+    window.location.href = `/view/checkIn/checkIn.html?accountId=${accountId}&eventId=${eventId}`;
 }

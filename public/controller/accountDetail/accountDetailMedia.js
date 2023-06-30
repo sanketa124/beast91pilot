@@ -118,7 +118,7 @@ console.log(mediaMap);
             </h4>
         </div>
 
-        <div id="${collapse}" class="panel-collapse collapse">
+        <div id="${collapse}" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div class="row"> 
         `;

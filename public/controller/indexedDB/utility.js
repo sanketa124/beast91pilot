@@ -149,6 +149,9 @@ var dbPromise = idb.open('bira91', 2, function (db) {
   if (!db.objectStoreNames.contains('top5SKU')) {
     db.createObjectStore('top5SKU', { keyPath: 'Id' });
   }
+  if (!db.objectStoreNames.contains('stockOutlet')) {
+    db.createObjectStore('stockOutlet', { keyPath: 'App_Id' });
+  }
 });
 
 

@@ -1,8 +1,10 @@
 let urlParam = new URLSearchParams(window.location.search);
 const eventId = urlParam.get('eventId')
-const accountId =  urlParam.get('Id')
+const accountId =  urlParam.get('accountId')
+
 localStorage.setItem('accountId',accountId)
 localStorage.setItem('eventId',eventId)
+console.log(localStorage.getItem('accountId'))
 
 const checkInFucn = async (eventId,accountId) => {
   let accountRec = await getItemFromStore('account', accountId);

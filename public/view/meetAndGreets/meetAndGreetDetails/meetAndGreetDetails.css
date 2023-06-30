@@ -77,7 +77,7 @@
     margin-bottom: 0;
 }
 
-.finishBtnTxt {
+/* .finishBtnTxt {
     
     font-style: normal;
     font-weight: 700;
@@ -96,7 +96,7 @@
     right: 0;
     margin-right: 20px;
     margin-bottom: 20px;
-}
+} */
 
 .contactDetailsBorder {
     border: 1px solid rgba(0, 0, 0, 0.55);

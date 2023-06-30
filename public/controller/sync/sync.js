@@ -7,6 +7,7 @@ const initializeSync = async () => {
     await objectivePushHelper(loginData[0].username,loginData[0].password);
     await itemImagesFetch(loginData[0].username,loginData[0].password);
     await reportFetch(loginData[0].username,loginData[0].password);
+
 };
 
 const loginDataFetch = async () => {
@@ -74,7 +75,6 @@ function myConvertFunc(arr) {
   };
 const parsingAccountData = async (dataStr) => {
     let jsonData = JSON.parse(dataStr);
-    
     for(let i of jsonData){
         if(i&&i.attributes&&i.attributes.type==='Account'){
             if(i.RecordType.DeveloperName==='Lead' && i.Lead_Status__c === 'Approved' ){
@@ -149,6 +149,9 @@ const eventsFetch = async(username,password,nonSales) => {
             await clearAllData('draftPreInstallationApproval');
             await writeDataAll('draftPreInstallationApproval',resJson.draftInstallationPendingApproval);
             await writeDataAll('taskOriginal',resJson.taskList);
+            localStorage.setItem('lapsedAccount',JSON.stringify(resJson.lapsedAcc))
+            localStorage.setItem('NBA',JSON.stringify(resJson.NBA))
+            //await writeDataAll('events.lapsedAccount',resJson.lapsedAcc);
             await clearAllData('events');// Check to only delete not modified data
             await writeDataAll('events',resJson.events);
             await writeDataAll('standardEvents',resJson.standardEvents);
@@ -349,6 +352,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
         let kycDetail = await readAllData('kycDetail');
         let salesOrderSync = await readAllData('salesOrderSync');
         let stockVisibility = await readAllData('stockVisibility');
+        let stockOutlet = await readAllData('stockOutlet');
         let productSampling = await readAllData('productSampling');
         let posm = await readAllData('posm');
         let draftSignup = await readAllData('draft_Signup');
@@ -384,6 +388,9 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
         }); 
         
         stockVisibility = stockVisibility.filter(ele => {
+            return !ele.isSynced;
+        }); 
+        stockOutlet = stockOutlet.filter(ele => {
             return !ele.isSynced;
         }); 
         posm = posm.filter(ele => {
@@ -452,6 +459,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 salesOrder : salesOrderSync,
                 kycDetail : kycDetail,
                 stockVisibility : stockVisibility,
+                stockOutlet : stockOutlet,
                 events :eventsSync,
                 competitorInsight :competitorInsights,
                 dailyTracker : dailyTracker,
@@ -474,6 +482,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
         });
         
         let resJson = await res.json();
+        console.log('resJson',resJson)
         if(resJson.isError){
             console.log(resJson.message);
             // Add Notification method here
@@ -513,6 +522,10 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 }); 
                 
                 stockVisibility = stockVisibility.filter(ele => {
+                    ele.isSynced = true;
+                    return ele;
+                }); 
+                stockOutlet = stockOutlet.filter(ele => {
                     ele.isSynced = true;
                     return ele;
                 }); 
@@ -566,6 +579,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 });
                 await writeDataAll('eventsSync',eventsSync);
                 await writeDataAll('stockVisibility',stockVisibility);
+                await writeDataAll('stockOutlet',stockOutlet);
                 await writeDataAll('salesOrderSync',salesOrderSync);
                 await writeDataAll('kycDetail',kycDetail);
                 await writeDataAll('competitorInsight',competitorInsights);
@@ -607,6 +621,7 @@ const deletePreviousObjectiveHelper = async () => {
     let kycDetail = await readAllData('kycDetail');
     let salesOrderSync = await readAllData('salesOrderSync');
     let stockVisibility = await readAllData('stockVisibility');
+    let stockOutlet = await readAllData('stockOutlet');
     let productSampling = await readAllData('productSampling');
     let posm = await readAllData('posm');
     let draftSignup = await readAllData('draft_Signup');
@@ -645,6 +660,11 @@ const deletePreviousObjectiveHelper = async () => {
     }); 
      
     stockVisibility = stockVisibility.filter(ele => {
+        let storedDate = ele.Created_Date.setHours(0,0,0,0);
+        let currentDate = new Date().setHours(0,0,0,0);
+        return ele.isSynced&&(currentDate!==storedDate);
+    });
+    stockOutlet = stockOutlet.filter(ele => {
         let storedDate = ele.Created_Date.setHours(0,0,0,0);
         let currentDate = new Date().setHours(0,0,0,0);
         return ele.isSynced&&(currentDate!==storedDate);
@@ -720,6 +740,9 @@ const deletePreviousObjectiveHelper = async () => {
     }
     for(let i=0;i<stockVisibility.length;i++){
         await deleteItemFromData('stockVisibility',stockVisibility[i].App_Id);
+    }
+    for(let i=0;i<stockOutlet.length;i++){
+        await deleteItemFromData('stockOutlet',stockOutlet[i].App_Id);
     }
     for(let i=0;i<productSampling.length;i++){
         await deleteItemFromData('productSampling',productSampling[i].App_Id);

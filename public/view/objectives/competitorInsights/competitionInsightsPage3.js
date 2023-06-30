@@ -1,3 +1,8 @@
+goBack = () => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `competitionInsightsPage2.html?accountId=${accountId}`
+}
 let promotionArray = [
   // {
   //   Competitor_Name :'UB',

@@ -25,7 +25,7 @@ text-align: center;
 font-size: 1.2em;
 border-right: 1px solid black;
 border-left: 1px solid black;
-background: red;
+background: rgb(102 0 255 / 70%);
 border-top: 1px solid #000;
 position: sticky;
 top: 0;
@@ -57,7 +57,7 @@ top: 0;
   #contactPanel table th {
   color: white;
   border-top: 1.5px solid black;
-  background: red;
+  background: rgb(102 0 255 / 70%);
   }
   
   #contactPanel table td {

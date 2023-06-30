@@ -1,10 +1,11 @@
 
-
-
-
-
+let contactRec = {};
+let currentContactSelection = {}
+let accountRec = {}
+let accountId = '';
+let contactId = '';
 onHandlePrevious = () => {
-    window.location.href = '/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html';
+    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`;
 }
 
 const validateEmail = (email) => {
@@ -12,16 +13,16 @@ const validateEmail = (email) => {
     return re.test(String(email).toLowerCase());
 };
 
-let contactRec = {};
-let currentContactSelection = {}
-let accountRec = {}
-
 const initializeMeetAndGreetPage = async () => {
-    let urlParam = new URLSearchParams(window.location.search);
-    accountRec = await getItemFromStore('account', urlParam.get('accountId'));
-    urlParam.get('accountId')
-    let contactIndex = urlParam.get('index')
-    currentContactSelection = accountRec.Contacts.records[contactIndex];
+    let urlParams = new URLSearchParams(window.location.search);
+    accountId = urlParams.get('accountId');
+    contactId = urlParams.get('contactId');
+    accountRec = await getItemFromStore('account', accountId);
+    contactRec = (accountRec.Contacts.records.filter(ele => {
+        return ele.Id === contactId;
+     }))[0];
+    
+    currentContactSelection = contactRec
     populateContactModal()
 };
 
@@ -35,9 +36,7 @@ const populateContactModal = () => {
     $('#flexCheckChecked').prop('value', currentContactSelection.Active__c ? currentContactSelection.Active__c : "");
 };
 
-const handleSaveContact = () => {
-    let urlParam = new URLSearchParams(window.location.search);
-
+const handleMeetSaveContact = () => {
     if ($('#contactEmail').val()) {
         if (!validateEmail($('#contactEmail').val())) {
             $('.emailConReq').css('display', 'block');
@@ -55,39 +54,45 @@ const handleSaveContact = () => {
     const contactEmail = $('#contactEmail').val()
     const contactRole = $('#contactRole').val();
     var isActive = $("#flexCheckChecked").is(":checked");
+    if(!contactId){
+        contactRec = {}
+    }
     contactRec["Salutation"] = contactTitle;
     contactRec["FirstName"] = contactFirstName;
     contactRec["LastName"] = contactLastName;
+    contactRec["Name"] = contactFirstName + " "+ contactLastName
     contactRec["Role__c"] = contactRole;
     contactRec["Phone"] = contactPhone;
     contactRec["Email"] = contactEmail;
     contactRec["Active__c"] = isActive;
-    if (urlParam.get('index')) {
-        const contactID = currentContactSelection.Id
-        contactRec["Id"] = contactID;
+    
+    if (contactId) {
         handleUpdateSubmitContact()
     } else {
-        contactRec["isSynced"] = false;
-        contactRec["Id"] = accountRec.Contacts.records.length === 0 ? 0 : accountRec.Contacts.records.length;
-        handleSaveSubmitContact()
+        handleNewSaveSubmitContact()
     }
 
 };
 
-
 const handleUpdateSubmitContact = async () => {
-    await writeData('contactsync', contactRec);
-    let index = accountRec.Contacts.records.findIndex(ele => ele.Id === contactRec.Id);
-    accountRec.Contacts.records.splice(index, 1, contactRec);
-    await writeData('account', accountRec);
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html`
+    contactRec["isSynced"] = false;
+    await writeData('contact',contactRec);
+    await writeData('contactsync',contactRec);
+    let index = accountRec.Contacts.records.findIndex(ele => ele.Id===contactId);
+    accountRec.Contacts.records.splice(index,1,contactRec);
+    await writeData('account',accountRec);
+    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
 };
 
-const handleSaveSubmitContact = async () => {
+const handleNewSaveSubmitContact = async () => {
+    contactRec['Id'] = `${new Date().getTime()}`;
+    contactRec["isSynced"] = false;
+    contactRec['newContact'] = true;
+    await writeData('contact', contactRec);
     await writeData('contactsync', contactRec);
     accountRec.Contacts.records.push(contactRec);
     await writeData('account', accountRec);
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html`
+    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
 };
 
 initializeMeetAndGreetPage()

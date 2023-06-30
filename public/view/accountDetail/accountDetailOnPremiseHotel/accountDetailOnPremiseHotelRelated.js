@@ -1,3 +1,26 @@
+$(document).ready(function(){
+    let urlParam = new URLSearchParams(window.location.search);
+    const Id = urlParam.get('Id')
+    const order = urlParam.get('order')
+    const stock = urlParam.get('stock')
+    const contact = urlParam.get('contact')
+    const draft = urlParam.get('draft')
+
+    if(order == 'true'){
+        $('#order').show()
+    }
+    else if(stock == 'true'){
+        $('#stock').show()
+    }
+    else if(contact == 'true'){
+        $('#contact').show()
+    }
+    else if(draft == 'true'){
+        $('#draft').show()
+    }
+   
+  })
+
 showLoader = () =>{
     $('.loader-div').css('display','block');
 };

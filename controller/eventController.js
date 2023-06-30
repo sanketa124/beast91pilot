@@ -37,15 +37,22 @@ exports.fetchEvents = async (req,res) => {
 
         let taskList = await sfConnection.query('SELECT  WhatId,Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
+        let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
+        let NeverBilledAccounts = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and  RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') and Recent_Retail_Depletion__c = null");
+        console.log(NeverBilledAccounts,"NeverBilledAccounts");
+        // events.LapsedAccountDetails = LapsedAccountDetails
         taskList = taskList.records.map(ele => {
             ele.Unique_Identifier__c = ele.Id;
             Acc.records.map(elem => {
                 if(elem.Id == ele.WhatId){
                     ele.AccountName = elem.Name
+                    //ele.text=LapsedAccountDetails
                 }
             })
             return ele; 
         });
+        let lapAcc = LapsedAccountDetails
+        //console.log(lapAcc,"lapAcc");
         if(req.body.nonSales.isSales){
             let stateClusterMapping = await sfConnection.query(`SELECT Name,Id,RecordType.DeveloperName,Country__c,District__c,State__c,(SELECT Cluster__r.Name, Cluster__c FROM Cluster_State_Mappings__r ORDER BY Cluster__r.Name) FROM Geo_Hierarchy__c   ORDER BY Name`);
             let isCompleted = false;
@@ -62,7 +69,8 @@ exports.fetchEvents = async (req,res) => {
             }
             territoryRecords = await sfConnection.query(`SELECT Name,Id,RecordType.DeveloperName,Division__c,Zone__c,Business_Hierarchy__c FROM Cluster__c  ORDER BY Name`);
         }
-        res.status(200).json({isError : false,isAuth : true,events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
+        //console.log(LapsedAccountDetails,"AccountDetails");
+        res.status(200).json({isError : false,isAuth : true, NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
     }
     catch(e){
         console.log(e);

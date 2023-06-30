@@ -101,7 +101,7 @@
                     <div class="defaultTable">
                         
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="stckRiskTbl">
                                 <thead>
                                 <tr>
 
@@ -111,20 +111,7 @@
                                     <th></th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td style="width: 50%;">White 330*24</td>
-                                    <td>1</td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><i class="fas fa-camera"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>White 330*24</td>
-                                    <td>2</td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td><i class="fas fa-camera"></i></td>
-                                </tr>
-                                
+                                <tbody> 
                                 </tbody>
                             </table>
                         </div>
@@ -133,7 +120,7 @@
                                 <div class="col-xs-8"></div>
                                 <div class="col-xs-4 text-right">
                                     <div class="total">
-                                        <label>Toatal: <span>11</span></label>
+                                        <label>Toatal: <span id="cartTotal">0</span></label>
                                     </div>
                                 </div>
                             </dic>
@@ -318,12 +305,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
     <script src="../globalJS/main.js"></script>
-    <script src="stockatRisk.js"></script>
+   
     <!--Front End script-->
     <!--Backend Scripts-->
     <script src="../../controller/indexedDB/idb.js"></script>
     <script src="../../controller/indexedDB/utility.js"></script>
     <script src="../../controller/sync/sync.js"></script>
+    <script src="stockatRisk.js"></script>
     <!-- <script src="../../controller/homePage/homePage.js"></script> -->
     <script src="../../controller/globalJS/globalJS.js"></script>
     <!--Backend Scripts-->

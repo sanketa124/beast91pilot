@@ -83,7 +83,8 @@
                         <h3>Visibility</h3>
                     </div>
                     <div class="arrowIcons">
-                        <a href="../objectives/salesOrder/salesOrderLanding.html" class="leftArrow fas fa-chevron-left"></a>
+                        <a href="../objectives/salesOrder/salesOrderLanding.html"
+                            class="leftArrow fas fa-chevron-left"></a>
                         <a href="posm.html" class="rightArrow fas fa-chevron-right"></a>
                     </div>
                 </header>
@@ -94,7 +95,7 @@
                 <div class="col-md-12 dashboardSection">
                     <div class="example">
                     </div>
-                    
+
                 </div>
             </div>
             <section class="type1">
@@ -107,22 +108,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-1" onchange="handleToggle(state=1)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-1">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-wrapper-1">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -146,17 +148,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-two" onchange="handleToggle(state=2)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-2">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -168,22 +171,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-three" onchange="handleToggle(state=3)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-3">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-wrapper-3">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -207,17 +211,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-four" onchange="handleToggle(state=4)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-4">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -229,17 +234,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-five" onchange="handleToggle(state=5)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-5">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -251,17 +257,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-six" onchange="handleToggle(state=6)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-6">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -276,17 +283,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
-                                <span class="slider round"></span>
+                                <input type="checkbox" id="switch-seven" onchange="handleToggle(state=7)">
+                                <span class=" slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-7">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -298,17 +306,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-eight" onchange="handleToggle(state=8)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-8">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -326,22 +335,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-one" onchange="handleTypeQCO(state=1)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-1">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-1">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -365,22 +375,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-two" onchange="handleTypeQCO(state=2)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-2">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-2">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -401,22 +412,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-three" onchange="handleTypeQCO(state=3)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-3">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-3">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -440,22 +452,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-four" onchange="handleTypeQCO(state=4)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-4">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-4">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -476,17 +489,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-five" onchange="handleTypeQCO(state=5)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-5">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -506,17 +520,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-six" onchange="handleTypeQCO(state=6)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-6">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -531,22 +546,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-seven" onchange="handleTypeQCO(state=7)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-7">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-5">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -567,22 +583,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-qco-eight" onchange="handleTypeQCO(state=8)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-8">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-6">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -609,22 +626,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-one"
+                                    onchange="handleToggleSwitchOnPremises(state=1)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-1">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-onpremises-wrapper-1">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -648,17 +667,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-two"
+                                    onchange="handleToggleSwitchOnPremises(state=2)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
-                            <div class="image-upload_NoInput form-group" style="margin:0">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-2">
+                            <div class=" image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -670,22 +691,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-three"
+                                    onchange="handleToggleSwitchOnPremises(state=3)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-3">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-onpremises-wrapper-2">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -709,17 +732,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-four"
+                                    onchange="handleToggleSwitchOnPremises(state=4)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-4">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -731,17 +756,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-five"
+                                    onchange="handleToggleSwitchOnPremises(state=5)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-5">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -753,17 +780,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-six"
+                                    onchange="handleToggleSwitchOnPremises(state=6)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-6">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -778,17 +807,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-seven"
+                                    onchange="handleToggleSwitchOnPremises(state=7)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-7">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -800,17 +831,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-eight"
+                                    onchange="handleToggleSwitchOnPremises(state=8)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-8">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -825,17 +858,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-nine"
+                                    onchange="handleToggleSwitchOnPremises(state=9)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-9">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -847,22 +882,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-ten"
+                                    onchange="handleToggleSwitchOnPremises(state=10)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-10">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="check-box-wrapper-onpremises-three">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -883,17 +920,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-eleven"
+                                    onchange="handleToggleSwitchOnPremises(state=11)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-11">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -905,17 +944,19 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-twelve"
+                                    onchange="handleToggleSwitchOnPremises(state=12)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-12">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -927,23 +968,25 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="switch-onpremises-thirteen"
+                                    onchange="handleToggleSwitchOnPremises(state=13)">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-13">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </article>
-                
+
             </section>
             <hr />
             <section class="type4">
@@ -964,9 +1007,10 @@
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -1003,9 +1047,10 @@
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -1025,9 +1070,10 @@
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
@@ -1064,15 +1110,23 @@
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
                                     <label for="1">
-                                        <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </article>
             </section>
+        </div>
+        <div class="container-fluid mt-3" id="finishBtn" style="display: none;">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button class="btn finishBtn" onclick="submit()">Finish</button>
+                </div>
+            </div>
         </div>
         <!-- Spinner for Start Visit -->
         <div id="loader-main" style="display: none;">
@@ -1081,8 +1135,8 @@
         <!-- Spinner for End Visit -->
 
         <!-- Footer Starts -->
-         <!-- Footer Starts -->
-         <ul class="bottom-nav mdl-layout--fixed-header">
+        <!-- Footer Starts -->
+        <ul class="bottom-nav mdl-layout--fixed-header">
             <li class="nav-img">
                 <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
             </li>
@@ -1131,7 +1185,8 @@
                             <li class="list-group-item"><a href="javascript:;"><i
                                         class="fas fa-file-contract"></i>Reports</a></li>
                             <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-crown"></i>Opportunities</a></li>
+                                        class="fas fa-crown"></i>Opportunities</a>
+                            </li>
                             <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
                                     data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
                             <li class="list-group-item"><a href="../../view/syncPage/loadingPage.html"><i
@@ -1202,8 +1257,8 @@
         </div>
     </div>
 
-     <!-- Cancel Modal -->
-     <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
+    <!-- Cancel Modal -->
+    <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1213,8 +1268,7 @@
                     <h5>Are you sure you want to Cancel ?</h5>
                 </div>
                 <div class="modal-footer text-center">
-                    <button type="button" data-dismiss="modal"
-                        class="btn btn-success">Yes</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-success">Yes</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -1228,16 +1282,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
     <script src="../globalJS/main.js"></script>
-    <script src="visibility.js"></script>
+
     <!--Front End script-->
     <!--Backend Scripts-->
     <script src="../../controller/indexedDB/idb.js"></script>
     <script src="../../controller/indexedDB/utility.js"></script>
     <script src="../../controller/sync/sync.js"></script>
-    <!-- <script src="../../controller/homePage/homePage.js"></script> -->
+    <!-- <script src="../../controller/homePage/homePage.js"></script>  -->
     <script src="../../controller/globalJS/globalJS.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
+    <script src="visibility.js"></script>
 
 </body>
 
