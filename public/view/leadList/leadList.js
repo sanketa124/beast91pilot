@@ -63,13 +63,13 @@ showlistOfLead = () => {
            
             if (listOfLead[i].Industry_Segment__c != null) {
                 if (listOfLead[i].Industry_Segment__c === "P0") {
-                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
                 } else if (listOfLead[i].Industry_Segment__c === "P1") {
-                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
                 } else if (listOfLead[i].Industry_Segment__c === "P2") {
-                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
                 } else {
-                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
                 }
             }
             else {
@@ -78,13 +78,13 @@ showlistOfLead = () => {
 
             if (listOfLead[i].Industry_Segment_Mass__c != null) {
                 if (listOfLead[i].Industry_Segment_Mass__c === "M0") {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
                 } else if (listOfLead[i].Industry_Segment_Mass__c === "M1") {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
                 } else if (listOfLead[i].Industry_Segment_Mass__c === "M2") {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
                 } else {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
                 }
 
             }
@@ -96,7 +96,7 @@ showlistOfLead = () => {
             tmp += '         <div>';
 
             // if (listOfLead[i].Beacon_Flag__c === true) {
-            //     tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+            //     tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
             // }
             // else {
             //     tmp += '  <span class="name"></span>';
@@ -104,7 +104,7 @@ showlistOfLead = () => {
 
 
             // if (listOfLead[i].Draft_Ready__c === true) {
-            //     tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';
+            //     tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
             // }
             // else {
             //     tmp += '  <span class="name"></span>';
@@ -112,7 +112,7 @@ showlistOfLead = () => {
 
 
             if (listOfLead[i].QCO_Flag__c === true) {
-                tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
             }
             else {
                 tmp += '  <span class="name"></span>';

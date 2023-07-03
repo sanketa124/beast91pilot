@@ -345,11 +345,11 @@ const showAlreadyCheckInMsg = () => {
 const accountSelectedBottomBar =async (id) =>{
     $('#bottomBarModal').modal('hide');
     if(bottomIconClicked === iconsBottomBar.book_order){
-        window.location.href = `/view/sales/posm.html?accountId=${listOfAccountBottomBar[id].Id}&bottomBar=true`;
+        window.location.href = `/view/objectives/salesOrder/salesOrderLanding.html?accountId=${listOfAccountBottomBar[id].Id}&bottomBar=true&individual=true`;
     }
     else if(bottomIconClicked === iconsBottomBar.posm_requisition){
         // await autoCheckInBottomBar(listOfAccountBottomBar[id]);
-        window.location.href = `/view/sales/posm.html?accountId=${listOfAccountBottomBar[id].Id}&bottomBar=true`;
+        window.location.href = `/view/sales/posm.html?accountId=${listOfAccountBottomBar[id].Id}&bottomBar=true&individual=true`;
     }
     // redirect to detail page
 }

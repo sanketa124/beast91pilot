@@ -11,6 +11,12 @@ $(document).ready(function(){
   }
 })
 
+goBack = () => {
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  window.location.href = `/view/sales/posm.html?accountId=${accountID}`
+}
+
 const fieldTypeMap = new Map([
   ['Contract_Type', 'picklist'],
   ['Contract_Type_Text', 'text'],
@@ -550,8 +556,21 @@ const handleCompetitorVolumeSubmit = async() =>{
     // let urlParams = new URLSearchParams(window.location.search);
     // const accountId = urlParams.get('accountId');
     // window.location.href = `competitionInsightsPage2.html?accountId=${accountId}`
-  
+    //finalSubmit();
+    let urlParam = new URLSearchParams(window.location.search);
+    const accountID = urlParam.get('accountId')
+    const individual = urlParam.get('individual')
+    if(individual == 'true'){
+      window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+    }else{
+      window.location.href = `/view/objectives/competitorInsights/competitionInsightsPage2.html?accountId=${accountID}`
+    }
 }
+
+// finalSubmit = () =>{
+
+//   window.location.href = `/view/accountLanding/accountLanding.html`
+// }
 
 
 handlePageRedirect = async (value) => {

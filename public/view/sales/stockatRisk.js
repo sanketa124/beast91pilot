@@ -51,3 +51,15 @@ qtyTotalUpdate = (prodId) =>{
     }
     
 initializeStockVisibility()
+
+goBack = () => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `/view/sales/stockOutlet.html?accountId=${accountId}`
+}
+
+goForward = () => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
+}

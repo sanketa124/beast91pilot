@@ -25,6 +25,8 @@ finish = async () => {
     console.log('accountDetail---------------',accountDetail)
     await writeData('account', accountDetail);
 
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+
     // console.log('Geo Location---', geoLocation)
     // Geolocation__c
 

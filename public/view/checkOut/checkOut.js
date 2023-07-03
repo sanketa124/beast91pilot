@@ -5,13 +5,21 @@ handleCheckedOut = () => {
 
 finalSubmit = () => {
   let checkinRedirect = sessionStorage.getItem('checkinPlace');
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
   console.log(checkinRedirect, 'checkinRedirect');
   if(checkinRedirect == 'secondCheckin'){
-    window.location.href = '/view/accountLanding/accountLanding.html';
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountId}`;
   }else if(checkinRedirect == 'firstCheckin'){
-    window.location.href = '/view/dashboard/todaysVisits/todaysVisits.html';
+    window.location.href = `/view/dashboard/todaysVisits/todaysVisits.html?accountId=${accountId}`;
   }
   sessionStorage.removeItem('checkinPlace')
+}
+
+goBack = () => {
+  let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/followUp/followUpPage.html?accountId=${accountId}`;
 }
 
 const checkedOut = async () => {

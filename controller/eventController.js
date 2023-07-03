@@ -4,8 +4,10 @@ exports.fetchEvents = async (req,res) => {
         console.log(":::::::::::::EVENTS SYNC :::::::::::::::")
         const sfConnection = req.conn;
         let tasks = req.body.tasks;
+        let cases = req.body.case;
         const syncDateTime = req.syncDateTime;
         let events = null;
+        let casesList =[]
         let standardEvents = null;
         let stateClusterMappingArr = [];
         let territoryRecords;
@@ -21,6 +23,19 @@ exports.fetchEvents = async (req,res) => {
             await sfConnection.sobject('Task').update(taskUpdate);
             
         }
+        if(cases && cases.length > 0 ){
+            cases = cases.map(item => {
+                delete item.Id;
+                return item;
+              });
+            const caseUpdate = cases.filter(item =>  item.Id);
+            const caseInsert = cases.filter(item =>  !item.Id);
+            const d = await sfConnection.sobject('Case').insert(caseInsert);
+            const q = await sfConnection.sobject('Case').update(caseUpdate);
+            console.log(caseUpdate,"demo1")
+            console.log(caseInsert,"demo")
+        }
+
         if(req.body.nonSales.isTech ){
             events = await sfConnection.query(`SELECT Check_In__latitude__s,Check_In__longitude__s,End_date_and_time__c,Distance_from_Account__c,Time_Spent_in_Outlet__c,Start_date_and_time__c,Name,Account__c,Id,Account__r.Beer_Selection__c,Account__r.L3M_Billed_Liquids__c,Account__r.Name,Account__r.Account_Status__c,Account__r.BillingStreet, Account__r.Sub_Channel__c, Account__r.Industry_Segment__c,Account__r.Draft_Status__c,Account__r.Geolocation__c
             Account__r.BillingCity,Account__r.BillingPostalCode,Account__r.BillingState,Account__r.BillingCountry,Account__r.Beacon_Flag__c,Account__r.QCO_Flag__c,Account__r.Bira_Segment__c,Account__r.Id,Account__r.Industry_Segment__c,Account__r.Industry_Segment_Mass__c,Account__r.Draft_Ready__c,Account__r.Channel__c, Account__r.Sub_Channel__c,Account__r.L1M_Billed_Liquids__c,Account__r.Recent_Retail_Depletion__c,Account__r.Recent_Activity_Date_Time__c,Completed__c,Actual_Start_Visit__c,Actual_End_Visit__c,Type__c,Draft_Installation__c, Draft_Installation__r.Recent_Preventive_Maintenance_Date__c, Draft_Installation__r.Recent_Sanitization_Date__c, Draft_Installation__r.Confirmed_with_the_outlet_owner_for_inst__c,Draft_Installation__r.Recommended_Machine_Type_Sales__c,Draft_Installation__r.Recommended_Tower_Type_Sales__c,Draft_Installation__r.Display_Machine_Id__c,Draft_Installation__r.Over_the_counter_space_required__c,Draft_Installation__r.Under_the_counter_space_required__c,Draft_Installation__r.Location_of_Draft_machine__c,Draft_Installation__r.KYC__r.Tin_Number__c,Draft_Installation__r.KYC__r.PAN_number__c,Draft_Installation__r.Machine_Id_Not_Sign_Up__c,Draft_Installation__r.Recommended_Machine_type__c,Draft_Installation__r.Number__c,Draft_Installation__r.Recommended_Tower_Type__c,Draft_Installation__r.Draft_Sign_up__c,Draft_Installation__r.Draft_Sign_up__r.Number__c,Draft_Installation__r.Draft_Sign_up__r.Active_Liquids__c,Draft_Installation__r.App_Id__c,Draft_Installation__r.Draft_Installation__c,App_Id__c,Draft_Installation__r.Draft_Sign_up__r.Recommended_Machine_Type_Sales__c,Draft_Installation__r.Draft_Sign_up__r.Recommended_Tower_Type_Sales__c FROM Event__c WHERE Start_date_and_time__c>=LAST_90_DAYS AND Type__c!=null AND RecordType.DeveloperName='Technician' AND OwnerId='${req.conn.userInfo.id}' ORDER BY Start_date_and_time__c DESC`);
@@ -35,6 +50,8 @@ exports.fetchEvents = async (req,res) => {
 
         standardEvents = await sfConnection.query(`Select Id,WhatId,StartDateTime, Description, EndDateTime, Location, Subject from Event WHERE StartDateTime>=LAST_90_DAYS AND Custom_Event__c=null AND OwnerId='${req.conn.userInfo.id}' ORDER BY StartDateTime DESC`);
 
+        casesList = await sfConnection.query('Select AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type from Case');
+        console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
         let taskList = await sfConnection.query('SELECT  WhatId,Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
         let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
@@ -70,7 +87,8 @@ exports.fetchEvents = async (req,res) => {
             territoryRecords = await sfConnection.query(`SELECT Name,Id,RecordType.DeveloperName,Division__c,Zone__c,Business_Hierarchy__c FROM Cluster__c  ORDER BY Name`);
         }
         //console.log(LapsedAccountDetails,"AccountDetails");
-        res.status(200).json({isError : false,isAuth : true, NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
+        //res.status(200).json({isError : false,isAuth : true, NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
+        res.status(200).json({isError : false,isAuth : true, issueList: casesList ? casesList.records :[], NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
     }
     catch(e){
         console.log(e);
@@ -78,6 +96,34 @@ exports.fetchEvents = async (req,res) => {
     } 
 };
 
+exports.fetchIssues = async (req,res) => {
+    try{
+        console.log(":::::::::::::Issues SYNC :::::::::::::::")
+        const sfConnection = req.conn;
+        let cases = req.body.case;
+        console.log(":::::::::::::Issues cases SYNC :::::::::::::::",cases)
+        const syncDateTime = req.syncDateTime;
+        if(cases.length > 0 ){
+            cases = cases.map(item => {
+                delete item.Id;
+                return item;
+              });
+            const caseUpdate = cases.filter(item =>  item.Id);
+            const caseInsert = cases.filter(item =>  !item.Id);
+            const d = await sfConnection.sobject('Case').insert(caseInsert);
+            const q = await sfConnection.sobject('Case').update(caseUpdate);
+            console.log(caseUpdate,"demo1")
+            console.log(caseInsert,"demo")
+        }
+        
+        let casesList = await sfConnection.query('Select AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type from Case');
+        res.status(200).json({isError : false,isAuth : true, issueList :casesList })
+    }
+    catch(e){
+        console.log(e,"------------------------------------------");
+        res.status(500).json({isError : true,isAuth : true,message : 'Error occurred'});
+    } 
+};
 // Fetching item records
 exports.itemFetchController = async (req,res) => {
     try{

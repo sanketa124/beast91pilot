@@ -131,3 +131,8 @@
 .contacts-card{
 
 }
+[class*="col-xs"]{
+    word-wrap: break-word;
+    padding: 0;
+    padding-left: 10px;
+}

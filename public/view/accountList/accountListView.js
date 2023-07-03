@@ -4,7 +4,7 @@ initializeAccount = (accountLists) => {
 
 
 };
-let cardSection = document.querySelector('.cardSectionList');
+let cardSection = document.querySelector('#listOfAcc');
 // showListOfAccount = (stIndex = 0) => {
 //   var tmp = '';
 //   if (stIndex === 0) {
@@ -88,7 +88,7 @@ let cardSection = document.querySelector('.cardSectionList');
 //                 tmp += `</li>`
 //                 if (listOfAccount[i].Beacon_Flag__c=== true) {
 //                   tmp +=
-//                     '       <li><img src="../../../media/icon12.png" alt="icon"></li>';
+//                     '       <li><img src="/media/icon12.png" alt="icon"></li>';
 //                 }else {
 //                   tmp +=
 //                   '       <li></li>'
@@ -96,7 +96,7 @@ let cardSection = document.querySelector('.cardSectionList');
                 
 //                 if(listOfAccount[i].Draft_Ready__c === true){
 //                   tmp +=
-//                   '       <li><img src="../../../media/icon11.png" alt="icon"></li>';
+//                   '       <li><img src="/media/icon11.png" alt="icon"></li>';
 
 //                 }else {
 //                   tmp +=
@@ -104,7 +104,7 @@ let cardSection = document.querySelector('.cardSectionList');
 //                 }
 //                 if(listOfAccount[i].QCO_Flag__c=== true){
 //                   tmp +=
-//                   '       <li><img src="../../../media/icon13.png" alt="icon"></li>';
+//                   '       <li><img src="/media/icon13.png" alt="icon"></li>';
 
 //                 } else {
 //                   tmp +=
@@ -127,9 +127,9 @@ let cardSection = document.querySelector('.cardSectionList');
 // };
 showListOfAccount = (i = 0) => {
     var tmp = '';
-    // if(stIndex===0){
-    //     $('#listOfAcc').html('');
-    // }
+    if(i===0){
+        $('#listOfAcc').html('');
+    }
     if (listOfAccount && listOfAccount.length > 0) {
     for (let i of listOfAccount) {
       var VisitDate;
@@ -140,13 +140,13 @@ showListOfAccount = (i = 0) => {
       }
       let tmp;
       if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-        tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+        tmp = '<img src="/media/icon12.png" alt="icon" />';
       }
       if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-        tmp = '<img src="../../../media/icon13.png" alt="icon" />';
+        tmp = '<img src="/media/icon13.png" alt="icon" />';
       }
       if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-        tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+        tmp = '<img src="/media/icon12.png" alt="icon" />';
       }
       const AccId = "'" + i.Id + "'";
       const event_Id = "'" + i.eventId + "'";
@@ -161,11 +161,11 @@ showListOfAccount = (i = 0) => {
         i.Sub_Channel__c +
         '</label>' +
         '<label> <strong>Order: </strong><span>' +
-        i.Recent_Retail_Depletion__c +
+        dateformat(i.Recent_Retail_Depletion__c) +
         (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
         '</span> <span>|</span>  <strong>Visit: </strong>' +
         '<span>' +
-        (VisitDate ? VisitDate : '') +
+        (VisitDate ? dateformat(VisitDate) : '') +
         '</span></label><label># ' +
         i.BillingStreet +
         '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
@@ -173,7 +173,7 @@ showListOfAccount = (i = 0) => {
         i.Industry_Segment__c +
         '</strong>' : '')+'</li> <li>' +
         (i.Draft_Status__c == true
-          ? '<img src="../../../media/icon11.png" alt="icon" />'
+          ? '<img src="/media/icon11.png" alt="icon" />'
           : '') +
         '</li><li> ' +
         tmp +
@@ -182,13 +182,13 @@ showListOfAccount = (i = 0) => {
     }
     let tmp;
     if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-      tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+      tmp = '<img src="/media/icon12.png" alt="icon" />';
     }
     if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-      tmp = '<img src="../../../media/icon13.png" alt="icon" />';
+      tmp = '<img src="/media/icon13.png" alt="icon" />';
     }
     if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-      tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+      tmp = '<img src="/media/icon12.png" alt="icon" />';
     }
     const AccId = "'" + i.Id + "'";
     cardSection.innerHTML +=
@@ -202,11 +202,11 @@ showListOfAccount = (i = 0) => {
       i.Sub_Channel__c +
       '</label>' +
       '<label> <strong>Order: </strong><span>' +
-      i.Recent_Retail_Depletion__c +
+      dateformat(i.Recent_Retail_Depletion__c) +
       (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
       '</span> <span>|</span>  <strong>Visit: </strong>' +
       '<span>' +
-      (VisitDate ? VisitDate : '') +
+      (VisitDate ? dateformat(VisitDate) : '') +
       '</span></label><label># ' +
       i.BillingStreet +
       '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
@@ -214,7 +214,7 @@ showListOfAccount = (i = 0) => {
       i.Industry_Segment__c +
       '</strong>' : '')+'</li> <li>' +
       (i.Draft_Status__c == true
-        ? '<img src="../../../media/icon11.png" alt="icon" />'
+        ? '<img src="/media/icon11.png" alt="icon" />'
         : '') +
       '</li><li> ' +
       tmp +
@@ -275,13 +275,13 @@ showListOfAccount = (i = 0) => {
            
     //         if (listOfAccount[i].Bira_Segment__c != null) {
     //             if (listOfAccount[i].Bira_Segment__c === "A+") {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a+.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
     //             } else if (listOfAccount[i].Bira_Segment__c === "A") {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
     //             } else if (listOfAccount[i].Bira_Segment__c === "B") {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/b.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
     //             } else {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/c.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
     //             }
 
     //         }
@@ -291,13 +291,13 @@ showListOfAccount = (i = 0) => {
 
     //         if (listOfAccount[i].Industry_Segment__c != null) {
     //             if (listOfAccount[i].Industry_Segment__c === "P0") {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
     //             } else if (listOfAccount[i].Industry_Segment__c === "P1") {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
     //             } else if (listOfAccount[i].Industry_Segment__c === "P2") {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
     //             } else {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
     //             }
     //         }
     //         else {
@@ -306,13 +306,13 @@ showListOfAccount = (i = 0) => {
 
     //         if (listOfAccount[i].Industry_Segment_Mass__c != null) {
     //             if (listOfAccount[i].Industry_Segment_Mass__c === "M0") {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
     //             } else if (listOfAccount[i].Industry_Segment_Mass__c === "M1") {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
     //             } else if (listOfAccount[i].Industry_Segment_Mass__c === "M2") {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
     //             } else {
-    //                 tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
     //             }
 
     //         }
@@ -327,7 +327,7 @@ showListOfAccount = (i = 0) => {
     //         tmp += '         <div>';
 
     //         if (listOfAccount[i].Beacon_Flag__c === true) {
-    //             tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+    //             tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
     //         }
     //         else {
     //             tmp += '  <span class="name"></span>';
@@ -335,7 +335,7 @@ showListOfAccount = (i = 0) => {
 
 
     //         if (listOfAccount[i].Draft_Ready__c === true) {
-    //             tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';
+    //             tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
     //         }
     //         else {
     //             tmp += '  <span class="name"></span>';
@@ -343,7 +343,7 @@ showListOfAccount = (i = 0) => {
 
 
     //         if (listOfAccount[i].QCO_Flag__c === true) {
-    //             tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+    //             tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
     //         }
     //         else {
     //             tmp += '  <span class="name"></span>';
@@ -366,9 +366,12 @@ showListOfAccount = (i = 0) => {
     }
 
 };
-
+dateformat = (date) => {
+    return moment(date).format('DD-MMM')
+  }
+  
 gotoAccount = (id) => {
-  window.location.href = `../accountLanding/accountLanding.html?accountId=${id}`
+  window.location.href = `/view/accountLanding/accountLanding.html?accountId=${id}`
 }
 
 getLapsedDate = (target) => {

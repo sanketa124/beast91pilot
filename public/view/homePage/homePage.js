@@ -40,7 +40,7 @@ slickSlider = () => {
       for (var i = 0; i < accounts.length; i++) {
     
           tmp += '<li class="account-card" onclick="handleAccountSearchClicked(this)" data-id="'+accounts[i].Id+'"><a>';
-          tmp += '<img src="../../media/images/homePage/todays-visit.png"/>';
+          tmp += '<img src="/media/images/homePage/todays-visit.png"/>';
           tmp += '<div class="accountSearch">'+ accounts[i].Name+'<br/> <span>'+(accounts[i].Channel__c ? accounts[i].Channel__c : '')+'</span>';
           tmp += '</div>';
           tmp += '</a></li>';
@@ -312,13 +312,13 @@ showSliderData = (targetnAchieved) => {
             if(todaysVisit[i].Bira_Segment__c != null)
             {   
                 if(todaysVisit[i].Bira_Segment__c === "A+"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a+.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
                 }else if(todaysVisit[i].Bira_Segment__c === "A"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
                 }else if(todaysVisit[i].Bira_Segment__c === "B"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/b.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
                 }else {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/c.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
                 }
                
             }
@@ -329,13 +329,13 @@ showSliderData = (targetnAchieved) => {
             if(todaysVisit[i].Industry_Segment__c != null)
             {
                 if(todaysVisit[i].Industry_Segment__c === "P0"){
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment__c === "P1"){
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment__c === "P2"){
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
                 }else {
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
                 }
             }
             else {
@@ -345,13 +345,13 @@ showSliderData = (targetnAchieved) => {
             if(todaysVisit[i].Industry_Segment_Mass__c != null)
             {
                 if(todaysVisit[i].Industry_Segment_Mass__c === "M0"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment_Mass__c === "M1"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment_Mass__c === "M2"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
                 }else {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
                 }
                 
             }
@@ -364,14 +364,14 @@ showSliderData = (targetnAchieved) => {
       
             if (todaysVisit[i].Beacon_Flag__c === true) {
                 
-                tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
             }
             else {
                 tmp += '  <span class="name"></span>';
             }
     
             if (todaysVisit[i].Draft_Ready__c === true) {
-                tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
                 
             }
             else {
@@ -379,7 +379,7 @@ showSliderData = (targetnAchieved) => {
             }
     
             if (todaysVisit[i].QCO_Flag__c === true) {
-                tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
             }
             else {
                 tmp += '  <span class="name"></span>';
@@ -478,13 +478,13 @@ showSliderData = (targetnAchieved) => {
             if(todaysVisit[i].Bira_Segment__c != null)
             {   
                 if(todaysVisit[i].Bira_Segment__c === "A+"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a+.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
                 }else if(todaysVisit[i].Bira_Segment__c === "A"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
                 }else if(todaysVisit[i].Bira_Segment__c === "B"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/b.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
                 }else {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/c.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
                 }
                
             }
@@ -495,13 +495,13 @@ showSliderData = (targetnAchieved) => {
             if(todaysVisit[i].Industry_Segment__c != null)
             {
                 if(todaysVisit[i].Industry_Segment__c === "P0"){
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment__c === "P1"){
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment__c === "P2"){
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
                 }else {
-                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+                    tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
                 }
             }
             else {
@@ -511,13 +511,13 @@ showSliderData = (targetnAchieved) => {
             if(todaysVisit[i].Industry_Segment_Mass__c != null)
             {
                 if(todaysVisit[i].Industry_Segment_Mass__c === "M0"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment_Mass__c === "M1"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
                 }else if(todaysVisit[i].Industry_Segment_Mass__c === "M2"){
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
                 }else {
-                    tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+                    tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
                 }
                 
             }
@@ -530,14 +530,14 @@ showSliderData = (targetnAchieved) => {
       
             if (todaysVisit[i].Beacon_Flag__c === true) {
                 
-                tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
             }
             else {
                 tmp += '  <span class="name"></span>';
             }
     
             if (todaysVisit[i].Draft_Ready__c === true) {
-                tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
                 
             }
             else {
@@ -545,7 +545,7 @@ showSliderData = (targetnAchieved) => {
             }
     
             if (todaysVisit[i].QCO_Flag__c === true) {
-                tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+                tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
             }
             else {
                 tmp += '  <span class="name"></span>';
@@ -633,13 +633,13 @@ showPulloutApproval = (pulloutApproval,currentCheckIn) => {
           if(pulloutApproval[i].Bira_Segment__c != null)
           {   
               if(pulloutApproval[i].Bira_Segment__c === "A+"){
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a+.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
               }else if(pulloutApproval[i].Bira_Segment__c === "A"){
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
               }else if(pulloutApproval[i].Bira_Segment__c === "B"){
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/b.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
               }else {
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/c.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
               }
              
           }
@@ -650,13 +650,13 @@ showPulloutApproval = (pulloutApproval,currentCheckIn) => {
           if(pulloutApproval[i].Industry_Segment__c != null)
           {
               if(pulloutApproval[i].Industry_Segment__c === "P0"){
-                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
               }else if(pulloutApproval[i].Industry_Segment__c === "P1"){
-                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
               }else if(pulloutApproval[i].Industry_Segment__c === "P2"){
-                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
               }else {
-                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+                  tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
               }
           }
           else {
@@ -666,13 +666,13 @@ showPulloutApproval = (pulloutApproval,currentCheckIn) => {
           if(pulloutApproval[i].Industry_Segment_Mass__c != null)
           {
               if(pulloutApproval[i].Industry_Segment_Mass__c === "M0"){
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
               }else if(pulloutApproval[i].Industry_Segment_Mass__c === "M1"){
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
               }else if(pulloutApproval[i].Industry_Segment_Mass__c === "M2"){
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
               }else {
-                  tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+                  tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
               }
               
           }
@@ -685,14 +685,14 @@ showPulloutApproval = (pulloutApproval,currentCheckIn) => {
     
           if (pulloutApproval[i].Beacon_Flag__c === true) {
               
-              tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+              tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
           }
           else {
               tmp += '  <span class="name"></span>';
           }
   
           if (pulloutApproval[i].Draft_Ready__c === true) {
-              tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';
+              tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
               
           }
           else {
@@ -700,7 +700,7 @@ showPulloutApproval = (pulloutApproval,currentCheckIn) => {
           }
   
           if (pulloutApproval[i].QCO_Flag__c === true) {
-              tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+              tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
           }
           else {
               tmp += '  <span class="name"></span>';
@@ -786,13 +786,13 @@ showPreInstallApproval = (preInstallApproval) => {
         if(preInstallApproval[i].Bira_Segment__c != null)
         {   
             if(preInstallApproval[i].Bira_Segment__c === "A+"){
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a+.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
             }else if(preInstallApproval[i].Bira_Segment__c === "A"){
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
             }else if(preInstallApproval[i].Bira_Segment__c === "B"){
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/b.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
             }else {
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/c.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
             }
            
         }
@@ -803,13 +803,13 @@ showPreInstallApproval = (preInstallApproval) => {
         if(preInstallApproval[i].Industry_Segment__c != null)
         {
             if(preInstallApproval[i].Industry_Segment__c === "P0"){
-                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
             }else if(preInstallApproval[i].Industry_Segment__c === "P1"){
-                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
             }else if(preInstallApproval[i].Industry_Segment__c === "P2"){
-                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
             }else {
-                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+                tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
             }
         }
         else {
@@ -819,13 +819,13 @@ showPreInstallApproval = (preInstallApproval) => {
         if(preInstallApproval[i].Industry_Segment_Mass__c != null)
         {
             if(preInstallApproval[i].Industry_Segment_Mass__c === "M0"){
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
             }else if(preInstallApproval[i].Industry_Segment_Mass__c === "M1"){
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
             }else if(preInstallApproval[i].Industry_Segment_Mass__c === "M2"){
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
             }else {
-                tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
             }
             
         }
@@ -838,14 +838,14 @@ showPreInstallApproval = (preInstallApproval) => {
   
         if (preInstallApproval[i].Beacon_Flag__c === true) {
             
-            tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+            tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
         }
         else {
             tmp += '  <span class="name"></span>';
         }
 
         if (preInstallApproval[i].Draft_Ready__c === true) {
-            tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';
+            tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
             
         }
         else {
@@ -853,7 +853,7 @@ showPreInstallApproval = (preInstallApproval) => {
         }
 
         if (preInstallApproval[i].QCO_Flag__c === true) {
-            tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+            tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
         }
         else {
             tmp += '  <span class="name"></span>';
@@ -1153,7 +1153,10 @@ const handlePreInstallApproval = (ele) =>{
         maxValue: 100,
         step: 1,
         center: {
-            visible: false
+            size:10,
+            borderWidth:3,
+            borderColor:'#4a4a4a',
+            visible: true
         },
         tick: {
             visible: false
@@ -1196,8 +1199,8 @@ const handlePreInstallApproval = (ele) =>{
         },
         series: [{
         values: [graphValue], // starting value
-        backgroundColor: 'black',
-        indicator: [9, 5, 2, 1, 0.1],
+        backgroundColor: '#4a4a4a',
+        indicator: [6],
         animation: {
             effect: 1,
             method: 1,

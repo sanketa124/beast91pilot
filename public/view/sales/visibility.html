@@ -38,13 +38,16 @@
     <meta name="msapplication-TileColor" content="#fff">
     <meta name="theme-color" content="#3f51b5">
     <!--Imported link for App for Apple and android-->
-
+  <!--Compressing Images-->
+  <script type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/browser-image-compression@latest/dist/browser-image-compression.js"></script>
+<!--Compressing Images-->
     <!--Fontawesome CDN-->
     <!--Front end imports-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../globalCSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/view/globalCSS/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
         integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
@@ -53,7 +56,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../globalCSS/inhousestyle.css" />
+    <link rel="stylesheet" href="/view/globalCSS/inhousestyle.css" />
     <link rel="stylesheet" href="visibility.css" />
     <!--Front end imports-->
     <style>
@@ -83,9 +86,9 @@
                         <h3>Visibility</h3>
                     </div>
                     <div class="arrowIcons">
-                        <a href="../objectives/salesOrder/salesOrderLanding.html"
+                        <a  onclick="goBack()"
                             class="leftArrow fas fa-chevron-left"></a>
-                        <a href="posm.html" class="rightArrow fas fa-chevron-right"></a>
+                        <a  onclick="goForward()" class="rightArrow fas fa-chevron-right"></a>
                     </div>
                 </header>
             </div>
@@ -98,7 +101,7 @@
 
                 </div>
             </div>
-            <section class="type1">
+            <section class="onPremisesAccount">
                 <article class="visibility">
                     <h3></h3>
                     <h4>Bira 91 LED</h4>
@@ -108,23 +111,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-1" onchange="handleToggle(state=1)">
+                                <input type="checkbox" id="Z_2_Bira_91_LED_Signage__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-1">
+                        <div class="col-xs-3 hide-element" id="Z_2_Bira_91_LED_Signage__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Bira_91_LED_Signage">
+                                        <i class="fa fa-camera Z_2_Bira_91_LED_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Bira_91_LED_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-wrapper-1">
+                    <div class="row mt-1 hide-element" id="LED_Non_working_Requires_Maintenance__c">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -133,7 +136,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="LED_Non_working_Requires_Maintenance__c_on" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -148,17 +151,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-two" onchange="handleToggle(state=2)">
+                                <input type="checkbox" id="Z_1_Easel_Stand__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-2">
+                        <div class="col-xs-3 hide-element" id="Z_1_Easel_Stand__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_Easel_Stand">
+                                        <i class="fa fa-camera Z_1_Easel_Stand" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_Easel_Stand" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -171,23 +174,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-three" onchange="handleToggle(state=3)">
+                                <input type="checkbox" id="Z_1_Facade_Signage__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-3">
+                        <div class="col-xs-3 hide-element" id="Z_1_Facade_Signage__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_Facade_Signage">
+                                        <i class="fa fa-camera Z_1_Facade_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_Facade_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-wrapper-3">
+                    <div class="row mt-1 hide-element" id="Facade_Non_working_Requires_Maintenance__c">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -196,7 +199,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="Facade_Non_working_Requires_Maintenance__c_on" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -211,17 +214,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-four" onchange="handleToggle(state=4)">
+                                <input type="checkbox" id="Z_3_Coaster__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-4">
+                        <div class="col-xs-3 hide-element" id="Z_3_Coaster__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Coaster">
+                                        <i class="fa fa-camera Z_3_Coaster" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Coaster" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -234,17 +237,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-five" onchange="handleToggle(state=5)">
+                                <input type="checkbox" id="Z_3_Glassware__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-5">
+                        <div class="col-xs-3 hide-element" id="Z_3_Glassware__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Glassware">
+                                        <i class="fa fa-camera Z_3_Glassware" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Glassware" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -257,17 +260,40 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-six" onchange="handleToggle(state=6)">
+                                <input type="checkbox" id="Z_2_Bar_Mats__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-6">
+                        <div class="col-xs-3 hide-element" id="Z_2_Bar_Mats__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Bar_Mats">
+                                        <i class="fa fa-camera Z_2_Bar_Mats" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Bar_Mats" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4>Buckets</h4>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <span>Present at Outlet?</span>
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="switch">
+                                <input type="checkbox" id="Z_2_Bucket__c" onchange="handleToggleONPremises()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="col-xs-3 hide-element" id="Z_2_Bucket__c_File">
+                            <div class="image-upload_NoInput form-group" style="margin:0">
+                                <div class="camera">
+                                    <label for="Z_2_Bucket">
+                                        <i class="fa fa-camera Z_2_Bucket" aria-hidden="true"></i>
+                                    </label>
+                                    <input id="Z_2_Bucket" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -283,17 +309,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-seven" onchange="handleToggle(state=7)">
+                                <input type="checkbox" id="Z3_Menu_Listing__c" onchange="handleToggleONPremises()">
                                 <span class=" slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-7">
+                        <div class="col-xs-3 hide-element" id="Z3_Menu_Listing__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z3_Menu_Listing">
+                                        <i class="fa fa-camera Z3_Menu_Listing" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z3_Menu_Listing" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -306,17 +332,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-eight" onchange="handleToggle(state=8)">
+                                <input type="checkbox" id="Z_3_Table_Tent__c" onchange="handleToggleONPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-8">
+                        <div class="col-xs-3 hide-element" id="Z_3_Table_Tent__c_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Table_Tent">
+                                        <i class="fa fa-camera Z_3_Table_Tent" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Table_Tent" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -324,8 +350,8 @@
                     </div>
                 </article>
             </section>
-            <hr />
-            <section class="type2">
+
+            <section class="offPremisesAccount">
                 <article class="visibility">
                     <h3></h3>
                     <h4>Bira 91 LED</h4>
@@ -335,23 +361,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-one" onchange="handleTypeQCO(state=1)">
+                                <input type="checkbox" id="Z_2_Bira_91_LED_Signage__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-1">
+                        <div class="col-xs-3 hide-element" id="Z_2_Bira_91_LED_Signage__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Bira_91_LED_Signage">
+                                        <i class="fa fa-camera Z_2_Bira_91_LED_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Bira_91_LED_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-1">
+                    <div class="row mt-1 hide-element" id="LED_Non_working_Requires_Maintenance__c_off">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -360,7 +386,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="LED_Non_working_off" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -375,23 +401,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-two" onchange="handleTypeQCO(state=2)">
+                                <input type="checkbox" id="Z_1_Facade_Signage__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-2">
+                        <div class="col-xs-3 hide-element" id="Z_1_Facade_Signage__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_Facade_Signage">
+                                        <i class="fa fa-camera Z_1_Facade_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_Facade_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-2">
+                    <div class="row mt-1 hide-element" id="Facade_Non_working_Requires_Maintenance__c_off">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -400,7 +426,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="Facade_Non_working_off" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -412,23 +438,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-three" onchange="handleTypeQCO(state=3)">
+                                <input type="checkbox" id="Z_1_One_way_Vision__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-3">
+                        <div class="col-xs-3 hide-element" id="Z_1_One_way_Vision__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_One_way_Vision">
+                                        <i class="fa fa-camera Z_1_One_way_Vision" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_One_way_Vision" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-3">
+                    <div class="row mt-1 hide-element" id="One_way_vision_Non_working__c_off">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -437,7 +463,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="One_way_vision_Non_working_off" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -452,23 +478,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-four" onchange="handleTypeQCO(state=4)">
+                                <input type="checkbox" id="VisiCooler__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-4">
+                        <div class="col-xs-3 hide-element" id="VisiCooler__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="VisiCooler">
+                                        <i class="fa fa-camera VisiCooler" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="VisiCooler" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-4">
+                    <div class="row mt-1 hide-element" id="cooler_Non_working_Requires_Maintenance__c_off">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -477,7 +503,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="cooler_Non_working_off" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -489,17 +515,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-five" onchange="handleTypeQCO(state=5)">
+                                <input type="checkbox" id="Z_3_Planogram_Adherence__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-5">
+                        <div class="col-xs-3 hide-element" id="Z_3_Planogram_Adherence__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Planogram_Adherence">
+                                        <i class="fa fa-camera Z_3_Planogram_Adherence" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Planogram_Adherence" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -507,10 +533,10 @@
                     </div>
                     <h4>Chiller Purity</h4>
                     <div class="form-group">
-                        <select class="form-control">
-                            <option>Low</option>
-                            <option>Medium</option>
-                            <option>High</option>
+                        <select id="Chiller_Purity__c_off" class="form-control" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
                         </select>
                     </div>
                     <h4>Chiller Restocking</h4>
@@ -520,17 +546,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-six" onchange="handleTypeQCO(state=6)">
+                                <input type="checkbox" id="Chiller_Re_Stocked__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-6">
+                        <div class="col-xs-3 hide-element" id="Chiller_Re_Stocked__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Chiller_Re_Stocked">
+                                        <i class="fa fa-camera Chiller_Re_Stocked" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Chiller_Re_Stocked" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -546,23 +572,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-seven" onchange="handleTypeQCO(state=7)">
+                                <input type="checkbox" id="Z_3_Island_Unit__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-7">
+                        <div class="col-xs-3 hide-element" id="Z_3_Island_Unit__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Island_Unit">
+                                        <i class="fa fa-camera Z_3_Island_Unit" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Island_Unit" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-5">
+                    <div class="row mt-1 hide-element" id="Island_Unit_Non_working__c_off">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -571,7 +597,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="Island_Unit_Non_working_off" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -583,23 +609,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-qco-eight" onchange="handleTypeQCO(state=8)">
+                                <input type="checkbox" id="Z_3_Floor_Standing_Unit__c_off" onchange="handleToggleOffPremises()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-qco-8">
+                        <div class="col-xs-3 hide-element" id="Z_3_Floor_Standing_Unit__c_off_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Floor_Standing_Unit">
+                                        <i class="fa fa-camera Z_3_Floor_Standing_Unit" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Floor_Standing_Unit" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-qco-wrapper-6">
+                    <div class="row mt-1 hide-element" id="FSU_Non_working_Requires_Maintenance__c_off">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -608,15 +634,15 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox"  id="FSU_Non_working_off" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </article>
             </section>
-            <hr />
-            <section class="type3">
+
+            <section class="draftAccount">
                 <article class="visibility">
                     <h3></h3>
                     <h4>Bira 91 LED</h4>
@@ -626,24 +652,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-one"
-                                    onchange="handleToggleSwitchOnPremises(state=1)">
+                                <input type="checkbox" id="Z_2_Bira_91_LED_Signage__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-1">
+                        <div class="col-xs-3 hide-element" id="Z_2_Bira_91_LED_Signage__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Bira_91_LED_Signage">
+                                        <i class="fa fa-camera Z_2_Bira_91_LED_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Bira_91_LED_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-onpremises-wrapper-1">
+                    <!-- <div class="row mt-1 hide-element" id="LED_Non_working_Requires_Maintenance__c_draft">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -656,7 +682,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </article>
                 <article class="visibility mt-1">
                     <h3>Zone 1: Entrance</h3>
@@ -667,18 +693,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-two"
-                                    onchange="handleToggleSwitchOnPremises(state=2)">
+                                <input type="checkbox" id="Z_1_Easel_Stand__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-2">
-                            <div class=" image-upload_NoInput form-group" style="margin:0">
+                        <div class="col-xs-3 hide-element" id="Z_1_Easel_Stand__c_draft_File">
+                            <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_Easel_Stand">
+                                        <i class="fa fa-camera Z_1_Easel_Stand" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_Easel_Stand" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -691,24 +717,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-three"
-                                    onchange="handleToggleSwitchOnPremises(state=3)">
+                                <input type="checkbox" id="Z_1_Facade_Signage__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-3">
+                        <div class="col-xs-3 hide-element" id="Z_1_Facade_Signage__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_Facade_Signage">
+                                        <i class="fa fa-camera Z_1_Facade_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_Facade_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-onpremises-wrapper-2">
+                    <div class="row mt-1 hide-element" id="Facade_Non_working_Requires_Maintenance__c_draft">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -717,7 +743,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="Facade_Non_working_draft" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -732,18 +758,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-four"
-                                    onchange="handleToggleSwitchOnPremises(state=4)">
+                                <input type="checkbox" id="Z_3_Coaster__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-4">
+                        <div class="col-xs-3 hide-element" id="Z_3_Coaster__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Coaster">
+                                        <i class="fa fa-camera Z_3_Coaster" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Coaster" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -756,18 +782,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-five"
-                                    onchange="handleToggleSwitchOnPremises(state=5)">
+                                <input type="checkbox" id="Z_3_Glassware__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-5">
+                        <div class="col-xs-3 hide-element" id="Z_3_Glassware__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Glassware">
+                                        <i class="fa fa-camera Z_3_Glassware" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Glassware" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -780,18 +806,42 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-six"
-                                    onchange="handleToggleSwitchOnPremises(state=6)">
+                                <input type="checkbox" id="Z_2_Bar_Mats__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-6">
+                        <div class="col-xs-3 hide-element" id="Z_2_Bar_Mats__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Bar_Mats">
+                                        <i class="fa fa-camera Z_2_Bar_Mats" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Bar_Mats" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                        type="file" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4>Buckets</h4>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <span>Present at Outlet?</span>
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="switch">
+                                <input type="checkbox" id="Z_2_Bucket__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="col-xs-3 hide-element" id="Z_2_Bucket__c_draft_File">
+                            <div class="image-upload_NoInput form-group" style="margin:0">
+                                <div class="camera">
+                                    <label for="Z_2_Bucket">
+                                        <i class="fa fa-camera Z_2_Bucket" aria-hidden="true"></i>
+                                    </label>
+                                    <input id="Z_2_Bucket" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -807,18 +857,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-seven"
-                                    onchange="handleToggleSwitchOnPremises(state=7)">
+                                <input type="checkbox" id="Z3_Menu_Listing__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-7">
+                        <div class="col-xs-3 hide-element" id="Z3_Menu_Listing__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z3_Menu_Listing">
+                                        <i class="fa fa-camera Z3_Menu_Listing" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z3_Menu_Listing" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -831,18 +881,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-eight"
-                                    onchange="handleToggleSwitchOnPremises(state=8)">
+                                <input type="checkbox" id="Z_3_Table_Tent__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-8">
+                        <div class="col-xs-3 hide-element" id="Z_3_Table_Tent__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_3_Table_Tent">
+                                        <i class="fa fa-camera Z_3_Table_Tent" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_3_Table_Tent" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -858,18 +908,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-nine"
-                                    onchange="handleToggleSwitchOnPremises(state=9)">
+                                <input type="checkbox" id="Z_2_Tap_Handles__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-9">
+                        <div class="col-xs-3 hide-element" id="Z_2_Tap_Handles__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Tap_Handles">
+                                        <i class="fa fa-camera Z_2_Tap_Handles" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Tap_Handles" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -882,24 +932,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-ten"
-                                    onchange="handleToggleSwitchOnPremises(state=10)">
+                                <input type="checkbox" id="Z_2_Medallions__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-10">
+                        <div class="col-xs-3 hide-element" id="Z_2_Medallions__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Medallions">
+                                        <i class="fa fa-camera Z_2_Medallions" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Medallions" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1 hide-element" id="check-box-wrapper-onpremises-three">
+                    <div class="row mt-1 hide-element" id="Medallions_only_Non_working__c_draft">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -908,7 +958,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="Medallions_only_Non_working_draft" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -920,18 +970,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-eleven"
-                                    onchange="handleToggleSwitchOnPremises(state=11)">
+                                <input type="checkbox" id="Z_2_Pitcher__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-11">
+                        <div class="col-xs-3 hide-element" id="Z_2_Pitcher__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Pitcher">
+                                        <i class="fa fa-camera Z_2_Pitcher" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Pitcher" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -944,18 +994,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-twelve"
-                                    onchange="handleToggleSwitchOnPremises(state=12)">
+                                <input type="checkbox" id="Z_2_Growler__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-12">
+                        <div class="col-xs-3 hide-element" id="Z_2_Growler__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Growler">
+                                        <i class="fa fa-camera Z_2_Growler" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Growler" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -968,18 +1018,18 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" id="switch-onpremises-thirteen"
-                                    onchange="handleToggleSwitchOnPremises(state=13)">
+                                <input type="checkbox" id="Empty_Kegs__c_draft"
+                                    onchange="handleToggleSwitchDraft()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3 hide-element" id="get-camera-container-onpremises-13">
+                        <div class="col-xs-3 hide-element" id="Empty_Kegs__c_draft_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Empty_Kegs">
+                                        <i class="fa fa-camera Empty_Kegs "  aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Empty_Kegs" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -988,8 +1038,8 @@
                 </article>
 
             </section>
-            <hr />
-            <section class="type4">
+
+            <section class="qcoAccount">
                 <article class="visibility">
                     <h3></h3>
                     <h4>Bira 91 LED</h4>
@@ -999,23 +1049,24 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="Z_2_Bira_91_LED_Signage__c_qco"
+                                onchange="handleToggleSwitchQCO()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="Z_2_Bira_91_LED_Signage__c_qco_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_2_Bira_91_LED_Signage">
+                                        <i class="fa fa-camera Z_2_Bira_91_LED_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_2_Bira_91_LED_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="LED_Non_working_Requires_Maintenance__c_qco">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -1024,7 +1075,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="LED_Non_working_qco_check" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -1032,29 +1083,6 @@
                 </article>
                 <article class="visibility mt-1">
                     <h3>Zone 1: Entrance</h3>
-                    <h4>Easel Stand</h4>
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <span>Present at Outlet?</span>
-                        </div>
-                        <div class="col-xs-3">
-                            <label class="switch">
-                                <input type="checkbox" checked>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="col-xs-3">
-                            <div class="image-upload_NoInput form-group" style="margin:0">
-                                <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
-                                    </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
-                                        type="file" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <h4>Facade</h4>
                     <div class="row">
                         <div class="col-xs-6">
@@ -1062,23 +1090,23 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="Z_1_Facade_Signage__c_qco"  onchange="handleToggleSwitchQCO()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 hide-element" id="Z_1_Facade_Signage__c_qco_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z_1_Facade_Signage">
+                                        <i class="fa fa-camera Z_1_Facade_Signage" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z_1_Facade_Signage" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row mt-1 hide-element" id="Facade_Non_working_Requires_Maintenance__c_qco">
                         <div class="col-xs-6">
                             <span>Non-Working/ Requires Maintainance ?</span>
                         </div>
@@ -1087,7 +1115,7 @@
                         <div class="col-xs-3">
                             <div class="row">
                                 <div class="col-xs-4">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" id="Facade_Non_working_qco_check" class="defaultCheckBox" />
                                 </div>
                             </div>
                         </div>
@@ -1102,17 +1130,17 @@
                         </div>
                         <div class="col-xs-3">
                             <label class="switch">
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="Z3_Menu_Listing__c_qco"  onchange="handleToggleSwitchQCO()">
                                 <span class="slider round"></span>
                             </label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-3  hide-element" id="Z3_Menu_Listing__c_qco_File">
                             <div class="image-upload_NoInput form-group" style="margin:0">
                                 <div class="camera">
-                                    <label for="1">
-                                        <i class="fa fa-camera 1" aria-hidden="true"></i>
+                                    <label for="Z3_Menu_Listing">
+                                        <i class="fa fa-camera Z3_Menu_Listing" aria-hidden="true"></i>
                                     </label>
-                                    <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*"
+                                    <input id="Z3_Menu_Listing" onchange="fileInput(this)" capture="camera" accept="image/*"
                                         type="file" />
                                 </div>
                             </div>
@@ -1133,69 +1161,83 @@
             <div class="loader1"></div>
         </div>
         <!-- Spinner for End Visit -->
-
-        <!-- Footer Starts -->
-        <!-- Footer Starts -->
-        <ul class="bottom-nav mdl-layout--fixed-header">
-            <li class="nav-img">
-                <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="../dashboard/todaysVisits/todaysVisits.html"><i
-                        class="fas fa-users"></i><span>Visits</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="javascrit:;"><i class="fas fa-shopping-cart"></i><span>Order</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="../objectives/posm/posm.html"><i class="fas fa-cocktail"></i><span>POSM</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
-                        class="fas fa-bars"></i><span>Menu</span></a>
-            </li>
-        </ul>
-
-
-        <!--Script imported-->
-        <!-- Start More menu options Modal -->
-        <div id="moreMenu" class="modal fade" role="dialog">
+        <div id="stockSubmit" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-center">
-                        <ul class="list-group">
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
-                                    Sheets</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
-                                    Marketing Inventory</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                    Inventory</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
-                            </li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-calendar-alt"></i>Calendar</a></li>
-                            <li class="list-group-item"><a href="../accountList/accountListView.html"><i
-                                        class="fas fa-user-alt"></i>Accounts</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-file-contract"></i>Reports</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-crown"></i>Opportunities</a>
-                            </li>
-                            <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
-                                    data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-                            <li class="list-group-item"><a href="../../view/syncPage/loadingPage.html"><i
-                                        class="fas fa-sync"></i>Sync</a></li>
-                        </ul>
+                        <!-- <h5>Are you sure you want to submit ?</h5> -->
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" onclick="handleStockVisibilitySubmit()" class="btn btn-success">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
         </div>
+
+<!-- Footer Starts -->
+<ul class="bottom-nav mdl-layout--fixed-header">
+    <li class="nav-img">
+        <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i
+                class="fas fa-users"></i><span>Visits</span></a>
+    </li>
+    <li class="nav-img">
+        <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+    </li>
+    <li class="nav-img">
+        <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                class="fas fa-bars"></i><span>Menu</span></a>
+    </li>
+</ul>
+
+
+<!--Script imported-->
+<!-- Start More menu options Modal -->
+<div id="moreMenu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                            Sheets</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                            Marketing Inventory</a></li> -->
+                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                            Inventory</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                    </li> -->
+                    <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
+                                class="fas fa-calendar-alt"></i>Calendar</a></li>
+                    <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
+                                class="fas fa-user-alt"></i>Accounts</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i
+                                class="fas fa-file-contract"></i>Reports</a></li>
+                    <li class="list-group-item"><a href="javascript:;"><i
+                                class="fas fa-crown"></i>Opportunities</a></li> -->
+                    <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                            data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                    <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
+                                class="fas fa-sync"></i>Sync</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
         <!-- End More menu options Modal -->
         <!-- End Visit Modal -->
@@ -1276,20 +1318,20 @@
     </div>
 
     <!--Front End script-->
-    <script src="../globalJS/jquery-3.4.1.min.js"></script>
-    <script src="../globalJS/bootstrap.min.js"></script>
+    <script src="/view/globalJS/jquery-3.4.1.min.js"></script>
+    <script src="/view/globalJS/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-    <script src="../globalJS/main.js"></script>
+    <script src="/view/globalJS/main.js"></script>
 
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="../../controller/indexedDB/idb.js"></script>
-    <script src="../../controller/indexedDB/utility.js"></script>
-    <script src="../../controller/sync/sync.js"></script>
-    <!-- <script src="../../controller/homePage/homePage.js"></script>  -->
-    <script src="../../controller/globalJS/globalJS.js"></script>
+    <script src="/controller/indexedDB/idb.js"></script>
+    <script src="/controller/indexedDB/utility.js"></script>
+    <script src="/controller/sync/sync.js"></script>
+    <!-- <script src="/controller/homePage/homePage.js"></script>  -->
+    <script src="/controller/globalJS/globalJS.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
     <script src="visibility.js"></script>

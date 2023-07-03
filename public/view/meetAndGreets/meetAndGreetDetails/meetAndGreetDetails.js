@@ -1,6 +1,7 @@
-$(document).ready(function(){
+
+(async function () {
     let urlParam = new URLSearchParams(window.location.search);
-    const accountID = urlParam.get('accountId')
+    var accountID = urlParam.get('accountId')
     const individual = urlParam.get('individual')
     console.log(individual, 'individual')
     if(individual == 'true'){
@@ -10,11 +11,7 @@ $(document).ready(function(){
       $('#finishBtn').show();
     }
     $('[data-toggle="tooltip"]').tooltip();
-  })
-(async function () {
     $('#contactsCard').empty();
-    let urlParam = new URLSearchParams(window.location.search);
-    const accountID = urlParam.get('accountId')
     let accountDetail = await getItemFromStore('account', accountID);
     let existingContactsCount = accountDetail &&  accountDetail.Contacts &&  accountDetail.Contacts.records ? accountDetail.Contacts.records.length : 0
     $('#existingValue').html(existingContactsCount);
@@ -28,7 +25,7 @@ $(document).ready(function(){
             temp += '<div class="col-xs-1">'
             temp += '<label class="contactDetailsTxt">' + ele.Salutation + '.</label>'
             temp += ' </div>'
-            temp += '<div class="col-xs-2">'
+            temp += '<div class="col-xs-4">'
             temp += ' <label class="contactDetailsTxt">' + ele.FirstName + '</label>'
             temp += '</div>'
             temp += '<div class="col-xs-2">'
@@ -37,7 +34,7 @@ $(document).ready(function(){
             temp += '<div class="col-xs-3">'
             temp += '<label class="contactDetailsTxt">' + ele.Role__c + '</label>'
             temp += '</div>'
-            temp += '<div class="col-xs-2">'
+            temp += '<div class="col-xs-1" style="margin-right:"5px">'
             temp += `<img onclick="onHandleEdit('${ele.Id}')" class="editIcon" src="/media/icons/editIcon.png" />`
             temp += '</div>'
             temp += '</div> '
@@ -45,6 +42,12 @@ $(document).ready(function(){
     })
     $("#contactsCard").prepend(temp);
 })();
+
+finalSubmit = () => {
+    let urlParam = new URLSearchParams(window.location.search);
+    const accountID = urlParam.get('accountId')
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+}
 
 openAddMeetAndGreet = () => {
     let urlParam = new URLSearchParams(window.location.search);
@@ -62,3 +65,15 @@ const initializeMeetAndGreetMainPage = async () => {
 
 
 initializeMeetAndGreetMainPage()
+
+goBack = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/sales/outlet360.html?accountId=${accountId}`
+  }
+  
+  goForward = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/sales/stockOutlet.html?accountId=${accountId}`
+  }

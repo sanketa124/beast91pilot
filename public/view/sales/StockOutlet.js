@@ -10,6 +10,7 @@ $(document).ready(function(){
     $('#finishBtn').show();
   }
 })
+
 $(function () {
     $("#selectSearch").select2();
   });
@@ -145,4 +146,22 @@ $(".cartQtyChange").each(function() {
 console.log(addedProducts)
 console.log('sum',sum)
 $('#cartTotal label span').html(sum)
+}
+
+saveStockOutlet = () => {
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  const individual = urlParam.get('individual')
+  console.log(individual, 'individual')
+  if(individual = 'true'){
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+  }else{
+    window.location.href = `/view/sales/stockatRisk.html?accountId=${accountID}`
+  }
+}
+
+goBack = () => {
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountID}`
 }

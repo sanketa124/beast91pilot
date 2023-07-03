@@ -11,9 +11,25 @@ $(document).ready(function(){
     $('#finishBtn').show();
   }
 })
+
+goBack = () => {
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  window.location.href = `/view/sales/recomendation.html?accountId=${accountID}`
+}
 confirmOrder = () => {
-  window.location.href = '../../sales/visibility.html'
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  const individual = urlParam.get('individual')
+  if(individual == 'true'){
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+  }else{
+    window.location.href = `/view/sales/visibility.html?accountId=${accountID}`
+  }
   $('#confirmOrder').modal('hide');
+}
+finalsubmit = () => {
+  $('#confirmOrder').modal('show');
 }
 let orderRecord;
 initializeOrderFrontEnd = orderRec => {

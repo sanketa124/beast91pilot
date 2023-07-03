@@ -2,44 +2,44 @@
 const openMeetAndGreet = () => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `../meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountID}&individual=true`
+    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountID}&individual=true`
 }
 
 const openGeoLocation = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../geoLocation/geoLocationAdd.html?accountId=${accountID}`
+  window.location.href = `/view/geoLocation/geoLocationAdd.html?accountId=${accountID}`
 }
 
 gotoSalesOrder = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../objectives/salesOrder/salesOrderLanding.html?accountId=${accountID}&individual=true`
+  window.location.href = `/view/objectives/salesOrder/salesOrderLanding.html?accountId=${accountID}&individual=true`
 }
 gotoStockOutlet = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../sales/stockOutlet.html?accountId=${accountID}&individual=true`
+  window.location.href = `/view/sales/stockOutlet.html?accountId=${accountID}&individual=true`
 }
 gotoSampleTesting = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../sales/sampleTasting.html?accountId=${accountID}&individual=true`
+  window.location.href = `/view/sales/sampleTasting.html?accountId=${accountID}&individual=true`
 }
 gotoVisibility = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../sales/visibility.html?accountId=${accountID}&individual=true`
+  window.location.href = `/view/sales/visibility.html?accountId=${accountID}&individual=true`
 }
 gotoPosm = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../sales/posm.html?accountId=${accountID}&individual=true`
+  window.location.href = `/view/sales/posm.html?accountId=${accountID}&individual=true`
 }
 gotoInsights = () => {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
-  window.location.href = `../objectives/competitorInsights/competitionInsightsPage1.html?accountId=${accountID}&individual=true`
+  window.location.href = `/view/objectives/competitorInsights/competitionInsightsPage1.html?accountId=${accountID}&individual=true`
 }
 
 gotoFollowupPage = () => {
@@ -82,7 +82,8 @@ gotoFiles = () => {
 
 
 function showAccountDetails() {
-  const accountId = localStorage.getItem('accountId');
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountId = urlParam.get('accountId')
   window.location.href = `/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralDetail.html?Id=${accountId}`;
 }
 gotoCheckin = () => {

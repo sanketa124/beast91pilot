@@ -16,7 +16,7 @@ showDropdown = () => {
     for (var i = 0; i < accounts.length; i++) {
   
         tmp += '<li class="account-card" onclick="handleAccountSearchClicked(this)" data-id="'+accounts[i].Id+'"><a>';
-        tmp += '<img src="../../media/images/homePage/todays-visit.png"/>';
+        tmp += '<img src="/media/images/homePage/todays-visit.png"/>';
         tmp += '<div class="accountSearch">'+ accounts[i].Name+'<br/> <span>'+(accounts[i].Channel__c ? accounts[i].Channel__c : '')+'</span>';
         tmp += '</div>';
         tmp += '</a></li>';
@@ -247,13 +247,13 @@ const createSection = (event,accountRecord) =>{
     if(accountRecord.Bira_Segment__c != null)
     {   
         if(accountRecord.Bira_Segment__c === "A+"){
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a+.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
         }else if(accountRecord.Bira_Segment__c === "A"){
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/a.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
         }else if(accountRecord.Bira_Segment__c === "B"){
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/b.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
         }else {
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/c.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
         }
        
     }
@@ -264,13 +264,13 @@ const createSection = (event,accountRecord) =>{
     if(accountRecord.Industry_Segment__c != null)
     {
         if(accountRecord.Industry_Segment__c === "P0"){
-            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
         }else if(accountRecord.Industry_Segment__c === "P1"){
-            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
         }else if(accountRecord.Industry_Segment__c === "P2"){
-            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
         }else {
-            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+            tmp += '  <span class="name" style="position:relative;top:-1px;" ><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
         }
     }
     else {
@@ -280,13 +280,13 @@ const createSection = (event,accountRecord) =>{
     if(accountRecord.Industry_Segment_Mass__c != null)
     {
         if(accountRecord.Industry_Segment_Mass__c === "M0"){
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
         }else if(accountRecord.Industry_Segment_Mass__c === "M1"){
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
         }else if(accountRecord.Industry_Segment_Mass__c === "M2"){
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
         }else {
-            tmp += '  <span class="name"><img src="../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+            tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
         }
         
     }
@@ -299,21 +299,21 @@ const createSection = (event,accountRecord) =>{
 
     if (accountRecord.Beacon_Flag__c === true) {
         
-        tmp += '         <span><img src="../../media/images/homePage/Icons-02.png" alt=""></span>';
+        tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
     }
     else {
         tmp += '  <span class="name"></span>';
     }
 
     if (accountRecord.Draft_Ready__c === true) {
-        tmp += '         <span><img src="../../media/images/homePage/Icons-04.png" alt=""></span>';   
+        tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';   
     }
     else {
         tmp += '  <span class="name"></span>';
     }
 
     if (accountRecord.QCO_Flag__c === true) {
-        tmp += '         <span><img src="../../media/images/homePage/Icons-05.png" alt=""></span>';
+        tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
     }
     else {
         tmp += '  <span class="name"></span>';

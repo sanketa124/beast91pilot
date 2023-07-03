@@ -11,7 +11,7 @@
     <!--Manifest-->
     <!--Imported Design library-->
     <!--MDL-->
-    <link rel="stylesheet" href="../globalCSS/bootstrap.min.css" />
+    <link rel="stylesheet" href="/view/globalCSS/bootstrap.min.css" />
     <!--Fontawesome CDN-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
@@ -36,7 +36,7 @@
         integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
         integrity="sha256-4hqlsNP9KM6+2eA8VUT0kk4RsMRTeS7QGHIM+MZ5sLY=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../globalCSS/inhousestyle.css" />
+    <link rel="stylesheet" href="/view/globalCSS/inhousestyle.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
@@ -71,7 +71,7 @@
         <div class="sub-header-navigation-container">
             <a class="blackClr">
                 <div class="sub-menu-icon-text-wrapper" onclick="gotoCheckin()">
-                    <img src="../../media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
+                    <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
                         height="40vh" />
                     <h4>Check-In</h4>
                 </div>
@@ -80,18 +80,19 @@
             <a class="blackClr" onclick="openGeoLocation()">
 
                 <div class="sub-menu-icon-text-wrapper">
-                    <img src="../../media/icons/account/geo_location.svg" loading="lazy" alt="geo"
+                    <img src="/media/icons/account/geo_location.svg" loading="lazy" alt="geo"
                         style="mix-blend-mode: multiply" width="40vw" height="40vh" />
                     <h4>Geo Location</h4>
 
                 </div>
             </a>
-
-            <div class="sub-menu-icon-text-wrapper" onclick="gotoSalesOrder()">
-                <img src="../../media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
-                    height="40vh" />
-                <h4>Order</h4>
-            </div>
+            <a class="blackClr" onclick="gotoSalesOrder()">
+                <div class="sub-menu-icon-text-wrapper" >
+                    <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
+                        height="40vh" />
+                    <h4>Order</h4>
+                </div>
+            </a>
             <div class="sub-menu-icon-text-wrapper">
                 <i style="cursor: pointer; padding: 2rem 1rem" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
@@ -99,60 +100,59 @@
             </div>
             <!-- Hidden Menu Show Expandable Menu-->
             <div class="collapse" id="collapseExample" style="width: 100%">
-                <div class="expanded-menu-container">
-                    <div class="sub-menu-icon-text-wrapper">
+                <div class="row">
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper">
                         <a class="blackClr" onclick="openMeetAndGreet()">
-                            <img src="../../media/icons/account/people_icon.svg" loading="lazy" alt="Meet &Greet"
+                            <img src="/media/icons/account/people_icon.svg" loading="lazy" alt="Meet &Greet"
                                 width="40vw" height="40vh" />
                             <h4>
-                                Meet & <br />
+                                Meet & 
                                 Greet
                             </h4>
                         </a>
                     </div>
                    
 
-                    <div class="sub-menu-icon-text-wrapper" onclick="gotoStockOutlet()">
-                        <img src="../../media/icons/account/stock_at_outlet_icon.svg" loading="lazy"
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoStockOutlet()">
+                        <img src="/media/icons/account/stock_at_outlet_icon.svg" loading="lazy"
                             alt="stock at outlet" width="40vw" height="40vh" />
                         <h4>
                             Stock at <br />
                             Outlet
                         </h4>
                     </div>
-                    <div class="sub-menu-icon-text-wrapper" onclick="gotoSampleTesting()">
-                        <img src="../../media/icons/account/sampling_testing_icon.svg" loading="lazy"
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoSampleTesting()">
+                        <img src="/media/icons/account/sampling_testing_icon.svg" loading="lazy"
                             alt="sampling testing" width="40vw" height="40vh" />
                         <h4>
                             Sampling <br />
                             Testing
                         </h4>
                     </div>
-                    <div class="sub-menu-icon-text-wrapper" onclick="gotoContract()">
-                        <img src="../../media/icons/account/initiate_contact_icon.svg" loading="lazy"
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoContract()">
+                        <img src="/media/icons/account/initiate_contact_icon.svg" loading="lazy"
                             alt="initiate  contract" width="40vw" height="40vh" />
                         <h4>
                             Initiate <br />
                             Contract
                         </h4>
                     </div>
-                </div>
-                <div class="expanded-menu-container">
-                    <div class="sub-menu-icon-text-wrapper" onclick="gotoVisibility()">
-                        <img src="../../media/icons/account/visiblity_icon.svg" loading="lazy" alt="visibility"
+               
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoVisibility()">
+                        <img src="/media/icons/account/visiblity_icon.svg" loading="lazy" alt="visibility"
                             width="40vw" height="40vh" />
                         <h4>Visibility</h4>
                     </div>
-                    <div class="sub-menu-icon-text-wrapper" onclick="gotoPosm()">
-                        <img src="../../media/icons/account/posm-assets-icon.svg" loading="lazy" alt="posm assets"
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoPosm()">
+                        <img src="/media/icons/account/posm-assets-icon.svg" loading="lazy" alt="posm assets"
                             width="40vw" height="40vh" style="mix-blend-mode: multiply" />
                         <h4>
                             Posm / <br />
                             Assets
                         </h4>
                     </div>
-                    <div class="sub-menu-icon-text-wrapper" onclick="gotoInsights()">
-                        <img src="../../media/icons/account/competitor-insights-icon.svg" loading="lazy"
+                    <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoInsights()">
+                        <img src="/media/icons/account/competitor-insights-icon.svg" loading="lazy"
                             alt="competitor insights" width="40vw" height="40vh" style="mix-blend-mode: multiply" />
                         <h4>
                             Competitor <br />
@@ -345,6 +345,21 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <ul class="colorCombo mt-3">
+                                <li class="bgGreen">
+                                    L1M Billed
+                                </li>
+                                <li class="bgYellow">
+                                    L3M Billed
+                                </li>
+                                <li class="bgRed"> 
+                                    
+                                    Ever Billed
+                                </li>
+                                <li class="bgMerun">
+                                    Never Billed
+                                </li>
+                            </ul>
                             <table class="table mt-4">
                                 <thead>
                                     <tr>
@@ -412,21 +427,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <ul class="colorCombo">
-                                <li class="bgGreen">
-                                    L1M Billed
-                                </li>
-                                <li class="bgYellow">
-                                    L3M Billed
-                                </li>
-                                <li class="bgRed"> 
-                                    
-                                    Ever Billed
-                                </li>
-                                <li class="bgMerun">
-                                    Never Billed
-                                </li>
-                            </ul>
+                            
                         </article>
                         <article class="tableOne mt-4">
                             <h4>Competitor Sales Performance</h4>
@@ -632,7 +633,7 @@
             </div> -->
             <div class="bottom-section-navigation-wrapper" onclick="gotoFollowupPage()">
                 <p class="bottom-section-navigation-text">
-                    Follow-ups/ Tasks (0)
+                    Follow-ups/ Tasks 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -640,7 +641,7 @@
             </div>
             <div class="bottom-section-navigation-wrapper" onclick="gotoOrderHistory()">
                 <p class="bottom-section-navigation-text">
-                    Order History (3)
+                    Order History 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -648,7 +649,7 @@
             </div>
             <div class="bottom-section-navigation-wrapper" onclick="gotoStock()">
                 <p class="bottom-section-navigation-text">
-                    Stock (5)
+                    Stock 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -656,7 +657,7 @@
             </div>
             <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
-                    Assets & Visibility (3)
+                    Assets & Visibility
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -664,7 +665,7 @@
             </div>
             <div class="bottom-section-navigation-wrapper" onclick="gotoDraft()">
                 <p class="bottom-section-navigation-text">
-                    Draft (0)
+                    Draft 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -680,7 +681,7 @@
             </div> -->
             <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
-                    Competitor Insights (1)
+                    Competitor Insights 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -696,7 +697,7 @@
             </div> -->
             <div class="bottom-section-navigation-wrapper" onclick="gotoContacts()">
                 <p class="bottom-section-navigation-text">
-                    Contacts (3)
+                    Contacts 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
@@ -704,20 +705,20 @@
             </div>
             <div class="bottom-section-navigation-wrapper" onclick="gotoFiles()">
                 <p class="bottom-section-navigation-text">
-                    Files (1)
+                    Files
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
             </div>
         </section>
-       <!-- Footer Starts -->
-       <ul class="bottom-nav mdl-layout--fixed-header">
+      <!-- Footer Starts -->
+      <ul class="bottom-nav mdl-layout--fixed-header">
         <li class="nav-img">
-            <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
         </li>
         <li class="nav-img">
-            <a href="../dashboard/todaysVisits/todaysVisits.html"><i
+            <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i
                     class="fas fa-users"></i><span>Visits</span></a>
         </li>
         <li class="nav-img">
@@ -736,41 +737,41 @@
     </ul>
 
 
-        <!--Script imported-->
-        <!-- Start More menu options Modal -->
-        <div id="moreMenu" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <ul class="list-group">
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
-                                    Sheets</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
-                                    Marketing Inventory</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                    Inventory</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
-                            </li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-calendar-alt"></i>Calendar</a></li>
-                            <li class="list-group-item"><a href="../accountList/accountListView.html"><i
-                                        class="fas fa-user-alt"></i>Accounts</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-file-contract"></i>Reports</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-crown"></i>Opportunities</a></li>
-                            <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
-                                    data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-                            <li class="list-group-item"><a href="../../../view/syncPage/loadingPage.html"><i
-                                        class="fas fa-sync"></i>Sync</a></li>
-                        </ul>
-                    </div>
+    <!--Script imported-->
+    <!-- Start More menu options Modal -->
+    <div id="moreMenu" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                                Sheets</a></li>
+                        <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                                Marketing Inventory</a></li> -->
+                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                                Inventory</a></li>
+                        <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                        </li> -->
+                        <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
+                                    class="fas fa-calendar-alt"></i>Calendar</a></li>
+                        <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
+                                    class="fas fa-user-alt"></i>Accounts</a></li>
+                        <!-- <li class="list-group-item"><a href="javascript:;"><i
+                                    class="fas fa-file-contract"></i>Reports</a></li>
+                        <li class="list-group-item"><a href="javascript:;"><i
+                                    class="fas fa-crown"></i>Opportunities</a></li> -->
+                        <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                                data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                        <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
+                                    class="fas fa-sync"></i>Sync</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </div>
 
         <!-- End More menu options Modal -->
         <!-- End Visit Modal -->
@@ -834,19 +835,19 @@
 </body>
 <!--Front End script-->
 
-<script src="../globalJS/jquery-3.4.1.min.js"></script>
-<script src="../globalJS/bootstrap.min.js"></script>
+<script src="/view/globalJS/jquery-3.4.1.min.js"></script>
+<script src="/view/globalJS/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
     integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-<script src="../globalJS/main.js"></script>
+<script src="/view/globalJS/main.js"></script>
 
 <!--Front End script-->
 <!--Backend Scripts-->
-<script src="../../controller/indexedDB/idb.js"></script>
-<script src="../../controller/indexedDB/utility.js"></script>
-<script src="../../controller/sync/sync.js"></script>
-<script src="../../controller/homePage/homePage.js"></script>
-<script src="../../controller/globalJS/globalJS.js"></script>
+<script src="/controller/indexedDB/idb.js"></script>
+<script src="/controller/indexedDB/utility.js"></script>
+<script src="/controller/sync/sync.js"></script>
+<script src="/controller/homePage/homePage.js"></script>
+<script src="/controller/globalJS/globalJS.js"></script>
 <script src="accountLanding.js"></script>
 <!--Backend Scripts-->
 <!--Script imported-->

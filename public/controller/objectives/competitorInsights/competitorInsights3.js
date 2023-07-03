@@ -81,7 +81,7 @@ handleSubmitPromotions = async() => {
 const submit = () => {
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
-    window.location.href = `../../issues/issues.html?accountId=${accountId}`
+    window.location.href = `/view/issues/issues.html?accountId=${accountId}`
     // const recordTypeName = accountRec.RecordType.DeveloperName;
     // if(recordTypeName==='Distributor_Warehouse'){
     //     window.location.href = '/view/accountDetail/accountDetailDistributor/accountDetailDistributorLanding.html?Id='+accountRec.Id;

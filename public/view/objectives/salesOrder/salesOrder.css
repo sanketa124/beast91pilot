@@ -494,3 +494,10 @@ input[type=number] {
   max-height: calc(100vh - 212px);
   overflow-y: auto;
 }
+
+h3{
+  font-size: 16px;
+  margin: 30px 0 10px 6px;
+  font-weight: 600;
+  color: #4a4a4a;
+}

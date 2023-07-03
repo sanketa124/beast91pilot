@@ -1,6 +1,13 @@
 
 var objectStore;
 var dbPromise = idb.open('bira91', 2, function (db) {
+  if (!db.objectStoreNames.contains('case')) {
+    db.createObjectStore('case', { keyPath: 'Id' });
+  }
+  if (!db.objectStoreNames.contains('caseSync')) {
+    db.createObjectStore('caseSync', { keyPath: 'Id' });
+  }
+  
   if (!db.objectStoreNames.contains('login')) {
     db.createObjectStore('login', { keyPath: 'username' });
   }

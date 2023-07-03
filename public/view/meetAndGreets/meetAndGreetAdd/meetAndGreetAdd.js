@@ -60,7 +60,6 @@ const handleMeetSaveContact = () => {
     contactRec["Salutation"] = contactTitle;
     contactRec["FirstName"] = contactFirstName;
     contactRec["LastName"] = contactLastName;
-    contactRec["Name"] = contactFirstName + " "+ contactLastName
     contactRec["Role__c"] = contactRole;
     contactRec["Phone"] = contactPhone;
     contactRec["Email"] = contactEmail;
@@ -75,7 +74,6 @@ const handleMeetSaveContact = () => {
 };
 
 const handleUpdateSubmitContact = async () => {
-    contactRec["isSynced"] = false;
     await writeData('contact',contactRec);
     await writeData('contactsync',contactRec);
     let index = accountRec.Contacts.records.findIndex(ele => ele.Id===contactId);
@@ -86,7 +84,7 @@ const handleUpdateSubmitContact = async () => {
 
 const handleNewSaveSubmitContact = async () => {
     contactRec['Id'] = `${new Date().getTime()}`;
-    contactRec["isSynced"] = false;
+    contactRec['AccountId'] = accountId;
     contactRec['newContact'] = true;
     await writeData('contact', contactRec);
     await writeData('contactsync', contactRec);

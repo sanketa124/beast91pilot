@@ -77,6 +77,7 @@ const getProductData = async () => {
 
 handleSubmit = async() =>{
     await writeData('stockVisibility',stockVisbility);
+    
     const recordTypeName = accountRec.RecordType.DeveloperName;
     if(recordTypeName==='Distributor_Warehouse'){
         window.location.href = '/view/accountDetail/accountDetailDistributor/accountDetailDistributorLanding.html?Id='+accountRec.Id;

@@ -1,46 +1,86 @@
+const soapHelper = require("../utility/sfSoapHelper");
 
-const soapHelper  = require('../utility/sfSoapHelper');
+exports.fetchAccounts = async (req, res) => {
+  try {
+    let sfConnection = req.conn;
+    let contacts = req.body.contacts;
+    let leads = req.body.leads;
+    contacts = contacts.map((ele) => {
+      if ("Account" in ele) {
+        delete ele.Account;
+      }
+      if ("Address" in ele) {
+        delete ele.Address;
+      }
+      if ("Age__c" in ele) {
+        delete ele.Age__c;
+      }
+      if ("Name" in ele) {
+        delete ele.Name;
+      }
+      if ("Referred_By__r" in ele) {
+        delete ele.Referred_By__r;
+      }
+      return ele;
+    });
 
-exports.fetchAccounts = async(req, res) => {
-    try {
-        let sfConnection = req.conn;
-        let contacts = req.body.contacts;
-        console.log("****************** Accounts SYNC ***********")
-        console.log(contacts)
-        let leads = req.body.leads;
-        contacts = contacts.map(ele => {
-            if('Account' in ele){
-                delete ele.Account;
-            }
-            if('Address' in ele){
-                delete ele.Address;
-            }
-            if('Age__c' in ele){
-                delete ele.Age__c;
-            }
-            if('Name' in ele){
-                delete ele.Name;
-            }
-            return ele;
+    if (contacts.length > 0) {
+      const contactUpdate = contacts.filter((ele) => !ele.newContact);
+      const contactInsert = contacts
+        .filter((ele) => ele.newContact)
+        .map((ele) => {
+          delete ele.Id;
+          delete ele.newContact;
+          return ele;
         });
-        
-        if(contacts.length>0){
-            const contactUpdate = contacts.filter(ele =>  !ele.newContact);
-            const contactInsert = contacts.filter(ele =>  ele.newContact).map(ele =>  {
-                delete ele.Id;
-                delete ele.newContact;
-                return ele;
-            });
-            await sfConnection.sobject("Contact").update(contactUpdate);
-            await sfConnection.sobject("Contact").insert(contactInsert);
-        }
-            
-        if(leads.length>0){
-            let recordTypeId = await sfConnection.query("SELECT Id FROM RecordType WHERE SobjectType='Account' AND DeveloperName='Lead'");
-            leads = leads.map(ele => {
-                ele.RecordTypeId = recordTypeId.records[0].Id;
-                return ele;
-            });
+
+      sfConnection
+        .sobject("Contact")
+        .update(contactUpdate, function (err, rets) {
+          if (err) {
+            return console.error(err);
+          }
+          if (err || !rets.success) {
+            console.log("Error on updating contact", JSON.stringify(err));
+            return console.error(err, rets);
+          }
+          console.log("Updated Successfully : " + rets.id);
+
+          for (var i = 0; i < rets.length; i++) {
+            if (rets[i].success) {
+              console.log("Updated Successfully : " + rets[i].id);
+            }
+          }
+        });
+
+        sfConnection
+        .sobject("Contact")
+        .insert(contactInsert, function (err, rets) {
+          if (err) {
+            return console.error(err);
+          }
+          if (err || !rets.success) {
+            console.log("Error on contact creation", JSON.stringify(err));
+            return console.error(err, rets);
+          }
+          console.log("Inserted Successfully : " + rets.id);
+
+          for (var i = 0; i < rets.length; i++) {
+            if (rets[i].success) {
+              console.log("Inserted Successfully : " + rets[i].id);
+            }
+          }
+        });
+    }
+
+    if (leads.length > 0) {
+      let recordTypeId = await sfConnection.query(
+        "SELECT Id FROM RecordType WHERE SobjectType='Account' AND DeveloperName='Lead'"
+      );
+      leads = leads.map((ele) => {
+        ele.RecordTypeId = recordTypeId.records[0].Id;
+        return ele;
+      });
 
             let resp =  await sfConnection.sobject("Account").insert(leads);
             // Lead Insert Error email handler
@@ -235,4 +275,3 @@ exports.fetchMedia = async (req, res) => {
         res.status(500).json({ isError: false, isAuth: true, images: [] });
     }
 };
-

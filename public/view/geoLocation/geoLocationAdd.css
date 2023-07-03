@@ -43,7 +43,7 @@
     cursor: pointer;
 }
 
-.finishBtn {
+/* .finishBtn {
     width: 92px;
     height: 35px;
     background: #255CBF;
@@ -54,7 +54,7 @@
     right: 0;
     margin-right: 20px;
     margin-bottom: 20px;
-}
+} */
 
 .hrColor {
     border: 1px solid #000 !important;

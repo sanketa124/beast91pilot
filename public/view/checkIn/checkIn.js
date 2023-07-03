@@ -123,3 +123,15 @@ function deg2rad(deg) {
 }
 
 checkInFucn(eventId,accountId)
+
+goBack = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountId}`
+  }
+  
+  goForward = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/sales/outlet360.html?accountId=${accountId}`
+  }

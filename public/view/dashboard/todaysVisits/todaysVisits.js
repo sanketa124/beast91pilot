@@ -26,6 +26,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     progressPercentage +
     '%) </span>';
   for (let i of todaysVisit) {
+    console.log(todaysVisit, 'todaysVisit')
     let VisitDate;
     if (i.Recent_Activity_Date_Time__c) {
       VisitDate = new Date(i.Recent_Activity_Date_Time__c)
@@ -34,13 +35,13 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     }
     let tmp;
     if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-      tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+      tmp = '<img src="/media/icon12.png" alt="icon" />';
     }
     if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-      tmp = '<img src="../../../media/icon13.png" alt="icon" />';
+      tmp = '<img src="/media/icon13.png" alt="icon" />';
     }
     if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-      tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+      tmp = '<img src="/media/icon12.png" alt="icon" />';
     }
     const AccId = "'" + i.Id + "'";
     const event_Id = "'" + i.eventId + "'";
@@ -55,11 +56,11 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       i.Sub_Channel__c +
       '</label>' +
       '<label> <strong>Order: </strong><span>' +
-      i.Recent_Retail_Depletion__c +
+      dateformat(i.Recent_Retail_Depletion__c) +
       (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
       '</span> <span>|</span>  <strong>Visit: </strong>' +
       '<span>' +
-      (VisitDate ? VisitDate : '') +
+      (VisitDate ? dateformat(VisitDate) : '') +
       '</span></label><label># ' +
       i.BillingStreet +
       '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
@@ -67,7 +68,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       i.Industry_Segment__c +
       '</strong></li> <li>' +
       (i.Draft_Status__c == true
-        ? '<img src="../../../media/icon11.png" alt="icon" />'
+        ? '<img src="/media/icon11.png" alt="icon" />'
         : '') +
       '</li><li> ' +
       tmp +
@@ -80,13 +81,13 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
   }
   let tmp;
   if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-    tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+    tmp = '<img src="/media/icon12.png" alt="icon" />';
   }
   if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-    tmp = '<img src="../../../media/icon13.png" alt="icon" />';
+    tmp = '<img src="/media/icon13.png" alt="icon" />';
   }
   if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-    tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+    tmp = '<img src="/media/icon12.png" alt="icon" />';
   }
   const AccId = "'" + i.Id + "'";
   cardSection.innerHTML +=
@@ -100,11 +101,11 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     i.Sub_Channel__c +
     '</label>' +
     '<label> <strong>Order: </strong><span>' +
-    i.Recent_Retail_Depletion__c +
+    dateformat(i.Recent_Retail_Depletion__c) +
     (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
     '</span> <span>|</span>  <strong>Visit: </strong>' +
     '<span>' +
-    (VisitDate ? VisitDate : '') +
+    (VisitDate ? dateformat(VisitDate) : '') +
     '</span></label><label># ' +
     i.BillingStreet +
     '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
@@ -112,7 +113,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     i.Industry_Segment__c +
     '</strong></li> <li>' +
     (i.Draft_Status__c == true
-      ? '<img src="../../../media/icon11.png" alt="icon" />'
+      ? '<img src="/media/icon11.png" alt="icon" />'
       : '') +
     '</li><li> ' +
     tmp +
@@ -121,7 +122,11 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
 };
 
 gotoAccount = (id) => {
-    window.location.href = `../../accountLanding/accountLanding.html?accountId=${id}`
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${id}`
+}
+
+dateformat = (date) => {
+  return moment(date).format('DD-MMM')
 }
 
 // returns diff in days

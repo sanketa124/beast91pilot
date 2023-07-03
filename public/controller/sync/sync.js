@@ -2,6 +2,7 @@ let isAccountSyncWithoutError = true;
 const initializeSync = async () => {
     let loginData =await loginDataFetch();
     await eventsFetch(loginData[0].username,loginData[0].password);
+    //await issuesFetch(loginData[0].username,loginData[0].password);
     await accountFetch(loginData[0].username,loginData[0].password);
     await itemsFetch(loginData[0].username,loginData[0].password);
     await objectivePushHelper(loginData[0].username,loginData[0].password);
@@ -13,6 +14,53 @@ const initializeSync = async () => {
 const loginDataFetch = async () => {
     return await readAllData('login');
 };
+
+// const issuesFetch = async(username,password,nonSales) => {
+//     try{
+//     let cases = await readAllData('caseSync');
+//     console.log(cases,"Issues List ::::::::::::::::::::::::::::::");
+//     let res = await fetch('/issueList',{
+//         method : 'POST',
+//         headers : {
+//             'Content-Type' : 'application/json'
+//         },
+//         body : JSON.stringify({
+//             username : username,
+//             password : password,
+//             tasks : tasks,
+//             nonSales : nonSales,
+//             case:cases
+//         })
+//     });
+//     let resJson = await res.json();
+//     console.log(resJson, "::::::::::::::::::::::::::ISSUE LIST:::::::::::::::::::::::::::::::::::::::::::");
+//     if(resJson.isError){
+//         console.log(resJson.isError);
+//         // Add Notification method here
+//     }
+//     else if(resJson.isError===false){
+//         if(!resJson.isAuth){
+//             clearAll();
+//         }
+//         else{
+//             console.log('Isssyes syncing complete');
+//             await clearAllData('case');
+//             await clearAllData('caseSync');
+//             await writeDataAll('case',resJson.issueList);
+//         }
+        
+//     }
+//     else{
+//         console.log(e,"");
+//         // Add Notification method here
+//     }
+//     showNotification({message : 'Issues sync complete!'});
+//     }
+//     catch(err){
+//         showNotification({message : 'Error Occured Contact Adminstrator for more help!'})
+//         console.log(err, "Erorororororororor");
+//     }
+// };
 
 
 const accountFetch = async (username,password,syncDateTime) => {
@@ -111,6 +159,7 @@ const parsingAccountData = async (dataStr) => {
 const eventsFetch = async(username,password,nonSales) => {
     try{
     let tasks = await readAllData('taskSync');
+    let cases = await readAllData('caseSync');
     let res = await fetch('/eventList',{
         method : 'POST',
         headers : {
@@ -120,7 +169,8 @@ const eventsFetch = async(username,password,nonSales) => {
             username : username,
             password : password,
             tasks : tasks,
-            nonSales : nonSales
+            nonSales : nonSales,
+            case:cases
         })
     });
     let resJson = await res.json();
@@ -151,6 +201,11 @@ const eventsFetch = async(username,password,nonSales) => {
             await writeDataAll('taskOriginal',resJson.taskList);
             localStorage.setItem('lapsedAccount',JSON.stringify(resJson.lapsedAcc))
             localStorage.setItem('NBA',JSON.stringify(resJson.NBA))
+            await clearAllData('case');
+            await clearAllData('caseSync');
+            console.log(resJson.issueList, ":::::::::::::::::::::::::::::KHATAl:::::::::::::::::::::::::::::");
+            await writeDataAll('case',resJson.issueList);
+            localStorage.setItem('case',JSON.stringify(resJson.issueList))
             //await writeDataAll('events.lapsedAccount',resJson.lapsedAcc);
             await clearAllData('events');// Check to only delete not modified data
             await writeDataAll('events',resJson.events);
@@ -159,7 +214,7 @@ const eventsFetch = async(username,password,nonSales) => {
         
     }
     else{
-        console.log(e);
+        //console.log(e);
         // Add Notification method here
     }
     showNotification({message : 'Events sync complete!'});
@@ -351,6 +406,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
         let eventsSync = await readAllData('eventsSync');
         let kycDetail = await readAllData('kycDetail');
         let salesOrderSync = await readAllData('salesOrderSync');
+        let caseSync = await readAllData('caseSync');
         let stockVisibility = await readAllData('stockVisibility');
         let stockOutlet = await readAllData('stockOutlet');
         let productSampling = await readAllData('productSampling');
@@ -383,6 +439,10 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
             return !ele.isSynced;
         }); 
 
+        caseSync = caseSync.filter(ele => {
+            return !ele.isSynced;
+        });
+        caseSync
         productSampling = productSampling.filter(ele => {
             return !ele.isSynced;
         }); 
@@ -461,6 +521,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 stockVisibility : stockVisibility,
                 stockOutlet : stockOutlet,
                 events :eventsSync,
+                cases:caseSync,
                 competitorInsight :competitorInsights,
                 dailyTracker : dailyTracker,
                 syncDateTime : syncDateTime,
@@ -520,7 +581,10 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                     ele.isSynced = true;
                     return ele;
                 }); 
-                
+                caseSync = caseSync.filter(ele => {
+                    ele.isSynced = true;
+                    return ele;
+                }); 
                 stockVisibility = stockVisibility.filter(ele => {
                     ele.isSynced = true;
                     return ele;
@@ -581,6 +645,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 await writeDataAll('stockVisibility',stockVisibility);
                 await writeDataAll('stockOutlet',stockOutlet);
                 await writeDataAll('salesOrderSync',salesOrderSync);
+                await writeDataAll('caseSync',caseSync);
                 await writeDataAll('kycDetail',kycDetail);
                 await writeDataAll('competitorInsight',competitorInsights);
                 await writeDataAll('productSampling',productSampling);
@@ -620,6 +685,7 @@ const deletePreviousObjectiveHelper = async () => {
     let eventsSync = await readAllData('eventsSync');
     let kycDetail = await readAllData('kycDetail');
     let salesOrderSync = await readAllData('salesOrderSync');
+    let caseSync = await readAllData('caseSync');
     let stockVisibility = await readAllData('stockVisibility');
     let stockOutlet = await readAllData('stockOutlet');
     let productSampling = await readAllData('productSampling');
@@ -658,7 +724,12 @@ const deletePreviousObjectiveHelper = async () => {
         let currentDate = new Date().setHours(0,0,0,0);
         return ele.isSynced&&(currentDate!==storedDate);
     }); 
-     
+    
+    caseSync = caseSync.filter(ele => {
+        let storedDate = ele.Created_Date.setHours(0,0,0,0);
+        let currentDate = new Date().setHours(0,0,0,0);
+        return ele.isSynced&&(currentDate!==storedDate);
+    }); 
     stockVisibility = stockVisibility.filter(ele => {
         let storedDate = ele.Created_Date.setHours(0,0,0,0);
         let currentDate = new Date().setHours(0,0,0,0);
@@ -737,6 +808,9 @@ const deletePreviousObjectiveHelper = async () => {
     }
     for(let i=0;i<salesOrderSync.length;i++){
         await deleteItemFromData('salesOrderSync',salesOrderSync[i].App_Id);
+    }
+    for(let i=0;i<caseSync.length;i++){
+        await deleteItemFromData('caseSync',caseSync[i].App_Id);
     }
     for(let i=0;i<stockVisibility.length;i++){
         await deleteItemFromData('stockVisibility',stockVisibility[i].App_Id);

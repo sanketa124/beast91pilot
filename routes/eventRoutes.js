@@ -7,6 +7,7 @@ const router = express.Router();
 
 
 router.post('/eventList',isAuth,eventController.fetchEvents);
+router.post('/issueList',isAuth,eventController.fetchIssues);
 router.post('/itemList',isAuth,eventController.itemFetchController);
 router.post('/itemImages',isAuth,eventController.itemImagesFetch);
 router.post('/objectiveSync',isAuth,eventController.objectiveSync);

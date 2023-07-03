@@ -15,17 +15,17 @@ const initializeFollowUps = async() => {
         }
         let tmp,draftImg = "";
         if (ele.QCO_Flag__c == true && ele.Beacon_Flag__c == true) {
-        tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+        tmp = '<img src="/media/icon12.png" alt="icon" />';
         }
         if (ele.QCO_Flag__c == true && ele.Beacon_Flag__c == false) {
-        tmp = '<img src="../../../media/icon13.png" alt="icon" />';
+        tmp = '<img src="/media/icon13.png" alt="icon" />';
         }
         if (ele.QCO_Flag__c == false && ele.Beacon_Flag__c == true) {
-        tmp = '<img src="../../../media/icon12.png" alt="icon" />';
+        tmp = '<img src="/media/icon12.png" alt="icon" />';
         }
 
         if(ele.Draft_Status__c == true){
-            draftImg=`<img src="../../../media/icon11.png" alt="icon" />`
+            draftImg=`<img src="/media/icon11.png" alt="icon" />`
         }
         cardSection.innerHTML +=`<div class="card">
     <div class="card-body">

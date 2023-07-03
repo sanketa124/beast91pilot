@@ -95,13 +95,19 @@
     border-radius: 10px;
     border-style: none;
     justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
 }
 .previousBtnTxt {
-    
-    font-style: normal;
-    font-weight: 700;
-    font-size: 20px;
-    color: #FFFFFF;
+    width: 92px;
+    height: 35px;
+    border-radius: 10px;
+    border-style: none;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 .previousBtn {

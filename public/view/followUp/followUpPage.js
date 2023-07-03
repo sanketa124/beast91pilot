@@ -15,11 +15,13 @@ async function validate(followUpTask){
     return followUpTask
 }
 const SubmitTask = async() => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
     let isFollowTaskEnabled = await validate(followUpTask)
     if(isFollowTaskEnabled){
         postData()
     }else{
-        window.location.href = 'http://localhost:3400/view/checkOut/checkOut.html'
+        window.location.href = `/view/checkOut/checkOut.html?accountId=${accountId}`
     }
 };
 
@@ -32,7 +34,8 @@ const postData = async () =>{
         alert("Please fill the required data")
         return;
     }
-    let accountId = localStorage.getItem('accountId')
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
     let eventId = localStorage.getItem('eventId')
     let accountRec = await getItemFromStore('account', accountId);
     let taskRec = {
@@ -45,4 +48,13 @@ const postData = async () =>{
     };
     await writeData('taskOriginal',taskRec);
     await writeData('taskSync',taskRec);
+    window.location.href = `/view/checkOut/checkOut.html?accountId=${accountId}`
 }
+
+
+goBack = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/issues/issues.html?accountId=${accountId}`
+  }
+  

@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../globalCSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/view/globalCSS/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
         integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
@@ -53,7 +53,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../globalCSS/inhousestyle.css" />
+    <link rel="stylesheet" href="/view/globalCSS/inhousestyle.css" />
     <link rel="stylesheet" href="stockOutlet.css" />
     <!--Front end imports-->
     <style>
@@ -83,8 +83,8 @@
                         <h3>Stock at Outlet</h3>
                     </div>
                     <div class="arrowIcons">
-                        <a href="../meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html" class="leftArrow fas fa-chevron-left"></a>
-                        <a href="javascript:void()" class="rightArrow fas fa-chevron-right" onclick="saveStockOutlet()"></a>
+                        <a  onclick="goBack()" class="leftArrow fas fa-chevron-left"></a>
+                        <a class="rightArrow fas fa-chevron-right" onclick="saveStockOutlet()"></a>
                     </div>
                 </header>
             </div>
@@ -103,8 +103,8 @@
                             <table class="table table-bordered" id="stckOutletTbl">
                                 <thead>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Quantity (Cases)</th>
+                                    <th style="width: 70%;">Item</th>
+                                    <th style="width: 30%;">Quantity (Cases)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -123,12 +123,18 @@
                                     </td>
                                     <td><input type="text" class="form-control"></td> -->
                                     <tr id="newEntry">
-                                        <td class="wd-80"><input class="wd-50" id="productSearch" type="text" placeholder="search" />
-                                        <div id="productList"></div>
+                                        <td>
+                                            <input class="form-control" id="productSearch" type="text" placeholder="search" />
+                                            <div id="productList"></div>
                                         </td>
-                                        <td class="wd-20"><input class="wd-50 cartQtyChange" id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  <i class="fa fas fa-exclamation"></i></td>
-                                        </tr>
-                                </tr>
+                                        <td style="position: relative;">
+                                            <input class="cartQtyChange form-control"  id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  
+                                            <i style="position: absolute;
+                                            right: 0px;
+                                            top: 20px;" class="fa fas fa-exclamation"></i>
+                                        </td>
+                                      
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -151,7 +157,7 @@
         <div class="container-fluid mt-3" id="finishBtn" style="display: none;">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <button class="btn finishBtn" onclick="submit()">Finish</button>
+                    <button class="btn finishBtn" onclick="saveStockOutlet()">Finish</button>
                 </div>
             </div>
         </div>
@@ -161,67 +167,66 @@
         </div>
         <!-- Spinner for End Visit -->
 
-        <!-- Footer Starts -->
-         <!-- Footer Starts -->
-         <ul class="bottom-nav mdl-layout--fixed-header">
-            <li class="nav-img">
-                <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="../dashboard/todaysVisits/todaysVisits.html"><i
-                        class="fas fa-users"></i><span>Visits</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="javascrit:;"><i class="fas fa-shopping-cart"></i><span>Order</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="../objectives/posm/posm.html"><i class="fas fa-cocktail"></i><span>POSM</span></a>
-            </li>
-            <li class="nav-img">
-                <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
-                        class="fas fa-bars"></i><span>Menu</span></a>
-            </li>
-        </ul>
+   <!-- Footer Starts -->
+<ul class="bottom-nav mdl-layout--fixed-header">
+    <li class="nav-img">
+        <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i
+                class="fas fa-users"></i><span>Visits</span></a>
+    </li>
+    <li class="nav-img">
+        <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+    </li>
+    <li class="nav-img">
+        <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                class="fas fa-bars"></i><span>Menu</span></a>
+    </li>
+</ul>
 
 
-        <!--Script imported-->
-        <!-- Start More menu options Modal -->
-        <div id="moreMenu" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <ul class="list-group">
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
-                                    Sheets</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
-                                    Marketing Inventory</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                    Inventory</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
-                            </li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-calendar-alt"></i>Calendar</a></li>
-                            <li class="list-group-item"><a href="../accountList/accountListView.html"><i
-                                        class="fas fa-user-alt"></i>Accounts</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-file-contract"></i>Reports</a></li>
-                            <li class="list-group-item"><a href="javascript:;"><i
-                                        class="fas fa-crown"></i>Opportunities</a></li>
-                            <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
-                                    data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-                            <li class="list-group-item"><a href="../../view/syncPage/loadingPage.html"><i
-                                        class="fas fa-sync"></i>Sync</a></li>
-                        </ul>
-                    </div>
-                </div>
+<!--Script imported-->
+<!-- Start More menu options Modal -->
+<div id="moreMenu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                            Sheets</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                            Marketing Inventory</a></li> -->
+                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                            Inventory</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                    </li> -->
+                    <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
+                                class="fas fa-calendar-alt"></i>Calendar</a></li>
+                    <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
+                                class="fas fa-user-alt"></i>Accounts</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i
+                                class="fas fa-file-contract"></i>Reports</a></li>
+                    <li class="list-group-item"><a href="javascript:;"><i
+                                class="fas fa-crown"></i>Opportunities</a></li> -->
+                    <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                            data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                    <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
+                                class="fas fa-sync"></i>Sync</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+</div>
 
         <!-- End More menu options Modal -->
         <!-- End Visit Modal -->
@@ -303,21 +308,21 @@
     </div>
 
     <!--Front End script-->
-    <script src="../globalJS/jquery-3.4.1.min.js"></script>
-    <script src="../globalJS/bootstrap.min.js"></script>
+    <script src="/view/globalJS/jquery-3.4.1.min.js"></script>
+    <script src="/view/globalJS/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-    <script src="../globalJS/main.js"></script>
+    <script src="/view/globalJS/main.js"></script>
     <script src="StockOutlet.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="../../controller/indexedDB/idb.js"></script>
-    <script src="../../controller/indexedDB/utility.js"></script>
-    <script src="../../controller/sync/sync.js"></script>
-    <!-- <script src="../../controller/homePage/homePage.js"></script> -->
+    <script src="/controller/indexedDB/idb.js"></script>
+    <script src="/controller/indexedDB/utility.js"></script>
+    <script src="/controller/sync/sync.js"></script>
+    <!-- <script src="/controller/homePage/homePage.js"></script> -->
     <script src="/controller/objectives/stockOutlet.js"></script>
-    <script src="../../controller/globalJS/globalJS.js"></script>
+    <script src="/controller/globalJS/globalJS.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 

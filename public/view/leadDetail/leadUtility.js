@@ -22,13 +22,13 @@ showAccount = () => {
         if(accountRec.Industry_Segment__c != null)
         {
             if(accountRec.Industry_Segment__c === "P0"){
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/p0.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
             }else if(accountRec.Industry_Segment__c === "P1"){
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/p1.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
             }else if(accountRec.Industry_Segment__c === "P2"){
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/p2.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
             }else {
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/p3.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
             }
         }
         else {
@@ -38,13 +38,13 @@ showAccount = () => {
         if(accountRec.Industry_Segment_Mass__c != null)
         {
             if(accountRec.Industry_Segment_Mass__c === "M0"){
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/m0.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
             }else if(accountRec.Industry_Segment_Mass__c === "M1"){
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/m1.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
             }else if(accountRec.Industry_Segment_Mass__c === "M2"){
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/m2.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
             }else {
-                tmp += '  <span class="name"><img src="../../../media/icons/accountSegmentation/m3.png" alt=""></span>';
+                tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
             }
             
         }
@@ -55,7 +55,7 @@ showAccount = () => {
         tmp += '         </div>';
         
         if (accountRec.QCO_Flag__c === true) {
-            tmp += '         <span><img src="../../../media/images/homePage/Icons-05.png" alt=""></span>';
+            tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
         }
         else {
             tmp += '  <span class="name"></span>';

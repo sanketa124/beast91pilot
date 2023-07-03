@@ -2,6 +2,7 @@
 
 
 const zoneMasterValue = {
+  
   channel_Off: {
     ZoneLabel: ['Zone 1 : Entrance',  ' Zone 2 : Cooler', ' Zone 3 : Shelf'],
     ZoneValue: ['Zone_1', 'Zone_3', 'Zone_4', ],
@@ -238,6 +239,7 @@ const checkboxHandler = (event) => {
     else {
       $(`#${filePanel}`).css('display', 'none');
       stockVisbility[fileId] = null;
+      
     }
   }
 };
@@ -521,6 +523,7 @@ $('#stockBtn').on('click', function () {
   }
   if (!isValid) {
     $('#stockSubmit .modal-body').html('Images are mandatory where elements are present! Press Toggle off if image is not available');
+    
     $('.modal-footer .btn-success').css('display', 'none');
     $('.modal-footer .btn-danger').html('Close');
   }

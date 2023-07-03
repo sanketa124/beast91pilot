@@ -41,14 +41,14 @@
 
     <!--Fontawesome CDN-->
     <!--Front end imports-->
-    <link rel="stylesheet" href="../../globalCSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/view/globalCSS/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
         integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
         integrity="sha256-4hqlsNP9KM6+2eA8VUT0kk4RsMRTeS7QGHIM+MZ5sLY=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../../globalCSS/inhousestyle.css" />
+    <link rel="stylesheet" href="/view/globalCSS/inhousestyle.css" />
     <link rel="stylesheet" href="meetAndGreetDetails.css" />
     <!--Front end imports-->
     <style>
@@ -61,7 +61,7 @@
 </head>
 
 <body>
-    <div id="appContact">
+    <div id="app">
         <nav class="navbar navbar-default nav-custom navbar-fixed-top">
             <div class="container-fluid">
                 <header class="index-header">
@@ -78,8 +78,8 @@
                         <h3>Meet and Greet</h3>
                     </div>
                     <div class="arrowIcons">
-                        <a href="../../sales/outlet360.html" class="leftArrow fas fa-chevron-left"></a>
-                        <a href="../../sales/stockOutlet.html" class="rightArrow fas fa-chevron-right"></a>
+                        <a onclick="goBack()" class="leftArrow fas fa-chevron-left"></a>
+                        <a  onclick="goForward()" class="rightArrow fas fa-chevron-right"></a>
                     </div>
                 </header>
             </div>
@@ -94,80 +94,81 @@
 
             </div>
         </div>
-        <Button class="addNewContactBtn" onclick="openAddMeetAndGreet()">
+        <button type="button" class="addNewContactBtn" onclick="openAddMeetAndGreet()">
             <label class="addNewContactBtnTxt"> <i class="fa fa-plus"></i> Add New Contact </label>
-        </Button>
+        </button>
 
         <!-- <Button class="finishBtn">
             <label class="finishBtnTxt"> Finish </label>
         </Button> -->
-    </div>
-    <div class="container-fluid" id="finishBtn" style="display: none;">
+    
+    <div class="container-fluid mt-4" id="finishBtn" style="display: none;">
         <div class="row">
             <div class="col-xs-12 text-center">
-                <button class="btn finishBtn" onclick="submit()">Finish</button>
+                <button class="btn finishBtn" onclick="finalSubmit()">Finish</button>
             </div>
         </div>
     </div>
-    <!-- Footer Starts -->
-    <ul class="bottom-nav mdl-layout--fixed-header">
-        <li class="nav-img">
-            <a href="../../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
-        </li>
-        <li class="nav-img">
-            <a href="../../dashboard/todaysVisits/todaysVisits.html"><i class="fas fa-users"></i><span>Visits</span></a>
-        </li>
-        <li class="nav-img">
-            <a href="javascrit:;"><i class="fas fa-shopping-cart"></i><span>Order</span></a>
-        </li>
-        <li class="nav-img">
-            <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
-        </li>
-        <li class="nav-img">
-            <a href="../objectives/posm/posm.html"><i class="fas fa-cocktail"></i><span>POSM</span></a>
-        </li>
-        <li class="nav-img">
-            <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
-                    class="fas fa-bars"></i><span>Menu</span></a>
-        </li>
-    </ul>
+ <!-- Footer Starts -->
+ <ul class="bottom-nav mdl-layout--fixed-header">
+    <li class="nav-img">
+        <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i
+                class="fas fa-users"></i><span>Visits</span></a>
+    </li>
+    <li class="nav-img">
+        <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+    </li>
+    <li class="nav-img">
+        <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
+    </li>
+    <li class="nav-img">
+        <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                class="fas fa-bars"></i><span>Menu</span></a>
+    </li>
+</ul>
 
 
-    <!--Script imported-->
-    <!-- Start More menu options Modal -->
-    <div id="moreMenu" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body text-center">
-                    <ul class="list-group">
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
-                                Sheets</a></li>
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
-                                Marketing Inventory</a></li>
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                Inventory</a></li>
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
-                        </li>
-                        <li class="list-group-item"><a href="javascript:;"><i
-                                    class="fas fa-calendar-alt"></i>Calendar</a></li>
-                        <li class="list-group-item"><a href="../../accountList/accountListView.html"><i
-                                    class="fas fa-user-alt"></i>Accounts</a></li>
-                        <li class="list-group-item"><a href="javascript:;"><i
-                                    class="fas fa-file-contract"></i>Reports</a></li>
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Opportunities</a>
-                        </li>
-                        <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
-                                data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-                        <li class="list-group-item"><a href="../../../view/syncPage/loadingPage.html"><i
-                                    class="fas fa-sync"></i>Sync</a></li>
-                    </ul>
-                </div>
+<!--Script imported-->
+<!-- Start More menu options Modal -->
+<div id="moreMenu" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                            Sheets</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                            Marketing Inventory</a></li> -->
+                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                            Inventory</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                    </li> -->
+                    <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
+                                class="fas fa-calendar-alt"></i>Calendar</a></li>
+                    <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
+                                class="fas fa-user-alt"></i>Accounts</a></li>
+                    <!-- <li class="list-group-item"><a href="javascript:;"><i
+                                class="fas fa-file-contract"></i>Reports</a></li>
+                    <li class="list-group-item"><a href="javascript:;"><i
+                                class="fas fa-crown"></i>Opportunities</a></li> -->
+                    <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                            data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                    <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
+                                class="fas fa-sync"></i>Sync</a></li>
+                </ul>
             </div>
         </div>
     </div>
+</div>
 
     <!-- End More menu options Modal -->
     <!-- End Visit Modal -->
@@ -248,19 +249,19 @@
     </div>
 
     <!--Front End script-->
-    <script src="../../globalJS/jquery-3.4.1.min.js"></script>
-    <script src="../../globalJS/bootstrap.min.js"></script>
+    <script src="/view/globalJS/jquery-3.4.1.min.js"></script>
+    <script src="/view/globalJS/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-    <script src="../../globalJS/main.js"></script>
-    <script src="../../homePage/homePage.js"></script>
+    <script src="/view/globalJS/main.js"></script>
+    <script src="/view/homePage/homePage.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="../../../controller/indexedDB/idb.js"></script>
-    <script src="../../../controller/indexedDB/utility.js"></script>
-    <script src="../../../controller/sync/sync.js"></script>
-    <script src="../../../controller/homePage/homePage.js"></script>
-    <script src="../../../controller/globalJS/globalJS.js"></script>
+    <script src="/controller/indexedDB/idb.js"></script>
+    <script src="/controller/indexedDB/utility.js"></script>
+    <script src="/controller/sync/sync.js"></script>
+    <script src="/controller/homePage/homePage.js"></script>
+    <script src="/controller/globalJS/globalJS.js"></script>
     <script src="meetAndGreetDetails.js"></script>
 
 

@@ -35,15 +35,15 @@
 //         tmp += '         </div>';
 
 //         if (accountRec.Beacon_Flag__c === true) {
-//             tmp += '         <span><img src="../../../media/images/homePage/Icons-02.png" alt=""></span>';
+//             tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
 //         }
 
 //         if (accountRec.Draft_Ready__c === true) {
-//             tmp += '         <span><img src="../../../media/images/homePage/Icons-04.png" alt=""></span>';
+//             tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
 //         }
 
 //         if (accountRec.QCO_Flag__c === true) {
-//             tmp += '         <span><img src="../../../media/images/homePage/Icons-05.png" alt=""></span>';
+//             tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
 //         }
 //         tmp += '       </div>';
 

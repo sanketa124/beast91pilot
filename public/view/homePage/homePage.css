@@ -441,6 +441,7 @@ text-align: right;
 }
 #myChart-wrapper{
   height: 250px !important;
+  margin-top: -35px !important;
 }
 .zc-main text{
   display: none !important;
