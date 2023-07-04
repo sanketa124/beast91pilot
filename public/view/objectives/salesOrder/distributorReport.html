@@ -101,51 +101,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
+                    <div class="text-center">
                     <h4 class="text-center heading-tag"><b>Distributor Inventory Report</b></h4>
                     <h3>Date: 20-06-2023</h3>
                     <div class="">
                         <table class="table table-bordered  w-auto">
                             <thead>
                                 <tr>
-                                    
-                                    <th scope="col" colspan="6" class="wd-20">Item</th>
-                                    <th scope="col" colspan="6" class="wd-20">Quantity</th>
+                                    <th scope="col" class="wd-20 text-center">Date</th>
+                                    <th scope="col" class="wd-20 text-center">Item</th>
+                                    <th scope="col" class="wd-20 text-center">Closing Stock</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    
-                                    <td colspan="6" class="wd-20">Item number 1</td>
-                                    <td colspan="6" class="wd-20">1</td>
-                                </tr>
-                                <tr>
-                                    
-                                    <td colspan="6" class="wd-20">Item number 1</td>
-                                    <td colspan="6" class="wd-20">1</td>
-                                </tr>
-                                <tr>
-                                    
-                                    <td colspan="6" class="wd-20">Item number 1</td>
-                                    <td colspan="6" class="wd-20">1</td>
-                                </tr>
-                                <tr>
-                                    
-                                    <td colspan="6" class="wd-20">Item number 1</td>
-                                    <td colspan="6" class="wd-20">1</td>
-                                </tr>
-                                <tr>
-                                    
-                                    <td colspan="6" class="wd-20">Item number 1</td>
-                                    <td colspan="6" class="wd-20">1</td>
-                                </tr>
-                                <tr>
-                                    
-                                    <td colspan="6" class="wd-20">Item number 1</td>
-                                    <td colspan="6" class="wd-20">1</td>
-                                </tr>
+                            <tbody id="inventoryTable">
                             </tbody>
                         </table>
                     </div>
+                    </div> 
 
 
 
@@ -250,7 +222,7 @@
     <script src="/view/globalJS/main.js"></script>
     <script src="/view/globalJS/spinner.js"></script>
     <script src="/view/accountDetail/accountDetailUtility/utility.js"></script>
-    <script src="salesOrder.js"></script>
+    <!-- <script src="salesOrderNew.js"></script> -->
     <!--Front End script-->
     <!--Backend Scripts-->
     <script src="/controller/indexedDB/idb.js"></script>
@@ -258,6 +230,7 @@
     <script src="/controller/sync/sync.js"></script>
     <script src="/controller/objectives/salesOrder.js"></script>
     <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="distributorReport.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
     <!--Backend Scripts-->

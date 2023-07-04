@@ -3,6 +3,7 @@
     let urlParam = new URLSearchParams(window.location.search);
     var accountID = urlParam.get('accountId')
     const individual = urlParam.get('individual')
+    console.log(individual, 'individual')
     if(individual == 'true'){
       $('#closeIco').hide();
       $('.arrowIcons').hide();
@@ -16,6 +17,7 @@
     $('#existingValue').html(existingContactsCount);
     let temp = ''
     accountDetail.Contacts.records.forEach((ele, index) => {
+        console.log(ele)
         if (ele.Active__c) {
             temp += '<div class="row contactDetailsBorder">'
             temp += '<div class="col-xs-1">'
@@ -31,7 +33,7 @@
             temp += '<label class="contactDetailsTxt">' + ele.LastName + '</label>'
             temp += '</div>'
             temp += '<div class="col-xs-3">'
-            temp += '<label class="contactDetailsTxt">' + ele.Role__c + '</label>'
+            temp += '<label class="contactDetailsTxt">' + ele.Phone + '</label>'
             temp += '</div>'
             temp += '<div class="col-xs-1" style="margin-right:"5px">'
             temp += `<img onclick="onHandleEdit('${ele.Id}')" class="editIcon" src="/media/icons/editIcon.png" />`
@@ -51,13 +53,13 @@ finalSubmit = () => {
 openAddMeetAndGreet = () => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}`;
+    window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&enroll=true`;
 }
 
 onHandleEdit = (contactID) => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&contactId=${contactID}`;
+    window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&contactId=${contactID}&enroll=true`;
 }
 const initializeMeetAndGreetMainPage = async () => {
 };
@@ -68,11 +70,12 @@ initializeMeetAndGreetMainPage()
 goBack = () => {
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
-    window.location.href = `/view/sales/outlet360.html?accountId=${accountId}`
+    window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
   }
   
-  goForward = () => {
+  smsSuccess = () => {
+    alert('SMS sent to user successfully')
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
-    window.location.href = `/view/sales/stockOutlet.html?accountId=${accountId}`
+    window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
   }

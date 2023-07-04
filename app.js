@@ -11,6 +11,9 @@ const accountRoutes = require('./routes/accountRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const contentRoutes = require('./routes/contentRoutes');
+const recommendationRoutes=require('./routes/recommendation')
+const salesOrderRoutes = require('./routes/salesOrder');
+const marketInventoryRoutes = require('./routes/marketInventoryRoutes');
 //Routes used in the app
 
 
@@ -45,6 +48,9 @@ app.use(accountRoutes);
 app.use(eventRoutes);
 app.use(reportRoutes);
 app.use(contentRoutes);
+app.use(recommendationRoutes)
+app.use(salesOrderRoutes);
+app.use(marketInventoryRoutes);
 //Routing the incoming request
 
 // Initial setup for index page

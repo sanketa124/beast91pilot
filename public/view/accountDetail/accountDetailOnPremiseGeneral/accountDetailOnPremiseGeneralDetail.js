@@ -3,26 +3,25 @@ let accountName = document.querySelector('#accountName');
 let tabletInfo = document.querySelector('#tabletInfo');
 
 
-const initalizeDetail =  () => {
+const initalizeDetail = () => {
     informationSection();
     salesSummarySection();
-    marketInformationSection();   
+    marketInformationSection();
     statutorynSection();
     creditLimitSection();
     draftSection();
     accountDetail();
     addressSection();
-    
+
     let url_string = window.location.href
     let url = new URL(url_string);
     let page = url.searchParams.get("page");
 
-    if(page === 'Approval')
-    {
-        $('#backBtn').css('display','block');
-        $('.showDropdown').css('opacity','0');
-    }else{
-        $('#backBtn').css('display','none');
+    if (page === 'Approval') {
+        $('#backBtn').css('display', 'block');
+        $('.showDropdown').css('opacity', '0');
+    } else {
+        $('#backBtn').css('display', 'none');
     }
 };
 
@@ -52,48 +51,48 @@ const informationSection = () => {
             gridCol.className = 'col-sm-6 col-xs-12';
 
             if (accountRec[i] === true || accountRec[i] === false) {
-                gridCol.appendChild(checkBoxCreation(i,informationFieldLabelMap.get(i),null,accountRec[i],true));
+                gridCol.appendChild(checkBoxCreation(i, informationFieldLabelMap.get(i), null, accountRec[i], true));
                 informationPanel.appendChild(gridCol);
             }
-            else{
-            let textFieldOuterWrap = document.createElement('div');
-            textFieldOuterWrap.className = 'form-group';
-            gridCol.appendChild(textFieldOuterWrap);
-            let inputLabel = document.createElement('label');
-            inputLabel.className = 'control-label';
-            inputLabel.innerHTML = informationFieldLabelMap.get(i);
-            textFieldOuterWrap.appendChild(inputLabel);
-            let inputText = document.createElement('input');
-            if (i === 'RecordType') {
-                inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            } else if (i === 'Distributor_Warehouse__r.Name') {
-                inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
-            } else {
-                inputText.value = accountRec[i] ? accountRec[i] : '';
-            }
-            inputText.className = 'form-control';
-            
-            inputText.type = 'text';
-            
-            inputText.readOnly = true;
-            
-            textFieldOuterWrap.appendChild(inputText);
-            if(i === 'Phone'){
-                let anchorTag = document.createElement('a');
-                anchorTag.setAttribute('href', 'tel:'+inputText.value);
-                anchorTag.appendChild(inputText);
-                textFieldOuterWrap.appendChild(anchorTag);
-            }
+            else {
+                let textFieldOuterWrap = document.createElement('div');
+                textFieldOuterWrap.className = 'form-group';
+                gridCol.appendChild(textFieldOuterWrap);
+                let inputLabel = document.createElement('label');
+                inputLabel.className = 'control-label';
+                inputLabel.innerHTML = informationFieldLabelMap.get(i);
+                textFieldOuterWrap.appendChild(inputLabel);
+                let inputText = document.createElement('input');
+                if (i === 'RecordType') {
+                    inputText.value = accountRec[i] ? accountRec[i].Name : '';
+                } else if (i === 'Distributor_Warehouse__r.Name') {
+                    inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
+                } else {
+                    inputText.value = accountRec[i] ? accountRec[i] : '';
+                }
+                inputText.className = 'form-control';
 
-            if(i === 'Email__c'){
-                let anchorTag = document.createElement('a');
-                anchorTag.setAttribute('href', 'mailto:'+inputText.value);
-                anchorTag.appendChild(inputText);
-                textFieldOuterWrap.appendChild(anchorTag);
+                inputText.type = 'text';
+
+                inputText.readOnly = true;
+
+                textFieldOuterWrap.appendChild(inputText);
+                if (i === 'Phone') {
+                    let anchorTag = document.createElement('a');
+                    anchorTag.setAttribute('href', 'tel:' + inputText.value);
+                    anchorTag.appendChild(inputText);
+                    textFieldOuterWrap.appendChild(anchorTag);
+                }
+
+                if (i === 'Email__c') {
+                    let anchorTag = document.createElement('a');
+                    anchorTag.setAttribute('href', 'mailto:' + inputText.value);
+                    anchorTag.appendChild(inputText);
+                    textFieldOuterWrap.appendChild(anchorTag);
+                }
+
+                informationPanel.appendChild(gridCol);
             }
-            
-            informationPanel.appendChild(gridCol);
-        }
         }
 
     }
@@ -126,36 +125,36 @@ const salesSummarySection = () => {
             gridCol.className = 'col-sm-6 col-xs-12';
 
             if (accountRec[i] === true || accountRec[i] === false) {
-                gridCol.appendChild(checkBoxCreation(i,salesSummaryFieldLabelMap.get(i),null,accountRec[i],true));
+                gridCol.appendChild(checkBoxCreation(i, salesSummaryFieldLabelMap.get(i), null, accountRec[i], true));
                 salesSummaryPanel.appendChild(gridCol);
             }
-            else{
-            let textFieldOuterWrap = document.createElement('div');
-            textFieldOuterWrap.className = 'form-group';
-            gridCol.appendChild(textFieldOuterWrap);
-            let inputLabel = document.createElement('label');
-            inputLabel.className = 'control-label';
-            inputLabel.innerHTML = salesSummaryFieldLabelMap.get(i);
-            textFieldOuterWrap.appendChild(inputLabel);
-            let inputText = document.createElement('input');
+            else {
+                let textFieldOuterWrap = document.createElement('div');
+                textFieldOuterWrap.className = 'form-group';
+                gridCol.appendChild(textFieldOuterWrap);
+                let inputLabel = document.createElement('label');
+                inputLabel.className = 'control-label';
+                inputLabel.innerHTML = salesSummaryFieldLabelMap.get(i);
+                textFieldOuterWrap.appendChild(inputLabel);
+                let inputText = document.createElement('input');
 
-            if (i === 'RecordType') {
-                inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            } else if (i === 'Distributor_Warehouse__r.Name') {
-                inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Name : '';
-            } else {
-                inputText.value = accountRec[i] ? accountRec[i] : '';
+                if (i === 'RecordType') {
+                    inputText.value = accountRec[i] ? accountRec[i].Name : '';
+                } else if (i === 'Distributor_Warehouse__r.Name') {
+                    inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Name : '';
+                } else {
+                    inputText.value = accountRec[i] ? accountRec[i] : '';
+                }
+                inputText.className = 'form-control';
+
+                inputText.type = 'text';
+
+                inputText.readOnly = true;
+
+                textFieldOuterWrap.appendChild(inputText);
+
+                salesSummaryPanel.appendChild(gridCol);
             }
-            inputText.className = 'form-control';
-
-            inputText.type = 'text';
-            
-            inputText.readOnly = true;
-            
-            textFieldOuterWrap.appendChild(inputText);
-            
-            salesSummaryPanel.appendChild(gridCol);
-        }
         }
 
     }
@@ -196,9 +195,9 @@ const marketInformationSection = () => {
                 inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
             } else if (i === 'Market_Share__c' || i === 'Premium_Brands_Share_Bira__c' || i === 'Premium_Brands_Share_Competitor__c') {
                 inputText.value = accountRec[i] ? accountRec[i] + ' %' : '';
-            } else if(i === 'Last_Keg_Order_Date__c'){
-                inputText.value = accountRec[i] ? new Date(accountRec[i]).toLocaleString("en-US",{day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',}) : '';
-            }else {
+            } else if (i === 'Last_Keg_Order_Date__c') {
+                inputText.value = accountRec[i] ? new Date(accountRec[i]).toLocaleString("en-US", { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', }) : '';
+            } else {
                 inputText.value = accountRec[i] ? accountRec[i] : '';
             }
             inputText.className = 'form-control';
@@ -212,9 +211,9 @@ const marketInformationSection = () => {
                 inputText.type = 'text';
             }
             inputText.readOnly = true;
-            
+
             textFieldOuterWrap.appendChild(inputText);
-            
+
             marketSummaryPanel.appendChild(gridCol);
         }
 
@@ -250,36 +249,36 @@ const statutorynSection = () => {
             gridCol.className = 'col-sm-6 col-xs-12';
 
             if (accountRec[i] === true || accountRec[i] === false) {
-                gridCol.appendChild(checkBoxCreation(i,statutoryInformationFieldLabelMap.get(i),null,accountRec[i],true));
+                gridCol.appendChild(checkBoxCreation(i, statutoryInformationFieldLabelMap.get(i), null, accountRec[i], true));
                 statutoryummaryPanel.appendChild(gridCol);
             }
-            else{
-            let textFieldOuterWrap = document.createElement('div');
-            textFieldOuterWrap.className = 'form-group';
-            gridCol.appendChild(textFieldOuterWrap);
-            let inputLabel = document.createElement('label');
-            inputLabel.className = 'control-label';
-            inputLabel.innerHTML = statutoryInformationFieldLabelMap.get(i);
-            textFieldOuterWrap.appendChild(inputLabel);
-            let inputText = document.createElement('input');
-            if (i === 'RecordType') {
-                inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            } else if (i === 'Distributor_Warehouse__r.Name') {
-                inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
-            } else {
-                inputText.value = accountRec[i] ? accountRec[i] : '';
+            else {
+                let textFieldOuterWrap = document.createElement('div');
+                textFieldOuterWrap.className = 'form-group';
+                gridCol.appendChild(textFieldOuterWrap);
+                let inputLabel = document.createElement('label');
+                inputLabel.className = 'control-label';
+                inputLabel.innerHTML = statutoryInformationFieldLabelMap.get(i);
+                textFieldOuterWrap.appendChild(inputLabel);
+                let inputText = document.createElement('input');
+                if (i === 'RecordType') {
+                    inputText.value = accountRec[i] ? accountRec[i].Name : '';
+                } else if (i === 'Distributor_Warehouse__r.Name') {
+                    inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
+                } else {
+                    inputText.value = accountRec[i] ? accountRec[i] : '';
+                }
+                inputText.className = 'form-control';
+
+                inputText.type = 'text';
+
+
+                inputText.readOnly = true;
+
+                textFieldOuterWrap.appendChild(inputText);
+
+                statutoryummaryPanel.appendChild(gridCol);
             }
-            inputText.className = 'form-control';
-
-            inputText.type = 'text';
-            
-
-            inputText.readOnly = true;
-            
-            textFieldOuterWrap.appendChild(inputText);
-            
-            statutoryummaryPanel.appendChild(gridCol);
-        }
         }
 
     }
@@ -302,35 +301,35 @@ const creditLimitSection = () => {
             gridCol.className = 'col-sm-6 col-xs-12';
 
             if (accountRec[i] === true || accountRec[i] === false) {
-                gridCol.appendChild(checkBoxCreation(i,creditFieldLabelMap.get(i),null,accountRec[i],true));
+                gridCol.appendChild(checkBoxCreation(i, creditFieldLabelMap.get(i), null, accountRec[i], true));
                 creditPanel.appendChild(gridCol);
             }
-            else{
-            let textFieldOuterWrap = document.createElement('div');
-            textFieldOuterWrap.className = 'form-group';
-            gridCol.appendChild(textFieldOuterWrap);
-            let inputLabel = document.createElement('label');
-            inputLabel.className = 'control-label';
-            inputLabel.innerHTML = creditFieldLabelMap.get(i);
-            textFieldOuterWrap.appendChild(inputLabel);
-            let inputText = document.createElement('input');
-            if (i === 'RecordType') {
-                inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            } else if (i === 'Distributor_Warehouse__r.Name') {
-                inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
-            } else {
-                inputText.value = accountRec[i] ? '₹ ' + accountRec[i] : '';
+            else {
+                let textFieldOuterWrap = document.createElement('div');
+                textFieldOuterWrap.className = 'form-group';
+                gridCol.appendChild(textFieldOuterWrap);
+                let inputLabel = document.createElement('label');
+                inputLabel.className = 'control-label';
+                inputLabel.innerHTML = creditFieldLabelMap.get(i);
+                textFieldOuterWrap.appendChild(inputLabel);
+                let inputText = document.createElement('input');
+                if (i === 'RecordType') {
+                    inputText.value = accountRec[i] ? accountRec[i].Name : '';
+                } else if (i === 'Distributor_Warehouse__r.Name') {
+                    inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
+                } else {
+                    inputText.value = accountRec[i] ? '₹ ' + accountRec[i] : '';
+                }
+                inputText.className = 'form-control';
+
+                inputText.type = 'text';
+
+                inputText.readOnly = true;
+
+                textFieldOuterWrap.appendChild(inputText);
+
+                creditPanel.appendChild(gridCol);
             }
-            inputText.className = 'form-control';
-            
-            inputText.type = 'text';
-            
-            inputText.readOnly = true;
-            
-            textFieldOuterWrap.appendChild(inputText);
-            
-            creditPanel.appendChild(gridCol);
-        }
         }
 
     }
@@ -356,34 +355,34 @@ const draftSection = () => {
             gridCol.className = 'col-sm-6 col-xs-12';
 
             if (accountRec[i] === true || accountRec[i] === false) {
-                gridCol.appendChild(checkBoxCreation(i,draftLabelMap.get(i),null,accountRec[i],true));
+                gridCol.appendChild(checkBoxCreation(i, draftLabelMap.get(i), null, accountRec[i], true));
                 draftPanel.appendChild(gridCol);
             }
-            else{
-            let textFieldOuterWrap = document.createElement('div');
-            textFieldOuterWrap.className = 'form-group';
-            gridCol.appendChild(textFieldOuterWrap);
-            let inputLabel = document.createElement('label');
-            inputLabel.className = 'control-label';
-            inputLabel.innerHTML = draftLabelMap.get(i);
-            textFieldOuterWrap.appendChild(inputLabel);
-            let inputText = document.createElement('input');
-            if (i === 'RecordType') {
-                inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            } else if (i === 'Distributor_Warehouse__r.Name') {
-                inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
-            } else {
-                inputText.value = accountRec[i] ? accountRec[i] : '';
+            else {
+                let textFieldOuterWrap = document.createElement('div');
+                textFieldOuterWrap.className = 'form-group';
+                gridCol.appendChild(textFieldOuterWrap);
+                let inputLabel = document.createElement('label');
+                inputLabel.className = 'control-label';
+                inputLabel.innerHTML = draftLabelMap.get(i);
+                textFieldOuterWrap.appendChild(inputLabel);
+                let inputText = document.createElement('input');
+                if (i === 'RecordType') {
+                    inputText.value = accountRec[i] ? accountRec[i].Name : '';
+                } else if (i === 'Distributor_Warehouse__r.Name') {
+                    inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
+                } else {
+                    inputText.value = accountRec[i] ? accountRec[i] : '';
+                }
+                inputText.className = 'form-control';
+
+                inputText.type = 'text';
+
+                inputText.readOnly = true;
+
+                textFieldOuterWrap.appendChild(inputText);
+                draftPanel.appendChild(gridCol);
             }
-            inputText.className = 'form-control';
-            
-            inputText.type = 'text';
-            
-            inputText.readOnly = true;
-            
-            textFieldOuterWrap.appendChild(inputText);
-            draftPanel.appendChild(gridCol);
-        }
         }
 
     }
@@ -407,35 +406,35 @@ const accountDetail = () => {
             gridCol.className = 'col-sm-6 col-xs-12';
 
             if (accountRec[i] === true || accountRec[i] === false) {
-                gridCol.appendChild(checkBoxCreation(i,accountDetailLabelMap.get(i),null,accountRec[i],true));
+                gridCol.appendChild(checkBoxCreation(i, accountDetailLabelMap.get(i), null, accountRec[i], true));
                 accountDetailPanel.appendChild(gridCol);
             }
-            else{
-            let textFieldOuterWrap = document.createElement('div');
-            textFieldOuterWrap.className = 'form-group';
-            gridCol.appendChild(textFieldOuterWrap);
-            let inputLabel = document.createElement('label');
-            inputLabel.className = 'control-label';
-            inputLabel.innerHTML = accountDetailLabelMap.get(i);
-            textFieldOuterWrap.appendChild(inputLabel);
-            let inputText = document.createElement('input');
-            if (i === 'RecordType') {
-                inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            } else if (i === 'Distributor_Warehouse__r.Name') {
-                inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
-            } else {
-                inputText.value = accountRec[i] ? accountRec[i] : '';
+            else {
+                let textFieldOuterWrap = document.createElement('div');
+                textFieldOuterWrap.className = 'form-group';
+                gridCol.appendChild(textFieldOuterWrap);
+                let inputLabel = document.createElement('label');
+                inputLabel.className = 'control-label';
+                inputLabel.innerHTML = accountDetailLabelMap.get(i);
+                textFieldOuterWrap.appendChild(inputLabel);
+                let inputText = document.createElement('input');
+                if (i === 'RecordType') {
+                    inputText.value = accountRec[i] ? accountRec[i].Name : '';
+                } else if (i === 'Distributor_Warehouse__r.Name') {
+                    inputText.value = accountRec.Distributor_Warehouse__r ? accountRec.Distributor_Warehouse__r.Name : '';
+                } else {
+                    inputText.value = accountRec[i] ? accountRec[i] : '';
+                }
+                inputText.className = 'form-control';
+
+                inputText.type = 'text';
+
+                inputText.readOnly = true;
+
+                textFieldOuterWrap.appendChild(inputText);
+
+                accountDetailPanel.appendChild(gridCol);
             }
-            inputText.className = 'form-control';
-
-            inputText.type = 'text';
-
-            inputText.readOnly = true;
-            
-            textFieldOuterWrap.appendChild(inputText);
-            
-            accountDetailPanel.appendChild(gridCol);
-        }
         }
 
     }
@@ -481,11 +480,11 @@ const addressSection = () => {
     textareaInput.readOnly = true;
     textareaInput.innerHTML = (accountRec.ShippingStreet ? accountRec.ShippingStreet + ',&#13;&#10;' : '') + (accountRec.ShippingCity ? accountRec.ShippingCity + ',&#13;&#10;' : '') + (accountRec.ShippingState ? accountRec.ShippingState + ',&#13;&#10;' : '') + (accountRec.ShippingCountry ? accountRec.ShippingCountry + '.&#13;&#10;' : '') + (accountRec.ShippingPostalCode ? accountRec.ShippingPostalCode + '&#13;&#10;' : '');
     textFieldOuterWrap.appendChild(textareaInput);
-    
+
     addressPanel.appendChild(gridColShipping);
     const addressFieldLabelMap = new Map([
         ['Location__c', 'Location'],
-        ['Geolocation__c', 'Geolocation']
+        // ['Geolocation__c', 'Geolocation66']
     ]);
     const addressfields = ['Location__c', 'Geolocation__c'];
     for (let i of addressfields) {
@@ -502,8 +501,9 @@ const addressSection = () => {
             inputText = document.createElement('input');
             if (i === 'RecordType') {
                 inputText.value = accountRec[i] ? accountRec[i].Name : '';
-            }else if(i ==='Geolocation__c' ){
+            } else if (i === 'Geolocation__c') {
                 inputText.value = accountRec[i] ? `${accountRec[i].latitude},${accountRec[i].longitude}` : '';
+
             } else {
                 inputText.value = accountRec[i] ? accountRec[i] : '';
             }
@@ -518,41 +518,67 @@ const addressSection = () => {
             }
             inputText.readOnly = true;
             textFieldOuterWrap.appendChild(inputText);
-            
             addressPanel.appendChild(gridCol);
         }
 
     }
-};
-    
-    
-showLoader = () =>{
-    $('.loader-div').css('display','block');
-};
 
-hideLoader = () =>{
-    $('.loader-div').css('display','none');
-};
-
-
-handlePageRedirect =async (page) => {
-    if(page ==='Detail'){
-        window.location.href ='/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralDetail.html?Id='+accountRec.Id;
+    // Geo Loca Address
+    let addressPanel1 = document.querySelector('#addressInformation');
+    let gridCollatLong = document.createElement('div');
+    gridCollatLong.className = 'col-sm-6 col-xs-12';
+    let textFieldOuterWrap1 = document.createElement('div');
+    textFieldOuterWrap1.className = 'form-group';
+    gridCollatLong.appendChild(textFieldOuterWrap1);
+    let inputLabel1 = document.createElement('label');
+    inputLabel1.className = 'control-label';
+    inputLabel1.innerHTML = 'Geolocation';
+    textFieldOuterWrap1.appendChild(inputLabel1);
+    let textareaInput1 = document.createElement('label');
+    textareaInput1.className = 'form-control';
+    textareaInput1.type = 'text';
+    textareaInput1.readOnly = true;
+    textareaInput1.style.cursor = "pointer"
+    textareaInput1.style.color = "#0096FF"
+    textareaInput1.style.textDecoration = "underline"
+    textareaInput1.style.fontWeight = "500"
+    textareaInput1.innerText = (`${accountRec['Geolocation__c'].latitude},${accountRec['Geolocation__c'].longitude}`)
+    textareaInput1.onclick = function () {
+        var url = "https://maps.google.com?q=" + `${accountRec['Geolocation__c'].latitude}` + "," + `${accountRec['Geolocation__c'].longitude}`;
+        window.open(url);
     }
-    else if(page ==='Related'){
-        window.location.href ='/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralRelated.html?Id='+accountRec.Id;
+    textFieldOuterWrap1.appendChild(textareaInput1);
+    addressPanel1.appendChild(gridCollatLong);
+};
+
+
+showLoader = () => {
+    $('.loader-div').css('display', 'block');
+};
+
+hideLoader = () => {
+    $('.loader-div').css('display', 'none');
+};
+
+
+handlePageRedirect = async (page) => {
+    if (page === 'Detail') {
+        window.location.href = '/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralDetail.html?Id=' + accountRec.Id;
     }
-    else if(page ==='Home'){
+    else if (page === 'Related') {
+        window.location.href = '/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralRelated.html?Id=' + accountRec.Id;
+    }
+    else if (page === 'Home') {
         let nonSales = await isTechnicianAuditorFuncHelper();
-        if(nonSales.isSales)
-            window.location.href ='/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralLanding.html?Id='+accountRec.Id;
-        else if(nonSales.isAudit)
-            window.location.href ='/view/accountDetailLandingAuditor/accountDetailLandingAuditor.html?accountId='+accountRec.Id;
-        else if(nonSales.isTech)
-            window.location.href ='/view/accountDetailLandingTechnician/accountDetailLandingTechnician.html?accountId='+accountRec.Id;
-        
+        if (nonSales.isSales)
+            window.location.href = '/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralLanding.html?Id=' + accountRec.Id;
+        else if (nonSales.isAudit)
+            window.location.href = '/view/accountDetailLandingAuditor/accountDetailLandingAuditor.html?accountId=' + accountRec.Id;
+        else if (nonSales.isTech)
+            window.location.href = '/view/accountDetailLandingTechnician/accountDetailLandingTechnician.html?accountId=' + accountRec.Id;
+
     }
-    else{
-        window.location.href ='/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralMedia.html?Id='+accountRec.Id;
+    else {
+        window.location.href = '/view/accountDetail/accountDetailOnPremiseGeneral/accountDetailOnPremiseGeneralMedia.html?Id=' + accountRec.Id;
     }
 };

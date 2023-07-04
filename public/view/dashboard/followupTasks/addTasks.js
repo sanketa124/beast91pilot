@@ -6,3 +6,4 @@ gotofollowUpTasks = () => {
     $('#cancelModal').modal('hide');
     window.location.href = 'followupTasks.html'
 }
+

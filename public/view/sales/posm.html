@@ -10,6 +10,10 @@
     <link rel="manifest" href="/manifest.json">
     <!--Manifest-->
 
+ <!--Compressing Images-->
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/browser-image-compression@latest/dist/browser-image-compression.js"></script>
+ <!--Compressing Images-->
+
 
     <!--Imported Design library-->
 
@@ -94,7 +98,7 @@
                 <div class="col-md-12 dashboardSection">
                     <div class="example">
                     </div>
-                    <div class="defaultTable">
+                    <div class="defaultTable" id="posmTotal">
                         <article class="tblHead">
                             <h4>POSM Requisition</h4>
                             <p>Items - <span>2</span></p>
@@ -107,8 +111,8 @@
                                     <th>Quantity</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
+                                <tbody id="posmTable">
+                                <!-- <tr>
                                     <td>Costers</td>
                                     <td><input type="text" class="form-control"></td>
                                 </tr>
@@ -128,6 +132,14 @@
                                         </select>
                                     </td>
                                     <td><input type="text" class="form-control"></td>
+                                </tr> -->
+                                <tr id="newSearch">
+                                    <td class="wd-80">
+                                      <select name="selectSearch" id="selectSearch" class="form-control wd-50">
+                                        <option value='0' selected='true'> Search POSM</option>
+                                      </select>
+                                    </td>
+                                    <td class="wd-20"><input id="posmQuantity" type="number" class="form-control wd-50"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -135,7 +147,7 @@
                         <div class="totalSec">
                             <dic class="row">
                                 <div class="col-xs-6">
-                                    <button class="addBtn"><i class="fas fa-plus"></i></button>
+                                    <button class="addBtn" id="addButton"><i class="fas fa-plus"></i></button>
                                 </div>
                                 <div class="col-xs-6 text-right">
                                     
@@ -143,7 +155,7 @@
                             </dic>
                         </div>
                     </div>
-                    <div class="defaultTable mt-3">
+                    <div class="defaultTable mt-3" id="assetTotal">
                         <article class="tblHead">
                             <h4>Assets Requisition</h4>
                             <p>Items - <span>2</span></p>
@@ -154,14 +166,14 @@
                                 <tr>
                                     <th>Asset Name</th>
                                     <th>Space Available</th>
-                                    <th></th>
+                                    <th>Image</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
+                                <tbody id="assetsTable">
+                                <!-- <tr>
                                     <td style="width: 60%;">Double Door Refrigirator</td>
                                     <td><input type="checkbox" class="defaultCheckBox"></td>
-                                    <th>
+                                    <td style="vertical-align: middle;">
                                         <div class="image-upload_NoInput form-group" style="margin:0">
                                             <div class="camera">
                                                 <label for="1">
@@ -170,12 +182,12 @@
                                                 <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
                                             </div>
                                         </div>
-                                    </th>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Signage</td>
                                     <td><input type="checkbox" class="defaultCheckBox"></td>
-                                    <th>
+                                    <td>
                                         <div class="image-upload_NoInput form-group" style="margin:0">
                                             <div class="camera">
                                                 <label for="1">
@@ -184,7 +196,7 @@
                                                 <input id="1" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
                                             </div>
                                         </div>
-                                    </th>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -198,6 +210,24 @@
                                         </select>
                                     </td>
                                     <td><input type="checkbox" class="defaultCheckBox"></td>
+                                </tr> -->
+                                <tr id="assetSearch">
+                                    <td class="wd-80">
+                                      <select name="selectSearch" id="selectSearch1" class="form-control wd-50">
+                                        <option value='0' selected='true'> Search POSM</option>
+                                      </select>
+                                    </td>
+                                    <td><input type="checkbox" id="checkbox" class="defaultCheckBox"></td>
+                                    <td style="vertical-align: middle;">
+                                        <div class="image-upload_NoInput form-group" style="margin:0">
+                                            <div class="camera">
+                                                <label for="1">
+                                                    <i class="fa fa-camera 1"aria-hidden="true"></i>                                    
+                                                </label>
+                                                <input id="cameraSearch" onchange="fileInput(this)" capture="camera" accept="image/*" type="file"/>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -205,7 +235,7 @@
                         <div class="totalSec">
                             <dic class="row">
                                 <div class="col-xs-6">
-                                    <button class="addBtn"><i class="fas fa-plus"></i></button>
+                                    <button class="addBtn" id="addAssetButton"><i class="fas fa-plus"></i></button>
                                 </div>
                                 <div class="col-xs-6 text-right">
                                     
@@ -219,7 +249,7 @@
         <div class="container-fluid" id="finishBtn" style="display: none;">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <button class="btn finishBtn" onclick="submit()">Finish</button>
+                    <button class="btn finishBtn" onclick="posmSubmit()">Finish</button>
                 </div>
             </div>
         </div>
@@ -375,15 +405,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-    <script src="/view/globalJS/main.js"></script>
-    <script src="posm.js"></script>
+    <script src="../globalJS/main.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="/controller/indexedDB/idb.js"></script>
-    <script src="/controller/indexedDB/utility.js"></script>
-    <script src="/controller/sync/sync.js"></script>
-    <!-- <script src="/controller/homePage/homePage.js"></script> -->
-    <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="../../controller/indexedDB/idb.js"></script>
+    <script src="../../controller/indexedDB/utility.js"></script>
+    <script src="../../controller/sync/sync.js"></script>
+    <!-- <script src="../../controller/homePage/homePage.js"></script> -->
+    <script src="../../controller/globalJS/globalJS.js"></script>
+    <script src="../../constants/constants.js"></script>
+    <script src="posmNew.js"></script>
+    <script src="posmAssets.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 

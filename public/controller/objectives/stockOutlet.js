@@ -1,8 +1,9 @@
 let stockOutlet = {};
 let retailDepletionData = []
 const initializeStockVisibility = async () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    const accountId = urlParams.get('accountId');
+    // let urlParams = new URLSearchParams(window.location.search);
+    // const accountId = urlParams.get('accountId');
+    const accountId = localStorage.getItem('accountId')
     const key = `${fetchCurrentDateIdStr()}-${accountId}`;
    //  stockOutlet = await getItemFromStore('stockVisibility',key);
     accountRec = await getItemFromStore('account',accountId);

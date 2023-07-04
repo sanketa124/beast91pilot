@@ -31,7 +31,7 @@ const initializeFollowUps = async() => {
     <div class="card-body">
         <div class="row">
             <div class="col-xs-8">
-                <h4>${(ele.Name)?ele.Name:"N/A"}</h4>
+                <h4 onclick="gotoAccountPage('${ele?.Id}')">${(ele.Name)?ele.Name:"N/A"}</h4>
                 <label>${(ele.Channel__c) ?ele.Channel__c :"N/A"}/ ${(ele.Sub_Channel__c)?ele.Sub_Channel__c :"N/A"}</label>
                 <label> <strong>Order: </strong> <span>${(DepletionDate)?DepletionDate: ""}</span> <span>|</span>  <strong>Visit: </strong> <span>${(VisitDate)?VisitDate : "N/A"}</span></label>
                 <label>${(ele.BillingStreet)?ele.BillingStreet:"N/A"}</label>
@@ -66,3 +66,8 @@ function FormatDate(date){
 }
 
 initializeFollowUps()
+
+gotoAccountPage = (id) => {
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${id}`;
+}
+

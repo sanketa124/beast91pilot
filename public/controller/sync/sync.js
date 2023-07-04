@@ -7,8 +7,10 @@ const initializeSync = async () => {
     await itemsFetch(loginData[0].username,loginData[0].password);
     await objectivePushHelper(loginData[0].username,loginData[0].password);
     await itemImagesFetch(loginData[0].username,loginData[0].password);
-    await reportFetch(loginData[0].username,loginData[0].password);
-
+    await payOutSlabsFetch(loginData[0].username,loginData[0].password);
+    await accountGoalsFetch(loginData[0].username,loginData[0].password);
+    await marketInventoriesFetch(loginData[0].username,loginData[0].password);
+    await reportFetch(loginData[0].username,loginData[0].xx);
 };
 
 const loginDataFetch = async () => {
@@ -160,6 +162,7 @@ const eventsFetch = async(username,password,nonSales) => {
     try{
     let tasks = await readAllData('taskSync');
     let cases = await readAllData('caseSync');
+    //console.dir(cases,"::::::::::::::::::::TTTTTTTTTTT:::::::::::::");
     let res = await fetch('/eventList',{
         method : 'POST',
         headers : {
@@ -205,11 +208,13 @@ const eventsFetch = async(username,password,nonSales) => {
             await clearAllData('caseSync');
             console.log(resJson.issueList, ":::::::::::::::::::::::::::::KHATAl:::::::::::::::::::::::::::::");
             await writeDataAll('case',resJson.issueList);
-            localStorage.setItem('case',JSON.stringify(resJson.issueList))
+            //localStorage.setItem('case',JSON.stringify(resJson.issueList))
             //await writeDataAll('events.lapsedAccount',resJson.lapsedAcc);
             await clearAllData('events');// Check to only delete not modified data
             await writeDataAll('events',resJson.events);
             await writeDataAll('standardEvents',resJson.standardEvents);
+            await clearAllData('eventRecordTypes');
+            await writeDataAll('eventRecordTypes',resJson.eventRecordTypes);
         }
         
     }
@@ -250,7 +255,6 @@ const itemsFetch = async( username,password,syncDateTime,nonSales) => {
             }
             else{
                 
-                console.log('Item Master syncing complete');
                 // await clearAllData('itemMaster');// Check to only delete not modified data
                 let productActive = resJson.items.filter(ele => {
                     if(ele.Product__c){
@@ -279,6 +283,12 @@ const itemsFetch = async( username,password,syncDateTime,nonSales) => {
                 await writeData('utility',clustLiquidMapping);
                 await writeDataAll('itemMaster',productActive);
                 await writeDataAll('top5SKU',resJson.top5SKU);
+                await clearAllData('itemMasterCopy')
+                await writeDataAll('itemMasterCopy',resJson.masterItems)
+                await clearAllData('itemMasterRecordTypes')
+                await writeDataAll('itemMasterRecordTypes',resJson.itemMasterRecordTypes)
+
+                console.log('Item Master syncing complete');
             }
         }
         else{
@@ -288,6 +298,7 @@ const itemsFetch = async( username,password,syncDateTime,nonSales) => {
         showNotification({message : 'Items sync complete!'});
     }
     catch(err){
+        console.log("Issue in items sync======>")
         showNotification({message : 'Issue in syncing events.Pl contact System Adminstrator for more help!'});
         console.log(err);
     }
@@ -327,7 +338,8 @@ const itemImagesFetch = async (username,password,syncDateTime) => {
                 clearAll();
             }
             else{
-                await writeDataAll('itemMasterImages',resJson.images);
+                const imagewritesample=await writeDataAll('itemMasterImages',resJson.images);
+                console.log(`writeall item master`,imagewritesample)
             }
         }
         else{
@@ -342,6 +354,7 @@ const itemImagesFetch = async (username,password,syncDateTime) => {
     }
     
 };
+
 
 
 const reportFetch = async (username,password) => {
@@ -950,4 +963,253 @@ const parsingContentFiles = async (dataStr,contentVersionRecord) => {
     contentVersionRecord.VersionData  = dataStr;
     await writeData('sellingTools',contentVersionRecord);
     
+};
+
+
+/*** Recommendations */
+const fetchRecommendations=async(username,password)=>{
+
+    try{
+        let res = await fetch('/recommendations',{
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                username : username,
+                password : password,
+            })
+        });
+        if (res.ok) {
+            let data = await res.json();
+            const recommendations=(data?.recommendations ||[]);
+            await clearAllData('recommendations');
+            await writeDataAll('recommendations',recommendations);
+        } else {
+            console.error("Error: " + res.status);
+          }
+    }
+    catch(err){
+        console.log(err)
+    }
+   
+  
+}
+
+const fetchAllLiquids=async(username,password)=>{
+    try{
+        let res = await fetch('/liquid-layer',{
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                username : username,
+                password : password,
+            })
+        });
+        if (res.ok) {
+            let data = await res.json();
+            const liquids=(data?.liquidLayer ||[])
+            await writeDataAll('Liquid_Layer__c',liquids);
+        } else {
+            console.error("Error: " + res.status);
+          }
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+/*** Push Approved Recommendations/Promotions to sfdc*/
+const pushApprovedRecommendationObjects=async(username, password)=>{
+    try{
+
+        let promotions = await readAllData('activated_promotions');
+        console.log('active promotions')
+        console.log(promotions)
+        let recommendations= await readAllData('accepted_recommendations');
+        console.log('recommendations')
+        console.log(recommendations)
+        let items=[...promotions,...recommendations];
+        let res = await fetch('/sfdc/push-recommendations',{
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                username : username,
+                password : password,
+                items
+            })
+        });
+        if (res.ok) {
+            let data = await res.json();
+            await clearAllData('activated_promotions');
+            await clearAllData('accepted_recommendations');
+        } else {
+            console.error("Error: " + res.status);
+            await clearAllData('activated_promotions');
+            await clearAllData('accepted_recommendations');
+          }
+    }
+    catch(err){
+        await clearAllData('activated_promotions');
+        await clearAllData('accepted_recommendations');
+        console.log(err)
+    }
+}
+
+/**  Push Sample Parent and Sample Line Items to sfdc */
+const syncSamples=async(username, password)=>{
+
+    try{
+
+        console.log('Inside sync samples')
+        let items = await readAllData('Unsynced_Sample');
+        if(!items?.length){
+            console.log('no Sample items present to be processed')
+        }
+        else{
+            let res = await fetch('/sfdc/push-samples',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                    items
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                await clearAllData('Unsynced_Sample');
+                await clearAllData('Unsynced_Sample_Items');
+                console.log(data?.proccessedamples)
+            } else {
+                console.error("Error: " + res.status);
+                await clearAllData('Unsynced_Sample');
+                await clearAllData('Unsynced_Sample_Items');
+              }
+        }
+     
+    }
+    catch(err){
+        console.log(err)
+        await clearAllData('Unsynced_Sample');
+        await clearAllData('Unsynced_Sample_Items');
+    }
+
+}
+const payOutSlabsFetch = async(username,password) => {
+    try{
+    let slabs = await readAllData('payOutSlabs')
+    let res = await fetch('/salesOrderPayOut',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+            username : username,
+            password : password
+        })
+    });    
+    let resJson = await res.json();
+    console.log("Slabs Data====>",resJson)
+    if(resJson.isError){
+        console.log(resJson.isError);
+        // Add Notification method here
+    }
+    else if(resJson.isError===false){
+        if(!resJson.isAuth){
+            clearAll();
+        }
+        else{
+            console.log('Pay Out Slabs sync complete');
+            await clearAllData('payOutSlabs');
+            await writeDataAll('payOutSlabs',resJson.slabs);
+        }
+        
+    }
+    showNotification({message : 'PayOutSlabs sync complete!'});
+    }
+    catch(err){
+        showNotification({message : 'Issue in syncing events.Pl contact System Adminstrator for more help!'})
+        console.log(err);
+    }
+};
+
+const accountGoalsFetch = async(username,password) => {
+    try{
+    let goals = await readAllData('accountGoals')
+    let res = await fetch('/accountGoals',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+            username : username,
+            password : password
+        })
+    });
+    let resJson = await res.json();
+    if(resJson.isError){
+        console.log(resJson.isError);
+        // Add Notification method here
+    }
+    else if(resJson.isError===false){
+        if(!resJson.isAuth){
+            clearAll();
+        }
+        else{
+            console.log('Account Goals Sync Complete');
+            await clearAllData('accountGoals');
+            await writeDataAll('accountGoals',resJson.goals);
+        }
+        
+    }
+    showNotification({message : 'Account Goals sync complete!'});
+    }
+    catch(err){
+        showNotification({message : 'Issue in syncing events.Pl contact System Adminstrator for more help!'})
+        console.log(err);
+    }
+};
+
+const marketInventoriesFetch = async(username,password) => {
+    try{
+    let goals = await readAllData('marketInventory')
+    let res = await fetch('/distributorInventory',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+            username : username,
+            password : password
+        })
+    });
+    let resJson = await res.json();
+    if(resJson.isError){
+        console.log(resJson.isError);
+        // Add Notification method here
+    }
+    else if(resJson.isError===false){
+        if(!resJson.isAuth){
+            clearAll();
+        }
+        else{
+            console.log('Market Inventories Sync Complete');
+            await clearAllData('marketInventory');
+            await writeDataAll('marketInventory',resJson.data);
+        }
+        
+    }
+    showNotification({message : 'Market Inventories sync complete!'});
+    }
+    catch(err){
+        showNotification({message : 'Issue in syncing events.Pl contact System Adminstrator for more help!'})
+        console.log(err);
+    }
 };

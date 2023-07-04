@@ -1,0 +1,1 @@
+const posmAssets = ['signage','refrigerator','draft']

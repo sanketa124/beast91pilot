@@ -46,13 +46,13 @@
     font-style: normal;
     font-weight: 700;
     font-size: 15px;
-    color: #6600FF
+    color: #6600ff
 }
 
 .existingCountValue {
     
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 15px;
     color: #000
 }
@@ -72,58 +72,44 @@
     
     font-style: normal;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     color: #FFFFFF;
     margin-bottom: 0;
-    line-height: 23px;
 }
 
-.saveBtnTxt {
+/* .finishBtnTxt {
     
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 20px;
     color: #FFFFFF;
-    margin-bottom: 0;
-    line-height: 23px;
 }
 
-.saveBtn {
+.finishBtn {
     width: 92px;
     height: 35px;
-    background: #6600FF;
+    background: #255CBF;
     border-radius: 10px;
-    border-style: none;
-    justify-content: center;
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-}
-.previousBtnTxt {
-    width: 92px;
-    height: 35px;
-    border-radius: 10px;
-    border-style: none;
-    justify-content: center;
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.previousBtn {
-    width: 92px;
-    height: 35px;
-    background: #82A2DC;
-    border-radius: 10px;
-    border-style: none;
-}
+    border-style: solid;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    margin-right: 20px;
+    margin-bottom: 20px;
+} */
 
 .contactDetailsBorder {
     border: 1px solid rgba(0, 0, 0, 0.55);
     border-radius: 10px;
     margin-bottom: 10px;
     justify-content: center;
-    padding: 30px;
+    padding-top: 10px;
+}
+
+.infoIcon {
+    width: 20px;
+    height: 20px;
+    margin: 10px;
 }
 
 .hrColor {
@@ -131,23 +117,22 @@
 }
 
 .contactDetailsTxt {
+    
     font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    color: #212121;
-    margin-bottom: 0;
-    line-height: 23px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #242323;
 }
-.saveBtnPadding{
-    padding-left: 70px;
+
+.editIcon {
+    width: 15px;
+    height: 15px;
 }
-.bottomBtnDiv{
-    padding-top: 30px;
+.contacts-card{
+
 }
-.fieldPadding{
-    padding-bottom: 10px;
-}
-.borderStyle{
-    width:30px;
-    height:30px
+[class*="col-xs"]{
+    word-wrap: break-word;
+    padding: 0;
+    padding-left: 10px;
 }

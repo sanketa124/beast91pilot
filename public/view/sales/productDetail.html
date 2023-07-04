@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="img-src 'self' https://bira91--s4.sandbox.my.salesforce.com;">
     <title>BIRA91</title>
     <!--Manifest-->
     <link rel="manifest" href="/manifest.json">
@@ -95,7 +96,7 @@
                     <div class="example">
                     </div>
                     <figure>
-                        <img src="/media/prd.png" class="img-responsive" alt="prdimg">
+                        <img id="sell-sheet" src="https://bira91--s4.sandbox.my.salesforce.com/sfc/p/Bi000000CEdV/a/Bi0000002FJ7/Xc1zy.iqfl_.7GhqWOaWzo_bXLCvAP9oa5s_eZFERKw" class="img-responsive" alt="prdimg">
                     </figure>
                 </div>
             </div>
@@ -252,15 +253,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-    <script src="/view/globalJS/main.js"></script>
-    <script src="productDetail.js"></script>
+    <script src="../globalJS/main.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="/controller/indexedDB/idb.js"></script>
-    <script src="/controller/indexedDB/utility.js"></script>
-    <script src="/controller/sync/sync.js"></script>
-    <!-- <script src="/controller/homePage/homePage.js"></script> -->
-    <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="../../controller/indexedDB/idb.js"></script>
+    <script src="../../controller/indexedDB/utility.js"></script>
+    <script src="../../controller/sync/sync.js"></script>
+    <!-- <script src="../../controller/homePage/homePage.js"></script> -->
+    <script src="../../controller/globalJS/globalJS.js"></script>
+    <script src="../../controller/recommendations/sell-sheets.js"></script>
+    <script src="productDetail.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 

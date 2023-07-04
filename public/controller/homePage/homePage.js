@@ -1,4 +1,3 @@
-
 let dailyTracker = {};
 let mappingStandardEventIds = new Map();
 const fetchTodayVisit =async () => {

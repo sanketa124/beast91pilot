@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/view/globalCSS/bootstrap.min.css">
+    <link rel="stylesheet" href="../globalCSS/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
         integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
@@ -53,8 +53,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/view/globalCSS/inhousestyle.css" />
-    <link rel="stylesheet" href="sampleTasting.css" />
+    <link rel="stylesheet" href="../globalCSS/inhousestyle.css" />
+    <link rel="stylesheet" href="placeOrder.css" />
     <!--Front end imports-->
     <style>
         div.absolute {
@@ -80,12 +80,12 @@
                         <i data-toggle="modal" data-target="#cancelModal" class="fas fa-times"></i>
                     </div>
                     <div class="logoSection nav-logo text-left">
-                        <h3>Sample & Tasting</h3>
+                        <h3>Promotion</h3>
                     </div>
-                    <div class="arrowIcons">
-                        <a onclick="goBack()" class="leftArrow fas fa-chevron-left"></a>
-                        <a onclick="goForward()" class="rightArrow fas fa-chevron-right"></a>
-                    </div>
+                    <!-- <div class="arrowIcons">
+                        <a href="../sales/recomendation.html" class="leftArrow fas fa-chevron-left"></a>
+                        <a href="../sales/recomendation.html" class="rightArrow fas fa-chevron-right"></a>
+                    </div> -->
                 </header>
             </div>
         </nav>
@@ -94,102 +94,26 @@
                 <div class="col-md-12 dashboardSection">
                     <div class="example">
                     </div>
-                    <div class="row">
-                        <div class="col-xs-9">
-                            <h4>Sampling/ Tasting Required?</h4>
+                    <section id="feedback" class="mt-5">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label>Reason For not giving Sales Order</label>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <select class="form-control">
+                                        <option>one</option>
+                                        <option>two</option>
+                                        <option>three</option>
+                                        <option>four</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <button type="button" class="btn btnSubmit" onclick="submit()">Submit</button>
+                            </div>
                         </div>
-                        <div class="col-xs-3">
-                            <label style="margin-top: 7px;">
-                                <input class="defaultCheckBox" type="checkbox" id="sample-tasting-required" />
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="defaultTable mt-3">
-                        
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Liquid</th>
-                            <th>Pack Size</th>
-                            <th>Quantity</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr >
-                            <td id="liquidName"></td>
-                            <td id="packType"></td>
-                            <td><input type="text" class="form-control" id="sample-child-item-values-qty" /></td>
-                        </tr>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-xs-6">
-                    <select class="form-control" id="sampling-type"></select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-xs-6">
-                    <label >Liked ?</label>
-                </div>
-                <div class="col-xs-6">
-                    <label class="switch" >
-                        <input type="checkbox"  id="liked">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-xs-6">
-                    <label>Mouth Feel ?</label>
-                </div>
-                <div class="col-xs-6">
-                    <label class="switch">
-                        <input type="checkbox" id="mouth-feel">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-xs-6">
-                    <label>Bitterness ?</label>
-                </div>
-                <div class="col-xs-6">
-                    <label class="switch">
-                        <input type="checkbox" id="bitternes">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-xs-6">
-                    <label>Aroma ?</label>
-                </div>
-                <div class="col-xs-6">
-                    <label class="switch">
-                        <input type="checkbox" id="aroma">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-xs-6">
-                    <label>Any other Feedback ?</label>
-                </div>
-                <div class="col-xs-6">
-                    <input type="text" class="form-control" id="feedback">
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid mt-3" id="finishBtn" style="display: none;">
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <button class="btn finishBtn" onclick="submit()">Finish</button>
+                    </section>
                 </div>
             </div>
         </div>
@@ -199,66 +123,67 @@
         </div>
         <!-- Spinner for End Visit -->
 
-<!-- Footer Starts -->
-<ul class="bottom-nav mdl-layout--fixed-header">
-    <li class="nav-img">
-        <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
-    </li>
-    <li class="nav-img">
-        <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i
-                class="fas fa-users"></i><span>Visits</span></a>
-    </li>
-    <li class="nav-img">
-        <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
-    </li>
-    <li class="nav-img">
-        <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
-    </li>
-    <li class="nav-img">
-        <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
-    </li>
-    <li class="nav-img">
-        <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
-                class="fas fa-bars"></i><span>Menu</span></a>
-    </li>
-</ul>
+        <!-- Footer Starts -->
+         <!-- Footer Starts -->
+         <ul class="bottom-nav mdl-layout--fixed-header">
+            <li class="nav-img">
+                <a href="../homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="../dashboard/todaysVisits/todaysVisits.html"><i
+                        class="fas fa-users"></i><span>Visits</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;"><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="../objectives/posm/posm.html"><i class="fas fa-cocktail"></i><span>POSM</span></a>
+            </li>
+            <li class="nav-img">
+                <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                        class="fas fa-bars"></i><span>Menu</span></a>
+            </li>
+        </ul>
 
 
-<!--Script imported-->
-<!-- Start More menu options Modal -->
-<div id="moreMenu" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body text-center">
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
-                            Sheets</a></li>
-                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
-                            Marketing Inventory</a></li> -->
-                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                            Inventory</a></li>
-                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
-                    </li> -->
-                    <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
-                                class="fas fa-calendar-alt"></i>Calendar</a></li>
-                    <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
-                                class="fas fa-user-alt"></i>Accounts</a></li>
-                    <!-- <li class="list-group-item"><a href="javascript:;"><i
-                                class="fas fa-file-contract"></i>Reports</a></li>
-                    <li class="list-group-item"><a href="javascript:;"><i
-                                class="fas fa-crown"></i>Opportunities</a></li> -->
-                    <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
-                            data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-                    <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
-                                class="fas fa-sync"></i>Sync</a></li>
-                </ul>
+        <!--Script imported-->
+        <!-- Start More menu options Modal -->
+        <div id="moreMenu" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                                    Sheets</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+                                    Marketing Inventory</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
+                                    Inventory</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+                            </li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-calendar-alt"></i>Calendar</a></li>
+                            <li class="list-group-item"><a href="../accountList/accountListView.html"><i
+                                        class="fas fa-user-alt"></i>Accounts</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-file-contract"></i>Reports</a></li>
+                            <li class="list-group-item"><a href="javascript:;"><i
+                                        class="fas fa-crown"></i>Opportunities</a></li>
+                            <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                                    data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                            <li class="list-group-item"><a href="../../view/syncPage/loadingPage.html"><i
+                                        class="fas fa-sync"></i>Sync</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
         <!-- End More menu options Modal -->
         <!-- End Visit Modal -->
@@ -339,9 +264,28 @@
         </div>
     </div>
 
+    <!-- Placeorder Modal -->
+    <div id="placeOrderModal" class="modal cancel-modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5>Do you want to activate the Promotion?</h5>
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button"
+                        class="btn btn-success" onclick="submit()">Yes</button>
+                    <button type="button" class="btn btn-danger" onclick="cancel()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--Front End script-->
-    <script src="/view/globalJS/jquery-3.4.1.min.js"></script>
-    <script src="/view/globalJS/bootstrap.min.js"></script>
+    <script src="../globalJS/jquery-3.4.1.min.js"></script>
+    <script src="../globalJS/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
@@ -353,7 +297,7 @@
     <script src="../../controller/sync/sync.js"></script>
     <!-- <script src="../../controller/homePage/homePage.js"></script> -->
     <script src="../../controller/globalJS/globalJS.js"></script>
-    <script src="sampleTasting.js"></script>
+    <script src="confirm-promotion.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 

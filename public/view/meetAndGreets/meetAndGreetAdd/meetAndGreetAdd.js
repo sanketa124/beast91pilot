@@ -4,6 +4,7 @@ let currentContactSelection = {}
 let accountRec = {}
 let accountId = '';
 let contactId = '';
+
 onHandlePrevious = () => {
     window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`;
 }
@@ -18,20 +19,22 @@ const initializeMeetAndGreetPage = async () => {
     accountId = urlParams.get('accountId');
     contactId = urlParams.get('contactId');
     accountRec = await getItemFromStore('account', accountId);
-    contactRec = (accountRec.Contacts.records.filter(ele => {
-        return ele.Id === contactId;
-     }))[0];
-    
+    if (accountRec && accountRec.Contacts && accountRec.Contacts.records) {
+        contactRec = accountRec.Contacts.records.filter(ele => {
+            return ele.Id === contactId;
+        })[0]
+
+    }
     currentContactSelection = contactRec
     populateContactModal()
 };
 
 const populateContactModal = () => {
     $('#contactTitle').prop('value', currentContactSelection.Salutation ? currentContactSelection.Salutation : "");
-    $('#contactFirstName').prop('value', currentContactSelection.FirstName ? currentContactSelection.FirstName : null);
-    $('#contactLastName').prop('value', currentContactSelection.LastName ? currentContactSelection.LastName : null);
-    $('#contactPhone').prop('value', currentContactSelection.Phone ? currentContactSelection.Phone : null);
-    $('#contactEmail').prop('value', currentContactSelection.Email ? currentContactSelection.Email : null);
+    $('#contactFirstName').prop('value', currentContactSelection.FirstName ? currentContactSelection.FirstName : "");
+    $('#contactLastName').prop('value', currentContactSelection.LastName ? currentContactSelection.LastName : "");
+    $('#contactPhone').prop('value', currentContactSelection.Phone ? currentContactSelection.Phone : "");
+    $('#contactEmail').prop('value', currentContactSelection.Email ? currentContactSelection.Email : "");
     $('#contactRole').prop('value', currentContactSelection.Role__c ? currentContactSelection.Role__c : "");
     $('#flexCheckChecked').prop('value', currentContactSelection.Active__c ? currentContactSelection.Active__c : "");
 };
@@ -54,7 +57,7 @@ const handleMeetSaveContact = () => {
     const contactEmail = $('#contactEmail').val()
     const contactRole = $('#contactRole').val();
     var isActive = $("#flexCheckChecked").is(":checked");
-    if(!contactId){
+    if (!contactId) {
         contactRec = {}
     }
     contactRec["Salutation"] = contactTitle;
@@ -64,13 +67,15 @@ const handleMeetSaveContact = () => {
     contactRec["Phone"] = contactPhone;
     contactRec["Email"] = contactEmail;
     contactRec["Active__c"] = isActive;
-    
-    if (contactId) {
-        handleUpdateSubmitContact()
+    console.log(contactTitle)
+    if (contactTitle && contactFirstName  && contactLastName && contactRole ){
+        if (contactId) {
+            handleUpdateSubmitContact()
     } else {
         handleNewSaveSubmitContact()
+    }}else{
+        alert('Please enter the required details')
     }
-
 };
 
 const handleUpdateSubmitContact = async () => {
@@ -79,7 +84,14 @@ const handleUpdateSubmitContact = async () => {
     let index = accountRec.Contacts.records.findIndex(ele => ele.Id===contactId);
     accountRec.Contacts.records.splice(index,1,contactRec);
     await writeData('account',accountRec);
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+    let urlParams = new URLSearchParams(window.location.search);
+    const enroll = urlParams.get('enroll');
+    if(enroll == 'true'){
+        window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
+    }else{
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+    }
+    
 };
 
 const handleNewSaveSubmitContact = async () => {
@@ -88,9 +100,21 @@ const handleNewSaveSubmitContact = async () => {
     contactRec['newContact'] = true;
     await writeData('contact', contactRec);
     await writeData('contactsync', contactRec);
-    accountRec.Contacts.records.push(contactRec);
+    if (accountRec && accountRec.Contacts && accountRec.Contacts.records) {
+        accountRec.Contacts.records.push(contactRec);
+    } else {
+        accountRec.Contacts = []
+        accountRec.Contacts.records = []
+        accountRec.Contacts.records.push(contactRec);
+    }
     await writeData('account', accountRec);
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+    let urlParams = new URLSearchParams(window.location.search);
+    const enroll = urlParams.get('enroll');
+    if(enroll == 'true'){
+        window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
+    }else{
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+    }
 };
 
 initializeMeetAndGreetPage()

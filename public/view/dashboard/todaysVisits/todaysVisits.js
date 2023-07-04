@@ -26,7 +26,6 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     progressPercentage +
     '%) </span>';
   for (let i of todaysVisit) {
-    console.log(todaysVisit, 'todaysVisit')
     let VisitDate;
     if (i.Recent_Activity_Date_Time__c) {
       VisitDate = new Date(i.Recent_Activity_Date_Time__c)

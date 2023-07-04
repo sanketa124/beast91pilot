@@ -1,90 +1,179 @@
 const issueList = document.querySelector('.issueList');
-
+const newIssueList = document.querySelector('#NewIssueContainer')
+console.log(newIssueList,"newIssueList");
+let count = 0;
 function addElement() {
-  const issues = document.querySelector('.form-control');
-  const datevalue = document.querySelector('.getdate');
-  const checkboxdata = document.querySelector('.checkboxValue');
-
-  //   Parent Div Items container
-  const ParentDiv = document.createElement('div');
-  ParentDiv.classList.add('content-wrapper');
-
-  const IssueTypeDiv = document.createElement('div');
-  const SettlementDateDiv = document.createElement('div');
-  const ResolvedDiv = document.createElement('div');
-
-  IssueTypeDiv.innerText = 'My Issue';
-  SettlementDateDiv.innerText = '2022-03-07';
-  ResolvedDiv.innerHTML = '<input type="checkbox" value="true">';
-
-  IssueTypeDiv.classList.add('content-wrapper-primary-inside');
-  SettlementDateDiv.classList.add('content-wrapper-primary-inside');
-  ResolvedDiv.classList.add('content-wrapper-secondary-inside');
-
-  ParentDiv.appendChild(IssueTypeDiv);
-  ParentDiv.appendChild(SettlementDateDiv);
-  ParentDiv.appendChild(ResolvedDiv);
-
-  //   Add Parent Div into Page Layout content
-  issueList.appendChild(ParentDiv);
+  count = count + 1;
+  $('#no_issues_container').hide()
+  newIssueList.innerHTML +=`<div class="add-issues content-wrapper">
+                    <div class="content-wrapper-primary-inside">
+                        <select class="form-control" id="issue_type_${count}">
+                            <option>select issue type</option>
+                            <option>POSM/ Asset Delivery Pending</option>
+                            <option>Pending Settlement</option>
+                            <option>Require Reconciliation of Accounts</option>
+                        </select>
+                    </div>
+                    <div class="getdate content-wrapper-primary-inside">
+                        <input class="date-picker" type="date" id="issue_date_${count}">
+                    </div>
+                    <div class="checkboxValue content-wrapper-secondary-inside"><input class="defaultCheckBox" id="is_resolved_${count}" type="checkbox" value="${count}">
+                    </div>
+                  </div>`
 }
 
-//../followUp/followUpPage.html
 const IntializeIssues = async () => {
-  
   const issueContainer = document.querySelector('#issueContainer');
-  var issues =  await readAllData('case')
-  //var issues = localStorage.getItem('case');
-  //issues = JSON.parse(issues)
-  // let issues1 = localStorage.getItem('case');
-  // issues1 = JSON.parse(issues1)
-  // let issues2 = await readAllData('case')
-  // let issues = [{...issues1}, ...issues2]
-  // console.log(issues,"::::::::::::::::>>>>>>>>>>>>>>>>>>>>");
-  // console.log(issues,"issues");
-  issues.map(issue => {
-    issueContainer.innerHTML += `<div class="content-wrapper">
-    <div class="content-wrapper-primary-inside">${issue.Issue_Type__c}</div>
-    <div class="content-wrapper-primary-inside">${issue.Settlement_Date__c}</div>
-    <div class="content-wrapper-secondary-inside"><input type="checkbox" class="defaultCheckBox" value="true"></div>
-</div>`
-  })
+  const accountId = localStorage.getItem('accountId');
+  let issues =  await readAllData('case')
+  if(issues.length > 0){
+      $('#no_issues_container').hide()
+      issues = issues.filter(issue => issue.AccountId == accountId);
+      issues.map(issue => {
+        issueContainer.innerHTML += `<div class="content-wrapper">
+        <div class="content-wrapper-primary-inside">${issue.Issue_Type__c}</div>
+        <div class="content-wrapper-primary-inside">${issue.Settlement_Date__c}</div>
+        <div class="content-wrapper-secondary-inside"><input type="checkbox" id="is_resolved_${issue.Id}" class="defaultCheckBox" value="${issue.Id}"></div>
+    </div>`
+    })
+  }else{
+    $('#no_issues_container').show()
+  }
 };
-IntializeIssues()
+IntializeIssues() 
 
 const createIssues = async () => {
+  let resolvedIssues = [];
+  let un_resolvedIssues = [];
+  let updated_issue = []
+  let new_issues;
+  let prev_issues = await readAllData('case')
   let urlParams = new URLSearchParams(window.location.search);
-  const accountId = urlParams.get('accountId');
-  let issue_date = $('#issue_date').val()
-  let issue_type = $('#issue_type').val()
+  const accountId = localStorage.getItem('accountId');
+
   let eventId = localStorage.getItem('eventId')
-  //let date = $().val()
-  //var issuesList = await readAllData('case')
-  let issues = await readAllData('case')
-  // let issues1 = localStorage.getItem('case');
-  // issues1 = JSON.parse(issues1)
-  // console.log("::::::::::::::issues1::::::::::::::::",issues1);
-  // let issues2 = await readAllData('case')
-  // let issues = [{...issues1}, ...issues2]
-  // console.log(issues,"::::::::::::::::>>>>>>>>>>>>>>>>>>>>");
+  prev_issues = prev_issues.filter(issue => issue.AccountId == accountId);
+  $(":checkbox:checked").each(function() {
+    resolvedIssues.push(this.value);
+  });
+  $(":checkbox:not(:checked)").each(function() {
+    un_resolvedIssues.push(this.value);
+  });
   
-  issues = {
-    ...issues,
-    Id:`${new Date().getTime()}`,
-    AccountId:accountId,
-    Event__c: eventId,
-    Issue_Resolved__c:true,
-    Settlement_Date__c: issue_date,
-    Issue_Type__c: issue_type
-    //isSynced: false,
-};
-  //let result = [{...issues}, ...issuesList]
-  //localStorage.setItem('cases',JSON.stringify(issues))
-  console.log(issues,"ppppppppppppppppp");
-  await writeData('case', issues);
-  await writeData('caseSync', issues);
-  console.log(issues, "issue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_dateissue_date");
   
+  
+  if(resolvedIssues.length > 0){
+    for (resIssue of resolvedIssues){
+      let issue_date = $(`#issue_date_${resIssue}`).val()
+      let issue_type = $(`#issue_type_${resIssue}`).val()
+      if(prev_issues.length > 0){
+        for(issue of prev_issues){
+          if(resIssue == issue.Id ){
+            let obj = {
+              Id:issue.Id,
+              AccountId:issue.AccountId,
+              Event__c: issue.Event__c,
+              Issue_Resolved__c:issue.Issue_Resolved__c,
+              Settlement_Date__c: issue.Settlement_Date__c,
+              Issue_Type__c: issue.Issue_Type__c,
+              Issue_Resolved__c: true,
+              Origin:'Sales Rep Visit'
+            }
+            updated_issue.push(obj)
+          }else{
+            if(issue_date && issue_type ){
+              new_issues = {
+                Id:`${new Date().getTime()}${resIssue}`,
+                Unique_Identifier__c:`${new Date().getTime()}${resIssue}`,
+                AccountId:accountId,
+                Event__c: eventId,
+                Settlement_Date__c: issue_date,
+                Issue_Type__c: issue_type,
+                Issue_Resolved__c: true,
+                Origin:'Sales Rep Visit'
+              }
+              updated_issue.push(new_issues)
+            }
+          }
+        }
+      }else{
+        new_issues = {
+          Id:`${new Date().getTime()}${resIssue}`,
+          Unique_Identifier__c:`${new Date().getTime()}`,
+          AccountId:accountId,
+          Event__c: eventId,
+          Issue_Resolved__c:true,
+          Settlement_Date__c: issue_date,
+          Issue_Type__c: issue_type,
+          Origin:'Sales Rep Visit'
+        }
+        updated_issue.push(new_issues)
+         
+      }
+    }
+
+  }
+
+  if(un_resolvedIssues.length > 0){
+    console.log("UnResolved !!");
+    for (resIssue of un_resolvedIssues){
+      let issue_date = $(`#issue_date_${resIssue}`).val()
+      let issue_type = $(`#issue_type_${resIssue}`).val()
+      if(prev_issues.length > 0){
+        for(issue of prev_issues){
+          if(resIssue == issue.Id ){
+            let obj = {
+              Id:issue.Id,
+              AccountId:issue.AccountId,
+              Event__c: issue.Event__c,
+              Issue_Resolved__c:issue.Issue_Resolved__c,
+              Settlement_Date__c: issue.Settlement_Date__c,
+              Issue_Type__c: issue.Issue_Type__c,
+              Issue_Resolved__c: false,
+              Origin:'Sales Rep Visit'
+            }
+            updated_issue.push(obj)
+          }else{
+            if(issue_date && issue_type ){
+              new_issues = {
+                Id:`${new Date().getTime()}${resIssue}`,
+                Unique_Identifier__c:`${new Date().getTime()}${resIssue}`,
+                AccountId:accountId,
+                Event__c: eventId,
+                Settlement_Date__c: issue_date,
+                Issue_Type__c: issue_type,
+                Issue_Resolved__c: false,
+                Origin:'Sales Rep Visit'
+              }
+              updated_issue.push(new_issues)
+            }
+          }
+        }
+      }else{
+        console.log("HERE I GO",resIssue);
+        if(issue_date && issue_type ){
+          new_issues = {
+            Id:`${new Date().getTime()}${resIssue}`,
+            Unique_Identifier__c:`${new Date().getTime()}${resIssue}`,
+            AccountId:accountId,
+            Event__c: eventId,
+            Settlement_Date__c: issue_date,
+            Issue_Type__c: issue_type,
+            Issue_Resolved__c: false,
+            Origin:'Sales Rep Visit'
+          }
+        }
+        updated_issue.push(new_issues)
+      }
+    }
+  }
+
+
+  console.log("Updated Issues===>",updated_issue);
+  await clearAllData('caseSync'); 
+  //await clearAllData('case'); 
+  await writeDataAll('case', updated_issue);
+  await writeDataAll('caseSync', updated_issue);
   window.location.href = `/view/followUp/followUpPage.html?accountId=${accountId}`
 }
 

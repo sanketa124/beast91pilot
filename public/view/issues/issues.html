@@ -99,22 +99,12 @@
                 <div class="content-wrapper-primary-inside">Settlement Date</div>
                 <div class="content-wrapper-secondary-inside">Resolved</div>
             </div>
-            <div id="issueContainer"></div>
+            <div id="issueContainer">
+                <div id="no_issues_container"> No issues found !!</div>
+            </div>
         </div>
-        <div class="add-issues content-wrapper">
-            <div class="content-wrapper-primary-inside">
-                <select class="form-control" id="issue_type">
-                    <option>select issue type</option>
-                    <option>POSM/ Asset Delivery Pending</option>
-                    <option>Pending Settlement</option>
-                    <option>Require Reconciliation of Accounts</option>
-                </select>
-            </div>
-            <div class="getdate content-wrapper-primary-inside">
-                <input class="date-picker" type="date" id="issue_date">
-            </div>
-            <div class="checkboxValue content-wrapper-secondary-inside"><input class="defaultCheckBox" type="checkbox" value="">
-            </div>
+        <div id="NewIssueContainer">
+            
         </div>
         <div class="add-button-wrapper">
             <button onclick="addElement()" type="button" class="btn btn-custom-style">

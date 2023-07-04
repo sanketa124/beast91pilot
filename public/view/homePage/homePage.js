@@ -26,10 +26,7 @@ slickSlider = () => {
       }
     ]
     });
-  };
-  
-  
-  
+  };  
   let accounts =[];
   var graphValue;
   
@@ -151,7 +148,7 @@ slickSlider = () => {
     window.location = reportDataFetch['loginUrl']+'00O2w000001wlSE';
   };
   
-showSliderData = (targetnAchieved) => {
+showSliderData = async (targetnAchieved) => {
     console.log('targetnAchieved',targetnAchieved)
       let tmp = '';
       if (targetnAchieved) {
@@ -231,7 +228,13 @@ showSliderData = (targetnAchieved) => {
   
           slickSlider();
           showMeterGrapg();
+          const tasks = await readAllData('taskOriginal');
+          const NBA = JSON.parse(localStorage.getItem('NBA'));
+          const lapsedAcc = JSON.parse(localStorage.getItem('lapsedAccount'))
 
+          tasks?.length > 0 ? $("#followupTasks").html('('+tasks?.length+')') :  $("#followupTasks").html('('+0+')')
+          lapsedAcc?.records?.length > 0 ? $("#lapsedAccounts").html('('+lapsedAcc?.records?.length+')') : $("#lapsedAccounts").html('('+0+')');
+          NBA?.records?.length > 0 ? $("#neverbilledAccounts").html('('+NBA?.records?.length+')') : $("#neverbilledAccounts").html('('+0+')')
       }
     
       
@@ -240,9 +243,12 @@ showSliderData = (targetnAchieved) => {
     
   
     showTodaysVisit = (todaysVisit,currentCheckIn) => {
+        console.log(todaysVisit, 'todaysVisit')
         var tmp = '';
         $('#todays-visit').html('');
         for (var i = 0; i < todaysVisit.length; i++) {
+            $("#todayVisits").html('('+todaysVisit?.length+')')
+
             
             tmp += '<li data-accountId='+todaysVisit[i].Id+' onclick=handleAccountClicked(this)>';
             tmp += '    <div class="main-head">';
@@ -395,7 +401,9 @@ showSliderData = (targetnAchieved) => {
             tmp += '    </div>';
             tmp += '</li>';
         }
-        if (todaysVisit.length == 0) {
+        if (todaysVisit?.length == 0) {
+            $("#todayVisits").html('('+0+')')
+
             tmp += '<li>';
             tmp += '<p class="text-center alert"> No Visits for Today</p>';
             tmp += '</li>';
@@ -406,6 +414,9 @@ showSliderData = (targetnAchieved) => {
     
  
     showTodaysVisit = (todaysVisit,currentCheckIn) => {
+
+        todaysVisit?.length > 0 ? $("#todayVisits").html('('+todaysVisit?.length+')') :  $("#todayVisits").html('('+0+')')
+       
         var tmp = '';
         $('#todays-visit').html('');
         for (var i = 0; i < todaysVisit.length; i++) {
@@ -994,9 +1005,12 @@ const handlePreInstallApproval = (ele) =>{
     let isValid = true;    
     
     $('#todaysVisits').empty();
+
     if(tasks.length>0){
+       // $("#todayVisits").html('('+tasks.length+')')
+
         for (let ele of tasks){
-        
+            
             if(ele.OwnerId === loginData[0].Id){
             let accountRec = await getItemFromStore('account',ele.WhatId);
             
@@ -1018,6 +1032,8 @@ const handlePreInstallApproval = (ele) =>{
           </div>`;
             }
         }
+    }else{
+         //$("#todayVisits").html('('+0+')')
     }
     
 

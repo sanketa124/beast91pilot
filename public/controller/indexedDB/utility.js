@@ -156,8 +156,63 @@ var dbPromise = idb.open('bira91', 2, function (db) {
   if (!db.objectStoreNames.contains('top5SKU')) {
     db.createObjectStore('top5SKU', { keyPath: 'Id' });
   }
+  
   if (!db.objectStoreNames.contains('stockOutlet')) {
     db.createObjectStore('stockOutlet', { keyPath: 'App_Id' });
+  }
+
+   /** Recommendations */
+   if (!db.objectStoreNames.contains('recommendations')) {
+    /** Both recommendations and Promotions are store in the same schema in SDFC, Recommendation__c */
+    db.createObjectStore('recommendations', { keyPath: 'Id' });
+  }
+  if (!db.objectStoreNames.contains('Unsynced_Sample')) 
+    /** To store Parent  that has been created for an account,event and item(Master).Schema to push items to salesforce */
+    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */{
+    const objectStoreEvent = db.createObjectStore('Unsynced_Sample', { keyPath: 'sampleTag' });
+    objectStoreEvent.createIndex('primaryIndex', 'sampleTag', { unique: true });
+  }
+  if (!db.objectStoreNames.contains('Unsynced_Sample_Items')) {
+    /** To store Sample Line Item that has been created for an account,event and item(Master).Schema to push items to salesforce */
+    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */
+
+    /** Note : Parent Samples are pushed to SFDc-> Id is retrieved Each Sample parent -> populate this field in child Sample Item */
+    const objectStoreEvent = db.createObjectStore('Unsynced_Sample_Items', { keyPath: 'sampleTag' });
+    objectStoreEvent.createIndex('primaryIndex', 'sampleTag', { unique: false });
+  }
+
+  if (!db.objectStoreNames.contains('accepted_recommendations')) {
+    /** Store Recommendations that have been accepted by a store and needs to be pushed to sfdc */
+    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */
+    const objectStoreEvent = db.createObjectStore('accepted_recommendations', { keyPath: 'Id' });
+    objectStoreEvent.createIndex('primaryIndex', 'Id', { unique: false });
+  }
+  
+  if (!db.objectStoreNames.contains('activated_promotions')) {
+    /** Store Promotions that have been applied to a store and needs to be pushed to sfdc */
+    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */
+    const objectStoreEvent = db.createObjectStore('activated_promotions', { keyPath: 'Id' });
+    objectStoreEvent.createIndex('primaryIndex', 'Id', { unique: false });
+  }
+
+  
+  if (!db.objectStoreNames.contains('payOutSlabs')) {
+    db.createObjectStore('payOutSlabs', { keyPath: 'Id' });
+  }
+  if (!db.objectStoreNames.contains('accountGoals')) {
+    db.createObjectStore('accountGoals', { keyPath: 'Id' });
+  }
+  if (!db.objectStoreNames.contains('marketInventory')) {
+    db.createObjectStore('marketInventory', { keyPath: 'Id' });
+  }
+  if (!db.objectStoreNames.contains('itemMasterCopy')) {
+    db.createObjectStore('itemMasterCopy', { keyPath: 'Id' });
+  }
+  if (!db.objectStoreNames.contains('itemMasterRecordTypes')) {
+    db.createObjectStore('itemMasterRecordTypes', { keyPath: 'recordTypeId' });
+  }
+  if (!db.objectStoreNames.contains('eventRecordTypes')) {
+    db.createObjectStore('eventRecordTypes', { keyPath: 'recordTypeId' });
   }
 });
 
@@ -178,9 +233,9 @@ function writeDataAll(st, data) {
     .then((db) => {
       var tx = db.transaction(st, 'readwrite');
       var store = tx.objectStore(st);
-      for (let i of data) {
-        store.put(i);
-      }
+        for (let i of data) {
+          store.put(i);
+        }
       return tx.complete;
     });
 }
@@ -193,6 +248,17 @@ function readAllData(st) {
       return store.getAll();
     });
 }
+
+//TODO: Modify this to query based on specific fields
+async function filterDbData(st, filters) {
+  return dbPromise
+  .then(function (db) {
+    var tx = db.transaction(st, 'readonly');
+    var store = tx.objectStore(st);
+    return store.getAll();
+  });
+}
+
 
 	
 const openCursorForStore = async(st,key) =>{
@@ -368,4 +434,5 @@ if (!(location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
     location.replace(`https:${location.href.substring(location.protocol.length)}`);
   }
 }
+
 

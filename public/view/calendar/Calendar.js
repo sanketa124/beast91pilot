@@ -21,7 +21,7 @@ const initializeCalenderData = async() => {
     masterEvents = events;
     masterTasks= tasks;
     masterMeeting = meeting;
-    calendarPanel.innerHTML = '';
+    calendarPanel.innerHTML = 'No data Found';
     let calenderData = [];
     for(let ele of events){
         let accountDetail = await getItemFromStore('account',ele.Account__c);

@@ -94,142 +94,11 @@
                 <div class="col-md-12 dashboardSection">
                     <div class="example">
                     </div>
-
+                    <div id="new-outlet-recommendations"></div>
+                    <div id="existing-product-recommendation"></div>
+                    <div id="promotions"></div>
                     <div class="linkSec">
-                        <a href="">new outlet activation</a>
-                        <div class="row" onclick="gotoDetail()">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 1</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 2</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 3</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 4</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="linkSec">
-                        <a href="">Product recomendation</a>
-                        <div class="row" onclick="gotoDetail('noExternal')">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 1</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 2</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 3</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>SKU 4</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="linkSec">
-                        <a href="">increase velocity</a>
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>Promotion 1</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="linkSec">
-                        <div class="row">
-                            <div class="col-xs-9">
-                                <div class="boxLink">
-                                    <h4>Promotion 2</h4>
-                                    <p>Reason for Recommendation</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <i class="fa fa-external-link"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="linkSec">
-                        <a href="">enroll for allstars</a>
+                        <a  onclick="gotoEnrollPage()">enroll for allstars</a>
                     </div>
 
                     <div class="linkSec">
@@ -390,15 +259,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
-    <script src="/view/globalJS/main.js"></script>
-    <script src="recomendation.js"></script>
+    <script src="../globalJS/main.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="/controller/indexedDB/idb.js"></script>
-    <script src="/controller/indexedDB/utility.js"></script>
-    <script src="/controller/sync/sync.js"></script>
-    <!-- <script src="/controller/homePage/homePage.js"></script> -->
-    <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="../../controller/indexedDB/idb.js"></script>
+    <script src="../../controller/indexedDB/utility.js"></script>
+    <script src="../../controller/sync/sync.js"></script>
+    <!-- <script src="../../controller/homePage/homePage.js"></script> -->
+    <script src="../../controller/globalJS/globalJS.js"></script>
+    <script src="recomendation.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 
