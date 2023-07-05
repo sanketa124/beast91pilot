@@ -7,7 +7,8 @@ exports.fetchAllRecommendations=async(req,res,next)=>{
           FROM Recommendation__c
           WHERE Start_Date__c <= TODAY AND End_Date__c >= TODAY
         `).execute();
-        res.status(200).json({isError : false,isAuth : true,recommendations:recommendations?.records||[]});
+        let result= recommendations && recommendations.records? recommendations.records:[]
+        res.status(200).json({isError : false,isAuth : true,recommendations:result});
     }catch(err){
         console.log(err)
         res.status(500).json({isError : true,isAuth :true,message : err});
@@ -31,7 +32,10 @@ exports.processSamples=async(req,res,next) =>{
         const promises = batch.map(async (sample,index) => {
           const { sampleTag, children, ...payload } = sample;
           const parentSample=await conn.sobject(`${SFDC_PARENT_SAMPLE}`).create(payload)
-          const id= parentSample?.id
+          let id='' ;
+          if(parentSample && parentSample.id){
+            id= parentSample.id
+          }
           const updatedChildren = children.map(({ sampleTag, ...childWithoutSampleTag }) => ({
             ...childWithoutSampleTag,
             Product_Pre_Sales_Sampling__c:id
@@ -68,14 +72,13 @@ exports.processAcceptedRecommnedations=async (req,res,next)=>{
   const {items}=req.body
   try {
       const filteredItems= items.filter((item)=>{
-        return item?.Id && item?.Accepted_Date__c && (item.hasOwnProperty('Is_Accepted__c') && typeof item['Is_Accepted__c'] === "boolean")
+        const condition=item && item.Accepted_Date__c && item.Id
+        return condition && (item.hasOwnProperty('Is_Accepted__c') && typeof item['Is_Accepted__c'] === "boolean")
       }).map((item)=>{
         const  {Id,Accepted_Date__c,Is_Accepted__c}=item
         return {Id,Accepted_Date__c,Is_Accepted__c}
       })
-      console.log('filtered Items')
-      console.log(filteredItems)
-      if(filteredItems?.length){
+      if(filteredItems && filteredItems.length){
         const result=await conn.sobject('Recommendation__c').update(filteredItems);
         console.log('update recommendation result')
         console.log(result)

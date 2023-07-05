@@ -23,10 +23,13 @@ if(!(accountId && eventId && recommendationId)){
         window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
        }
 
-        const sellSheetUrl=await fetchSellSheets(`${liquidName}`);
+        const sellSheetUrl=await fetchSellSheets('boom');
         if(sellSheetUrl){
-            const sellSheetImg = document.getElementById('sell-sheet');
-            sellSheetImg.src =sellSheetUrl
+         
+           // const sellSheetImg = document.getElementById('sell-sheet');
+            //sellSheetImg.src =sellSheetUrl
+            console.log(sellSheetUrl, 'sellSheetImg');
+            $("#sell-sheet").attr("src",sellSheetUrl);
         }
         
        
@@ -58,27 +61,27 @@ if(!(accountId && eventId && recommendationId)){
 
 
 goBack = () => {
-//   let urlParams = new URLSearchParams(window.location.search);
-//   const accountId = urlParams.get('accountId');
-  window.location.href = `/view/sales/recomendation.html`
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
 }
 
 goForward =async () => {
-//   let urlParams = new URLSearchParams(window.location.search);
-//   const accountId = urlParams.get('accountId');
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
 
 /*** Navigate to Sample and Tasting only if the recommendation is for a new outlet and the outlet channel is "On-Premise" */
 const recommendation=await getItemFromStore(`recommendations`,recommendationId);
 if(!recommendation){
-  window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
+  window.location.href=`/view/dashboard/todaysVisits/todaysVisits.html`
 }
 const channel=recommendation?.Outlet_Name__r?.Channel__c
 const newOrExistingStore= recommendation?.New_or_Existing__c
 console.log('New Or Exiting',newOrExistingStore)
 if(channel==='On-Premise' && newOrExistingStore==='New'){
-  window.location.href = `/view/sales/sampleTasting.html`
+  window.location.href = `/view/sales/sampleTasting.html?accountId=${accountId}`
 }
 else{
-  window.location.href=`/view/sales/placeOrder.html`
+  window.location.href=`/view/sales/placeOrder.html?accountId=${accountId}`
 }
 }

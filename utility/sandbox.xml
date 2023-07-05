@@ -21826,7 +21826,7 @@ All Rights Reserved
                         <element name="SKU__c" nillable="true" minOccurs="0" type="xsd:string"/>
                         <element name="Stock_Visibility_Survey__c" nillable="true" minOccurs="0" type="tns:ID"/>
                         <element name="Stock_Visibility_Survey__r" nillable="true" minOccurs="0" type="ens:Stock_Visibility_Survey__c"/>
-                        <element name="Stock_at_Risk__c" nillable="true" minOccurs="0" type="xsd:double"/>
+                        <element name="Stock_at_Risk__c" nillable="true" minOccurs="0" type="xsd:int"/>
                         <element name="SystemModstamp" nillable="true" minOccurs="0" type="xsd:dateTime"/>
                         <element name="TaskRelations" nillable="true" minOccurs="0" type="tns:QueryResult"/>
                         <element name="Tasks" nillable="true" minOccurs="0" type="tns:QueryResult"/>

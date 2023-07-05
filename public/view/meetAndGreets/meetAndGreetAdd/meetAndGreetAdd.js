@@ -18,6 +18,13 @@ const initializeMeetAndGreetPage = async () => {
     let urlParams = new URLSearchParams(window.location.search);
     accountId = urlParams.get('accountId');
     contactId = urlParams.get('contactId');
+    const individual = urlParams.get('individual')
+    if(individual == 'true'){
+      $('#closeIco').hide();
+      $('.arrowIcons').hide();
+      $('.logoSection').css('width','93%')
+    }
+
     accountRec = await getItemFromStore('account', accountId);
     if (accountRec && accountRec.Contacts && accountRec.Contacts.records) {
         contactRec = accountRec.Contacts.records.filter(ele => {
@@ -86,9 +93,13 @@ const handleUpdateSubmitContact = async () => {
     await writeData('account',accountRec);
     let urlParams = new URLSearchParams(window.location.search);
     const enroll = urlParams.get('enroll');
+    const individual = urlParams.get('individual')
     if(enroll == 'true'){
         window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
-    }else{
+    }else if(individual == 'true'){
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`
+    }
+    else{
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
     }
     
@@ -110,8 +121,12 @@ const handleNewSaveSubmitContact = async () => {
     await writeData('account', accountRec);
     let urlParams = new URLSearchParams(window.location.search);
     const enroll = urlParams.get('enroll');
+    const individual = urlParams.get('individual')
+
     if(enroll == 'true'){
         window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
+    }else if(individual == 'true'){
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`
     }else{
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
     }

@@ -445,7 +445,7 @@ exports.itemImagesFetch = async (req, res) => {
 
         require('../utility/sfSoapHelper').fetchContentVersion(req, contentVersionIds, (arr) => {
             let itemImagesList = [];
-            if (arr) {
+            if (arr && arr.result) {
                 arr.result.forEach(ele => {
                     if (itemIdWithContentId.has(ele.Id)) {
                         itemImagesList.push({
@@ -496,6 +496,8 @@ exports.objectiveSync = async (req, res) => {
             }
             return ele;
         });
+        const imageBody = stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0]?.stock_at_risk_images;
+        // console.log('stockVisibilites',stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0])
         let body = {
             User_Name: req.body.username,
             stockVisibilites: JSON.stringify(stockVisibilites),
@@ -508,6 +510,10 @@ exports.objectiveSync = async (req, res) => {
             productPreSalesSamples: JSON.stringify(productSampling)
         };
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
+        if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0]?.stock_at_risk_images){
+            await postStockImages(req.conn, imageBody);
+        }
+        
         dealerWiseVisitInfoJSON = JSON.parse(dealerWiseVisitInfo);
 
         // Draft Pre Installation
@@ -780,6 +786,54 @@ const draftProcessesHelper = (req) => {
         i.App_Created_Date__c = formatDate(i.App_Created_Date__c);
     }
     return draftProcesses;
+};
+
+
+const postStockImages = async (conn,imageBody) => {
+    //console.log('imageBody',imageBody)
+    try {
+        let sfConnection = conn;
+        let table = 'ContentVersion';
+        let queryString = 'SELECT ';
+        let todayDate = new Date().toISOString().split('T')[0]
+
+        let sobjectDescribe = await sfConnection.sobject(table).describe();
+
+        const contentVersionData = imageBody;
+        
+        let createFile = await sfConnection.sobject('ContentVersion').create(contentVersionData)
+
+        console.log("CreateFile", createFile[0]?.errors)
+
+
+
+        let recordTypes = sobjectDescribe.recordTypeInfos
+
+        //console.log("SObject===>",sobjectDescribe.recordTypeInfos)
+
+        let columns = sobjectDescribe.fields.map((eachField) => {
+            return eachField.name
+        })
+        for (let column of columns) {
+            queryString += column + ',';
+        }
+        queryString = queryString.slice(0, -1); // remove trailing comma
+        queryString += ' FROM ' + table;
+        //queryString += ` WHERE Start_Date__c <= ${todayDate} AND End_Date__c >= ${todayDate} `;
+        let goals = await sfConnection.query(queryString);
+        //let sobjectUpsert = await sfConnection.upsert(table,goals.records[0],goals.records[0].Id)
+        //console.log("Upsert====>",sobjectUpsert)
+      //  return goals;
+       
+    }
+    catch (e) {
+        // console.log(e);
+        // res.status(500).json({isError : true,isAuth : true,message : e});
+        console.log(e);
+     //   res.status(500).json({ isError: true, isAuth: true, message: e });
+
+    }
+
 };
 
 exports.fetchDayWiseEventsAndTask = async (req, res) => {

@@ -12,9 +12,9 @@ const initializeFollowUps = async() => {
             <div class="row">
                 <div class="col-xs-8">
                     <h4 onclick="gotoAddTasks('${task?.Id}')">${task.Subject}</h4>
-                    <label>Account: <label>${task?.AccountName}</label></label>
+                    <label>Account: <span>${task?.AccountName}</span></label>
                     <label>Due Date: <span>${task?.ActivityDate}</span></label>
-                    <label>Priority: <label>${task?.Priority}</label></label>
+                    <label>Priority: <span>${task?.Priority}</span></label>
                 </div>
             </div>
             

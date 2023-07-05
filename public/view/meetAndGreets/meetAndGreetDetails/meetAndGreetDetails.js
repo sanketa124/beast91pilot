@@ -19,12 +19,12 @@
         if (ele.Active__c) {
             temp += '<div class="row contactDetailsBorder">'
             temp += '<div class="col-xs-1">'
-            temp += '<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>'
+            temp += '<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">'
             temp += ' </div>'
-            temp += '<div class="col-xs-1">'
-            temp += '<label class="contactDetailsTxt">' + ele.Salutation + '.</label>'
+            temp += '<div class="col-xs-2">'
+            temp += '<label class="contactDetailsTxt">' + ele.Salutation + '</label>'
             temp += ' </div>'
-            temp += '<div class="col-xs-4">'
+            temp += '<div class="col-xs-3">'
             temp += ' <label class="contactDetailsTxt">' + ele.FirstName + '</label>'
             temp += '</div>'
             temp += '<div class="col-xs-2">'
@@ -51,13 +51,23 @@ finalSubmit = () => {
 openAddMeetAndGreet = () => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}`;
+    const individual = urlParam.get('individual')
+    if(individual == 'true'){
+        window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&individual=true`;
+    }else{
+        window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}`;
+    }
 }
 
 onHandleEdit = (contactID) => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&contactId=${contactID}`;
+    const individual = urlParam.get('individual')
+    if(individual == 'true'){
+        window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&contactId=${contactID}&individual=true`;
+    }else{
+        window.location.href = `/view/meetAndGreets/meetAndGreetAdd/meetAndGreetAdd.html?accountId=${accountID}&contactId=${contactID}`;
+    }
 }
 const initializeMeetAndGreetMainPage = async () => {
 };

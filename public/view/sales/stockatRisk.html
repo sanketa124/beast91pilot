@@ -83,8 +83,9 @@
                         <h3>Stock @ Risk</h3>
                     </div>
                     <div class="arrowIcons">
-                        <a  onclick="goBack()" class="leftArrow fas fa-chevron-left"></a>
-                        <a  onclick="goForward()" class="rightArrow fas fa-chevron-right"></a>
+                        <a href="javascript:void()" onclick="goBack()" class="leftArrow fas fa-chevron-left"></a>
+                        <!-- <a href="../sales/recomendation.html" class="rightArrow fas fa-chevron-right"></a> -->
+                        <a href="javascript:void()" class="rightArrow fas fa-chevron-right" onclick="saveStockAtRisk()"></a>
                     </div>
                 </header>
             </div>
@@ -105,7 +106,7 @@
                                 <thead>
                                 <tr>
 
-                                    <th>Item</th>
+                                    <th style="width: 50%;">Item</th>
                                     <th>Stock</th>
                                     <th>Stock @ Risk</th>
                                     <th></th>
@@ -142,7 +143,7 @@
                                         <span>Number of Cases</span>
                                     </div>
                                     <div class="col-xs-4">
-                                        <input type="text" class="form-control" />
+                                        <input type="number" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -306,12 +307,13 @@
    
     <!--Front End script-->
     <!--Backend Scripts-->
-    <script src="/controller/indexedDB/idb.js"></script>
-    <script src="/controller/indexedDB/utility.js"></script>
-    <script src="/controller/sync/sync.js"></script>
+    <script src="../globalJS/utility.js"></script>
+    <script src="../../controller/indexedDB/idb.js"></script>
+    <script src="../../controller/indexedDB/utility.js"></script>
+    <script src="../../controller/sync/sync.js"></script>
     <script src="stockatRisk.js"></script>
-    <!-- <script src="/controller/homePage/homePage.js"></script> -->
-    <script src="/controller/globalJS/globalJS.js"></script>
+    <!-- <script src="../../controller/homePage/homePage.js"></script> -->
+    <!-- <script src="../../controller/globalJS/globalJS.js"></script> -->
     <!--Backend Scripts-->
     <!--Script imported-->
 

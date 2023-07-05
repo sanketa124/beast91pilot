@@ -5,6 +5,12 @@ const marketInventory = [
     // Add more objects representing inventory items here
 ];
 
+goBack = () => {
+    let urlParam = new URLSearchParams(window.location.search);
+    const accountID = urlParam.get('accountId')
+    window.location.href = `/view/objectives/salesOrder/salesOrderLanding.html?accountId=${accountID}`
+  }
+
 const prepareTable = async () => {
 
     console.log("I am called to prepare table")

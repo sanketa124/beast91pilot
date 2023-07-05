@@ -213,13 +213,13 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
 
 
 goBack = () => {
-  // let urlParams = new URLSearchParams(window.location.search);
-  // const accountId = urlParams.get('accountId');
-  window.location.href = `/view/sales/productDetail.html`
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `/view/sales/productDetail.html?accountId=${accountId}`
 }
 
 goForward = () => {
-  // let urlParams = new URLSearchParams(window.location.search);
-  // const accountId = urlParams.get('accountId');
-  window.location.href = `/view/sales/placeOrder.html`
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `/view/sales/placeOrder.html?acountId=${accountId}`
 }

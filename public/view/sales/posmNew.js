@@ -20,6 +20,19 @@ let addButton = document.getElementById('addButton');
 const newSearch = document.getElementById('newSearch');
 
 
+goBack = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/sales/visibility.html?accountId=${accountId}`
+  }
+  
+  
+  gotoCompitation1 = () => {
+    localStorage.getItem('accountId')
+    const accountID = localStorage.getItem('accountId') 
+    window.location.href = `/view/objectives/competitorInsights/competitionInsightsPage1.html?accountId=${accountID}`
+  }
+
 
 
 let items = []

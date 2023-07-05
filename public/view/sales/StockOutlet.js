@@ -44,9 +44,9 @@ getStockOutletList = () => {
     let productsAdded = {
       Item_Master: retailDepletionData[i].Item__c,
       Quantity: 0,
+      Quantity__c:0,
       mrp: 0,
       name: retailDepletionData[i].Item__r.Display_Name__c,
-      Stock_at_risk__c: 1
     }
     addedProducts.push(productsAdded)
     addedProductIds.push(retailDepletionData[i].Item__c);
@@ -69,6 +69,7 @@ const productClicked = (name, id) => {
   </tr>')
   let productsAdded = {
     Item_Master: id,
+    Quantity__c: quantity,
     Quantity: quantity,
     mrp: 0,
     name: name
@@ -136,6 +137,7 @@ $(".cartQtyChange").each(function() {
     $.each(addedProducts, function(index, obj) {
       if (obj.Item_Master == prodId) {
         obj.Quantity = value;
+        obj.Quantity__c = value;
       }
     });
   }

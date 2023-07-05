@@ -217,8 +217,8 @@ showSliderData = async (targetnAchieved) => {
                 $('#distributionProgress').css('width',`${podPercent}%`)
             }
          
-          $("#volAch").html('Ach: '+volumeAch);
-          $("#volTarget").html('Target: '+volumeTarget);
+          $("#volAch").html('Ach: '+volumeAch+' CE');
+          $("#volTarget").html('Target: '+volumeTarget+' CE' );
           $("#volPercent").html('('+overallVolumePercent+')%');
           $("#podAch").html('Ach: '+podAch);
           $("#podTarget").html('Target: '+podTarget);

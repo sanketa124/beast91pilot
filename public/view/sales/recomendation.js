@@ -7,11 +7,11 @@ if(!(accountId && eventId )){
   window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
 }
 
-gotoDetail = (recommendationId) => {
-  console.log('clicking recommendationId',recommendationId)
-    localStorage.setItem('recommendationId',recommendationId)
-    window.location.href = `productDetail.html`
-}
+// gotoDetail = (recommendationId) => {
+//   console.log('clicking recommendationId',recommendationId)
+//     localStorage.setItem('recommendationId',recommendationId)
+//     window.location.href = `productDetail.html`
+// }
 
 goToPromotion=(promotionId)=>{
   console.log('promotionId',promotionId)
@@ -154,16 +154,18 @@ try{
   await initializeRecommendations();
 })();
 
-// gotoDetail = (event) => {
-//   let urlParams = new URLSearchParams(window.location.search);
-//   const accountId = urlParams.get('accountId');
-//   console.log(event)
-//   if(event == 'noExternal'){
-//       window.location.href = `placeOrder.html?accountId=${accountId}`
-//   }else{
-//       window.location.href = `productDetail.html?accountId=${accountId}`
-//   }
-// }
+gotoDetail = (event) => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  localStorage.setItem('recommendationId',event)
+  console.log(event)
+  if(event){
+    window.location.href = `productDetail.html?accountId=${accountId}`
+  }else{
+     
+      window.location.href = `placeOrder.html?accountId=${accountId}`
+  }
+}
 
 goBack = () => {
   // let urlParams = new URLSearchParams(window.location.search);

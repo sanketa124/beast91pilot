@@ -115,8 +115,8 @@
                 </div>
 
                 <div class="col-xs-12">
-                    <div class="">
-                        <table class="table table-responsive">
+                    <div class="" id="slabsDiv">
+                        <!-- <table class="table table-responsive" id="individualSlabs">
                             <thead>
                                 <tr>
                                     <th scope="col">Volume</th>
@@ -124,8 +124,8 @@
                                     <th scope="col">Premium</th>
                                     <th scope="col">Innovation</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                            </thead> -->
+                            <!-- <tbody id="payOutSlabsIndividual">
                                 <tr class="activeTr">
                                     <td>0-10</td>
                                     <td>60</td>
@@ -144,19 +144,19 @@
                                     <td>170</td>
                                     <td>60</td>
                                 </tr>
-                            </tbody>
+                            </tbody> -->
                         </table>
                     </div>
-                    <div class="">
-                        <table class="table table-responsive">
+                    <div class="" id="kegsDiv">
+                        <!-- <table class="table table-responsive" id="kegsTable">
                             <thead>
                                 <tr>
                                     <th scope="col">Volume</th>
                                     <th scope="col">Premium Kegs</th>
                                     <th scope="col">Innovat iron Kegs</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                            </thead> -->
+                            <!-- <tbody>
                                 <tr>
                                     <td>0-5</td>
                                     <td>60</td>
@@ -172,7 +172,7 @@
                                     <td>150</td>
                                     <td>170</td>
                                 </tr>
-                            </tbody>
+                            </tbody> -->
                         </table>
                     </div>
                     <div class="row">
@@ -186,48 +186,50 @@
                             <a href="distributorReport.html">Distributor Inventory</a>
                         </div>
                     </div>
-                    <div id="cartItems">
-                        <div class="row cartTableTitle">
-                            <div class="col-xs-7">
-                                Item
-                            </div>
-
-                            <div class="col-xs-5 rightTitle">
-                                Quantity Cases
-                            </div>
-                        </div>
-                        <table class="table">
-
-                            <tbody>
-                                <tr>
-                                    <td class="wd-80">Bira Rise 330 ml</td>
-                                    <td class="wd-20"><input class="wd-50 cartQtyChange" type="number" min="0"
-                                            value="10" /> <i class="fa fas fa-exclamation hidden"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="wd-80">Bira Blonde 650 ml</td>
-                                    <td class="wd-20"><input class="wd-50 cartQtyChange" type="number" min="0"
-                                            value="10" /> <i class="fa fas fa-exclamation hidden"></i></td>
-                                </tr>
-                                <!-- <tr class="newEntry">
-                                    <td class="wd-80"><input class="wd-50" type="text" placeholder="search" /></td>
-                                    <td class="wd-20"><input class="wd-50" type="number" min="0" value="0"/>  <i class="fa fas fa-exclamation"></i></td>
-                                </tr> -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity (Cases)</th>
+                            </tr>
+                            </thead>
+                            <tbody id="salesOrderTable">
+                           
+                           
+                            
+                                <!-- <td>
+                                    <select name="selectSearch" id="selectSearch" class="form-control">
+                                        <option value='0' selected='true'> Search SKU</option>
+                                        <option value='2101' > 1007345136 </option> 
+                                        <option value='2102' > 1007921321 </option> 
+                                        <option value='2103' > 1007987235 </option> 
+                                        <option value='2407' > 132 </option> 
+                                        <option value='2408' > 141 </option> 
+                                    </select>
+                                </td>
+                                <td><input type="text" class="form-control"></td> -->
+                                <tr id="newEntry">
+                                    <td class="wd-80"><input class="wd-50" id="productSearch" type="text" placeholder="search" />
+                                    <div id="productList"></div>
+                                    </td>
+                                    <td class="wd-20"><input class="wd-50 cartQtyChange" id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  <i class="fa fas fa-exclamation"></i></td>
+                                    </tr>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div class="add-btn">
-                                <button class="addProductBtn" data-toggle="modal" onclick="addProduct()">+</button>
+                    <div class="totalSec">
+                        <dic class="row">
+                            <div class="col-xs-6">
+                                <button class="addBtn" id="addRowButton"><i class="fas fa-plus"></i></button>
                             </div>
-                        </div>
-
-                        <div class="col-xs-4">
-                            <div class="cartTotalTxt">
-                                Total: <span id="cartTotal">20</span>
+                            <div class="col-xs-6 text-right">
+                                <div class="total" id="cartTotal">
+                                    <label>Total Quantity: <span>0</span></label>
+                                </div>
                             </div>
-                        </div>
+                        </dic>
                     </div>
                     <div class="reasonSection">
                         <div class="row">
@@ -604,7 +606,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
     <script src="/view/globalJS/main.js"></script>
-    <script src="salesOrder.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
     <script src="/controller/indexedDB/idb.js"></script>
@@ -612,6 +613,8 @@
     <script src="/controller/sync/sync.js"></script>
     <!-- <script src="/controller/homePage/homePage.js"></script> -->
     <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="payOutSlabs.js"></script>
+    <script src="salesOrderNew.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
         <script

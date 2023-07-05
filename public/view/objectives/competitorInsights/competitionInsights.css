@@ -2,7 +2,9 @@
   text-align: center;
   margin: 25px 0;
 }
-
+.logoSection h3{
+  font-size: 16px !important;
+}
 .btn{
   background-color: #6600ff;
   color: #fff;

@@ -69,34 +69,43 @@
         </nav>
         <!-- Collapsable header with Icon for navigation -->
         <div class="sub-header-navigation-container">
-            <a class="blackClr">
-                <div class="sub-menu-icon-text-wrapper" onclick="gotoCheckin()">
-                    <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
-                        height="40vh" />
-                    <h4>Check-In</h4>
+            <div class="row">
+                <div class="col-xs-3">
+                    <a class="blackClr">
+                        <div class="sub-menu-icon-text-wrapper" onclick="gotoCheckin()">
+                            <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
+                                height="40vh" />
+                            <h4>Check-In</h4>
+                        </div>
+                    </a>
                 </div>
-            </a>
+                <div class="col-xs-3">
+                    <a class="blackClr" onclick="openGeoLocation()">
 
-            <a class="blackClr" onclick="openGeoLocation()">
+                        <div class="sub-menu-icon-text-wrapper">
+                            <img src="/media/icons/account/geo_location.svg" loading="lazy" alt="geo"
+                                style="mix-blend-mode: multiply" width="40vw" height="40vh" />
+                            <h4>Geo Location</h4>
 
-                <div class="sub-menu-icon-text-wrapper">
-                    <img src="/media/icons/account/geo_location.svg" loading="lazy" alt="geo"
-                        style="mix-blend-mode: multiply" width="40vw" height="40vh" />
-                    <h4>Geo Location</h4>
-
+                        </div>
+                    </a>
                 </div>
-            </a>
-            <a class="blackClr" onclick="gotoSalesOrder()">
-                <div class="sub-menu-icon-text-wrapper" >
-                    <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
-                        height="40vh" />
-                    <h4>Order</h4>
+                <div class="col-xs-3">
+                    <a class="blackClr" onclick="gotoSalesOrder()">
+                        <div class="sub-menu-icon-text-wrapper" >
+                            <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
+                                height="40vh" />
+                            <h4>Order</h4>
+                        </div>
+                    </a>
                 </div>
-            </a>
-            <div class="sub-menu-icon-text-wrapper">
-                <i style="cursor: pointer; padding: 2rem 1rem" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
-                    class="fa-solid fa-ellipsis fa-2xl"></i>
+                <div class="col-xs-3">
+                    <div class="sub-menu-icon-text-wrapper">
+                        <i style="cursor: pointer; padding: 2rem 1rem" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                            class="fa-solid fa-ellipsis fa-2xl"></i>
+                    </div>
+                </div>
             </div>
             <!-- Hidden Menu Show Expandable Menu-->
             <div class="collapse" id="collapseExample" style="width: 100%">
@@ -125,8 +134,8 @@
                         <img src="/media/icons/account/sampling_testing_icon.svg" loading="lazy"
                             alt="sampling testing" width="40vw" height="40vh" />
                         <h4>
-                            Sampling <br />
-                            Testing
+                            Sampling /
+                            Tasting
                         </h4>
                     </div>
                     <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoContract()">

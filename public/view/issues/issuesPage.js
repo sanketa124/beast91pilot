@@ -2,6 +2,14 @@ const issueList = document.querySelector('.issueList');
 const newIssueList = document.querySelector('#NewIssueContainer')
 console.log(newIssueList,"newIssueList");
 let count = 0;
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0');
+var yyyy = today.getFullYear();
+
+today = yyyy + '-' + mm + '-' + dd;
+$('#issue_date').attr('min',today);  
+
 function addElement() {
   count = count + 1;
   $('#no_issues_container').hide()

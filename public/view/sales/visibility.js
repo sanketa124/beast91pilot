@@ -32,9 +32,9 @@ const initializeVisibilityPage = async () => {
   accountDetail = await getItemFromStore('account', accountId);
   const key = `${fetchCurrentDateIdStr()}-${accountId}`;
   stockVisbility = await getItemFromStore('stockVisibility', key);
-  const draft_status = accountDetail.Draft_Status__c
-  const qco_status = accountDetail.QCO_Flag__c;
-  const channel_type = accountDetail.Channel__c;
+  const draft_status = accountDetail?.Draft_Status__c
+  const qco_status = accountDetail?.QCO_Flag__c;
+  const channel_type = accountDetail?.Channel__c;
 
   if (draft_status) {
     qco.classList.add('hide-element');
@@ -80,6 +80,8 @@ function handleToggleSwitchQCO() {
     get_camera_Z_2_Bira_91.classList.add('hide-element');
     checkBox_LED_NON_working.classList.add('hide-element')
     stockVisbility['Z_2_Bira_91_LED_Signage__c'] = isActive_Z_2_Bira_91_LED_Signage__c
+    stockVisbility['LED_Non_working_Requires_Maintenance__c'] = false;
+    document.getElementById('LED_Non_working_qco_check').checked = false
   }
   if (isActive_Z_1_Facade_Signage__c) {
     get_camera_Z_1_Facade.classList.remove('hide-element');
@@ -89,6 +91,9 @@ function handleToggleSwitchQCO() {
     get_camera_Z_1_Facade.classList.add('hide-element');
     checkBox_Facade_Non_working.classList.add('hide-element')
     stockVisbility['Z_1_Facade_Signage__c'] = isActive_Z_1_Facade_Signage__c
+    stockVisbility['Facade_Non_working_Requires_Maintenance__c'] = false;
+    document.getElementById('Facade_Non_working_qco_check').checked = false
+
   }
   if (isActive_Z3_Menu_Listing__c) {
     get_camera_Z3_Menu_Listing.classList.remove('hide-element');
@@ -96,6 +101,7 @@ function handleToggleSwitchQCO() {
   } else {
     get_camera_Z3_Menu_Listing.classList.add('hide-element');
     stockVisbility['Z3_Menu_Listing__c'] = isActive_Z3_Menu_Listing__c
+
   }
 
 }
@@ -466,9 +472,9 @@ function handleToggleSwitchDraft() {
 }
 
 function saveVisibilityAndNext() {
-  const draft_status = accountDetail.Draft_Status__c
-  const qco_status = accountDetail.QCO_Flag__c;
-  const channel_type = accountDetail.Channel__c;
+  const draft_status = accountDetail?.Draft_Status__c
+  const qco_status = accountDetail?.QCO_Flag__c;
+  const channel_type = accountDetail?.Channel__c;
   if (draft_status) {
     const checkBox_Facade_Non_working = $("#Facade_Non_working_draft").is(":checked");
     const checkBox_Medallions_only_Non_working = $("#Medallions_only_Non_working_draft").is(":checked");
