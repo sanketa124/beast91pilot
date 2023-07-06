@@ -4,7 +4,7 @@ const accountId =  urlParam.get('accountId')
 
 localStorage.setItem('accountId',accountId)
 localStorage.setItem('eventId',eventId)
-console.log(localStorage.getItem('accountId'))
+
 
 const checkInFucn = async (eventId,accountId) => {
   let accountRec = await getItemFromStore('account', accountId);
@@ -16,21 +16,17 @@ const checkInFucn = async (eventId,accountId) => {
       sobjectName: 'event',
       account: accountRec,
       event: event,
-      eventKey: fetchCurrentDateIdStr() + '-' + accountRec.Id + '-' + event.Type__c,
+      eventKey: fetchCurrentDateIdStr() + '-' + accountRec.Id + '-' + event.Id,
   };
   console.log('utility----', event)
   await writeData('utility', utility);
   
   event = {
       ...event,
-      App_Id: fetchCurrentDateIdStr() + '-' + accountRec.Id + '-' + event.Type__c,
-      Actual_Start_Visit: new Date(),
+      App_Id: fetchCurrentDateIdStr() + '-' + accountRec.Id + '-' + event.Id,
       Actual_Start_Visit__c: new Date(),
-      Check_In_Latitude: position.coords.latitude,
-      Check_In_Longitude: position.coords.longitude,
-      isSynced: false,
-      Created_Date: new Date(),
-      CheckedIn: true,
+      Check_In__Latitude__s: position.coords.latitude,
+      Check_In__Longitude__s: position.coords.longitude
   };
   console.log('urlParam----', event)
 
@@ -39,7 +35,17 @@ const checkInFucn = async (eventId,accountId) => {
 
   // hideLoaderSpinner();
   objectivesRender(event);
-  let outletDistance = getDistanceFromLatLonInKm(accountRec?.Geolocation__c?.latitude,accountRec?.Geolocation__c?.longitude,event?.Check_In_Longitude,event?.Check_In_Latitude)
+  if(!accountRec?.Geolocation__c && !accountRec?.Geolocation__c?.latitude){
+    showNotification({message : 'Account lat long not configured!'});
+  }
+    
+
+  let account_lat = accountRec?.Geolocation__c?.latitude ? accountRec?.Geolocation__c?.latitude : 0
+  let account_lon = accountRec?.Geolocation__c?.longitude ? accountRec?.Geolocation__c?.longitude : 0
+  let user_lat = event?.Check_In__Latitude__s ? event?.Check_In__Latitude__s : 0
+  let user_lon = event?.Check_In__Longitude__s ? event?.Check_In__Longitude__s : 0
+  
+  let outletDistance = getDistanceFromLatLonInKm(account_lat,account_lon,user_lat,user_lon)
   outletDistance = Math.trunc((outletDistance.toFixed(2))*1000)
   const sfdc_outlet_dist = event.Distance_from_Account__c * 1000
   const startDate = new Date(event.Actual_Start_Visit__c).toLocaleString("en-US", {timeZone: 'Asia/Kolkata'})
@@ -135,3 +141,9 @@ goBack = () => {
     const accountId = urlParams.get('accountId');
     window.location.href = `/view/sales/outlet360.html?accountId=${accountId}`
   }
+
+  showNotification = (data) =>{
+    $("#notification").fadeIn("slow");
+    $("#notification span").html(data.message);
+    setTimeout(function(){ $("#notification").fadeOut("slow"); }, 3000);
+  };

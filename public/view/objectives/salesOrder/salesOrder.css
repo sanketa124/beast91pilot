@@ -502,3 +502,12 @@ h3{
   color: #4a4a4a;
   font-size: 14px;
 }
+
+.secondary-reason-container .btn-group {
+  display: block;
+}
+
+.secondary-reason-container .multiselect-container {
+  max-height: 200px;
+  overflow-y: auto;
+}

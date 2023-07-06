@@ -93,7 +93,7 @@
                 <div class="col-md-12 dashboardSection">
                     <div class="example">
                     </div>
-                    <div class="outlet-checkin">
+                    <div class="mainHeading">
                         Outlet check-in complete !!
                     </div>
                     <div class="outlet-checkin-datetime">
@@ -109,6 +109,10 @@
         <!-- Spinner for Start Visit -->
         <div id="loader-main" style="display: none;">
             <div class="loader1"></div>
+        </div>
+        <div id='notification' style="display: none;">
+            <span>Username or Password is incorrect</span>
+            <a href="#" class="close-notify">X</a>
         </div>
         <!-- Spinner for End Visit -->
 
@@ -147,12 +151,11 @@
                 </div>
                 <div class="modal-body text-center">
                     <ul class="list-group">
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                        <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i class="fas fa-file-alt"></i>Sell
                                 Sheets</a></li>
                         <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
                                 Marketing Inventory</a></li> -->
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                Inventory</a></li>
+                        
                         <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
                         </li> -->
                         <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
@@ -244,8 +247,8 @@
                     <h5>Are you sure you want to Cancel ?</h5>
                 </div>
                 <div class="modal-footer text-center">
-                    <button type="button" data-dismiss="modal"
-                        class="btn btn-success">Yes</button>
+                    <button type="button"
+                        class="btn btn-success"><a href="/view/homePage/homePage.html"> Yes </a></button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                 </div>
             </div>

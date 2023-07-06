@@ -46,6 +46,7 @@
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
         integrity="sha256-UK1EiopXIL+KVhfbFa8xrmAWPeBjMVdvYMYkTAEv/HI=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
         integrity="sha256-4hqlsNP9KM6+2eA8VUT0kk4RsMRTeS7QGHIM+MZ5sLY=" crossorigin="anonymous" />
     <link rel="stylesheet" href="/view/globalCSS/inhousestyle.css" />
@@ -111,7 +112,7 @@
 
                 
                 <div class="col-xs-12">
-                    <h4>Payout Slab</h4>
+                    <h4 class="mainHeading">Payout Slab</h4>
                 </div>
 
                 <div class="col-xs-12">
@@ -176,7 +177,7 @@
                         </table>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-6" id="totalItems">
                             <article class="tblHead mt-3">
                                 <h4>Order</h4>
                                 <p>Items - <span>2</span></p>
@@ -191,7 +192,7 @@
                             <thead>
                             <tr>
                                 <th>Item</th>
-                                <th>Quantity (Cases)</th>
+                                <th>Qty (Cases)</th>
                             </tr>
                             </thead>
                             <tbody id="salesOrderTable">
@@ -209,11 +210,19 @@
                                     </select>
                                 </td>
                                 <td><input type="text" class="form-control"></td> -->
-                                <tr id="newEntry">
+                                <!-- <tr id="newEntry">
                                     <td class="wd-80"><input class="wd-50" id="productSearch" type="text" placeholder="search" />
                                     <div id="productList"></div>
                                     </td>
                                     <td class="wd-20"><input class="wd-50 cartQtyChange" id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  <i class="fa fas fa-exclamation"></i></td>
+                                    </tr> -->
+                                    <tr id="newEntry">
+                                        <td class="wd-80">
+                                          <select name="productSearch" id="productSearch" class="form-control wd-50">
+                                            <option value='0' selected='true'> Search Product</option>
+                                          </select>
+                                        </td>
+                                        <td class="wd-20 cartQtyChange"><input id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()" class="form-control wd-50"></td>
                                     </tr>
                             </tr>
                             </tbody>
@@ -232,8 +241,8 @@
                         </dic>
                     </div>
                     <div class="reasonSection">
-                        <div class="row">
-                            <div class="col-xs-6">
+                        <div class="row" id="reasonBox">
+                            <!-- <div class="col-xs-6">
                                 <span class="">
                                     Reason For Zero Sales Order
                                 </span>
@@ -249,15 +258,15 @@
                                         <option value="Operational Feedback">Operational Feedback</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-6">
+                        <div class="row mt-2" id="lessBox">
+                            <!-- <div class="col-xs-6">
                                 <span class="">
                                     Reason For Low Sales Order
                                 </span>
-                            </div>
+                            </div> -->
 
 
                             <!-- <select class="form-control" multiple="" name="" id="reason"
@@ -285,7 +294,7 @@
                                 <option value="Not met decision maker">Not met decision maker</option>
                             </select> -->
 
-                            <div class="col-xs-5">
+                            <!-- <div class="col-xs-5">
                                 <div class="">
                                     <select id="sec_reason_select" multiple="multiple">
                                         <option value="">--None--</option>
@@ -298,7 +307,7 @@
                                         <option value="Not met decision maker">Not met decision maker</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -359,7 +368,7 @@
 
                         </div>
                         <!-- <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-bordered">
                           <thead>
                                 <th></th>
                               <th>Material</th>
@@ -475,12 +484,11 @@
             </div>
             <div class="modal-body text-center">
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                    <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i class="fas fa-file-alt"></i>Sell
                             Sheets</a></li>
                     <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
                             Marketing Inventory</a></li> -->
-                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                            Inventory</a></li>
+                    
                     <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
                     </li> -->
                     <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
@@ -561,24 +569,24 @@
         </div>
     </div>
     
-     <!-- Cancel Modal -->
-     <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body text-center">
-                    <h5>Are you sure you want to Cancel ?</h5>
-                </div>
-                <div class="modal-footer text-center">
-                    <button type="button" data-dismiss="modal"
-                        class="btn btn-success">Yes</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                </div>
+   <!-- Cancel Modal -->
+   <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <h5>Are you sure you want to Cancel ?</h5>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button"
+                    class="btn btn-success"><a href="/view/homePage/homePage.html"> Yes </a></button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
+</div>
 
      <!-- confirmOrder Modal -->
      <div id="confirmOrder" class="modal cancel-modal fade" role="dialog">
@@ -592,7 +600,7 @@
                 </div>
                 <div class="modal-footer text-center">
                     <button type="button"
-                        class="btn btn-success" onclick="confirmOrder()">Yes</button>
+                        class="btn btn-success" onclick="checkout()">Yes</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -614,7 +622,7 @@
     <!-- <script src="/controller/homePage/homePage.js"></script> -->
     <script src="/controller/globalJS/globalJS.js"></script>
     <script src="payOutSlabs.js"></script>
-    <script src="salesOrderNew.js"></script>
+    <script src="salesOrderNew-InProgress.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
         <script

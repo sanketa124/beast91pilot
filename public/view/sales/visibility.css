@@ -5,3 +5,12 @@ hr {
 .hide-element {
   display: none;
 }
+.tit{
+  text-align: center;
+  font-size: 20px;
+  /* float: left; */
+  margin: 0;
+}
+.visibility h4{
+  margin-bottom: 10px;
+}

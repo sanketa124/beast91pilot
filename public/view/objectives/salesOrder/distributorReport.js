@@ -43,11 +43,15 @@ const prepareTable = async () => {
         })
 
         // Create and append table cells for each data element
-        const dateCell = createTableCell(item.Inventory_Date__c, 6);
+        //const dateCell = createTableCell(item.Inventory_Date__c, 6);
         const itemCell = createTableCell(itemName, 6);
         const quantityCell = createTableCell(item.Closing_Stock__c, 6);
 
-        row.appendChild(dateCell);
+        const getDateHeading = document.getElementById('dateHeading')
+        const date = new Date(item.Inventory_Date__c)
+        getDateHeading.textContent = `Date: ${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
+
+        //row.appendChild(dateCell);
         row.appendChild(itemCell);
         row.appendChild(quantityCell);
 

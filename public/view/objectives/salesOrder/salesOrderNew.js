@@ -13,6 +13,7 @@ $(document).ready(function(){
 })
 
 let accountRec;
+let totalQuantity = 0;
 
 const initializeShowAccount = async () => {
   let urlParams = new URLSearchParams(window.location.search);
@@ -22,7 +23,8 @@ const initializeShowAccount = async () => {
   if(!accountRec){
       accountRec = await getItemFromStore('lead',accountId);
   }
-  showAccount();
+  //showAccount();
+  getLineItems();
 };
 
 goBack = () => {
@@ -40,6 +42,7 @@ const searchInput = document.getElementById('productSearch');
 const productList = document.getElementById('productList');
 const quantityInput = document.getElementById('prodQ');
 const newEntry = document.getElementById('newEntry');
+let selectProduct = document.getElementById('productSearch');
 //const accountId = localStorage.getItem('accountId');
 
 let lineItems = []
@@ -48,6 +51,13 @@ let defaultItems = [
 
 // Function to populate the table with default items
 function populateTableWithDefaultItems() {
+
+  const alreadySelectedProducts = defaultItems.filter((item) => {return item.Display_Name__c})
+  console.log("Already Selected Products===>",alreadySelectedProducts)
+  console.log("Line Items ===>",lineItems)
+  const filteredItems = lineItems.filter(item =>!alreadySelectedProducts.includes(item.Display_Name__c));
+  console.log("filteredItems",filteredItems)
+
   // Fetch the default items from IndexedDB (accountGoals table) and store them in an array called 'defaultItems'
   // Iterate over the 'defaultItems' array and add rows to the table
   defaultItems.forEach(item => {
@@ -60,13 +70,28 @@ function populateTableWithDefaultItems() {
     quantityInput.type = 'number';
     quantityInput.value = item.quantity; // Set the initial value
     quantityInput.min = '0';
-    quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
+    //quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
+    quantityInput.addEventListener('input', () => qtyTotalUpdate(item.Id))
 
     const quantityCell = newRow.insertCell();
     quantityCell.appendChild(quantityInput);
   });
 
+  addOptionsToSelect(selectProduct, filteredItems)
+
   calculateTotalQuantity()
+}
+
+function addOptionsToSelect(selectItem, items) {
+
+  for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var option = document.createElement("option");
+      option.text = item.Display_Name__c;
+      option.value = item.Id;
+      selectItem.appendChild(option);
+  }
+
 }
 
 
@@ -75,46 +100,94 @@ let itemList = [
   ];
   
 // Function to filter the items based on search input
-function filterItems(searchInput,productList) {
-    searchInput.disabled = false
-    console.log("I am here=====>")
-    const searchValue = searchInput.value.toLowerCase();
-    console.log("Search Value====>",searchValue)
-    const alreadySelectedProducts = defaultItems.map((item) => {return item.itemName})
-    console.log("Line Items ===>",lineItems)
-    const filteredItems = lineItems.filter(item => item.Display_Name__c.toLowerCase().includes(searchValue) && !alreadySelectedProducts.includes(item.itemName));
+// function filterItems(searchInput,productList) {
+//     searchInput.disabled = false
+//     console.log("I am here=====>")
+//     const searchValue = searchInput.value.toLowerCase();
+//     console.log("Search Value====>",searchValue)
+//     const alreadySelectedProducts = defaultItems.map((item) => {return item.Display_Name__c})
+//     console.log("Line Items ===>",lineItems)
+//     const filteredItems = lineItems.filter(item => item.Display_Name__c.toLowerCase().includes(searchValue) && !alreadySelectedProducts.includes(item.itemName));
 
-    console.log("Filtered Items===>",filteredItems)
+//     console.log("Filtered Items===>",filteredItems)
   
-    // Clear the previous dropdown items
-    productList.innerHTML = '';
+//     // Clear the previous dropdown items
+//     productList.innerHTML = '';
   
-    // Show the dropdown if search input is not empty and filtered items exist
-    if (searchValue !== '' && filteredItems.length > 0) {
-      productList.style.display = 'block';
+//     // Show the dropdown if search input is not empty and filtered items exist
+//     if (searchValue !== '' && filteredItems.length > 0) {
+//       productList.style.display = 'block';
 
-      console.log("Product List====>",productList)
+//       console.log("Product List====>",productList)
   
-      // Add the filtered items as options
-      filteredItems.forEach(item => {
-        const suggestion = document.createElement('div');
-        suggestion.classList.add('autocomplete-item');
-        suggestion.textContent = item.Display_Name__c;
-        console.log("Suggestion====>",suggestion)
-        suggestion.addEventListener('click', () => {
-          productClicked(item.Display_Name__c, item.Id); // Call the productClicked function with the selected item's name and ID
-          searchInput.value = item.Display_Name__c;
-          productList.style.display = 'none';
-        });
-        productList.appendChild(suggestion);
-      });
-    } else {
-      productList.style.display = 'none';
-    }
-  }
+//       // Add the filtered items as options
+//       filteredItems.forEach(item => {
+//         const suggestion = document.createElement('div');
+//         suggestion.classList.add('autocomplete-item');
+//         suggestion.textContent = item.Display_Name__c;
+//         console.log("Suggestion====>",suggestion)
+//         suggestion.addEventListener('click', () => {
+//           productClicked(item.Display_Name__c, item.Id); // Call the productClicked function with the selected item's name and ID
+//           searchInput.value = item.Display_Name__c;
+//           productList.style.display = 'none';
+//         });
+//         productList.appendChild(suggestion);
+//       });
+//     } else {
+//       productList.style.display = 'none';
+//     }
+//   }
   
   // Event listener for the input event of the search input
-  searchInput.addEventListener('keyup', () => filterItems(searchInput, productList));
+  // searchInput.addEventListener('keyup', () => filterItems(searchInput, productList));
+
+  const handleSearch = (e) => {
+
+    console.log("Select Item===>", selectProduct)
+    console.log("New Search===>", newEntry)
+
+    selectProduct.innerHTML = '';
+    selectProduct.disabled = true;
+    newEntry.style.display = 'none';
+
+    console.log("Select Item after diabling===>", selectProduct)
+    console.log("New Search after diabsling===>", newEntry)
+
+
+    let data = e.params.data;
+    console.log("Data====>", data);
+    quantityInput.focus()
+
+    let selectedItem = items.find((item)=>item.Id ==data.id)
+
+    selectedItem['quantity'] = 0
+
+    defaultItems.push(selectedItem)
+
+
+    $('#selectProduct').val(null).trigger('change');
+
+    // Hide all options in the selectSearch dropdown
+    $('#selectProduct').find('option').hide();
+
+    // Show the default placeholder option
+    $('#selectProduct').find('option[value="0"]').show();
+
+    // Reset the selected value to the placeholder option
+    selectProduct.value = '0';
+
+    // Refresh the select2 dropdown to reflect the changes
+    $(selectProduct).trigger('change');
+
+    updateTable()
+
+}
+
+$(function () {
+  $("#productSearch").select2();
+});
+
+$('#productSearch').on('select2:select', (e) => handleSearch(e));
 
   function updateQuantity(prodId, quantity) {
     let sum = 0;
@@ -204,39 +277,81 @@ addRowButton.addEventListener('click', () => {
   });
 
 function openSearch() {
-    if (newEntry.style.display === 'none') {
-      newEntry.style.display = 'table-row';
+        // Destroy the old newSearch
+        const existingNewSearch = document.getElementById('productSearch');
+        if (existingNewSearch) {
+            existingNewSearch.remove();
+        }
+    
+        // Generate unique IDs for the new elements
+        const uniqueId = Date.now();
+        const clonedSelectSearchId = 'productSearch' + uniqueId;
+        const clonedPosmQuantityId = 'prodQ' + uniqueId;
+
+        const alreadySelectedProducts = defaultItems.map((item) => {return item.Display_Name__c})
+        console.log("Line Items ===>",lineItems)
+        const filteredItems = lineItems.filter(item =>!alreadySelectedProducts.includes(item.itemName));
+    
+        const optionsString = filteredItems.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Display_Name__c}</option>`)
+    
+        // Create the newSearch HTML string with dynamic IDs
+        const newSearchHTML = `
+        <tr id="newEntry">
+        <td class="wd-80">
+          <select name="productSearch" id="${clonedSelectSearchId}" class="form-control wd-50">
+            <option value='0' selected='true'> Search POSM</option>
+            ${optionsString.join('')}
+          </select>
+        </td>
+        <td class="wd-20 cartQtyChange"><input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control wd-50"></td>
+    </tr>
+        `;
+    
+        //addOptionsToSelect(newSearchHTML.getElementById(clonedSelectSearchId),items)
+    
+        // Append the newSearch HTML string to the itemTable
+        itemTable.insertAdjacentHTML('beforeend', newSearchHTML);
+    
+        // Apply Select2 to the cloned select element
+        $("#" + clonedSelectSearchId).select2();
+    
+        // Add the event listener for the cloned select element
+        $('#' + clonedSelectSearchId).on('select2:select', (e) => handleSearch(e));
+
+
+    // if (newEntry.style.display === 'none') {
+    //   newEntry.style.display = 'table-row';
   
-      // Clone the newEntry row to create a new row for the item table
-      const newRow = newEntry.cloneNode(true);
+    //   // Clone the newEntry row to create a new row for the item table
+    //   const newRow = newEntry.cloneNode(true);
   
-      // Generate unique IDs for the cloned elements
-      const clonedSearchInput = newRow.querySelector('#productSearch');
-      const clonedProductList = newRow.querySelector('#productList');
-      const clonedQuantityInput = newRow.querySelector('#prodQ');
+    //   // Generate unique IDs for the cloned elements
+    //   const clonedSearchInput = newRow.querySelector('#productSearch');
+    //   const clonedProductList = newRow.querySelector('#productList');
+    //   const clonedQuantityInput = newRow.querySelector('#prodQ');
   
-      const uniqueId = Date.now();
-      clonedSearchInput.id = 'productSearch' + uniqueId;
-      clonedProductList.id = 'productList' + uniqueId;
-      clonedQuantityInput.id = 'prodQ' + uniqueId;
+    //   const uniqueId = Date.now();
+    //   clonedSearchInput.id = 'productSearch' + uniqueId;
+    //   clonedProductList.id = 'productList' + uniqueId;
+    //   clonedQuantityInput.id = 'prodQ' + uniqueId;
   
-      clonedSearchInput.disabled = false
-      // Clear the values of cloned elements
-      clonedSearchInput.value = '';
-      clonedQuantityInput.value = '0';
+    //   clonedSearchInput.disabled = false
+    //   // Clear the values of cloned elements
+    //   clonedSearchInput.value = '';
+    //   clonedQuantityInput.value = '0';
   
-      // Remove the event listener from the original search input
-      searchInput.removeEventListener('keyup', filterItems);
+    //   // Remove the event listener from the original search input
+    //   searchInput.removeEventListener('keyup', filterItems);
   
-      // Add the event listener for the cloned search input and pass the cloned elements as arguments
-      clonedSearchInput.addEventListener('keyup', () => filterItems(clonedSearchInput, clonedProductList));
+    //   // Add the event listener for the cloned search input and pass the cloned elements as arguments
+    //   clonedSearchInput.addEventListener('keyup', () => filterItems(clonedSearchInput, clonedProductList));
   
-      // Clear the dropdown for the cloned search input
-      clonedProductList.innerHTML = '';
+    //   // Clear the dropdown for the cloned search input
+    //   clonedProductList.innerHTML = '';
   
-      // Append the new row to the item table
-      itemTable.appendChild(newRow);
-    }
+    //   // Append the new row to the item table
+    //   itemTable.appendChild(newRow);
+    // }
   }
 
 
@@ -372,13 +487,20 @@ async function getDefaultSalesItems(){
 
       })
     })
+
+
   }
+  populateTableWithDefaultItems();
 }
 
 async function getLineItems(){
 
 
   lineItems = await readAllData('itemMasterCopy')
+
+  console.log("Line Items in SalesOrder====>",lineItems)
+
+  getDefaultSalesItems();
 }
 
 
@@ -437,12 +559,33 @@ checkout = async () => {
 
 
 
-  // if(!checkforPreSalesOrder()){
-  //   getProductData();
-  //   // orderRec.Comment = $("#salesOrderComment").val();
-  //   await saveOrder();
-  // }
+  if(!checkforPreSalesOrder()){
+    getProductData();
+    // orderRec.Comment = $("#salesOrderComment").val();
+    await saveOrder();
+  }
   
+};
+
+const checkforPreSalesOrder = () => {
+  if(orderRec.Has_Zero_Quantity_Product){
+    $('#reasonForNotLiking').modal('show');
+    $('#salesOrderSubmit').modal('hide');
+    let urlParam = new URLSearchParams(window.location.search);
+    if(urlParam.has('presalesId'))
+      orderRec.Product_Pre_Sales_Sampling = urlParam.get('presalesId');
+    constructReasonNotLikingSelect();
+    return true;
+  }
+  else{
+    orderRec['Reasons_for_not_Liking_Product'] = null;
+    orderRec['pricing_promotion_discount'] = null;
+    orderRec['competition_tie_up'] = null;
+    orderRec['operational_feedback'] = null;
+    orderRec['Comment'] = null;
+    
+  }
+  return false;
 };
 
 confirmOrder = () => {
@@ -1112,6 +1255,6 @@ const submitPostReasonNotLiking = async() => {
 };
 
 initializeShowAccount();
-getLineItems();
-getDefaultSalesItems();
-populateTableWithDefaultItems();
+// getLineItems();
+// getDefaultSalesItems();
+// populateTableWithDefaultItems();

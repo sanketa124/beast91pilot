@@ -36,6 +36,15 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
         .toISOString()
         .slice(0, 10);
     }
+    let circle;
+    if(i?.Actual_Start_Visit__c && i.Completed__c == false){
+      circle = '<i class="fa fa-check-circle checkCircle" style="color:#6600ff;"></i>'
+    }else if(i?.Actual_End_Visit__c && i.Completed__c == true){
+      circle = '<i class="fa fa-check-circle checkCircle" style="color:#2DB83D; "></i>'
+      $('#checkin').hide();
+    }else{
+      circle = ''
+    }
     let tmp;
     if(i.QCO_Flag__c != undefined && i.Beacon_Flag__c != undefined && i.QCO_Flag__c != null && i.Beacon_Flag__c != null){
       if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
@@ -48,38 +57,57 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
         tmp = '<img src="/media/icon12.png" alt="icon" />';
       }
     }
-    if(i.Industry_Segment__c == 'P0'){
-      temp1 = `<strong class="p0">P0</strong>`
-    }else  if(i.Industry_Segment__c == 'P1'){
-     temp1 = `<strong class="p1">P1</strong>`
-    }else if(i.Industry_Segment__c == 'P2'){
-      temp1 = `<strong class="p2">P2</strong>`
-    }else  if(i.Industry_Segment__c == 'P3'){
-      temp1 = `<strong class="p3">P3</strong>`
-    }else  if(i.Industry_Segment__c == 'P4'){
-      temp1 = `<strong class="p4">P4</strong>`
+    if(i.Industry_Segment__c != null || i.Industry_Segment__c != undefined){
+      if(i.Industry_Segment__c == 'P0'){
+        temp1 = `<strong class="p0">P0</strong>`
+      }else  if(i.Industry_Segment__c == 'P1'){
+      temp1 = `<strong class="p1">P1</strong>`
+      }else if(i.Industry_Segment__c == 'P2'){
+        temp1 = `<strong class="p2">P2</strong>`
+      }else  if(i.Industry_Segment__c == 'P3'){
+        temp1 = `<strong class="p3">P3</strong>`
+      }else  if(i.Industry_Segment__c == 'P4'){
+        temp1 = `<strong class="p4">P4</strong>`
+      }
+    }else{
+      temp1 = '';
     }
-    const AccId = "'" + i.Id + "'";
+    let loc;
+    //if(i.Geolocation__c){
+     
+    // }else{
+    //   loc = $('#loc').attr('href',"");
+    // }
+    if(i.Geolocation__c != null || i.Geolocation__c != undefined){
+      let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
+
+      loc = '<a id="loc" onclick="gotomap('+ map +')"><span>'+(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')+','+(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')+'</span></a>'
+      //console.log("https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude);
+      
+    }
+    const AccId = "'" + i.Id + "'";loc
     const event_Id = "'" + i.eventId + "'";
     cardSection.innerHTML +=
-      '<div class="card"><div class="card-body"><div class="row"> <div class="col-xs-8"><h4 id="storeName" onclick="gotoAccount(' +
+      '<div class="card"><div class="card-body"> ' + circle + '</i><div class="row"> <div class="col-xs-8"><h4 id="storeName" onclick="gotoAccount(' +
       AccId +
       ')">' +
-      i.Name +
+      (i.Name ? i.Name : '') +
       '</h4><label>' +
-      i.Channel__c +
+      (i.Channel__c? i.Channel__c : '') +
       '/ ' +
-      i.Sub_Channel__c +
+      (i.Sub_Channel__c ? i.Sub_Channel__c: '') +
       '</label>' +
       '<label> <strong>Order: </strong><span>' +
-      dateformat(i.Recent_Retail_Depletion__c) +
-      (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
+      (i.Recent_Retail_Depletion__c ?
+      dateformat(i.Recent_Retail_Depletion__c) : '')+
+      (i.Recent_Retail_Depletion__c ? 
+      (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') : '') +
       '</span> <span>|</span>  <strong>Visit: </strong>' +
       '<span>' +
       (VisitDate ? dateformat(VisitDate) : '') +
       '</span></label><label># ' +
-      i.BillingStreet +
-      '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
+     ( i.BillingStreet? i.BillingStreet : '') +
+      '</label> <label>'+(loc?loc:'')+' </label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
       '<li>' + temp1 + '</li> <li>' +
       (i.Draft_Status__c == true
         ? '<img src="/media/icon11.png" alt="icon" />'
@@ -87,7 +115,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       '</li><li> ' +
       (tmp ? tmp : '') +
       ' </li> </ul></div>' +
-      '</div> <button onclick="handleCheckIn(' +
+      '</div> <button id="checkin" onclick="handleCheckIn(' +
       event_Id +
       ',' +
       AccId +
@@ -145,6 +173,11 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
   //   ' </li> </ul></div>' +
   //   '</div> <button onclick="handleCheckIn()" class="btn btn-small">Check-In</button></div></div>';
 };
+
+gotomap = (map) => {
+  window.location.href = map;
+  //console.log(map)
+}
 
 gotoAccount = (id) => {
     window.location.href = `/view/accountLanding/accountLanding.html?accountId=${id}`

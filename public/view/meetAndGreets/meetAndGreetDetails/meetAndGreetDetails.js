@@ -1,8 +1,10 @@
-
+let contactMeetingData = {};
 (async function () {
     let urlParam = new URLSearchParams(window.location.search);
     var accountID = urlParam.get('accountId')
     const individual = urlParam.get('individual')
+    contactMeetingData.App_Id = `${fetchCurrentDateIdStr()}-${accountID}`;
+    contactMeetingData.meetingData = [];
     if(individual == 'true'){
       $('#closeIco').hide();
       $('.arrowIcons').hide();
@@ -19,7 +21,7 @@
         if (ele.Active__c) {
             temp += '<div class="row contactDetailsBorder">'
             temp += '<div class="col-xs-1">'
-            temp += '<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">'
+            temp += `<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"  onchange="manageContactMeeting('${ele.Id}')">`
             temp += ' </div>'
             temp += '<div class="col-xs-2">'
             temp += '<label class="contactDetailsTxt">' + ele.Salutation + '</label>'
@@ -42,10 +44,22 @@
     $("#contactsCard").prepend(temp);
 })();
 
-finalSubmit = () => {
+manageContactMeeting = (contactID) =>{
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+    let eventId = localStorage.getItem('eventId')
+    contactMeetingData.meetingData.push({
+        Event__c : eventId,
+        Contact__c : contactID
+    })
+}
+
+finalSubmit = async() => {
+    let urlParam = new URLSearchParams(window.location.search);
+    const accountID = urlParam.get('accountId')
+    await writeData('contactMeeting', contactMeetingData);
+    console.log('contactMeetingData',contactMeetingData);
+    window.location.href = `/view/sales/stockOutlet.html?accountId=${accountID}`
 }
 
 openAddMeetAndGreet = () => {

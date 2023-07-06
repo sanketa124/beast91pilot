@@ -99,17 +99,19 @@
 } */
 
 .contactDetailsBorder {
-    border: 1px solid rgba(0, 0, 0, 0.55);
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    margin-bottom: 7px;
     justify-content: center;
-    padding-top: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 
 .infoIcon {
     width: 20px;
     height: 20px;
     margin: 10px;
+    margin-left: 0;
 }
 
 .hrColor {

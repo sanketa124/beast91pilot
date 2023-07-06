@@ -40,7 +40,7 @@ const IntializeIssues = async () => {
       issues.map(issue => {
         issueContainer.innerHTML += `<div class="content-wrapper">
         <div class="content-wrapper-primary-inside">${issue.Issue_Type__c}</div>
-        <div class="content-wrapper-primary-inside">${issue.Settlement_Date__c}</div>
+        <div class="content-wrapper-primary-inside" style="text-align:center;">${issue.Settlement_Date__c}</div>
         <div class="content-wrapper-secondary-inside"><input type="checkbox" id="is_resolved_${issue.Id}" class="defaultCheckBox" value="${issue.Id}"></div>
     </div>`
     })

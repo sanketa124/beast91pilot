@@ -89,7 +89,7 @@
     <div class="container-fluid">
         <div style="display: flex; justify-content: space-between">
             <div>
-                <h3>Follow up required?
+                <h3 class="mainHeading" style="margin-top: 24px;">Follow up required?
             </div>
             <div style="padding-top: 2rem;">
                 <input class="defaultCheckBox" id="isFollowUp" type="checkbox">
@@ -99,7 +99,7 @@
             <div class="task-wraper">
                 <h4>Reason for Follow up Task</h4>
                 <div class="content-wrapper">
-                    <input type="text" class="form-control" id= "Subject" placeholder="write what's in your mind" required>
+                    <input type="text" class="form-control" id= "Subject" placeholder="" required>
                 </div>
             </div>
             <div class="task-wraper">
@@ -164,12 +164,11 @@
             </div>
             <div class="modal-body text-center">
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                    <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i class="fas fa-file-alt"></i>Sell
                             Sheets</a></li>
                     <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
                             Marketing Inventory</a></li> -->
-                    <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                            Inventory</a></li>
+                    
                     <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
                     </li> -->
                     <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
@@ -248,8 +247,8 @@
             </div>
         </div>
     </div>
-    <!-- Cancel Modal -->
- <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
+   <!-- Cancel Modal -->
+   <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -259,8 +258,8 @@
                 <h5>Are you sure you want to Cancel ?</h5>
             </div>
             <div class="modal-footer text-center">
-                <button type="button" data-dismiss="modal"
-                    class="btn btn-success">Yes</button>
+                <button type="button"
+                    class="btn btn-success"><a href="/view/homePage/homePage.html"> Yes </a></button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
             </div>
         </div>

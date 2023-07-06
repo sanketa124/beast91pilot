@@ -40,8 +40,8 @@ exports.fetchEvents = async (req, res) => {
             const caseInsert = cases.filter(item =>  !item.Id);
             const d = await sfConnection.sobject('Case').insert(caseInsert);
             const q = await sfConnection.sobject('Case').update(caseUpdate);
-            console.log(caseUpdate,"demo1",JSON.stringify(q))
-            console.log(caseInsert,"demo",JSON.stringify(d))
+            // console.log(caseUpdate,"demo1",JSON.stringify(q))
+            // console.log(caseInsert,"demo",JSON.stringify(d))
         }
 
         if (req.body.nonSales.isTech) {
@@ -289,7 +289,7 @@ WHERE
         standardEvents = await sfConnection.query(`Select Id,WhatId,StartDateTime, Description, EndDateTime, Location, Subject from Event WHERE StartDateTime>=LAST_90_DAYS AND Custom_Event__c=null AND OwnerId='${req.conn.userInfo.id}' ORDER BY StartDateTime DESC`);
 
         casesList = await sfConnection.query('Select Id, Issue_Resolved__c,AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type from Case Where Issue_Resolved__c = false');
-        console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
+      //  console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
         let taskList = await sfConnection.query('SELECT  WhatId,Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
         let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
@@ -322,7 +322,7 @@ WHERE
         }
         let eventObjects = await sfConnection.sobject('Event__c').describe()
         let eventRecordTypes = eventObjects.recordTypeInfos
-        console.log("EventRecordTypes",eventRecordTypes)
+      //  console.log("EventRecordTypes",eventRecordTypes)
         //console.log(LapsedAccountDetails,"AccountDetails");
         //res.status(200).json({isError : false,isAuth : true, NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
         res.status(200).json({ 
@@ -351,7 +351,7 @@ exports.fetchIssues = async (req, res) => {
         console.log(":::::::::::::Issues SYNC :::::::::::::::")
         const sfConnection = req.conn;
         let cases = req.body.case;
-        console.log(":::::::::::::Issues cases SYNC :::::::::::::::", cases)
+     //   console.log(":::::::::::::Issues cases SYNC :::::::::::::::", cases)
         const syncDateTime = req.syncDateTime;
         if (cases.length > 0) {
             cases = cases.map(item => {
@@ -496,7 +496,42 @@ exports.objectiveSync = async (req, res) => {
             }
             return ele;
         });
-        const imageBody = stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0]?.stock_at_risk_images;
+        const imageBody = stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images;
+        for (eve of event){
+            let event_data ={
+                'End_date_and_time__c': eve.End_date_and_time__c,
+                'Start_date_and_time__c': eve.Start_date_and_time__c,
+                'Account__c': eve.Account__c,
+                'Id': eve.Id,
+                'Completed__c': eve.Completed__c,
+                'Actual_Start_Visit__c': eve.Actual_Start_Visit__c,
+                'Actual_End_Visit__c': eve.Actual_End_Visit__c,
+                'Type__c': null,
+                'RecordTypeId': eve.RecordTypeId,
+                'Check_In__Latitude__s': eve.Check_In__Latitude__s,
+                'Check_In__Longitude__s': eve.Check_In__Longitude__s,
+                'Check_Out__Latitude__s' : eve.Check_Out__Latitude__s,
+                'Check_Out__Longitude__s' : eve.Check_Out__Longitude__s
+              }
+              sfConnection.sobject("Event__c")
+                .update(event_data, function (err, rets) {
+                if (err) {
+                    return console.error(err);
+                }
+                if (err || !rets.success) {
+                    console.log("Error on updating contact", JSON.stringify(err));
+                    return console.error(err, rets);
+                }
+                console.log("Updated Successfully : " + rets.id);
+
+                for (var i = 0; i < rets.length; i++) {
+                    if (rets[i].success) {
+                    console.log("Updated Successfully : " + rets[i].id);
+                    }
+                }
+                });
+        }
+   
         // console.log('stockVisibilites',stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0])
         let body = {
             User_Name: req.body.username,
@@ -510,10 +545,18 @@ exports.objectiveSync = async (req, res) => {
             productPreSalesSamples: JSON.stringify(productSampling)
         };
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
-        if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0]?.stock_at_risk_images){
+        if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images){
+            const imageBody = stockVisibilites[0].stock_at_risk_images.length > 0 && stockVisibilites[0].stock_at_risk_images;
             await postStockImages(req.conn, imageBody);
         }
-        
+
+        if(req.body?.contactMeeting && req.body.contactMeeting.length>0){
+            const reqContactMeetingData = {
+                conn: req.conn,
+                contactMeetingData: req.body.contactMeeting[0]?.meetingData
+            }
+            await updateContactMeeting(reqContactMeetingData,res);
+        }
         dealerWiseVisitInfoJSON = JSON.parse(dealerWiseVisitInfo);
 
         // Draft Pre Installation
@@ -767,6 +810,35 @@ exports.objectiveSync = async (req, res) => {
     }
 };
 
+const updateContactMeeting = async (req,res) => {
+  //  console.log('contactMeetingData', req);
+    try {
+        let sfConnection = req.conn;
+        //console.log('reqConn',req.conn)
+      //  console.log('req.body.contactMeetingData',req.contactMeetingData)
+        sfConnection.sobject("Contact_Meeting__c").create( req.contactMeetingData,
+          function(err, rets) {
+            //console.error('errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr',rets[0].errors);
+            if (err) { 
+               console.error('Updateerror',err);
+               return console.error(err);
+             }
+            for (var i=0; i < rets.length; i++) {
+              if (rets[i].success) {
+              //  res.status(200).json({ isError: false, isAuth: true, message: "Contact meeting record added successfully" })
+                console.log("Created record id : " + rets[i].id);
+              }
+            }
+          });
+    } catch (e) {
+        console.log("Error in Updating contact meeting",e)
+        res.status(500).json({ isError: true, isAuth: true, message: e });
+
+    }
+  
+}
+
+
 
 const draftProcessesHelper = (req) => {
     let machineCommissioning = req.body.machineCommissioning;
@@ -793,38 +865,9 @@ const postStockImages = async (conn,imageBody) => {
     //console.log('imageBody',imageBody)
     try {
         let sfConnection = conn;
-        let table = 'ContentVersion';
-        let queryString = 'SELECT ';
-        let todayDate = new Date().toISOString().split('T')[0]
-
-        let sobjectDescribe = await sfConnection.sobject(table).describe();
-
         const contentVersionData = imageBody;
-        
         let createFile = await sfConnection.sobject('ContentVersion').create(contentVersionData)
-
-        console.log("CreateFile", createFile[0]?.errors)
-
-
-
-        let recordTypes = sobjectDescribe.recordTypeInfos
-
-        //console.log("SObject===>",sobjectDescribe.recordTypeInfos)
-
-        let columns = sobjectDescribe.fields.map((eachField) => {
-            return eachField.name
-        })
-        for (let column of columns) {
-            queryString += column + ',';
-        }
-        queryString = queryString.slice(0, -1); // remove trailing comma
-        queryString += ' FROM ' + table;
-        //queryString += ` WHERE Start_Date__c <= ${todayDate} AND End_Date__c >= ${todayDate} `;
-        let goals = await sfConnection.query(queryString);
-        //let sobjectUpsert = await sfConnection.upsert(table,goals.records[0],goals.records[0].Id)
-        //console.log("Upsert====>",sobjectUpsert)
-      //  return goals;
-       
+        console.log("CreateFile", createFile[0] && createFile[0].errors)
     }
     catch (e) {
         // console.log(e);

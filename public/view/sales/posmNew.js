@@ -58,8 +58,9 @@ let defaultItems = []
 async function populateTableWithDefaultItems() {
 
     //We will get items which are not assets as mentioned in constants/constants.js file
-    let itemMaster = await readAllData('itemMasterCopy');
+    let itemMaster = await readAllData('nonBeerItems');
     let itemMasterRecordTypes = await readAllData('itemMasterRecordTypes');
+    const alreadySelectedProducts = defaultItems.map((item) => item.Name)
 
     console.log("Item Master===>", itemMaster)
     console.log("Item Master Record Type===>", itemMasterRecordTypes)
@@ -68,7 +69,13 @@ async function populateTableWithDefaultItems() {
 
     console.log("Required Pos IDs===>", requiredPosId.recordTypeId)
 
-    items = itemMaster.filter((eachItem) => eachItem.recordTypeId == requiredPosId.recordTypeId && !posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()))
+    const POSMItems = itemMaster.filter((eachItem) => eachItem.recordTypeId == requiredPosId.recordTypeId)
+    
+    console.log("posm items===>",POSMItems)
+
+    items = itemMaster.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && !posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()) && !alreadySelectedProducts.includes(eachItem.name))
+
+    console.log("Items ====>",items)
 
     // Fetch the default items from IndexedDB (accountGoals table) and store them in an array called 'defaultItems'
     // Iterate over the 'defaultItems' array and add rows to the table
@@ -76,7 +83,7 @@ async function populateTableWithDefaultItems() {
         const newRow = itemTable.insertRow(0);
         newRow.dataset.id = item.Id;
         const itemCell = newRow.insertCell()
-        itemCell.innerText = item.Display_Name__c;
+        itemCell.innerText = item.Name;
         itemCell.classList.add("wd-60");
 
         // Create an input field for quantity
@@ -105,7 +112,7 @@ function addOptionsToSelect(selectItem, items) {
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var option = document.createElement("option");
-        option.text = item.Display_Name__c;
+        option.text = item.Name;
         option.value = item.Id;
         selectItem.appendChild(option);
     }
@@ -138,6 +145,8 @@ function qtyTotalUpdate(prodId) {
 
 const handleSearch = (e) => {
 
+    console.log("I am in hndle search")
+
     console.log("Select Item===>", selectItem)
     console.log("New Search===>", newSearch)
 
@@ -155,9 +164,13 @@ const handleSearch = (e) => {
 
     let selectedItem = items.find((item)=>item.Id ==data.id)
 
+    console.log("Selected item---->",selectedItem)
+
     selectedItem['quantity'] = 0
 
     defaultItems.push(selectedItem)
+
+    console.log("DI====>",defaultItems)
 
 
     $('#selectItem').val(null).trigger('change');
@@ -194,11 +207,13 @@ function updateTable() {
     // Clear the existing table rows
     itemTable.innerHTML = '';
 
+    console.log("DLO===>",defaultItems)
+
     defaultItems.forEach(item => {
         const newRow = itemTable.insertRow();
         newRow.dataset.id = item.Id;
         const itemCell = newRow.insertCell()
-        itemCell.innerText = item.Display_Name__c;
+        itemCell.innerText = item.Name;
         itemCell.classList.add("wd-60");
 
         // Create an input field for quantity
@@ -238,7 +253,12 @@ const createNewRow = () => {
     const clonedSelectSearchId = 'selectSearch' + uniqueId;
     const clonedPosmQuantityId = 'posmQuantity' + uniqueId;
 
-    const optionsString = items.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Display_Name__c}</option>`)
+    const alreadySelectedProducts = defaultItems.map((item) => item.Name)
+    console.log("Already new===>",alreadySelectedProducts)
+
+    let presentItems = items.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && !posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()) && !alreadySelectedProducts.includes(eachItem.Name))
+
+    const optionsString = presentItems.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Name}</option>`)
 
     // Create the newSearch HTML string with dynamic IDs
     const newSearchHTML = `

@@ -10,15 +10,15 @@ let searchItems = []
 let bodyToBeSent = {}
 
 // Function to populate the table with default items
-async function populateTableWithDefaultItems() {
+async function populateTableWithDefaultAssets() {
 
     //We will get items which are not assets as mentioned in constants/constants.js file
-    let itemMaster = await readAllData('itemMasterCopy');
+    let itemMaster = await readAllData('nonBeerItems');
     let itemMasterRecordTypes = await readAllData('itemMasterRecordTypes');
 
     let requiredPosId = itemMasterRecordTypes.find((eachItem) => eachItem.name.toLowerCase() === "posm")
 
-    searchItems = itemMaster.filter((eachItem) => eachItem.recordTypeId == requiredPosId.recordTypeId && posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()))
+    searchItems = itemMaster.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()))
 
     // Fetch the default items from IndexedDB (accountGoals table) and store them in an array called 'defaultItems'
     // Iterate over the 'defaultItems' array and add rows to the table
@@ -27,7 +27,7 @@ async function populateTableWithDefaultItems() {
         newRow.dataset.id = item.Id;
 
         const itemNameCell = newRow.insertCell();
-        itemNameCell.textContent = item.Display_Name__c;
+        itemNameCell.textContent = item.Name;
 
         const checkboxCell = newRow.insertCell();
         const checkbox = document.createElement('input');
@@ -54,7 +54,7 @@ async function populateTableWithDefaultItems() {
         fileInput.setAttribute('capture', 'camera');
         fileInput.setAttribute('accept', 'image/*');
         fileInput.type = 'file';
-        fileInput.style.display = 'none';
+        //fileInput.style.display = 'none';
 
         // Add event listener to camera icon
         cameraIcon.addEventListener('click', () => {
@@ -78,7 +78,7 @@ function addOptionsToSelect(selectItem, items) {
     for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var option = document.createElement("option");
-        option.text = item.Display_Name__c;
+        option.text = item.Name;
         option.value = item.Id;
         selectItem.appendChild(option);
     }
@@ -123,7 +123,7 @@ const handleAssetSearch = (e) => {
     // Refresh the select2 dropdown to reflect the changes
     $(selectItemAsset).trigger('change');
 
-    updateTable()
+    updateAssetsTable()
 
 }
 
@@ -133,7 +133,7 @@ $(function () {
 
 $('#selectSearch1').on('select2:select', (e) => handleAssetSearch(e));
 
-function updateTable() {
+function updateAssetsTable() {
 
     // Clear the existing table rows
     assetsTable.innerHTML = '';
@@ -143,7 +143,7 @@ function updateTable() {
         newRow.dataset.id = item.Id;
 
         const itemNameCell = newRow.insertCell();
-        itemNameCell.textContent = item.Display_Name__c;
+        itemNameCell.textContent = item.Name;
 
         const checkboxCell = newRow.insertCell();
         const checkbox = document.createElement('input');
@@ -226,7 +226,7 @@ const createNewAssetRow = () => {
     const clonedCheckBoxId = 'checkBox' + uniqueId;
     const cameraId = 'cameraSearch' + uniqueId;
 
-    const optionsString = searchItems.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Display_Name__c}</option>`)
+    const optionsString = searchItems.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Name}</option>`)
 
     // Create the newSearch HTML string with dynamic IDs
     const newSearchHTML = `
@@ -324,11 +324,11 @@ function calculateTotalAssetQuantity() {
 function posmSubmit(){
 
     let accountId = localStorage.getItem('accountId')
-    let eventId = localStorage.get('eventId')
+    let eventId = localStorage.getItem('eventId')
 
     bodyToBeSent.accountId = accountId
     bodyToBeSent.eventId = eventId
-    bodyToBeSent.POSM_Requisiton__c = {}
+    bodyToBeSent.POSM_Requisition__c = {}
     bodyToBeSent.POSM_Line_Item__c = []
     bodyToBeSent.images = []
 
@@ -338,7 +338,7 @@ function posmSubmit(){
         Event_Id__c: eventId,
         Requisition_Date__c : new Date()
     }
-    bodyToBeSent.POSM_Requisiton__c = tempObject
+    bodyToBeSent.POSM_Requisition__c = tempObject
 
     //Check the length of the default Items and as well as the asset items
     if(defaultItems.length >0){
@@ -401,8 +401,8 @@ async function apiToPostData(){
                 'Content-Type' : 'application/json'
             },
             body : JSON.stringify({
-                username : username,
-                password : password,
+                username : loginData[0].username,
+                password : loginData[0].password,
                 data:bodyToBeSent
             })
         });
@@ -424,12 +424,16 @@ async function apiToPostData(){
 async function handleEndDayHandler(){
 
         let apiResponse = await apiToPostData()
+        
+        let urlParam = new URLSearchParams(window.location.search);
+        const accountID = urlParam.get('accountId')
+        const individual = urlParam.get('individual')
 
-        if(apiResponse){
+        if(individual == true){
             window.location.href = '/view/homePage/homePage.html'
         }else{
-            alert("Something went wrong in posting the data")
+            gotoCompitation1()
         }
 }
 
-populateTableWithDefaultItems()
+populateTableWithDefaultAssets()

@@ -374,6 +374,7 @@ text-align: right;
 }
 .thumbnail .caption{
   position: relative;
+  padding: 0;
 }
 
 #todaysMeeting{
@@ -391,6 +392,8 @@ text-align: right;
   padding: 0;
   border-color: #6600ff;
   margin-bottom: 10px;
+  border: 0;
+  margin: 0;
 }
 
 .dashboardSection .thumbnail .caption h3{
@@ -398,6 +401,7 @@ text-align: right;
   font-size: 18px;
   text-align: center;
   font-weight: 400;
+  color: #333;
 }
 
 .dashboardSection .thumbnail .caption .progress{
@@ -476,32 +480,9 @@ text-align: right;
     right: 50%;
     margin-right: -50px;
     z-index: 9;
+    margin-top: -25px;
 }
 .chartPercent #chartPercent{
   display: inline-block;
 }
 
-.subLinks{
-  padding: 0;
-  margin: 20px 0 20px 0;  
-}
-.subLinks li{
-  display: block;
-  border: 1px solid #222;
-  padding: 10px 10px;
-  margin: 0 0 10px 0;
-}
-
-.subLinks li a{
-  font-size: 16px;
-  color: #212121;
-}
-
-.subLinks li a span{
-
-}
-.subLinks li a i{
-  display: block;
-  float: right;
-  margin: 4px 0 0 0;
-}

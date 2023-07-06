@@ -300,7 +300,7 @@ input:checked + .slider:before {
   top: 0;
   left: 0;
   display: none;
-  background-color: #cac4c45c;
+  background-color: #fff;
 }
 .loader-div .loader{
   top: 30%;

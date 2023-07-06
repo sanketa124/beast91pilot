@@ -78,7 +78,7 @@ initializeProductsFrontEnd = (products, images) => {
 // });
 
 {/* <div id="cartItems">
-                        <table class="table">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">Item</th>

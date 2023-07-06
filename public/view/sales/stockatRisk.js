@@ -7,32 +7,50 @@ let itemsBackend = [];
 let imageMap = new Map();
 let itemValueMap = new Map();
 let selectedProducts = new Set();
+const accountID = localStorage.getItem('accountId');
+let accoutnDetails = {}
 
 let stockVisbility = {};
 const initializeStockVisibility = async () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    const accountId = urlParams.get('accountId');
-    const key = `${fetchCurrentDateIdStr()}-${accountId}`;
-    stockVisbility = await getItemFromStore('stockVisibility',key);
-   // stockDetail = stockDetail.concat(stockVisbility.stockVisibilityChilds);
-   stockVisbility.stock_at_risk_images = [];
+  var currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  currentDate.setDate(0);
+  var options = { day: 'numeric', month: 'long', year: 'numeric' };
+  var lastFullDateOfNextMonth = currentDate.toLocaleDateString('en-US', options);
+  $('#expiry_date').html(lastFullDateOfNextMonth);
+
+  console.log('lastDateOfNextMonth', lastFullDateOfNextMonth);
+  const key = `${fetchCurrentDateIdStr()}-${accountID}`;
+  stockVisbility = await getItemFromStore('stockVisibility', key);
+  accoutnDetails = await getItemFromStore('account', accountID);
+  // stockDetail = stockDetail.concat(stockVisbility.stockVisibilityChilds);
+  if (!stockVisbility.stock_at_risk_images) {
+    stockVisbility.stock_at_risk_images = [];
+  }
+
+  if (stockVisbility.stockVisibilityChilds[0].Stock_at_Risk == undefined) {
     for (var i = 0; i < stockVisbility.stockVisibilityChilds.length; i++) {
       stockVisbility.stockVisibilityChilds[i].Stock_at_Risk = 0;
-     
+
     }
-    selectedProducts = stockVisbility.stockVisibilityChilds;
-    console.log('productSelectedTotal',stockVisbility.stockVisibilityChilds)
-    displayProducts();
+  }
+
+  selectedProducts = stockVisbility.stockVisibilityChilds;
+  console.log('productSelectedTotal', stockVisbility.stockVisibilityChilds)
+  displayProducts();
 };
-displayProducts = () =>{
-    for (var i = 0; i < selectedProducts.length; i++) {
-    $("#stckRiskTbl tbody").prepend(' <tr data-id="'+selectedProducts[i].Item_Master+'">\
-    <td>'+selectedProducts[i].name+'</td>\
-    <td>'+selectedProducts[i].Quantity+'</td>\
-    <td><input type="number" class="form-control cartQtyChange" min="0" value="0" onkeyup="qtyTotalUpdate(`'+selectedProducts[i].Item_Master+'`)"></td>\
-    <td>'+createImgInput(('stock_at_risk_images'), '', stockVisbility['xxxx'], "fileInput(this,`"+selectedProducts[i].Item_Master+"`)", true)+'</td>\
+displayProducts = () => {
+
+  for (var i = 0; i < selectedProducts.length; i++) {
+    console.log('selectedProducts', selectedProducts[i])
+    var stockAtRisk = selectedProducts[i].Stock_at_Risk ? selectedProducts[i].Stock_at_Risk : 0;
+    $("#stckRiskTbl tbody").prepend(' <tr data-id="' + selectedProducts[i].Item_Master + '">\
+    <td>'+ selectedProducts[i].name + '</td>\
+    <td>'+ selectedProducts[i].Quantity + '</td>\
+    <td><input type="number" class="form-control cartQtyChange" min="0" value="'+ stockAtRisk + '" max="' + selectedProducts[i].Quantity + '" onkeyup="qtyTotalUpdate(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')" onblur="myFunction(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')"></td>\
+    <td>'+ createImgInput(('' + selectedProducts[i].Item_Master + ''), '', stockVisbility['xxxx'], "fileInput(this,`" + selectedProducts[i].Item_Master + "`)", true) + '</td>\
     </tr>')
-    }
+  }
 }
 
 
@@ -43,10 +61,10 @@ const toBase64 = (file) => new Promise((resolve, reject) => {
   reader.onerror = error => reject(error);
 });
 const fileInput = async (event, itemMaster) => {
-  console.log('itemMaster',itemMaster)
+  console.log('itemMaster', itemMaster)
   const key = $(event).attr('id');
   const fileInput = $(event).prop('files')[0];
-console.log('fileInput',fileInput)
+  console.log('fileInput', fileInput)
   // var options = {
   //   maxSizeMB: 0.1,
   //   maxWidthOrHeight: 1920,
@@ -59,15 +77,17 @@ console.log('fileInput',fileInput)
 };
 
 const uploadBase64Value = async (key, fileInput) => {
+
   const newImgPath = await toBase64(fileInput);
   let newImg = {
-    PathOnClient : stockVisbility.accountId+'|'+stockVisbility.recordTypeName+'|'+stockVisbility.Geolocation_Latitude +' '+stockVisbility.Geolocation_Longitude+'.'+fileInput.type.split('/').pop(),
+    PathOnClient: accoutnDetails.Name + ' | Stock at Risk | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date() + '.' + fileInput.type.split('/').pop(),
     VersionData: newImgPath.replace(/^data:image\/[a-z]+;base64,/, ""),
-    Title: stockVisbility.accountId+'|'+stockVisbility.recordTypeName+'|'+stockVisbility.Geolocation_Latitude +' '+stockVisbility.Geolocation_Longitude,
+    Title: accoutnDetails.Name + ' | Stock at Risk | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date(),
     //FileExtension: fileInput.type.split('/').pop()
   }
+
   stockVisbility['stock_at_risk_images'].push(newImg);
-  //fileAttachedBackgroundChange(key);
+  fileAttachedBackgroundChange(key);
 };
 
 const fileAttachedBackgroundChange = (key) => {
@@ -77,40 +97,37 @@ const fileAttachedBackgroundChange = (key) => {
 };
 
 
-qtyTotalUpdate = (prodId) =>{
+qtyTotalUpdate = (prodId, qty) => {
 
-    let sum = 0;
-    $(".cartQtyChange").each(function() {
-      var thisId = $(this).parent().parent().attr("data-id");
-      var value = parseInt($(this).val());  
-      if(thisId == prodId){
-        
-        $.each(selectedProducts, function(index, obj) {
-          if (obj.Item_Master == prodId) {
-            console.log('matched',obj)
-            obj.Stock_at_Risk = value;
-          }
-        });
-      }
-      if (!isNaN(value)) {
-        sum += value;
-      }
-    });
-    console.log('sum',sum)
-    $('#cartTotal').html(sum)
+  let sum = 0;
+  $(".cartQtyChange").each(function () {
+    var thisId = $(this).parent().parent().attr("data-id");
+    var value = parseInt($(this).val());
+    if (thisId == prodId) {
+      $.each(selectedProducts, function (index, obj) {
+        if (obj.Item_Master == prodId && qty > value) {
+          obj.Stock_at_Risk = value;
+        }
+      });
     }
-    
-saveStockAtRisk = async () => {
-  await writeData('stockVisibility',stockVisbility);
-  // console.log('selectedProducts',selectedProducts)
-  // console.log('stockVisbility',stockVisbility)
-  const urlParams = new URLSearchParams(window.location.search);
-  const accountId = urlParams.get('accountId');
-  window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
+    if (!isNaN(value)) {
+      sum += value;
+    }
+  });
+  console.log('sum', sum)
+  $('#cartTotal').html(sum)
 }
+myFunction = (thisId, qty) => {
+  const thisVal = $('[data-id="' + thisId + '"]').find('.cartQtyChange').val();
+  if (thisVal > qty) {
+    $('[data-id="' + thisId + '"]').find('.cartQtyChange').val(0)
+  }
 
-initializeStockVisibility()
-
+}
+saveStockAtRisk = async () => {
+  await writeData('stockVisibility', stockVisbility);
+  window.location.href = `/view/sales/recomendation.html?accountId=${accountID}`
+}
 goBack = () => {
   let urlParams = new URLSearchParams(window.location.search);
   const accountId = urlParams.get('accountId');
@@ -122,3 +139,4 @@ goForward = () => {
   const accountId = urlParams.get('accountId');
   window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
 }
+initializeStockVisibility()

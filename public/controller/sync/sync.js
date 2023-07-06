@@ -421,7 +421,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
         let salesOrderSync = await readAllData('salesOrderSync');
         let caseSync = await readAllData('caseSync');
         let stockVisibility = await readAllData('stockVisibility');
-        let stockOutlet = await readAllData('stockOutlet');
+        let contactMeeting = await readAllData('contactMeeting');
         let productSampling = await readAllData('productSampling');
         let posm = await readAllData('posm');
         let draftSignup = await readAllData('draft_Signup');
@@ -463,7 +463,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
         stockVisibility = stockVisibility.filter(ele => {
             return !ele.isSynced;
         }); 
-        stockOutlet = stockOutlet.filter(ele => {
+        contactMeeting = contactMeeting.filter(ele => {
             return !ele.isSynced;
         }); 
         posm = posm.filter(ele => {
@@ -532,7 +532,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 salesOrder : salesOrderSync,
                 kycDetail : kycDetail,
                 stockVisibility : stockVisibility,
-                stockOutlet : stockOutlet,
+                contactMeeting : contactMeeting,
                 events :eventsSync,
                 cases:caseSync,
                 competitorInsight :competitorInsights,
@@ -602,7 +602,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                     ele.isSynced = true;
                     return ele;
                 }); 
-                stockOutlet = stockOutlet.filter(ele => {
+                contactMeeting = contactMeeting.filter(ele => {
                     ele.isSynced = true;
                     return ele;
                 }); 
@@ -656,7 +656,7 @@ const objectivePushHelper =async (username,password,syncDateTime,nonSales)  => {
                 });
                 await writeDataAll('eventsSync',eventsSync);
                 await writeDataAll('stockVisibility',stockVisibility);
-                await writeDataAll('stockOutlet',stockOutlet);
+                await writeDataAll('contactMeeting',contactMeeting);
                 await writeDataAll('salesOrderSync',salesOrderSync);
                 await writeDataAll('caseSync',caseSync);
                 await writeDataAll('kycDetail',kycDetail);
@@ -700,7 +700,7 @@ const deletePreviousObjectiveHelper = async () => {
     let salesOrderSync = await readAllData('salesOrderSync');
     let caseSync = await readAllData('caseSync');
     let stockVisibility = await readAllData('stockVisibility');
-    let stockOutlet = await readAllData('stockOutlet');
+    let contactMeeting = await readAllData('contactMeeting');
     let productSampling = await readAllData('productSampling');
     let posm = await readAllData('posm');
     let draftSignup = await readAllData('draft_Signup');
@@ -748,7 +748,7 @@ const deletePreviousObjectiveHelper = async () => {
         let currentDate = new Date().setHours(0,0,0,0);
         return ele.isSynced&&(currentDate!==storedDate);
     });
-    stockOutlet = stockOutlet.filter(ele => {
+    contactMeeting = contactMeeting.filter(ele => {
         let storedDate = ele.Created_Date.setHours(0,0,0,0);
         let currentDate = new Date().setHours(0,0,0,0);
         return ele.isSynced&&(currentDate!==storedDate);
@@ -828,8 +828,8 @@ const deletePreviousObjectiveHelper = async () => {
     for(let i=0;i<stockVisibility.length;i++){
         await deleteItemFromData('stockVisibility',stockVisibility[i].App_Id);
     }
-    for(let i=0;i<stockOutlet.length;i++){
-        await deleteItemFromData('stockOutlet',stockOutlet[i].App_Id);
+    for(let i=0;i<contactMeeting.length;i++){
+        await deleteItemFromData('contactMeeting',contactMeeting[i].App_Id);
     }
     for(let i=0;i<productSampling.length;i++){
         await deleteItemFromData('productSampling',productSampling[i].App_Id);

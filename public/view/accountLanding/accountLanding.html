@@ -59,7 +59,7 @@
                         <div class="bar"></div>
                     </div> -->
                     <div class="toggle-btn text-left" id="searchIco">
-                        <i class="fas fa-search"></i>
+                        <!-- <i class="fas fa-search"></i> -->
                     </div>
                     <div class="logoSection nav-logo text-left">
                         <h3>Nando's</h3>
@@ -68,39 +68,11 @@
             </div>
         </nav>
         <!-- Collapsable header with Icon for navigation -->
-        <div class="sub-header-navigation-container">
+        <div class="sub-header-navigation-container container">
             <div class="row">
-                <div class="col-xs-3">
-                    <a class="blackClr">
-                        <div class="sub-menu-icon-text-wrapper" onclick="gotoCheckin()">
-                            <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
-                                height="40vh" />
-                            <h4>Check-In</h4>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xs-3">
-                    <a class="blackClr" onclick="openGeoLocation()">
-
-                        <div class="sub-menu-icon-text-wrapper">
-                            <img src="/media/icons/account/geo_location.svg" loading="lazy" alt="geo"
-                                style="mix-blend-mode: multiply" width="40vw" height="40vh" />
-                            <h4>Geo Location</h4>
-
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xs-3">
-                    <a class="blackClr" onclick="gotoSalesOrder()">
-                        <div class="sub-menu-icon-text-wrapper" >
-                            <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
-                                height="40vh" />
-                            <h4>Order</h4>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xs-3">
-                    <div class="sub-menu-icon-text-wrapper">
+               
+                <div class="col-xs-12 text-right">
+                    <div class="sub-menu-icon-text-wrapper" style="align-items: flex-end;">
                         <i style="cursor: pointer; padding: 2rem 1rem" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                             class="fa-solid fa-ellipsis fa-2xl"></i>
@@ -110,6 +82,35 @@
             <!-- Hidden Menu Show Expandable Menu-->
             <div class="collapse" id="collapseExample" style="width: 100%">
                 <div class="row">
+                    <div class="col-xs-3">
+                        <a class="blackClr">
+                            <div class="sub-menu-icon-text-wrapper" onclick="gotoCheckin()">
+                                <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="check-in" width="40vw"
+                                    height="40vh" />
+                                <h4>Check-In</h4>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-3">
+                        <a class="blackClr" onclick="openGeoLocation()">
+    
+                            <div class="sub-menu-icon-text-wrapper">
+                                <img src="/media/icons/account/geo_location.svg" loading="lazy" alt="geo"
+                                    style="mix-blend-mode: multiply" width="40vw" height="40vh" />
+                                <h4>Geo Location</h4>
+    
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-xs-3">
+                        <a class="blackClr" onclick="gotoSalesOrder()">
+                            <div class="sub-menu-icon-text-wrapper" >
+                                <img src="/media/icons/account/order_icon.svg" loading="lazy" alt="order" width="40vw"
+                                    height="40vh" />
+                                <h4>Order</h4>
+                            </div>
+                        </a>
+                    </div>
                     <div class="col-xs-3 sub-menu-icon-text-wrapper">
                         <a class="blackClr" onclick="openMeetAndGreet()">
                             <img src="/media/icons/account/people_icon.svg" loading="lazy" alt="Meet &Greet"
@@ -120,8 +121,8 @@
                             </h4>
                         </a>
                     </div>
-                   
-
+                </div>
+                <div class="row">
                     <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoStockOutlet()">
                         <img src="/media/icons/account/stock_at_outlet_icon.svg" loading="lazy"
                             alt="stock at outlet" width="40vw" height="40vh" />
@@ -146,12 +147,13 @@
                             Contract
                         </h4>
                     </div>
-               
                     <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoVisibility()">
                         <img src="/media/icons/account/visiblity_icon.svg" loading="lazy" alt="visibility"
                             width="40vw" height="40vh" />
                         <h4>Visibility</h4>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-xs-3 sub-menu-icon-text-wrapper" onclick="gotoPosm()">
                         <img src="/media/icons/account/posm-assets-icon.svg" loading="lazy" alt="posm assets"
                             width="40vw" height="40vh" style="mix-blend-mode: multiply" />
@@ -177,8 +179,8 @@
                     <div class="example">
                     </div>
                     <div class="outlet-checkin dashboardSection">
-                        <div class="thumbnail">
-                            <div class="caption">
+                        <div class="thumbnail pt-0">
+                            <div class="caption pt-0">
                                 <h3>MTD Performance</h3>
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
@@ -234,7 +236,7 @@
                         <article class="tableOne">
                             <p class="colorViolet">THIS VISIT TARGET:  <strong>200 CE</strong></p>
                             <h4>BIRA91 Sales Performance</h4>
-                            <table class="table">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -279,6 +281,7 @@
                                 </tbody>
                             </table>
                             <div class="info">
+                                
                                 <p>
                                     <strong>Lapsed Kegs</strong>
                                     <span>White, Blond, Rice, Gold, IPA, Stout, Cider</span>
@@ -287,7 +290,7 @@
                         </article>
                         <article class="tableTwo mt-4">
                             <h4>Liquid Sales</h4>
-                            <table class="table">
+                            <table class="table table-bordered" id="gridTbl1">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -335,7 +338,52 @@
                                         <td> <i class="fas fa-check colorRed"></i></td>
                                     </tr>
                                     <tr>
-                                        <td>Boom</td>
+                                        <td>Boom Strong</td>
+                                        <td>
+                                        <i class="fas fa-check colorGreen"></i>
+                                        </td>
+                                        <td> <i class="fas fa-check colorMerun"></i></td>
+                                        <td> <i class="fas fa-check colorMerun"></i></td>
+                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>line 1</td>
+                                        <td>
+                                        <i class="fas fa-check colorMerun"></i>
+                                        </td>
+                                        <td> <i class="fas fa-check colorGreen"></i></td>
+                                        <td> </td>
+                                        <td> <i class="fas fa-check colorMerun"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>line 2</td>
+                                        <td>
+                                        <i class="fas fa-check colorRed"></i>
+                                        </td>
+                                        <td> </td>
+                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                        <td> <i class="fas fa-check colorRed"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>line 3</td>
+                                        <td>
+                                        <i class="fas fa-check colorRed"></i>
+                                        </td>
+                                        <td> <i class="fas fa-check colorMerun"></i></td>
+                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>line 4</td>
+                                        <td>
+                                        <i class="fas fa-check colorMerun"></i>
+                                        </td>
+                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                        <td> </td>
+                                        <td> <i class="fas fa-check colorRed"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>line 5</td>
                                         <td>
                                         <i class="fas fa-check colorGreen"></i>
                                         </td>
@@ -346,7 +394,7 @@
                                     <tr>
                                         <td>Innovation</td>
                                         <td>
-                                            <i class="fa fa-sort-down sortClick"></i>
+                                            <i class="fa fa-sort-down sortClick" id="showGridTbl1"></i>
                                         </td>
                                         <td></td>
                                         <td></td>
@@ -369,7 +417,7 @@
                                     Never Billed
                                 </li>
                             </ul>
-                            <table class="table mt-4">
+                            <table class="table table-bordered mt-4" id="gridTbl2">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -417,7 +465,61 @@
                                         <td> 14</td>
                                     </tr>
                                     <tr>
-                                        <td>Boom</td>
+                                        <td>Boom Strong</td>
+                                        <td>
+                                        -
+                                        </td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> 14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line 1</td>
+                                        <td>
+                                        -
+                                        </td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> 14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line 2</td>
+                                        <td>
+                                        -
+                                        </td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> 14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line 3</td>
+                                        <td>
+                                        -
+                                        </td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> 14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line 4</td>
+                                        <td>
+                                        -
+                                        </td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> 14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line 5</td>
+                                        <td>
+                                        -
+                                        </td>
+                                        <td> -</td>
+                                        <td> -</td>
+                                        <td> 14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line 6</td>
                                         <td>
                                         -
                                         </td>
@@ -428,7 +530,7 @@
                                     <tr>
                                         <td>Innovation</td>
                                         <td>
-                                            <i class="fa fa-sort-down sortClick"></i>
+                                            <i class="fa fa-sort-down sortClick" id="showGridTbl2"></i>
                                         </td>
                                         <td></td>
                                         <td></td>
@@ -441,7 +543,7 @@
                         <article class="tableOne mt-4">
                             <h4>Competitor Sales Performance</h4>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th></th>
@@ -475,7 +577,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <strong>Heniken</strong>
+                                                <strong>Heineken</strong>
                                             </td>
                                             <td>
                                                 55
@@ -495,7 +597,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <strong>Carlesberg</strong>
+                                                <strong>Carlsberg</strong>
                                             </td>
                                             <td>
                                                 55
@@ -540,12 +642,12 @@
                         <article class="tableOne mt-4">
                             <h4>Order Frequency</h4>
                             <div class="table-responsive">
-                                <table class="table">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th class="colorViolet">ABI</th>
-                                            <th class="colorViolet">Heniken</th>
-                                            <th class="colorViolet">Carlesberg</th>
+                                            <th class="colorViolet">Heineken</th>
+                                            <th class="colorViolet">Carlsberg</th>
                                             <th class="colorViolet">B9</th>
                                         </tr>
                                     </thead>
@@ -587,9 +689,255 @@
                             </div>
                         </div>
                     </div>
+                    <section>
+                        <p><strong>Menu Listing :</strong>     <span>Yes/No</span></p>
+                        <article class="tableOne mt-4">
+                            <h4>Premium Visibility & Assets</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="colorViolet">Item 1</th>
+                                            <th class="colorViolet">Item 2</th>
+                                            <th class="colorViolet">Item 3</th>
+                                            <th class="colorViolet">Item 4</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Draft</strong>
+                                            </td>
+                                            <td>
+                                                2-Tap
+                                            </td>
+                                            <td>
+                                                4-Tap
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Cooler</strong>
+                                            </td>
+                                            <td>
+                                                Counter Top
+                                            </td>
+                                            <td>
+                                                Double Door
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Signage</strong>
+                                            </td>
+                                            <td>
+                                                MakePlay Horizontal LED
+                                            </td>
+                                            <td>
+                                                Hill Station
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            
+                                        </tr>
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                        <article class="tableOne mt-4">
+                            <h4>Customized Branding</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="colorViolet">Item 1</th>
+                                            <th class="colorViolet">Item 2</th>
+                                            <th class="colorViolet">Item 3</th>
+                                            <th class="colorViolet">Item 4</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Internal</strong>
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>External</strong>
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                           
+                                        </tr>
+                                      
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+
+                    </section>
+                    <section>
+                        <article class="tableOne mt-4">
+                            <h4>Menu Listing</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="colorViolet"># of Outlets</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr> 
+                                            <td>
+                                               10
+                                            </td> 
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                        <article class="tableOne mt-4">
+                            <h4>Premium Visibility & Assets</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="colorViolet"># of Outlets</th>
+                                            <th class="colorViolet"># of Units</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Draft</strong>
+                                            </td>
+                                            <td>
+                                                10
+                                            </td>
+                                            <td>
+                                                13
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Cooler</strong>
+                                            </td>
+                                            <td>
+                                                7
+                                            </td>
+                                            <td>
+                                                7
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>Signage</strong>
+                                            </td>
+                                            <td>
+                                                15
+                                            </td>
+                                            <td>
+                                               25
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                        <article class="tableOne mt-4">
+                            <h4>Customized Branding</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th class="colorViolet"># of Outlets</th>
+                                            <th class="colorViolet"># of Units</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>Internal</strong>
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>External</strong>
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+                                        </tr>
+                                      
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                        
+                    </section>
                     <article class="tableOne mt-4">
                         <h4>Open Issues</h4>
-                        <table class="table">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th class="colorViolet">Issue Type</th>
@@ -623,15 +971,65 @@
         </div>
 
         <!--List of Items  -->
+        <ul class="subLinks" style="    padding: 0 15px;">
+            <li>
+                <a onclick="showAccountDetails()">
+                    <span>Details</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a onclick="gotoFollowupPage()">
+                    <span> Follow-ups/ Tasks </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a onclick="gotoOrderHistory()">
+                    <span> Order History </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a onclick="gotoStock()">
+                    <span> Stock </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <span> Assets & Visibility </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a onclick="gotoDraft()">
+                    <span> Draft </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a onclick="gotoContacts()">
+                    <span> Contacts </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            <li>
+                <a onclick="gotoFiles()">
+                    <span> Files </span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
         <section style="padding: 0rem 1rem; margin-bottom: 25%;">
-            <div class="bottom-section-navigation-wrapper" onclick="showAccountDetails()">
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="showAccountDetails()">
                 <p class="bottom-section-navigation-text">
                     Details
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
+            </div> -->
             <!-- <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
                     Opportunities (1)
@@ -640,46 +1038,46 @@
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
             </div> -->
-            <div class="bottom-section-navigation-wrapper" onclick="gotoFollowupPage()">
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="gotoFollowupPage()">
                 <p class="bottom-section-navigation-text">
                     Follow-ups/ Tasks 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
-            <div class="bottom-section-navigation-wrapper" onclick="gotoOrderHistory()">
+            </div> -->
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="gotoOrderHistory()">
                 <p class="bottom-section-navigation-text">
                     Order History 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
-            <div class="bottom-section-navigation-wrapper" onclick="gotoStock()">
+            </div> -->
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="gotoStock()">
                 <p class="bottom-section-navigation-text">
                     Stock 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
-            <div class="bottom-section-navigation-wrapper">
+            </div> -->
+            <!-- <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
                     Assets & Visibility
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
-            <div class="bottom-section-navigation-wrapper" onclick="gotoDraft()">
+            </div> -->
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="gotoDraft()">
                 <p class="bottom-section-navigation-text">
                     Draft 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
+            </div> -->
             <!-- <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
                     Customer Service (0)
@@ -688,14 +1086,14 @@
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
             </div> -->
-            <div class="bottom-section-navigation-wrapper">
+            <!-- <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
                     Competitor Insights 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
+            </div> -->
             <!-- <div class="bottom-section-navigation-wrapper">
                 <p class="bottom-section-navigation-text">
                     KYC Details (2)
@@ -704,22 +1102,22 @@
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
             </div> -->
-            <div class="bottom-section-navigation-wrapper" onclick="gotoContacts()">
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="gotoContacts()">
                 <p class="bottom-section-navigation-text">
                     Contacts 
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
-            <div class="bottom-section-navigation-wrapper" onclick="gotoFiles()">
+            </div> -->
+            <!-- <div class="bottom-section-navigation-wrapper" onclick="gotoFiles()">
                 <p class="bottom-section-navigation-text">
                     Files
                 </p>
                 <p class="bottom-section-navigation-icon">
                     <i class="fa-light fa-greater-than fa-lg"></i>
                 </p>
-            </div>
+            </div> -->
         </section>
       <!-- Footer Starts -->
       <ul class="bottom-nav mdl-layout--fixed-header">
@@ -756,12 +1154,11 @@
                 </div>
                 <div class="modal-body text-center">
                     <ul class="list-group">
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                        <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i class="fas fa-file-alt"></i>Sell
                                 Sheets</a></li>
                         <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
                                 Marketing Inventory</a></li> -->
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                Inventory</a></li>
+                        
                         <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
                         </li> -->
                         <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i

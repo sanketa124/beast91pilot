@@ -50,6 +50,9 @@ var dbPromise = idb.open('bira91', 2, function (db) {
   if (!db.objectStoreNames.contains('stockVisibility')) {
     db.createObjectStore('stockVisibility', { keyPath: 'App_Id' });
   }
+  if (!db.objectStoreNames.contains('contactMeeting')) {
+    db.createObjectStore('contactMeeting', { keyPath: 'App_Id' });
+  }
   // if (!db.objectStoreNames.contains('draftSurvey')) {
   //   db.createObjectStore('draftSurvey', { keyPath: 'App_Id' });
   // }
@@ -157,8 +160,8 @@ var dbPromise = idb.open('bira91', 2, function (db) {
     db.createObjectStore('top5SKU', { keyPath: 'Id' });
   }
   
-  if (!db.objectStoreNames.contains('stockOutlet')) {
-    db.createObjectStore('stockOutlet', { keyPath: 'App_Id' });
+  if (!db.objectStoreNames.contains('contactMeeting')) {
+    db.createObjectStore('contactMeeting', { keyPath: 'App_Id' });
   }
 
    /** Recommendations */
@@ -223,6 +226,7 @@ function writeData(st, data) {
     .then(function (db) {
       var tx = db.transaction(st, 'readwrite');
       var store = tx.objectStore(st);
+      console.log('sata',data)
       store.put(data);
       return tx.complete;
     });

@@ -308,7 +308,7 @@ form.example::after {
     top: 0;
     left: 0;
     display: none;
-    background-color: #cac4c45c;
+    background-color: #fff;
 }
 
 .loader-div .loader{

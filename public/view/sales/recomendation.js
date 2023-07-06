@@ -168,9 +168,9 @@ gotoDetail = (event) => {
 }
 
 goBack = () => {
-  // let urlParams = new URLSearchParams(window.location.search);
-  // const accountId = urlParams.get('accountId');
-  window.location.href = `/view/sales/stockOutlet.html`
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  window.location.href = `/view/sales/stockatRisk.html?accountId=${accountId}`
 }
 
 // goForward = () => {

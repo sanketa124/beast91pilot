@@ -39,7 +39,8 @@ $(function () {
  
 let stockOutletList = [];
 getStockOutletList = () => {
-
+console.log('retailDepletionDataExisting', retailDepletionData)
+if(retailDepletionData.length>0){
   for (var i = 0; i < retailDepletionData.length; i++) {
     let productsAdded = {
       Item_Master: retailDepletionData[i].Item__c,
@@ -56,6 +57,24 @@ getStockOutletList = () => {
     </tr>')
     //console.log(retailDepletionData[i].Item__r.Display_Name__c)
   }
+}else{
+  for (var i = 0; i < stockOutletExistingData.length; i++) {
+    let productsAdded = {
+      Item_Master: stockOutletExistingData[i].Item_Master,
+      Quantity: stockOutletExistingData[i].Quantity,
+      Quantity__c: stockOutletExistingData[i].Quantity,
+      mrp: 0,
+      name: stockOutletExistingData[i].name,
+      ...(stockOutletExistingData[i].Stock_at_Risk ? { Stock_at_Risk: stockOutletExistingData[i].Stock_at_Risk } : {})
+    }
+    addedProducts.push(productsAdded)
+    addedProductIds.push(stockOutletExistingData[i].Item_Master);
+    $("#stckOutletTbl tbody").prepend(' <tr data-id="'+stockOutletExistingData[i].Item_Master+'">\
+    <td>'+stockOutletExistingData[i].name+'</td>\
+    <td><input type="number" class="form-control cartQtyChange" min="0" value="'+stockOutletExistingData[i].Quantity+'" onkeyup="qtyTotalUpdate(`'+stockOutletExistingData[i].Item_Master+'`)"></td>\
+    </tr>')
+}
+}
   getProduct();
 }
 

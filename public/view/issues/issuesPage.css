@@ -18,13 +18,13 @@
   display: flex;
     align-items: center;
     justify-content: flex-start;
-    border: 1px solid #808080;
+    border: 0px solid #808080;
     /* height: 4rem; */
     width: 100%;
     margin: auto;
     border-radius: 0.5rem;
     margin-top: 1rem;
-    padding: 10px;
+    padding: 0px;
 }
 
 .content-wrapper-primary-inside {

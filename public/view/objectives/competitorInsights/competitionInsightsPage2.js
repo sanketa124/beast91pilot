@@ -16,7 +16,7 @@ const formRender = (channel) => {
     
     for(let i = 0;i<competitorVisibility.length;i++){
        
-       // tmp += `<div class="col-xs-6" style="color:#6600ff">Competitor Name</div>`;
+       // tmp += `<div class="col-xs-6 text-center" style="color:#6600ff">Competitor Name</div>`;
        if(i<3||i>3){
          if(i>3){
           tmp += '<div class="row competitor-section '+competitorVisibility[i].Competitor_Name+'" style="display:none;">';
@@ -24,8 +24,8 @@ const formRender = (channel) => {
         else{
           tmp += '<div class="row competitor-section '+competitorVisibility[i].Competitor_Name+'" >';
         }
-        tmp += `<div class="col-xs-6" style="color:#6600ff;font-size:16px"><b>${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</b></div>`;
-        tmp += `<div class="col-xs-6">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
+        tmp += `<div class="col-xs-6 text-center" style="color:#6600ff;font-size:16px">${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</div>`;
+        tmp += `<div class="col-xs-6 text-center">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
         if(channel==='On-Premise'){
             if(competitorVisibility[i].show_panel){
                 tmp += `<div class="col-xs-12 ${i}-show_panel">`;
@@ -50,8 +50,8 @@ const formRender = (channel) => {
        }
        else{
         tmp += '<div class="row competitor-section '+competitorVisibility[i].Competitor_Name+'" >';
-        tmp += `<div class="col-xs-6" style="color:#6600ff;font-size:16px"><b>${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</b></div>`;
-        tmp += `<div class="col-xs-6">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
+        tmp += `<div class="col-xs-6 text-center" style="color:#6600ff;font-size:16px">${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</div>`;
+        tmp += `<div class="col-xs-6 text-center">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
         tmp += '</div>';
         tmp += '</div>';
        }
@@ -117,10 +117,10 @@ const onPrem = (index) => {
   let tmp ='';
   
   tmp += '<div class="row">'
-  tmp += '<div class="col-xs-6" style="padding-top:3%">';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%">';
   tmp += 'Front Facade';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Front_Facade','','handleCheckboxChange(this)',(competitorVisibility[index].Front_Facade ? competitorVisibility[index].Front_Facade : false));
   tmp += '</div>';
   if(competitorVisibility[index].Front_Facade){
@@ -139,10 +139,10 @@ const onPrem = (index) => {
   }
   tmp += '</div>';
   tmp += '<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%">';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%">';
   tmp += 'Led Signage';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Led_Signage','','handleCheckboxChange(this)',(competitorVisibility[index].Led_Signage ? competitorVisibility[index].Led_Signage : false));
   tmp += '</div>';
   if(competitorVisibility[index].Led_Signage){
@@ -158,10 +158,10 @@ const onPrem = (index) => {
   }
   tmp += '</div>';
   tmp += '<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
   tmp += 'Draft';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Draft','','handleCheckboxChange(this)',(competitorVisibility[index].Draft ? competitorVisibility[index].Draft : false));
   tmp += '</div>';
   if(competitorVisibility[index].Draft){
@@ -177,10 +177,10 @@ const onPrem = (index) => {
   tmp += '</div>';
 
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
   tmp += 'Customized Branding';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Customized_Branding','','handleCheckboxChange(this)',(competitorVisibility[index].Customized_Branding ? competitorVisibility[index].Customized_Branding : false));
   tmp += '</div>';
   if(competitorVisibility[index].Customized_Branding){
@@ -195,10 +195,10 @@ const onPrem = (index) => {
   }
   tmp +='</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
   tmp += 'Menu Listing';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Menu_Listing','','handleCheckboxChange(this)',(competitorVisibility[index].Menu_Listing ? competitorVisibility[index].Menu_Listing : false));
   tmp += '</div>';
   if(competitorVisibility[index].Menu_Listing){
@@ -288,10 +288,10 @@ const radioOptions  = new Map([
 const offPrem = (index) => {
   let tmp ='';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" >';
+  tmp += '<div class="col-xs-6 text-center" >';
   tmp += 'Front Facade';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Front_Facade','','handleCheckboxChange(this)',(competitorVisibility[index].Front_Facade ? competitorVisibility[index].Front_Facade : false));
   tmp += '</div>';
   if(competitorVisibility[index].Front_Facade){
@@ -310,10 +310,10 @@ const offPrem = (index) => {
   }
   tmp += '</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" >';
+  tmp += '<div class="col-xs-6 text-center" >';
   tmp += 'Led Signage';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Led_Signage','','handleCheckboxChange(this)',(competitorVisibility[index].Led_Signage ? competitorVisibility[index].Led_Signage : false));
   tmp += '</div>';
   if(competitorVisibility[index].Led_Signage){
@@ -329,10 +329,10 @@ const offPrem = (index) => {
   }
   tmp += '</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
   tmp += 'VisiCooler';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-VisiCooler','','handleCheckboxChange(this)',(competitorVisibility[index].VisiCooler ? competitorVisibility[index].VisiCooler : false));
   tmp += '</div>';
   if(competitorVisibility[index].VisiCooler){
@@ -347,10 +347,10 @@ const offPrem = (index) => {
   }
   tmp +='</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
   tmp += 'Indoor Shelf';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Indoor_Shelf','','handleCheckboxChange(this)',(competitorVisibility[index].Indoor_Shelf ? competitorVisibility[index].Indoor_Shelf : false));
   tmp += '</div>';
   if(competitorVisibility[index].Indoor_Shelf){
@@ -365,10 +365,10 @@ const offPrem = (index) => {
   }
   tmp += '</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
   tmp += 'Customized Branding';
   tmp += '</div>';
-  tmp += '<div class="col-xs-4" style="margin-top:2%;">';
+  tmp += '<div class="col-xs-4" style="margin-top:0;">';
   tmp += createCheckBox(index+'-Customized_Branding','','handleCheckboxChange(this)',(competitorVisibility[index].Customized_Branding ? competitorVisibility[index].Customized_Branding : false));
   tmp += '</div>';
   if(competitorVisibility[index].Customized_Branding){

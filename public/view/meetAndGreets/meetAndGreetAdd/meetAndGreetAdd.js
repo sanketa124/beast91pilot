@@ -6,8 +6,21 @@ let accountId = '';
 let contactId = '';
 
 onHandlePrevious = () => {
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`;
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    const individual = urlParams.get('individual')
+    if(individual == 'true'){
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`;
+    }else{
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`;
+    }
 }
+
+goBack = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+  }
 
 const validateEmail = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -19,11 +32,11 @@ const initializeMeetAndGreetPage = async () => {
     accountId = urlParams.get('accountId');
     contactId = urlParams.get('contactId');
     const individual = urlParams.get('individual')
-    if(individual == 'true'){
-      $('#closeIco').hide();
-      $('.arrowIcons').hide();
-      $('.logoSection').css('width','93%')
-    }
+    // if(individual == 'true'){
+    //   $('#closeIco').hide();
+    //   $('.arrowIcons').hide();
+    //   $('.logoSection').css('width','93%')
+    // }
 
     accountRec = await getItemFromStore('account', accountId);
     if (accountRec && accountRec.Contacts && accountRec.Contacts.records) {

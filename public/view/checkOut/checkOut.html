@@ -94,7 +94,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 dashboardSection" id="checkoutSection">
-                    <div class="outlet-checkin">
+                    <div class="mainHeading">
                         Outlet check-out complete !!
                     </div>
                     <div class="outlet-checkin-datetime">
@@ -108,6 +108,10 @@
                         Current location is x metres from the outlet location.
                     </div>
                 </div>
+            </div>
+            <div id='notification' style="display: none;">
+                <span>Username or Password is incorrect</span>
+                <a href="#" class="close-notify">X</a>
             </div>
         </div>
         <!-- Spinner for Start Visit -->
@@ -151,12 +155,11 @@
                 </div>
                 <div class="modal-body text-center">
                     <ul class="list-group">
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-file-alt"></i>Sell
+                        <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i class="fas fa-file-alt"></i>Sell
                                 Sheets</a></li>
                         <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
                                 Marketing Inventory</a></li> -->
-                        <li class="list-group-item"><a href="javascript:;"><i class="fas fa-beer"></i>Beer
-                                Inventory</a></li>
+                        
                         <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
                         </li> -->
                         <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
@@ -235,8 +238,8 @@
             </div>
         </div>
     </div>
-    <!-- Cancel Modal -->
- <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
+   <!-- Cancel Modal -->
+   <div id="cancelModal" class="modal cancel-modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -246,14 +249,13 @@
                 <h5>Are you sure you want to Cancel ?</h5>
             </div>
             <div class="modal-footer text-center">
-                <button type="button" data-dismiss="modal"
-                    class="btn btn-success">Yes</button>
+                <button type="button"
+                    class="btn btn-success"><a href="/view/homePage/homePage.html"> Yes </a></button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
 </div>
-
     <!-- finalSubmit -->
  <div id="finalSubmit" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -262,12 +264,28 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body text-center">
-                <h5>Are you sure you want to Submit ?</h5>
+                <h5>Are you sure you want to Submit?</h5>
             </div>
             <div class="modal-footer text-center">
                 <button type="button" onclick="finalSubmit()" data-dismiss="modal"
                     class="btn btn-success">Yes</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<img src="/media/icons/loginPage/loader.gif" alt="gif" class="img-responsive" id="loader-img">
+<div class="container-fluid" id="progress-bar-container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                  <span class="sr-only">45% Complete</span>
+                </div>
+              </div>
+            <div id='notification' style="display: none;">
+                <span>Username or Password is incorrect</span>
+                <a href="#" class="close-notify">X</a>
             </div>
         </div>
     </div>

@@ -1,17 +1,18 @@
 let stockOutlet = {};
 let retailDepletionData = []
+let stockOutletExistingData = []
 const initializeStockVisibility = async () => {
     // let urlParams = new URLSearchParams(window.location.search);
     // const accountId = urlParams.get('accountId');
     const accountId = localStorage.getItem('accountId')
     const key = `${fetchCurrentDateIdStr()}-${accountId}`;
-   //  stockOutlet = await getItemFromStore('stockVisibility',key);
+    stockOutlet = await getItemFromStore('stockVisibility',key);
     accountRec = await getItemFromStore('account',accountId);
     if(!accountRec){
         accountRec = await getItemFromStore('lead',accountId);
     }
     let kegIds = await getSearchableProducts();
-   // if(!stockOutlet){
+    if(!stockOutlet){
         let defaultAddedProduct = new Set();
         let recordTypeName = '';
         if(((accountRec.RecordType.DeveloperName).toLowerCase()).indexOf('on') > -1){
@@ -77,7 +78,9 @@ const initializeStockVisibility = async () => {
         //     }
         // });
          
-   // }
+    }else{
+        stockOutletExistingData = stockOutlet.stockVisibilityChilds;
+    }
     // stockOutlet.stockVisibilityChilds.forEach(ele => {
     //     productSelectedTotal.add(ele.Item_Master);
     // });
@@ -105,14 +108,17 @@ const getSearchableProducts = async () => {
 
 const saveStockOutlet = async () => {
     console.log('addedProds',addedProducts)
+    
+    if(stockOutlet == undefined){
+        stockOutlet.isSynced = false;
+        stockOutlet.Event_Id = fetchCurrentDateIdStr()+'-'+accountRec.Id;
+        stockOutlet.Daily_Tracker = fetchCurrentDateIdStr();
+        stockOutlet.Last_Modified = new Date();
+        const position  = await getCurrentLocationHelper();
+        stockOutlet.Geolocation_Latitude = position.coords.latitude;
+        stockOutlet.Geolocation_Longitude = position.coords.longitude;
+    }
     stockOutlet.stockVisibilityChilds = addedProducts;
-    stockOutlet.isSynced = false;
-    stockOutlet.Event_Id = fetchCurrentDateIdStr()+'-'+accountRec.Id;
-    stockOutlet.Daily_Tracker = fetchCurrentDateIdStr();
-    stockOutlet.Last_Modified = new Date();
-    const position  = await getCurrentLocationHelper();
-    stockOutlet.Geolocation_Latitude = position.coords.latitude;
-    stockOutlet.Geolocation_Longitude = position.coords.longitude;
     await writeData('stockVisibility',stockOutlet);
     window.location.href = `stockatRisk.html?accountId=${accountRec.Id}`;
 };
