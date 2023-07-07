@@ -1241,10 +1241,10 @@ button:focus {
 
 li.accountList2 {
   list-style: none;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   margin: 10px 0;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 
 .accountList2 .heading span {
@@ -1494,7 +1494,7 @@ a:hover{
   border: 0 !important;
 }
 .main-head{
-  display: none !important;
+  /* display: none !important; */
 }
 
 .pt-0{
@@ -1502,6 +1502,47 @@ a:hover{
 }
 input[type=number]{
   text-align: center;
+}
+.select2-container{
+  width: 100% !important;
+}
+#salesOrderTable tr td:first-child,
+#salesOrderTable tr td:first-child,
+#posmTable tr td:first-child{
+  width: 75% !important;
+}
+#salesOrderTable tr td:last-child,
+#salesOrderTable tr td:last-child,
+#posmTable tr td:last-child{
+  width: 25% !important;
+}
+#salesOrderTable tr td input[type="number"],
+#salesOrderTable tr td input[type="number"],
+#posmTable tr td input[type="number"]{
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+#reasonBox,
+.secondary-options-container,
+#lessBox{
+  margin-bottom: 20px;
+}
+.multiselect.dropdown-toggle{
+  white-space: pre-line;
 }
 .select2-container--default .select2-selection--single{
   background-color: #fff;
@@ -1530,13 +1571,27 @@ input[type=number]{
   padding: 5px 5px;
   margin-top: 5px
 }
+#newEntry #productList{
+  max-height: 200px;
+  overflow: auto;
+}
 #productList .autocomplete-item{
   padding: 5px 5px;
   margin-top: 5px;
   max-height: 200px;
   overflow: auto;
+  border-bottom: 1px solid #ccc;
 }
 
 .btn-success a{
   color: #fff;
+}
+
+.claimSettled{
+    margin: 15px 0 0px 0;
+    font-size: 18px;
+    font-weight: 400;
+}
+.claimSettled strong{
+  font-weight: 600;
 }

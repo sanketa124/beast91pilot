@@ -33,6 +33,8 @@ exports.fetchEvents = async (req, res) => {
                 }else{
                     delete item.isSynced
                 }
+                if(item.Unique_Identifier__c == null)
+                    delete item.Unique_Identifier__c;
                 return item;
               });
             console.log(cases,"cases----------------------------888888888888888");
@@ -292,8 +294,11 @@ WHERE
       //  console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
         let taskList = await sfConnection.query('SELECT  WhatId,Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
-        let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
-        let NeverBilledAccounts = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and  RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') and Recent_Retail_Depletion__c = null");
+        //let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
+        //let NeverBilledAccounts = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and  RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') and Recent_Retail_Depletion__c = null");
+        //let recordType = await sfConnection.query('SELECT Id FROM RecordType where SobjectType = \'Account\' and DeveloperName IN (\'Lead\',\'On_Premise_General\',\'Off_Premise_Outlet\',\'On_Premise_Hotel\',\'Institutional_On_Premise\',\'Institutional_Off_Premise\',\'Wholesaler\') and isActive =true');
+        let LapsedAccountDetails = await sfConnection.query(`SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (SELECT Id FROM RecordType where SobjectType = \'Account\'  and isActive = true and DeveloperName IN (\'Lead\',\'On_Premise_General\',\'Off_Premise_Outlet\',\'On_Premise_Hotel\',\'Institutional_On_Premise\',\'Institutional_Off_Premise\',\'Wholesaler\') ) `);
+        let NeverBilledAccounts = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and  RecordTypeId IN (SELECT Id FROM RecordType where SobjectType = \'Account\'  and isActive = true and DeveloperName IN (\'Lead\',\'On_Premise_General\',\'Off_Premise_Outlet\',\'On_Premise_Hotel\',\'Institutional_On_Premise\',\'Institutional_Off_Premise\',\'Wholesaler\')) and Recent_Retail_Depletion__c = null");
         taskList = taskList.records.map(ele => {
             ele.Unique_Identifier__c = ele.Id;
             Acc.records.map(elem => {
@@ -496,7 +501,7 @@ exports.objectiveSync = async (req, res) => {
             }
             return ele;
         });
-        const imageBody = stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images;
+
         for (eve of event){
             let event_data ={
                 'End_date_and_time__c': eve.End_date_and_time__c,
@@ -531,12 +536,83 @@ exports.objectiveSync = async (req, res) => {
                 }
                 });
         }
+        
+        // Syncing Sales Orders
+        for(let i=0;i<salesOrder.length;i++){
+
+            let eachSalesOrder = salesOrder[i]
+
+            let salesOrderBody = {
+                Account__c: eachSalesOrder.accountId,
+                App_Id__c: eachSalesOrder.App_Id,
+                Created_Date__c : eachSalesOrder.Created_Date,
+                Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
+                Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products? eachSalesOrder.Reasons_For_Less_Products.join(';'): '',
+                Reasons_for_not_Liking_Product__c : eachSalesOrder.Has_Zero_Quantity_Product__c? Array.from(eachSalesOrder.Reasons_For_Zero_Products.keys()).join(';'): '',
+                Sub_reasons__c:eachSalesOrder.Has_Zero_Quantity_Product? [...eachSalesOrder.Reasons_For_Zero_Products.values()]
+                .flat()
+                .filter(child => child) // Remove any falsy child elements (e.g., empty strings)
+                .join(';') : ''
+            }
+
+            let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
+
+            if(createSalesOrder && eachSalesOrder.products.length > 0){
+                //Create the Line Items
+                let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+                    return {
+                        Item_Name__c : eachLineItem.Id,
+                        SO__c: createSalesOrder.id
+                    }
+                })
+
+                let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+
+                console.log("Creating line itemss====>",JSON.stringify(createLineItems))
+
+                if(createLineItems){
+                    console.log("Sales order created successfully")
+                }else{
+                    console.log("Error in creating Sales Orders")
+                }
+            }
+        }
+        console.log("PSOMsss===>",posm)
+        //POSM Items
+        for(let i=0;i<posm.length;i++){
+
+
+            let posmTable = 'POSM_Requisition__c';
+            let posmLineItemsTable = 'POSM_Line_Item__c';
+
+            let eachPOSM = posm[i].POSM_Requisition__c
+    
+            console.log(eachPOSM)
+    
+            let createRequisition = await sfConnection.sobject(posmTable).create(eachPOSM)
+    
+            //Output ---> { id: 'a0fBi0000005yJhIAI', success: true, errors: [] }
+            let posLineItems = posm[i].POSM_Line_Item__c.map((eachLineItem)=>{
+                delete eachLineItem.quantity
+                delete eachLineItem.checkBox
+                return {
+                    ...eachLineItem,
+                    POSM_Requisition__c: createRequisition.id
+                }
+    
+            })
+    
+            let createLineItems = await sfConnection.sobject(posmLineItemsTable).create(posLineItems)
+
+            console.log("createPOSMItems===>",JSON.stringify(createLineItems))
+        }
+
    
         // console.log('stockVisibilites',stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0])
         let body = {
             User_Name: req.body.username,
             stockVisibilites: JSON.stringify(stockVisibilites),
-            SalesOrders: JSON.stringify(salesOrder),
+            //SalesOrders: JSON.stringify(salesOrder),
             competitorInsightJSON: JSON.stringify(competitorInsight),
             accountJSON: JSON.stringify(kycDetail),
             dailyTracker: JSON.stringify(dailyTracker),
@@ -550,13 +626,26 @@ exports.objectiveSync = async (req, res) => {
             await postStockImages(req.conn, imageBody);
         }
 
-        if(req.body?.contactMeeting && req.body.contactMeeting.length>0){
+        if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].liquidPromotion){
+            const promotionBody = stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion;
+            const liquidPromotionData = {
+                conn: req.conn,
+                liquidPromotionData: promotionBody
+            }
+            console.log('promotionBody',promotionBody)
+            await updateLiquidPromotion(liquidPromotionData,res);
+        }
+
+        if(req.body.contactMeeting && req.body.contactMeeting.length>0){
             const reqContactMeetingData = {
                 conn: req.conn,
-                contactMeetingData: req.body.contactMeeting[0]?.meetingData
+                contactMeetingData: req.body.contactMeeting[0].meetingData
             }
             await updateContactMeeting(reqContactMeetingData,res);
         }
+
+
+
         dealerWiseVisitInfoJSON = JSON.parse(dealerWiseVisitInfo);
 
         // Draft Pre Installation
@@ -774,8 +863,8 @@ exports.objectiveSync = async (req, res) => {
         draftProcesses = draftProcesses.concat(preventiveMaintenance);
         // Draft Processes Helper Function
         let bodyHelper2 = {
-            posmString: JSON.stringify(posm),
-            posmItemString: JSON.stringify(posmLine),
+            //posmString: JSON.stringify(posm),
+            //posmItemString: JSON.stringify(posmLine),
             draftInstallationString: JSON.stringify(draftSignup),
             draftPreInstallationStr: JSON.stringify(draftPreInstallation),
             draftItemsStr: JSON.stringify(draftItems),
@@ -800,8 +889,6 @@ exports.objectiveSync = async (req, res) => {
 
         }
         // Schedule Visit Procedure
-
-
         res.status(200).json({ isError: false, isAuth: true, competitorInsightJSON: dealerWiseVisitInfoJSON.competitorInsights, StockVisibilityJSON: dealerWiseVisitInfoJSON.StockVisibilitySurveyWrapper, nonBeerProducts: nonBeerproducts ? nonBeerproducts.records : [], posmSetting: posmSetting ? posmSetting.records : [], licenseType: licenseTypeStateWise ? licenseTypeStateWise.records : [], draftStarterKit: draftStarterKit ? draftStarterKit.records : [] });
     }
     catch (e) {
@@ -811,21 +898,17 @@ exports.objectiveSync = async (req, res) => {
 };
 
 const updateContactMeeting = async (req,res) => {
-  //  console.log('contactMeetingData', req);
     try {
         let sfConnection = req.conn;
-        //console.log('reqConn',req.conn)
-      //  console.log('req.body.contactMeetingData',req.contactMeetingData)
         sfConnection.sobject("Contact_Meeting__c").create( req.contactMeetingData,
           function(err, rets) {
-            //console.error('errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr',rets[0].errors);
+            //console.error('error',rets[0].errors);
             if (err) { 
                console.error('Updateerror',err);
                return console.error(err);
              }
             for (var i=0; i < rets.length; i++) {
               if (rets[i].success) {
-              //  res.status(200).json({ isError: false, isAuth: true, message: "Contact meeting record added successfully" })
                 console.log("Created record id : " + rets[i].id);
               }
             }
@@ -837,6 +920,45 @@ const updateContactMeeting = async (req,res) => {
     }
   
 }
+
+const updateLiquidPromotion = async (req,res) => {
+    try {
+        let sfConnection = req.conn;
+        let recordTypeData= await sfConnection.query(
+            `SELECT Id FROM RecordType WHERE Name='Promotion'`
+          );
+        let promotionIdData= await sfConnection.query(
+        `SELECT ID FROM Promotion_Master__c WHERE Name='Liquidation promotion'`
+        );
+        let recordType = recordTypeData.records[0].Id;
+        let promotionId = promotionIdData.records[0].Id;
+
+        req.liquidPromotionData["Promotion_Name__c"] = promotionId;
+        req.liquidPromotionData["RecordTypeId"] = recordType;
+        console.log('liquidPromotionData',req.liquidPromotionData)
+        sfConnection.sobject("Recommendation__c").create( req.liquidPromotionData,
+          function(err, rets) {
+            //console.error('error',rets[0].errors);
+            if (err) { 
+               console.error('Updateerror',err);
+               return console.error(err);
+             }else{
+                res.status(200).json({ isError: false, isAuth: true, message: "posted successfully" })
+             }
+            for (var i=0; i < rets.length; i++) {
+              if (rets[i].success) {
+                console.log("Created record id : " + rets[i].id);
+              }
+            }
+          });
+    } catch (e) {
+        console.log("Error in Updating liquid promotion",e)
+        res.status(500).json({ isError: true, isAuth: true, message: e });
+
+    }
+  
+}
+
 
 
 

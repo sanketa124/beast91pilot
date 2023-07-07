@@ -217,6 +217,29 @@ var dbPromise = idb.open('bira91', 2, function (db) {
   if (!db.objectStoreNames.contains('eventRecordTypes')) {
     db.createObjectStore('eventRecordTypes', { keyPath: 'recordTypeId' });
   }
+
+  /** Outlet-360 */
+  if (!db.objectStoreNames.contains('outlet360-account-goals')) {
+    db.createObjectStore('outlet360-account-goals', { keyPath: 'Account__c' });
+  }
+  if (!db.objectStoreNames.contains('outlet360-rate-depletion')) {
+    db.createObjectStore('outlet360-rate-depletion', { keyPath: 'Account__c' });
+  }
+  if (!db.objectStoreNames.contains('outlet360-events')) {
+    db.createObjectStore('outlet360-events', { keyPath: 'Account__c' });
+  }
+  if (!db.objectStoreNames.contains('outlet360-visibility-score')) {
+    db.createObjectStore('outlet360-visibility-score', { keyPath: 'Account__c' });
+  }
+  if (!db.objectStoreNames.contains('outlet360')) {
+    db.createObjectStore('outlet360', { keyPath: 'Account__c' });
+  }
+  if (!db.objectStoreNames.contains('outlet360-positems')) {
+    db.createObjectStore('outlet360-positems', { keyPath: 'Account__c' });
+  }
+  if (!db.objectStoreNames.contains('outlet360-account-details')) {
+    db.createObjectStore('outlet360-account-details', { keyPath: 'Account__c' });
+  }
 });
 
 

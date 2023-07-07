@@ -297,13 +297,13 @@ function openSearch() {
         // Create the newSearch HTML string with dynamic IDs
         const newSearchHTML = `
         <tr id="newEntry">
-        <td class="wd-80">
-          <select name="productSearch" id="${clonedSelectSearchId}" class="form-control wd-50">
-            <option value='0' selected='true'> Search POSM</option>
+        <td style="width: 75%">
+          <select name="productSearch" id="${clonedSelectSearchId}" class="form-control">
+            <option value='0' selected='true'> Search Asset</option>
             ${optionsString.join('')}
           </select>
         </td>
-        <td class="wd-20 cartQtyChange"><input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control wd-50"></td>
+        <td style="width: 25%" class="cartQtyChange"><input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control"></td>
     </tr>
         `;
     

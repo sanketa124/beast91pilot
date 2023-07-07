@@ -107,8 +107,8 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 80%;">POSM Item Name</th>
-                                    <th>Quantity</th>
+                                    <th style="width: 75%;">POSM Item Name</th>
+                                    <th style="width:25%">Quantity</th>
                                 </tr>
                                 </thead>
                                 <tbody id="posmTable">
@@ -123,7 +123,7 @@
                                 <tr>
                                     <td>
                                         <select name="selectSearch" id="selectSearch" class="form-control">
-                                            <option value='0' selected='true'> Search POSM</option>
+                                            <option value='0' selected='true'> Search Asset</option>
                                             <option value='2101' > 1007345136 </option> 
                                             <option value='2102' > 1007921321 </option> 
                                             <option value='2103' > 1007987235 </option> 
@@ -134,12 +134,12 @@
                                     <td><input type="text" class="form-control"></td>
                                 </tr> -->
                                 <tr id="newSearch">
-                                    <td class="wd-80">
-                                      <select name="selectSearch" id="selectSearch" class="form-control wd-50">
-                                        <option value='0' selected='true'> Search POSM</option>
+                                    <td style="width: 75%">
+                                      <select name="selectSearch" id="selectSearch" class="form-control">
+                                        <option value='0' selected='true'> Search Asset</option>
                                       </select>
                                     </td>
-                                    <td class="wd-20"><input id="posmQuantity" type="number" class="form-control wd-50"></td>
+                                    <td style="width: 25%"><input id="posmQuantity" type="number" class="form-control"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -164,9 +164,9 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Asset Name</th>
-                                    <th>Space Available</th>
-                                    <th>Image</th>
+                                    <th style="width: 70%">Asset Name</th>
+                                    <th style="width: 20%">Space Available</th>
+                                    <th style="width: 10%">Image</th>
                                 </tr>
                                 </thead>
                                 <tbody id="assetsTable">
@@ -212,13 +212,13 @@
                                     <td><input type="checkbox" class="defaultCheckBox"></td>
                                 </tr> -->
                                 <tr id="assetSearch">
-                                    <td class="wd-80">
-                                      <select name="selectSearch" id="selectSearch1" class="form-control wd-50">
-                                        <option value='0' selected='true'> Search POSM</option>
+                                    <td style="width: 70%">
+                                      <select name="selectSearch" id="selectSearch1" class="form-control">
+                                        <option value='0' selected='true'> Search Asset</option>
                                       </select>
                                     </td>
-                                    <td><input type="checkbox" id="checkbox" class="defaultCheckBox"></td>
-                                    <td style="vertical-align: middle;">
+                                    <td style="width: 20%"><input type="checkbox" id="checkbox" class="defaultCheckBox"></td>
+                                    <td style="vertical-align: middle;width:10%">
                                         <div class="image-upload_NoInput form-group" style="margin:0">
                                             <div class="camera">
                                                 <label for="1">
@@ -328,7 +328,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-center">
-                        <h5>Are you sure you want to end your visit ? </h5>
+                        <h5>Are you sure you want to Submit ? </h5>
                     </div>
                     <div class="modal-footer text-center">
                         <button type="button" data-dismiss="modal" onclick="handleEndDayHandler()"
@@ -358,6 +358,24 @@
                 </div>
             </div>
         </div>
+
+        <div id="imageRequired" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                       <h3 class="tit">Action</h3>
+                    </div>
+                    <div class="modal-body text-center">
+                        Images are mandatory where elements are present! Press Toggle off if image is not available
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
 
         <!-- Start Visit Modal -->
 

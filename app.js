@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const jsforce=require('jsforce')
 // Libraries that are required for initial setup
 
 
@@ -14,6 +15,8 @@ const contentRoutes = require('./routes/contentRoutes');
 const recommendationRoutes=require('./routes/recommendation')
 const salesOrderRoutes = require('./routes/salesOrder');
 const marketInventoryRoutes = require('./routes/marketInventoryRoutes');
+const liquidRoutes=require('./routes/liquidRoutes');
+const outlet360Routes=require('./routes/outlet-360')
 //Routes used in the app
 
 
@@ -51,13 +54,14 @@ app.use(contentRoutes);
 app.use(recommendationRoutes)
 app.use(salesOrderRoutes);
 app.use(marketInventoryRoutes);
+app.use(liquidRoutes);
+app.use(outlet360Routes);
 //Routing the incoming request
 
 // Initial setup for index page
 app.use('/',(req,res,next) => {
     res.sendFile(path.join(__dirname,'public','index.html'));
 });
-
 
 
 app.listen(process.env.PORT || 3400);

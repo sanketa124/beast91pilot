@@ -45,8 +45,14 @@ const checkInFucn = async (eventId,accountId) => {
   let user_lat = event?.Check_In__Latitude__s ? event?.Check_In__Latitude__s : 0
   let user_lon = event?.Check_In__Longitude__s ? event?.Check_In__Longitude__s : 0
   
-  let outletDistance = getDistanceFromLatLonInKm(account_lat,account_lon,user_lat,user_lon)
-  outletDistance = Math.trunc((outletDistance.toFixed(2))*1000)
+  let outletDistance 
+  if(account_lat !=0){
+    outletDistance = getDistanceFromLatLonInKm(account_lat,account_lon,user_lat,user_lon)
+    outletDistance = Math.trunc((outletDistance.toFixed(2))*1000)
+  }else{
+    outletDistance = 'X'
+  }  
+  
   const sfdc_outlet_dist = event.Distance_from_Account__c * 1000
   const startDate = new Date(event.Actual_Start_Visit__c).toLocaleString("en-US", {timeZone: 'Asia/Kolkata'})
   document.getElementById('checked-in-time').innerHTML = startDate;
@@ -131,15 +137,22 @@ function deg2rad(deg) {
 checkInFucn(eventId,accountId)
 
 goBack = () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    const accountId = urlParams.get('accountId');
-    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountId}`
+    let checkinRedirect = sessionStorage.getItem('checkinPlace');
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  console.log(checkinRedirect, 'checkinRedirect');
+  if(checkinRedirect == 'secondCheckin'){
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountId}`;
+  }else if(checkinRedirect == 'firstCheckin'){
+    window.location.href = `/view/dashboard/todaysVisits/todaysVisits.html?accountId=${accountId}`;
+  }
+  sessionStorage.removeItem('checkinPlace')
   }
   
   goForward = () => {
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
-    window.location.href = `/view/sales/outlet360.html?accountId=${accountId}`
+    window.location.href = `/view/sales/outlet360.html?accountId=${accountId}&eventId=${eventId}`
   }
 
   showNotification = (data) =>{

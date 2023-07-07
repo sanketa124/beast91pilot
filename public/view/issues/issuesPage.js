@@ -23,7 +23,7 @@ function addElement() {
                         </select>
                     </div>
                     <div class="getdate content-wrapper-primary-inside">
-                        <input class="date-picker" type="date" id="issue_date_${count}">
+                        <input class="date-picker" placeholder="select date" type="date" id="issue_date_${count}">
                     </div>
                     <div class="checkboxValue content-wrapper-secondary-inside"><input class="defaultCheckBox" id="is_resolved_${count}" type="checkbox" value="${count}">
                     </div>
@@ -34,14 +34,16 @@ const IntializeIssues = async () => {
   const issueContainer = document.querySelector('#issueContainer');
   const accountId = localStorage.getItem('accountId');
   let issues =  await readAllData('case')
+  
   if(issues.length > 0){
       $('#no_issues_container').hide()
       issues = issues.filter(issue => issue.AccountId == accountId);
+      $('#item_count').text(`Item - ${issues.length}`)
       issues.map(issue => {
         issueContainer.innerHTML += `<div class="content-wrapper">
         <div class="content-wrapper-primary-inside">${issue.Issue_Type__c}</div>
         <div class="content-wrapper-primary-inside" style="text-align:center;">${issue.Settlement_Date__c}</div>
-        <div class="content-wrapper-secondary-inside"><input type="checkbox" id="is_resolved_${issue.Id}" class="defaultCheckBox" value="${issue.Id}"></div>
+        <div class="content-wrapper-secondary-inside"><input type="checkbox" id="is_resolved_${issue.Id}" class="defaultCheckBox" value="${issue.Id}" ${(issue.Issue_Resolved__c ==true)? 'checked' : ''} ></div>
     </div>`
     })
   }else{
@@ -85,7 +87,8 @@ const createIssues = async () => {
               Settlement_Date__c: issue.Settlement_Date__c,
               Issue_Type__c: issue.Issue_Type__c,
               Issue_Resolved__c: true,
-              Origin:'Sales Rep Visit'
+              Origin:'Sales Rep Visit',
+              Unique_Identifier__c :(issue.Unique_Identifier__c) ? issue.Unique_Identifier__c : null
             }
             updated_issue.push(obj)
           }else{
@@ -138,7 +141,8 @@ const createIssues = async () => {
               Settlement_Date__c: issue.Settlement_Date__c,
               Issue_Type__c: issue.Issue_Type__c,
               Issue_Resolved__c: false,
-              Origin:'Sales Rep Visit'
+              Origin:'Sales Rep Visit',
+              Unique_Identifier__c :(issue.Unique_Identifier__c) ? issue.Unique_Identifier__c : null
             }
             updated_issue.push(obj)
           }else{

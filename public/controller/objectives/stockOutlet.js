@@ -109,7 +109,7 @@ const getSearchableProducts = async () => {
 const saveStockOutlet = async () => {
     console.log('addedProds',addedProducts)
     
-    if(stockOutlet == undefined){
+  //  if(!stockOutlet){
         stockOutlet.isSynced = false;
         stockOutlet.Event_Id = fetchCurrentDateIdStr()+'-'+accountRec.Id;
         stockOutlet.Daily_Tracker = fetchCurrentDateIdStr();
@@ -117,7 +117,7 @@ const saveStockOutlet = async () => {
         const position  = await getCurrentLocationHelper();
         stockOutlet.Geolocation_Latitude = position.coords.latitude;
         stockOutlet.Geolocation_Longitude = position.coords.longitude;
-    }
+  //  }
     stockOutlet.stockVisibilityChilds = addedProducts;
     await writeData('stockVisibility',stockOutlet);
     window.location.href = `stockatRisk.html?accountId=${accountRec.Id}`;

@@ -553,7 +553,7 @@ const addressSection = () => {
 
 
 showLoader = () => {
-    $('.loader-div').css('display', 'block');
+    $('.loader-div').css('display', 'none');
 };
 
 hideLoader = () => {

@@ -88,11 +88,11 @@ initializeProductsFrontEnd = (products, images) => {
                             <tbody>
                                 <tr>
                                     <td class="wd-80">Bira Rise 330 ml</td>
-                                    <td class="wd-20"><input class="wd-50" type="text" /></td>
+                                    <td class="wd-20"><input class="" type="text" /></td>
                                 </tr>
                                 <tr>
                                     <td class="wd-80">Bira Blonde 650 ml</td>
-                                    <td class="wd-20"><input class="wd-50" type="text" /></td>
+                                    <td class="wd-20"><input class="" type="text" /></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -101,8 +101,8 @@ initializeProductsFrontEnd = (products, images) => {
  addProduct = () =>{
   $("#cartItems table tbody").append(
     '<tr class="newEntry">\
-    <td class="wd-80"><input class="wd-50" type="text" placeholder="search" /></td>\
-    <td class="wd-20"><input class="wd-50" type="number" min="0" value="0"/>  <i class="fa fas fa-exclamation"></i></td>\
+    <td style="width:75%;"><input type="text" placeholder="search" /></td>\
+    <td style="width:25%;"><input type="number" min="0" class="form-control" value="0"/>  <i class="fa fas fa-exclamation"></i></td>\
     </tr>')
 }
 $(".cartQtyChange").on("keyup", function() {

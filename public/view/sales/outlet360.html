@@ -98,64 +98,28 @@
                             <div class="caption">
                                 <h3>MTD Performance</h3>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                                    <div id="mtd-performance-bar" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" style="width: 60%;"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <span>Ach:10</span><span>(60%)</span>
+                                        <span>Ach:</span><span id="mtd-bar-achievement">(60%)</span>
                                     </div>
                                     <div class="col-xs-6 text-right">
-                                        <span>Target:</span><span>200</span>
+                                        <span>Target:</span><span id="mtd-bar-target">200</span>
                                     </div>
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outlet-checkin dashboardSection">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h3>Contract Performance</h3>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 21%;"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <span>Ach:10</span><span>(21%)</span>
-                                    </div>
-                                    <div class="col-xs-6 text-right">
-                                        <span>Target:</span><span>200</span>
-                                    </div>
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="outlet-checkin dashboardSection">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h3>Outlets MTD Billed Vs Unbilled</h3>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-12 text-center">
-                                        <span>5/20</span><span>(25%)</span>
-                                    </div>
-                                    <!-- <div class="col-xs-6 text-right">
-                                        <span>Target:</span><span>200</span>
-                                    </div> -->
                                 </div>                                
                             </div>
                         </div>
                     </div>
                     <section>
                         <article class="tableOne">
-                            <p class="colorViolet">THIS VISIT TARGET:  <strong>200 CE</strong></p>
+                            <p class="colorViolet" id="visit-target-1">THIS VISIT TARGET: <strong id="visit-target-content"></strong></p>
                             <h4>BIRA91 Sales Performance</h4>
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th class="colorViolet">Overall</th>
+                                        <th class="colorViolet" >Overall</th>
                                         <th class="colorViolet">Premium</th>
                                     </tr>
                                 </thead>
@@ -164,10 +128,10 @@
                                         <td>
                                             <strong>Volume MTD</strong>
                                         </td>
-                                        <td>
+                                        <td id="b9-volume-overall-mtd">
                                             120
                                         </td>
-                                        <td>
+                                        <td id="b9-volume-premium-mtd" >
                                             80
                                         </td>
                                     </tr>
@@ -175,21 +139,21 @@
                                         <td>
                                             <strong>Market Share MTD</strong>
                                         </td>
-                                        <td>
+                                        <td id="b9-market-share-overall-mtd">
                                             17%
                                         </td>
-                                        <td>
+                                        <td id="b9-market-share-premium-mtd">
                                             11%
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td >
                                             <strong>Growth MTD</strong>
                                         </td>
-                                        <td class="colorRed">
+                                        <td class="colorRed" id="b9-growth-overall-mtd">
                                             -27
                                         </td>
-                                        <td class="colorGreen">
+                                        <td class="colorGreen" id="b9-growth-premium-mtd"> 
                                             5
                                         </td>
                                     </tr>
@@ -214,51 +178,51 @@
                                         <th>Keg</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody  id="liquid-sales">
                                     <tr>
                                         <td>White</td>
                                         <td>
-                                        <i class="fas fa-check colorMerun"></i>
+                                        <i class="fas "></i>
                                         </td>
-                                        <td> <i class="fas fa-check colorGreen"></i></td>
+                                        <td> <i class="fas "></i></td>
                                         <td> </td>
-                                        <td> <i class="fas fa-check colorMerun"></i></td>
+                                        <td> <i class="fas"></i></td>
                                     </tr>
                                     <tr>
                                         <td>Blonde</td>
                                         <td>
-                                        <i class="fas fa-check colorRed"></i>
+                                        <i class="fas "></i>
                                         </td>
                                         <td> </td>
-                                        <td> <i class="fas fa-check colorYellow"></i></td>
-                                        <td> <i class="fas fa-check colorRed"></i></td>
+                                        <td> <i class="fas"></i></td>
+                                        <td> <i class="fas "></i></td>
                                     </tr>
                                     <tr>
                                         <td>Rise</td>
                                         <td>
-                                        <i class="fas fa-check colorRed"></i>
+                                        <i class="fas "></i>
                                         </td>
-                                        <td> <i class="fas fa-check colorMerun"></i></td>
-                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                        <td> <i class="fas "></i></td>
+                                        <td> <i class="fas "></i></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td>Gold</td>
                                         <td>
-                                        <i class="fas fa-check colorMerun"></i>
+                                        <i class="fas "></i>
                                         </td>
-                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                        <td> <i class="fas "></i></td>
                                         <td> </td>
-                                        <td> <i class="fas fa-check colorRed"></i></td>
+                                        <td> <i class="fas "></i></td>
                                     </tr>
                                     <tr>
                                         <td>Boom Strong</td>
                                         <td>
-                                        <i class="fas fa-check colorGreen"></i>
+                                        <i class="fas "></i>
                                         </td>
-                                        <td> <i class="fas fa-check colorMerun"></i></td>
-                                        <td> <i class="fas fa-check colorMerun"></i></td>
-                                        <td> <i class="fas fa-check colorYellow"></i></td>
+                                        <td> <i class="fas "></i></td>
+                                        <td> <i class="fas "></i></td>
+                                        <td> <i class="fas "></i></td>
                                     </tr>
                                     <tr>
                                         <td>line 1</td>
@@ -468,7 +432,7 @@
                                             <th class="colorViolet">Premium Market Share LM</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="competitor-performance">
                                         <tr>
                                             <td>
                                                 <strong>ABI</strong>
@@ -559,28 +523,14 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
-                                        <tr>
+                                        <tr id="order-frequencies-names">
                                             <th class="colorViolet">ABI</th>
                                             <th class="colorViolet">Heineken</th>
                                             <th class="colorViolet">Carlsberg</th>
                                             <th class="colorViolet">B9</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                15
-                                            </td>
-                                            <td>
-                                                12
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>
-                                                5
-                                            </td>
-                                        </tr>
+                                    <tbody id="order-frequencies">
                                     </tbody>
                                 </table>
                             </div>
@@ -591,21 +541,21 @@
                             <div class="caption">
                                 <h3>Visibility Scorecard</h3>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                                    <div id="visibility-scorecard" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <span>Ach:10</span><span>(60%)</span>
+                                        <span id="visibility-scorecard-achieved">Ach:10</span><span></span>
                                     </div>
                                     <div class="col-xs-6 text-right">
-                                        <span>Target:</span><span>200</span>
+                                        <span id="visibility-scorecard-target">Target:</span><span></span>
                                     </div>
                                 </div>                                
                             </div>
                         </div>
                     </div>
                     <section>
-                        <p><strong>Menu Listing :</strong>     <span>Yes/No</span></p>
+                        <p><strong class="mainHeading">Menu Listing :</strong>     <span>Yes/No</span></p>
                         <article class="tableOne mt-4">
                             <h4>Premium Visibility & Assets</h4>
                             <div class="table-responsive">
@@ -619,7 +569,7 @@
                                             <th class="colorViolet">Item 4</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="premium-visibility-assets">
                                         <tr>
                                             <td>
                                                 <strong>Draft</strong>
@@ -692,7 +642,7 @@
                                             <th class="colorViolet">Item 4</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="customized-branding">
                                         <tr>
                                             <td>
                                                 <strong>Internal</strong>
@@ -736,7 +686,7 @@
                         </article>
 
                     </section>
-                    <section>
+                    <!-- <section>
                         <article class="tableOne mt-4">
                             <h4>Menu Listing</h4>
                             <div class="table-responsive">
@@ -849,8 +799,9 @@
                             </div>
                         </article>
                         
-                    </section>
-                    <article class="tableOne mt-4">
+                    </section> -->
+                    <p class="claimSettled"><strong class="colorViolet">Claims Settled Till : </strong><span id="claim-settled"> 05/2023 </span></p>
+                    <article class="tableOne mt-2">
                         <h4>Open Issues</h4>
                         <table class="table table-bordered">
                             <thead>
@@ -859,15 +810,8 @@
                                     <th class="colorViolet">Settlement Date</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        Draft Service not regular                                           
-                                    </td>
-                                    <td>
-                                        25-May-23 <i class="fas fa-calendar-alt"></i>
-                                    </td>
-                                </tr>
+                            <tbody id="open-issues">
+
                                 <tr>
                                     <td>
                                         Signage not working                                                       
@@ -1036,7 +980,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
     <script src="/view/globalJS/main.js"></script>
-    <script src="outlet360.js"></script>
     <!--Front End script-->
     <!--Backend Scripts-->
     <script src="/controller/indexedDB/idb.js"></script>
@@ -1044,6 +987,7 @@
     <script src="/controller/sync/sync.js"></script>
     <!-- <script src="/controller/homePage/homePage.js"></script> -->
     <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="outlet360.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 

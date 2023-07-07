@@ -22,10 +22,6 @@ exports.marketInventories = async (req, res) => {
         let timeoutHandler;
         res.setHeader('Content-Type', 'application/json');
         // Time Out Check
-        timeoutHandler = setTimeout(() => {
-            res.write('');
-        }, 20000);
-        // Time Out Check
         res.status(200).json({ isError: false, isAuth: true, data: inventories.records })
     }
     catch (e) {

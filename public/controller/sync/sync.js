@@ -966,7 +966,7 @@ const parsingContentFiles = async (dataStr,contentVersionRecord) => {
 };
 
 
-/*** Recommendations */
+/*** Start of Recommendation Controllers */
 const fetchRecommendations=async(username,password)=>{
 
     try{
@@ -995,7 +995,6 @@ const fetchRecommendations=async(username,password)=>{
    
   
 }
-
 const fetchAllLiquids=async(username,password)=>{
     try{
         let res = await fetch('/liquid-layer',{
@@ -1020,9 +1019,8 @@ const fetchAllLiquids=async(username,password)=>{
         console.log(err)
     }
 }
-
-/*** Push Approved Recommendations/Promotions to sfdc*/
 const pushApprovedRecommendationObjects=async(username, password)=>{
+    /*** Push Approved Recommendations/Promotions to sfdc*/
     try{
 
         let promotions = await readAllData('activated_promotions');
@@ -1059,10 +1057,8 @@ const pushApprovedRecommendationObjects=async(username, password)=>{
         console.log(err)
     }
 }
-
-/**  Push Sample Parent and Sample Line Items to sfdc */
 const syncSamples=async(username, password)=>{
-
+/**  Push Sample Parent and Sample Line Items to sfdc */
     try{
 
         console.log('Inside sync samples')
@@ -1102,6 +1098,154 @@ const syncSamples=async(username, password)=>{
     }
 
 }
+/*** End of Recommendation Controllers */
+
+/** Outlet-360 sync methods */
+const outlet360Records=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/records',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body :JSON.stringify({
+                    username : username,
+                    password : password,
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {records}=data
+                await clearAllData('outlet360');
+                await writeDataAll('outlet360',records);
+            }
+    }
+    catch(err){
+        console.log(err)
+        await clearAllData('outlet360');
+    }
+}
+const outlet360RetailDepletion=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/rate-depletion',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {retailDepletion}=data
+                await clearAllData('outlet360-rate-depletion');
+                await writeDataAll('outlet360-rate-depletion',retailDepletion);
+            }
+    }
+    catch(err){
+        console.log(err)
+        await clearAllData('outlet360-rate-depletion');
+    }
+}
+const outlet360AccountGoals=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/account-goals',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                    recordTypeName: 'SKU'
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {accountGoals}=data
+                await clearAllData('outlet360-account-goals');
+                await writeDataAll('outlet360-account-goals',accountGoals);
+            }
+    }
+    catch(err){
+    }
+}
+const outlet360Events=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/events',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {events}=data
+                await clearAllData('outlet360-events');
+                await writeDataAll('outlet360-events',events);
+            }
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+const outlet360VisibilityScores=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/visibility-scores',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {visibilityScores}=data
+                await clearAllData('outlet360-visibility-score');
+                await writeDataAll('outlet360-visibility-score',visibilityScores);
+            }
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+const outlet360PosItemRequisition=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/posm-items',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {posLineItems}=data
+                await clearAllData('outlet360-positems');
+                await writeDataAll('outlet360-positems',posLineItems);
+            }
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+/** End of Outlet-360 event methods */
+
 const payOutSlabsFetch = async(username,password) => {
     try{
     let slabs = await readAllData('payOutSlabs')
@@ -1213,3 +1357,5 @@ const marketInventoriesFetch = async(username,password) => {
         console.log(err);
     }
 };
+
+

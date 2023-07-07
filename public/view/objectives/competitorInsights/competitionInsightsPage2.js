@@ -16,7 +16,7 @@ const formRender = (channel) => {
     
     for(let i = 0;i<competitorVisibility.length;i++){
        
-       // tmp += `<div class="col-xs-6 text-center" style="color:#6600ff">Competitor Name</div>`;
+       // tmp += `<div class="col-xs-6 text-left" style="color:#6600ff">Competitor Name</div>`;
        if(i<3||i>3){
          if(i>3){
           tmp += '<div class="row competitor-section '+competitorVisibility[i].Competitor_Name+'" style="display:none;">';
@@ -24,8 +24,8 @@ const formRender = (channel) => {
         else{
           tmp += '<div class="row competitor-section '+competitorVisibility[i].Competitor_Name+'" >';
         }
-        tmp += `<div class="col-xs-6 text-center" style="color:#6600ff;font-size:16px">${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</div>`;
-        tmp += `<div class="col-xs-6 text-center">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
+        tmp += `<div class="col-xs-6 text-left" style="color:#6600ff;font-size:16px">${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</div>`;
+        tmp += `<div class="col-xs-6 text-left">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
         if(channel==='On-Premise'){
             if(competitorVisibility[i].show_panel){
                 tmp += `<div class="col-xs-12 ${i}-show_panel">`;
@@ -50,8 +50,8 @@ const formRender = (channel) => {
        }
        else{
         tmp += '<div class="row competitor-section '+competitorVisibility[i].Competitor_Name+'" >';
-        tmp += `<div class="col-xs-6 text-center" style="color:#6600ff;font-size:16px">${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</div>`;
-        tmp += `<div class="col-xs-6 text-center">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
+        tmp += `<div class="col-xs-6 text-left" style="color:#6600ff;font-size:16px">${(competitorLableChange.has(competitorVisibility[i].Competitor_Name) ?competitorLableChange.get(competitorVisibility[i].Competitor_Name) :competitorVisibility[i].Competitor_Name)}</div>`;
+        tmp += `<div class="col-xs-6 text-left">${createCheckBox(`${i}-show_panel`,'',"checkboxChangeHandler(this)",competitorVisibility[i][`show_panel`]?competitorVisibility[i][`show_panel`] : false )}</div>`;
         tmp += '</div>';
         tmp += '</div>';
        }
@@ -117,7 +117,7 @@ const onPrem = (index) => {
   let tmp ='';
   
   tmp += '<div class="row">'
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%">';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%">';
   tmp += 'Front Facade';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -139,7 +139,7 @@ const onPrem = (index) => {
   }
   tmp += '</div>';
   tmp += '<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%">';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%">';
   tmp += 'Led Signage';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -158,7 +158,7 @@ const onPrem = (index) => {
   }
   tmp += '</div>';
   tmp += '<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%" >';
   tmp += 'Draft';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -177,7 +177,7 @@ const onPrem = (index) => {
   tmp += '</div>';
 
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%" >';
   tmp += 'Customized Branding';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -195,7 +195,7 @@ const onPrem = (index) => {
   }
   tmp +='</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%" >';
   tmp += 'Menu Listing';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -288,7 +288,7 @@ const radioOptions  = new Map([
 const offPrem = (index) => {
   let tmp ='';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" >';
+  tmp += '<div class="col-xs-6 text-left" >';
   tmp += 'Front Facade';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -310,7 +310,7 @@ const offPrem = (index) => {
   }
   tmp += '</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" >';
+  tmp += '<div class="col-xs-6 text-left" >';
   tmp += 'Led Signage';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -329,7 +329,7 @@ const offPrem = (index) => {
   }
   tmp += '</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%" >';
   tmp += 'VisiCooler';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -347,7 +347,7 @@ const offPrem = (index) => {
   }
   tmp +='</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%" >';
   tmp += 'Indoor Shelf';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -365,7 +365,7 @@ const offPrem = (index) => {
   }
   tmp += '</div>';
   tmp +='<div class="row">';
-  tmp += '<div class="col-xs-6 text-center" style="padding-top:3%" >';
+  tmp += '<div class="col-xs-6 text-left" style="padding-top:3%" >';
   tmp += 'Customized Branding';
   tmp += '</div>';
   tmp += '<div class="col-xs-4" style="margin-top:0;">';
@@ -386,7 +386,7 @@ const offPrem = (index) => {
 };
 const notApplicable = () => {
     let tmp = '';
-    tmp += '<div class="text-center alert alert-warning"> Competitor Visibility is not applicable for this account. Click Save & Next to proceed with Competitor Promotions ';
+    tmp += '<div class="text-left alert alert-warning"> Competitor Visibility is not applicable for this account. Click Save & Next to proceed with Competitor Promotions ';
     $('#competitorVisibility').append(tmp);
     $('#visibilityDashboard').css('display','none');
 };

@@ -1,6 +1,6 @@
+const accountID = localStorage.getItem('accountId');
 $(document).ready(function(){
   let urlParam = new URLSearchParams(window.location.search);
-  const accountID = urlParam.get('accountId')
   const individual = urlParam.get('individual')
   console.log(individual, 'individual')
   if(individual == 'true'){
@@ -53,7 +53,7 @@ if(retailDepletionData.length>0){
     addedProductIds.push(retailDepletionData[i].Item__c);
     $("#stckOutletTbl tbody").prepend(' <tr data-id="'+retailDepletionData[i].Item__c+'">\
     <td>'+retailDepletionData[i].Item__r.Display_Name__c+'</td>\
-    <td><input type="number" class="form-control cartQtyChange" min="0" value="0" onkeyup="qtyTotalUpdate(`'+retailDepletionData[i].Item__c+'`)"></td>\
+    <td><input type="number" class="form-control cartQtyChange" min="0" value="0" name="stockOutletVal" onkeyup="qtyTotalUpdate(`'+retailDepletionData[i].Item__c+'`)"></td>\
     </tr>')
     //console.log(retailDepletionData[i].Item__r.Display_Name__c)
   }
@@ -71,7 +71,7 @@ if(retailDepletionData.length>0){
     addedProductIds.push(stockOutletExistingData[i].Item_Master);
     $("#stckOutletTbl tbody").prepend(' <tr data-id="'+stockOutletExistingData[i].Item_Master+'">\
     <td>'+stockOutletExistingData[i].name+'</td>\
-    <td><input type="number" class="form-control cartQtyChange" min="0" value="'+stockOutletExistingData[i].Quantity+'" onkeyup="qtyTotalUpdate(`'+stockOutletExistingData[i].Item_Master+'`)"></td>\
+    <td><input type="number" class="form-control cartQtyChange" name="stockOutletVal" min="0" value="'+stockOutletExistingData[i].Quantity+'" onkeyup="qtyTotalUpdate(`'+stockOutletExistingData[i].Item_Master+'`)"></td>\
     </tr>')
 }
 }
@@ -169,20 +169,34 @@ console.log('sum',sum)
 $('#cartTotal label span').html(sum)
 }
 
-saveStockOutlet = () => {
-  let urlParam = new URLSearchParams(window.location.search);
-  const accountID = urlParam.get('accountId')
-  const individual = urlParam.get('individual')
-  console.log(individual, 'individual')
-  if(individual = 'true'){
-    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
-  }else{
-    window.location.href = `/view/sales/stockatRisk.html?accountId=${accountID}`
+// saveStockOutlet = () => {
+//   let urlParam = new URLSearchParams(window.location.search);
+//   const individual = urlParam.get('individual')
+//   console.log(individual, 'individual')
+//   if(individual = 'true'){
+//     window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+//   }else{
+//     window.location.href = `/view/sales/stockatRisk.html?accountId=${accountID}`
+//   }
+// }
+
+
+
+areAllFieldsEmpty = () => {
+  $('#errorMsg').hide();
+  const inputFields = document.querySelectorAll('input[name="stockOutletVal"]');
+  console.log(inputFields)
+  for (let i = 0; i < inputFields.length; i++) {
+    const value = inputFields[i].value.trim();
+    if (value === '' || typeof Number(value) !== 'number' || Number(value) < 0 ) {
+      $('#errorMsg').show();
+      console.log('ddd', value,typeof value)
+      return false;
+    }
   }
+  saveStockOutlet();
 }
 
 goBack = () => {
-  let urlParam = new URLSearchParams(window.location.search);
-  const accountID = urlParam.get('accountId')
   window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountID}`
 }

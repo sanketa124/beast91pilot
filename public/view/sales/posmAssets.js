@@ -9,6 +9,27 @@ let searchItems = []
 
 let bodyToBeSent = {}
 
+let accountRec;
+
+const initializeShowAssets = async () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    //const accountId = localStorage.getItem('accountId');
+    accountRec = await getItemFromStore('account', accountId);
+    if (!accountRec) {
+      accountRec = await getItemFromStore('lead', accountId);
+    }
+    let app_id = fetchCurrentDateIdStr() + '-' + accountId
+    // FetchExisting Record
+    let existingPOSM = await getItemFromStore('posm',app_id)
+    console.log("Existign POSMMMM===>",existingPOSM)
+    if(existingPOSM){
+        assetAddedItems = existingPOSM.POSM_Line_Item__c.filter((eachItem) => eachItem.hasOwnProperty('Space_Available__c'))
+    }
+    //showAccount();
+    populateTableWithDefaultAssets();
+};
+
 // Function to populate the table with default items
 async function populateTableWithDefaultAssets() {
 
@@ -34,7 +55,9 @@ async function populateTableWithDefaultAssets() {
         checkbox.type = 'checkbox';
         checkbox.classList.add('defaultCheckBox');
         checkboxCell.appendChild(checkbox);
-
+        if(item.checkBox){
+            checkbox.checked = true
+        }
         // Add event listener to check box
         checkbox.addEventListener('change', (e) => handleCheckBoxInput(e, item.Id))
 
@@ -47,6 +70,10 @@ async function populateTableWithDefaultAssets() {
         cameraLabel.setAttribute('for', item.Id);
         const cameraIcon = document.createElement('i');
         cameraIcon.classList.add('fa', 'fa-camera', item.Id);
+        if(item.image){
+            cameraIcon.style.color = '#5cb85c';
+            fileAttachedBackgroundChange(item.Id);
+        }
         cameraLabel.appendChild(cameraIcon);
 
         const fileInput = document.createElement('input');
@@ -231,14 +258,14 @@ const createNewAssetRow = () => {
     // Create the newSearch HTML string with dynamic IDs
     const newSearchHTML = `
     <tr id="assetSearch">
-    <td class="wd-80">
-      <select name="selectSearch" id="${clonedSelectSearchId}" class="form-control wd-50">
-        <option value='0' selected='true'> Search POSM</option>
+    <td style="width: 70%">
+      <select name="selectSearch" id="${clonedSelectSearchId}" class="form-control">
+        <option value='0' selected='true'> Search Asset</option>
         ${optionsString.join('')}
       </select>
     </td>
-    <td><input type="checkbox" id="${clonedCheckBoxId}" class="defaultCheckBox"></td>
-    <td style="vertical-align: middle;">
+    <td style="width: 20%"><input type="checkbox" id="${clonedCheckBoxId}" class="defaultCheckBox"></td>
+    <td style="vertical-align: middle;width:10%">
         <div class="image-upload_NoInput form-group" style="margin:0">
             <div class="camera">
                 <label>
@@ -323,19 +350,26 @@ function calculateTotalAssetQuantity() {
 
 function posmSubmit(){
 
-    let accountId = localStorage.getItem('accountId')
-    let eventId = localStorage.getItem('eventId')
+    let accountId = accountRec.Id
+    let app_id = fetchCurrentDateIdStr() + '-' + accountId
+    //let eventId = localStorage.getItem('eventId')
 
     bodyToBeSent.accountId = accountId
-    bodyToBeSent.eventId = eventId
+    //bodyToBeSent.eventId = eventId
     bodyToBeSent.POSM_Requisition__c = {}
     bodyToBeSent.POSM_Line_Item__c = []
     bodyToBeSent.images = []
-
+    bodyToBeSent.App_Id__c = app_id
+    bodyToBeSent.Created_Date = new Date()
+    bodyToBeSent.Outlet__c = accountId
+    bodyToBeSent.isSynced = false
+    bodyToBeSent.isCheckedOut = true
     let tempObject = {
         Outlet__c : accountId,
-        Event_Custom__c: eventId,
-        Event_Id__c: eventId,
+        //Event_Custom__c: app_id,
+        Event_Id__c: app_id,
+        App_Id__c:app_id,
+        Status__c : "Submitted",
         Requisition_Date__c : new Date()
     }
     bodyToBeSent.POSM_Requisition__c = tempObject
@@ -346,9 +380,12 @@ function posmSubmit(){
         defaultItems.forEach((eachPOSItem)=>{
             let tempLineItem = {
                 Account__c : accountId,
-                App_Id__c:fetchCurrentDateIdStr() + '-' + accountId,
+                App_Id__c:app_id,
                 Name: eachPOSItem.Name,
-                Product__c:eachPOSItem.Id
+                Product__c:eachPOSItem.Id,
+                quantity: eachPOSItem.quantity,
+                Quantity__c: eachPOSItem.quantity,
+                Status__c : 'Submitted'
             }
             bodyToBeSent.POSM_Line_Item__c.push(tempLineItem)
 
@@ -366,7 +403,8 @@ function posmSubmit(){
         )
 
         if(improperValues) {
-            alert("Some of the assets have no images, please add them")
+            //alert("Some of the assets have no images, please add them")
+            $('#imageRequired').modal('show');
             return
         }
 
@@ -374,10 +412,15 @@ function posmSubmit(){
 
             let tempLineItem = {
                 Account__c : accountId,
-                App_Id__c:fetchCurrentDateIdStr() + '-' + accountId,
+                App_Id__c:app_id,
                 Name: eachPOSItem.Name,
                 Product__c:eachPOSItem.Id,
-                Space_Available__c:eachPOSItem.checkBox
+                Space_Available__c:eachPOSItem.checkBox,
+                checkBox : eachPOSItem.checkBox,
+                Quantity__c: 1,
+                quantity: 1,
+                image: eachPOSItem.image,
+                Status__c : 'Submitted'
             }
             bodyToBeSent.POSM_Line_Item__c.push(tempLineItem)
             if(eachPOSItem.image){
@@ -423,7 +466,9 @@ async function apiToPostData(){
 
 async function handleEndDayHandler(){
 
-        let apiResponse = await apiToPostData()
+        //let apiResponse = await apiToPostData()
+
+        await writeData('posm',bodyToBeSent)
         
         let urlParam = new URLSearchParams(window.location.search);
         const accountID = urlParam.get('accountId')
@@ -436,4 +481,5 @@ async function handleEndDayHandler(){
         }
 }
 
-populateTableWithDefaultAssets()
+
+initializeShowAssets();

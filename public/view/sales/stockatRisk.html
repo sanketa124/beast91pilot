@@ -107,9 +107,9 @@
                                 <tr>
 
                                     <th style="width: 50%;">Item</th>
-                                    <th>Stock</th>
-                                    <th>Qty</th>
-                                    <th></th>
+                                    <th style="width: 16%;">Stock</th>
+                                    <th style="width: 16%;">Qty</th>
+                                    <th style="width: 18%;"></th>
                                 </tr>
                                 </thead>
                                 <tbody> 
@@ -133,7 +133,7 @@
                                         <label>Initiate Consumer Promotion ?</label>
                                     </div>
                                     <div class="col-xs-4">
-                                        <input type="checkbox" id="showCasesCheck"/>
+                                        <input type="checkbox" id="showCasesCheck" onchange="showCases()"/>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,9 @@
                                     </div>
                                 </div>
                             </div>
+                           
                         </div>
+                        <div id="errorMsg">Please check all the fields and submit again</div>
                     </div>
                 </div>
             </div>

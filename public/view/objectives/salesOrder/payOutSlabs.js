@@ -11,6 +11,7 @@ async function createSlabRows() {
     let currentDate = new Date()
     let currentMonth = currentDate.getMonth()
     let currentYear = currentDate.getFullYear()
+    let totalQuantity = 0;
 
     let requiredPayOutSlabs = []
 
@@ -64,29 +65,35 @@ async function createSlabRows() {
 
     //Get the retail depletion rate of requiredLineItems
     let currentMonthDepletionRates = []
-    accountDetail.Retail_Depletion1__r.records.forEach((eachDepletedRecord) => {
-        if (
-            eachDepletedRecord.Item__c
-            &&
-            eachDepletedRecord.Date__c
-            &&
-            new Date(eachDepletedRecord.Date__c).getMonth() == currentMonth
-            &&
-            new Date(eachDepletedRecord.Date__c).getFullYear() == currentYear
-        ) {
+    if( accountDetail.Retail_Depletion1__r && accountDetail.Retail_Depletion1__r.records.length>0){
+        accountDetail.Retail_Depletion1__r.records.forEach((eachDepletedRecord) => {
+            if (
+                eachDepletedRecord.Item__c
+                &&
+                eachDepletedRecord.Date__c
+                &&
+                new Date(eachDepletedRecord.Date__c).getMonth() == currentMonth
+                &&
+                new Date(eachDepletedRecord.Date__c).getFullYear() == currentYear
+            ) {
+    
+                currentMonthDepletionRates.push({
+                    itemId: eachDepletedRecord.Item__c,
+                    quantity: eachDepletedRecord.Physical_Cases__c
+                })
+            }
+    
+        })
+    }
 
-            currentMonthDepletionRates.push({
-                itemId: eachDepletedRecord.Item__c,
-                quantity: eachDepletedRecord.Physical_Cases__c
-            })
-        }
-
-    })
 
     // Reduce the array to calculate sum of quantity for all items
-    const totalQuantity = currentMonthDepletionRates.reduce((sum, obj) => {
-        return sum + obj.quantity;
-    }, 0);
+    if(currentMonthDepletionRates.length >0){
+        totalQuantity = currentMonthDepletionRates.reduce((sum, obj) => {
+            return sum + obj.quantity;
+        }, 0);
+
+    }
 
     //Innovation__c slabs
     const filterInnnovationSlabs = requiredPayOutSlabs.filter((slab) => slab.Innovation__c)

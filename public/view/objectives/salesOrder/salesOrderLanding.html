@@ -184,15 +184,15 @@
                             </article>
                         </div>
                         <div class="col-xs-6 mt-3">
-                            <a href="distributorReport.html">Distributor Inventory</a>
+                            <a onclick=goSales() id="distributorLink">Distributor Inventory</a>
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Item</th>
-                                <th>Qty (Cases)</th>
+                                <th style="width: 75%;">Item</th>
+                                <th style="width: 25%;">Qty (Cases)</th>
                             </tr>
                             </thead>
                             <tbody id="salesOrderTable">
@@ -211,18 +211,18 @@
                                 </td>
                                 <td><input type="text" class="form-control"></td> -->
                                 <!-- <tr id="newEntry">
-                                    <td class="wd-80"><input class="wd-50" id="productSearch" type="text" placeholder="search" />
+                                    <td class="wd-80"><input class="" id="productSearch" type="text" placeholder="search" />
                                     <div id="productList"></div>
                                     </td>
-                                    <td class="wd-20"><input class="wd-50 cartQtyChange" id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  <i class="fa fas fa-exclamation"></i></td>
+                                    <td class="wd-20"><input class=" cartQtyChange" id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  <i class="fa fas fa-exclamation"></i></td>
                                     </tr> -->
                                     <tr id="newEntry">
-                                        <td class="wd-80">
-                                          <select name="productSearch" id="productSearch" class="form-control wd-50">
+                                        <td style="width: 75%;">
+                                          <select name="productSearch" id="productSearch" class="form-control">
                                             <option value='0' selected='true'> Search Product</option>
                                           </select>
                                         </td>
-                                        <td class="wd-20 cartQtyChange"><input id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()" class="form-control wd-50"></td>
+                                        <td style="width: 25%;" class="cartQtyChange"><input id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()" class="form-control"></td>
                                     </tr>
                             </tr>
                             </tbody>
@@ -241,7 +241,7 @@
                         </dic>
                     </div>
                     <div class="reasonSection">
-                        <div class="row" id="reasonBox">
+                        <!-- <div class="row" id="reasonBox"> -->
                             <!-- <div class="col-xs-6">
                                 <span class="">
                                     Reason For Zero Sales Order
@@ -259,9 +259,9 @@
                                         <option value="Other">Other</option>
                                     </select>
                                 </div> -->
-                            </div>
+                            <!-- </div> -->
                         </div>
-                        <div class="row mt-2" id="lessBox">
+                        <!-- <div class="row mt-2" id="lessBox"> -->
                             <!-- <div class="col-xs-6">
                                 <span class="">
                                     Reason For Low Sales Order
@@ -308,7 +308,7 @@
                                     </select>
                                 </div>
                             </div> -->
-                        </div>
+                        <!-- </div> -->
                     </div>
 
                     <div id="listOfItem">

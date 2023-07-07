@@ -54,6 +54,25 @@ let defaultItems = []
 //     }
 // ]
 
+const initializeShowPOSM = async () => {
+  let urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get('accountId');
+  //const accountId = localStorage.getItem('accountId');
+  accountRec = await getItemFromStore('account', accountId);
+  if (!accountRec) {
+    accountRec = await getItemFromStore('lead', accountId);
+  }
+  let app_id = fetchCurrentDateIdStr() + '-' + accountId
+  // FetchExisting Record
+  let existingPOSM = await getItemFromStore('posm',app_id)
+  console.log("Existign POSMMMM===>",existingPOSM)
+  if(existingPOSM){
+    defaultItems = existingPOSM.POSM_Line_Item__c.filter((eachItem) => !eachItem.hasOwnProperty('Space_Available__c'))
+  }
+  //showAccount();
+  populateTableWithDefaultItems();
+};
+
 // Function to populate the table with default items
 async function populateTableWithDefaultItems() {
 
@@ -263,14 +282,14 @@ const createNewRow = () => {
     // Create the newSearch HTML string with dynamic IDs
     const newSearchHTML = `
       <tr id="newSearch">
-        <td class="wd-80">
-          <select name="selectSearch" id="${clonedSelectSearchId}" class="form-control wd-50">
-            <option value='0' selected='true'> Search POSM</option>
+        <td style="width: 75%">
+          <select name="selectSearch" id="${clonedSelectSearchId}" class="form-control">
+            <option value='0' selected='true'> Search Asset</option>
             ${optionsString.join('')}
           </select>
         </td>
-        <td class="wd-20">
-          <input id="${clonedPosmQuantityId}" type="number" class="form-control wd-50">
+        <td style="width: 20%">
+          <input id="${clonedPosmQuantityId}" type="number" class="form-control">
         </td>
       </tr>
     `;
@@ -297,4 +316,4 @@ function calculateTotalPOSMQuantity() {
 addButton.addEventListener('click', () => createNewRow())
 
 
-populateTableWithDefaultItems()
+initializeShowPOSM();

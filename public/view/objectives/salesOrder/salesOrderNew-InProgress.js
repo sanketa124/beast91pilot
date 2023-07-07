@@ -10,6 +10,7 @@ $(document).ready(function () {
     $('.logoSection').css('width', '93%')
     $('#finishBtn').show();
   }
+  let reasonSection = document.querySelector('.reasonSection');
   // Set the style property to hide the div element
   reasonSection.style.display = 'none';
   //reasonSection.remove()
@@ -33,6 +34,8 @@ const initializeShowAccount = async () => {
   //showAccount();
   getLineItems();
 };
+
+
 
 goBack = () => {
   let urlParam = new URLSearchParams(window.location.search);
@@ -74,8 +77,8 @@ let defaultItems = [
 // Function to populate the table with default items
 function populateTableWithDefaultItems() {
 
+  console.log("Default Itemsssssss=>",defaultItems)
 
-  initialLength = 2
   const alreadySelectedProducts = defaultItems.map((item) => item.Display_Name__c)
   console.log("Already Selected Products===>", alreadySelectedProducts)
   console.log("Line Items ===>", lineItems)
@@ -94,6 +97,7 @@ function populateTableWithDefaultItems() {
     quantityInput.type = 'number';
     quantityInput.value = item.quantity; // Set the initial value
     quantityInput.min = '0';
+    quantityInput.class = 'form-control';
     //quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
     quantityInput.addEventListener('input', () => qtyTotalUpdate(item.Id))
 
@@ -216,6 +220,7 @@ function updateTable() {
     quantityInput.type = 'number';
     quantityInput.value = item.quantity; // Set the initial value
     quantityInput.min = '0';
+    quantityInput.class = 'form-control';
     quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
 
     const quantityCell = newRow.insertCell();
@@ -252,13 +257,13 @@ function openSearch() {
   // Create the newSearch HTML string with dynamic IDs
   const newSearchHTML = `
         <tr id="newEntry">
-        <td class="wd-80">
-          <select name="productSearch" id="${clonedSelectSearchId}" class="form-control wd-50">
-            <option value='0' selected='true'> Search POSM</option>
+        <td style="width: 75%">
+          <select name="productSearch" id="${clonedSelectSearchId}" class="form-control">
+            <option value='0' selected='true'> Search Asset</option>
             ${optionsString.join('')}
           </select>
         </td>
-        <td class="wd-20 cartQtyChange"><input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control wd-50"></td>
+        <td style="width: 25%" class="cartQtyChange"><input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control"></td>
     </tr>
         `;
 
@@ -286,10 +291,10 @@ function calculateTotalQuantity() {
 // Function to find the default items
 async function getDefaultSalesItems() {
 
-  let urlParam = new URLSearchParams(window.location.search);
-  const accountId = urlParam.get('accountId')
+  let accountId = accountRec.Id
+  let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
 
-  // Get the current account details
+      // Get the current account details
   let accountDetail = await getItemFromStore('account', accountId);
   let currentDate = new Date()
   let currentMonth = currentDate.getMonth()
@@ -412,6 +417,9 @@ async function getDefaultSalesItems() {
 
   }
   populateTableWithDefaultItems();
+
+
+
 }
 
 async function getLineItems() {
@@ -419,7 +427,36 @@ async function getLineItems() {
 
   lineItems = await readAllData('itemMasterCopy')
 
+  let accountId = accountRec.Id
+  let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
+
+  // Check if a record is already present in the indexDB for today
+  let existingRecord = await getItemFromStore('salesOrderSync',orderKey)
+
+  console.log("Existing Record===>",existingRecord)
+  
+  if(existingRecord){
+    defaultItems = existingRecord.products;
+    selectionMap = existingRecord.Reasons_For_Zero_Products;
+    lessReasonSelect = existingRecord.Reasons_For_Less_Products;
+    initialLength = existingRecord.recommended_quantity;
+    if(existingRecord.Has_Zero_Quantity_Product){
+      populateTableWithDefaultItems();
+      console.log("Keyss====>",Array.from(selectionMap.keys()));
+      constructReasonNotLikingSelect(Array.from(selectionMap.keys()));
+      handleReasonSelectOption(selectionMap.keys())
+    }else if(existingRecord.Has_Less_Products){
+      populateTableWithDefaultItems();
+      constructReasonLessSelect(lessReasonSelect);
+      handleLessReasonSelectOption(lessReasonSelect);
+    }else{
+      populateTableWithDefaultItems();
+    }
+}else{
   getDefaultSalesItems();
+  initialLength = 5
+  //defaultItems.length
+}
 }
 
 // Function to calculate the total quantity of defaultItems
@@ -439,59 +476,65 @@ checkout = async () => {
   //console.log("checking for order===>",checkforPreSalesOrder())
 
   if (!checkforPreSalesOrder()) {
-    //getProductData();
-    // orderRec.Comment = $("#salesOrderComment").val();
-    //await saveOrder();
+    await salesOrderSubmit();
     confirmOrder()
   }
 
 };
 
 const checkforPreSalesOrder = () => {
-  console.log("Total Quantity===>",totalCart)
-  console.log("initial Value==>",initialLength)
   if(!totalCart){
     console.log("I am in zeroSales Order")
     if(selectionMap && selectionMap.size > 0){
       console.log("I am in zeroSales Order selection Map",selectionMap.size)
       return false
-    }else{
+    }
+    else if(document.getElementById('reasonBox')){
+      $('#confirmOrder').modal('hide');
+      alert("Please fill the reasons before moving forward")
+      return true
+    }
+    else{
       console.log("I am in zeroSales Order not selection Map",selectionMap.size)
-      reasonSection.style.display = 'block';
-      const lessReasonSelection = document.getElementById('lessBox')
-      lessReasonSelection.style.display = 'none'
-      //$('#reasonForNotLiking').modal('show');
       $('#confirmOrder').modal('hide');
       let urlParam = new URLSearchParams(window.location.search);
-      // if(urlParam.has('presalesId'))
-      //   orderRec.Product_Pre_Sales_Sampling = urlParam.get('presalesId');
-      constructReasonNotLikingSelect();
+      constructReasonNotLikingSelect([]);
       return true;
     }
   }else if(totalCart>0 && totalCart < initialLength){
     if(lessReasonSelect.length>0){
       return false
-    }else{
-      reasonSection.style.display = 'block';
-      const lessReasonSelection = document.getElementById('lessBox')
-      lessReasonSelection.style.display = 'none'
-      //$('#reasonForNotLiking').modal('show');
+    }
+    else if(document.getElementById('lessBox')){
+      $('#confirmOrder').modal('hide');
+      alert("Please fill the reasons before moving forward")
+      return true
+    }
+    else{
       $('#confirmOrder').modal('hide');
       let urlParam = new URLSearchParams(window.location.search);
-      // if(urlParam.has('presalesId'))
-      //   orderRec.Product_Pre_Sales_Sampling = urlParam.get('presalesId');
-      constructReasonLessSelect();
+      constructReasonLessSelect([]);
       return true;
     }
   }
 };
 
-const constructReasonNotLikingSelect = () => {
-  $('#reasonBox').empty();
+const constructReasonNotLikingSelect = (selectedOptions) => {
+  reasonSection.style.display = 'block';
+  // const lessReasonSelection = document.getElementById('lessBox')
+  // lessReasonSelection.style.display = 'none'
+  // $('#reasonBox').empty();
 
   let optionsArray = ["Pricing/ Promotion/ Discount", "Competition Tie-up", "Operational Feedback", "Other"];
 
-  let options = optionsArray.map((choice, index) => `<option  id="${index}" value="${choice}">${choice}</option>`)
+  let options = optionsArray.map((choice, index) => {
+    if(selectedOptions.length >0 && selectedOptions.includes(choice)){
+      return   `<option  selected id="${index}" value="${choice}">${choice}</option>`
+    }else{
+      return   `<option id="${index}" value="${choice}">${choice}</option>`
+    }
+  }
+)
 
   console.log("Options===>", options.join(''))
 
@@ -504,9 +547,9 @@ const constructReasonNotLikingSelect = () => {
       </span>
   </div>
   
-  <div class="col-xs-5">
+  <div class="col-xs-6">
       <div class="">
-      <select multiple="multiple" name="" id="first_reason_select" onchange="handleReasonSelectOption(this)">
+      <select multiple="multiple" name="" id="first_reason_select" onchange="handleReasonSelectOption(this.selectedOptions)">
           <option value="">--None--</option>
           ${options.join('')}
       </select>
@@ -529,13 +572,27 @@ const constructReasonNotLikingSelect = () => {
 
 };
 
-const constructReasonLessSelect = () => {
-  $('#reasonBox').empty();
+const constructReasonLessSelect = (selectedOptions) => {
+  reasonSection.style.display = 'block';
+  // const reasonBox = document.getElementById('reasonBox')
+  // console.log("Reason Box===>",reasonBox)
+  // reasonBox.style.display = 'none'
+  // reasonBox.remove()
   $('#lessBox').empty();
+
+  console.log("LessBoc oprtions===>",selectedOptions)
 
   let optionsArray = ["Stock is not available regularly", "Service is not regular", "Past issues not settled", "Outlet needs more time to decide", "Not met decision maker"];
 
-  let options = optionsArray.map((choice, index) => `<option  id="${index}" value="${choice}">${choice}</option>`)
+  let options = optionsArray.map((choice, index) =>
+  {
+    if(selectedOptions.length>0 && selectedOptions.includes(choice)){
+      return `<option  selected id="${index}" value="${choice}">${choice}</option>`
+    }else{
+      return `<option  id="${index}" value="${choice}">${choice}</option>`
+    }
+  } 
+)
 
   console.log("Options===>", options.join(''))
 
@@ -548,7 +605,7 @@ const constructReasonLessSelect = () => {
       </span>
   </div>
   
-  <div class="col-xs-5">
+  <div class="col-xs-6">
       <div class="">
       <select multiple="multiple" name="" id="low_reason_select" onchange="handleLessReasonSelectOption(this)">
           <option value="">--None--</option>
@@ -573,7 +630,7 @@ const constructReasonLessSelect = () => {
 }
 
 function handleReasonSelectOption(event) {
-  const selectedOptions = Array.from(event.selectedOptions).map(option => option.value);
+  const selectedOptions = Array.from(event).map(option => option.value ? option.value: option);
 
   console.log("Selected Options===>", selectedOptions);
 
@@ -598,11 +655,19 @@ function handleReasonSelectOption(event) {
           <div class="col-xs-6">
               <span class="secondary-option-heading">Reason For ${option}</span>
           </div>
-          <div class="col-xs-5">
+          <div class="col-xs-6">
               <div class="secondary-reason-container">
                   <select class="secondary-reason-select" multiple="multiple" name="" id="sec_reason_select-${index}" onchange="handleSuboptionsSelect(this)">
                       <option value="">--None--</option>
-                      ${subOptions.map(subOption => `<option value="${subOption}">${subOption}</option>`).join('')}
+                      ${subOptions.map(subOption => 
+                        {
+                          if(selectionMap.get(option) && selectionMap.get(option).includes(subOption)){
+                            return `<option selected value="${subOption}">${subOption}</option>`
+
+                          }else{
+                            return `<option value="${subOption}">${subOption}</option>`                            
+                          }
+                        }).join('')}
                   </select>
                   <span class="reason showError">This Field is required</span><br/>
               </div>
@@ -632,7 +697,16 @@ function handleReasonSelectOption(event) {
 }
 
 function handleLessReasonSelectOption(event) {
-  const selectedOptions = Array.from(event.selectedOptions).map(option => option.value);
+  let selectedOptions = [];
+
+  console.log("Arrayyyy==>",event)
+  console.log("Arrayyyy==>",Array.isArray(event))
+
+  if(Array.isArray(event)){
+    selectedOptions = event.map(option => option)
+  }else{
+    selectedOptions = Array.from(event.selectedOptions).map(option => option.value);
+  }
 
   console.log("Selected Options===>", selectedOptions);
 
@@ -709,9 +783,9 @@ function handleSuboptionsSelect(event) {
 
 //);
 
-// function finalsubmit(){
-//   checkout()
-// }
+function finalsubmit(){
+  checkout()
+}
 
 confirmOrder = () => {
   let urlParam = new URLSearchParams(window.location.search);
@@ -723,6 +797,34 @@ confirmOrder = () => {
     window.location.href = `/view/sales/visibility.html?accountId=${accountID}`
   }
   $('#confirmOrder').modal('hide');
+}
+
+
+async function salesOrderSubmit(){
+
+  let accountId = accountRec.Id
+  let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
+
+  salesOrderSyncData.accountId = accountId
+  salesOrderSyncData.App_Id = orderKey
+  salesOrderSyncData.products = defaultItems
+  salesOrderSyncData.Has_Zero_Quantity_Product = !defaultItems.length>0 && selectionMap.size >0? true : false
+  salesOrderSyncData.Has_Less_Products = totalCart<initialLength && lessReasonSelect.length > 0 ? true: false
+  salesOrderSyncData.Reasons_For_Zero_Products = !defaultItems.length>0? selectionMap: new Map()
+  salesOrderSyncData.Reasons_For_Less_Products = totalCart<initialLength? lessReasonSelect:[]
+  salesOrderSyncData.recommended_quantity = initialLength
+  salesOrderSyncData.total_quantity = totalCart
+  salesOrderSyncData.Created_Date = new Date();
+  salesOrderSyncData.isSynced = false;
+  
+  await writeData('salesOrderSync',salesOrderSyncData)
+
+}
+
+function goSales(){    
+  let urlParam = new URLSearchParams(window.location.search);
+  const accountID = urlParam.get('accountId')
+  window.location.href = `/view/objectives/salesOrder/distributorReport.html?accountId=${accountID}`
 }
 
 initializeShowAccount();

@@ -21,7 +21,7 @@ goToPromotion=(promotionId)=>{
 
 
 const newOutletRecommendations = (recommendationData) => {
-    let title = '<div class="linkSec"><a href="">NEW OUTLET ACTIVATION</a></div>';
+    let title = recommendationData.length?'<div class="linkSec"><a href="">NEW OUTLET ACTIVATION</a></div>':'';
     let html=''
     recommendationData.forEach((recommendation) => {
     const {Recommended_SKU__r,Outlet_Name__r}=recommendation
@@ -45,7 +45,7 @@ const newOutletRecommendations = (recommendationData) => {
   };
 const existingRecommendations=(recommendationData)=>{
 
-    let title = '<div class="linkSec"><a href="">NEW PRODUCT RECOMMENDATION</a></div>';
+    let title = recommendationData.length?'<div class="linkSec"><a href="">NEW PRODUCT RECOMMENDATION</a></div>':'';
     let html=''
     recommendationData.forEach((recommendation) => {
       const {Recommended_SKU__r,Outlet_Name__r}=recommendation
@@ -69,17 +69,17 @@ const existingRecommendations=(recommendationData)=>{
 }
 const displayPromotions=(promotionData)=>{
   
-  let title = '<div class="linkSec"><a href="">PROMOTIONS</a></div>';
+  let title = promotionData.length?'<div class="linkSec"><a href="">PROMOTIONS</a></div>':'';
   let html=''
   promotionData.forEach((promotion) => {
-    if(promotion.Promotion_Name__c && promotion.Promotion_Name_With_Scheme__c ){
+    if(promotion?.Promotion_Name__r?.Name && promotion?.Promotion_Name_With_Scheme__c ){
       html += `
       <div class="linkSec">
         <div class="row" ${`onClick=goToPromotion(${JSON.stringify(promotion?.Id)})`}>
           <div class="col-xs-9">
             <div class="boxLink">
-              <h4>${promotion.Promotion_Name__c}</h4>
-              <p>${promotion.Promotion_Name__c}</p>
+              <h4>${promotion.Promotion_Name__r.Name}</h4>
+              <p>${promotion.Promotion_Name_With_Scheme__c}</p>
             </div>
           </div>
           <div class="col-xs-3">
@@ -116,7 +116,7 @@ try{
     && (recommendation?.Is_Accepted__c===false)
     && (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
 
-    const promotionCondition= recommendation?.Promotion_Name_With_Scheme__c  && recommendation?.Is_Accepted__c===false &&  (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
+    const promotionCondition= recommendation?.Promotion_Name__c  && recommendation?.Is_Accepted__c===false &&  (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
 
     if (promotionCondition) {
       promotions.push(recommendation);

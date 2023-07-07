@@ -73,8 +73,7 @@
                     <!-- <div class="toggle-btn text-left" id="searchIco">
                         <i class="fas fa-times"></i>
                     </div> -->
-                    <div class="toggle-btn text-left closeIco" onclick="onHandlePrevious()"
-                        id="closeIco">
+                    <div class="toggle-btn text-left closeIco" onclick="onHandlePrevious()" id="closeIco">
                         <i class="fas fa-times"></i>
                     </div>
                     <div class="logoSection nav-logo text-left">
@@ -82,9 +81,9 @@
                     </div>
                     <div class="arrowIcons">
                         <a onclick="onHandlePrevious()" class="leftArrow fas fa-chevron-left"></a>
-                        <a  onclick="handleMeetSaveContact()" class="rightArrow fas fa-chevron-right"></a>
+                        <a onclick="handleMeetSaveContact()" class="rightArrow fas fa-chevron-right"></a>
                     </div>
-                  
+
                 </header>
             </div>
         </nav>
@@ -95,7 +94,7 @@
                 <div class="mt-3 container-fluid contactDetailsBorder">
                     <div class="row fieldPadding">
                         <div class="col-xs-4">
-                            <label class="contactDetailsTxt">Title</label>
+                            <label class="contactDetailsTxt"> <span style="color:red">* </span>Title</label>
                         </div>
                         <div class="col-xs-8">
                             <div class="form-group">
@@ -112,7 +111,7 @@
                     <div class="row fieldPadding">
 
                         <div class="col-xs-4">
-                            <label class="contactDetailsTxt">First Name</label>
+                            <label class="contactDetailsTxt"> <span style="color:red">* </span>First Name</label>
                         </div>
                         <div class="col-xs-8">
                             <div class="form-group">
@@ -124,7 +123,7 @@
                     <div class="row fieldPadding">
 
                         <div class="col-xs-4">
-                            <label class="contactDetailsTxt">Last Name</label>
+                            <label class="contactDetailsTxt"><span style="color:red">* </span>Last Name</label>
                         </div>
                         <div class="col-xs-8">
                             <div class="form-group">
@@ -138,7 +137,7 @@
                     <div class="row fieldPadding">
 
                         <div class="col-xs-4">
-                            <label class="contactDetailsTxt">Role</label>
+                            <label class="contactDetailsTxt"><span style="color:red">* </span>Role</label>
                         </div>
                         <div class="col-xs-8">
                             <div class="form-group">
@@ -229,65 +228,65 @@
     </div>
 
     </div>
-  <!-- Footer Starts -->
-  <ul class="bottom-nav mdl-layout--fixed-header">
-    <li class="nav-img">
-        <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
-    </li>
-    <li class="nav-img">
-        <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i
-                class="fas fa-users"></i><span>Visits</span></a>
-    </li>
-    <li class="nav-img">
-        <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
-    </li>
-    <li class="nav-img">
-        <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
-    </li>
-    <li class="nav-img">
-        <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
-    </li>
-    <li class="nav-img">
-        <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
-                class="fas fa-bars"></i><span>Menu</span></a>
-    </li>
-</ul>
+    <!-- Footer Starts -->
+    <ul class="bottom-nav mdl-layout--fixed-header">
+        <li class="nav-img">
+            <a href="/view/homePage/homePage.html"><i class="fas fa-home"></i><span>Home</span></a>
+        </li>
+        <li class="nav-img">
+            <a href="/view/dashboard/todaysVisits/todaysVisits.html"><i class="fas fa-users"></i><span>Visits</span></a>
+        </li>
+        <li class="nav-img">
+            <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
+        </li>
+        <li class="nav-img">
+            <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+        </li>
+        <li class="nav-img">
+            <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
+        </li>
+        <li class="nav-img">
+            <a href="javascrit:;" data-toggle="modal" data-target="#moreMenu"><i
+                    class="fas fa-bars"></i><span>Menu</span></a>
+        </li>
+    </ul>
 
 
-<!--Script imported-->
-<!-- Start More menu options Modal -->
-<div id="moreMenu" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body text-center">
-                <ul class="list-group">
-                    <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i class="fas fa-file-alt"></i>Sell
-                            Sheets</a></li>
-                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
+    <!--Script imported-->
+    <!-- Start More menu options Modal -->
+    <div id="moreMenu" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/view/sellingTools/sellingTools.html"><i
+                                    class="fas fa-file-alt"></i>Sell
+                                Sheets</a></li>
+                        <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-crown"></i>Trade
                             Marketing Inventory</a></li> -->
-                    
-                    <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
+
+                        <!-- <li class="list-group-item"><a href="javascript:;"><i class="fas fa-home"></i>Dashboards</a>
                     </li> -->
-                    <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
-                                class="fas fa-calendar-alt"></i>Calendar</a></li>
-                    <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
-                                class="fas fa-user-alt"></i>Accounts</a></li>
-                    <!-- <li class="list-group-item"><a href="javascript:;"><i
+                        <li class="list-group-item"><a href="/view/calendar/calendar2.html"><i
+                                    class="fas fa-calendar-alt"></i>Calendar</a></li>
+                        <li class="list-group-item"><a href="/view/accountList/accountListView.html"><i
+                                    class="fas fa-user-alt"></i>Accounts</a></li>
+                        <!-- <li class="list-group-item"><a href="javascript:;"><i
                                 class="fas fa-file-contract"></i>Reports</a></li>
                     <li class="list-group-item"><a href="javascript:;"><i
                                 class="fas fa-crown"></i>Opportunities</a></li> -->
-                    <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
-                            data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-                    <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
-                                class="fas fa-sync"></i>Sync</a></li>
-                </ul>
+                        <li class="list-group-item"><a href="javascript:;" data-toggle="modal"
+                                data-target="#logoutModal"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+                        <li class="list-group-item"><a href="/view/syncPage/loadingPage.html"><i
+                                    class="fas fa-sync"></i>Sync</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
     <!-- End More menu options Modal -->
     <!-- End Visit Modal -->

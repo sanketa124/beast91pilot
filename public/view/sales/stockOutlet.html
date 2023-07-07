@@ -84,7 +84,7 @@
                     </div>
                     <div class="arrowIcons">
                         <a  onclick="goBack()" class="leftArrow fas fa-chevron-left"></a>
-                        <a class="rightArrow fas fa-chevron-right" onclick="saveStockOutlet()"></a>
+                        <a class="rightArrow fas fa-chevron-right" onclick="areAllFieldsEmpty()"></a>
                     </div>
                 </header>
             </div>
@@ -103,8 +103,8 @@
                             <table class="table table-bordered" id="stckOutletTbl">
                                 <thead>
                                 <tr>
-                                    <th style="width: 70%;">Item</th>
-                                    <th style="width: 30%;">Qty (Cases)</th>
+                                    <th style="width: 75%;">Item</th>
+                                    <th style="width: 25%;">Qty (Cases)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -123,11 +123,11 @@
                                     </td>
                                     <td><input type="text" class="form-control"></td> -->
                                     <tr id="newEntry">
-                                        <td>
-                                            <input class="form-control" id="productSearch" type="text" placeholder="search" />
+                                        <td style="width: 75%;">
+                                            <input class="form-control mt-1" id="productSearch" type="text" placeholder="search" />
                                             <div id="productList"></div>
                                         </td>
-                                        <td style="position: relative;">
+                                        <td style="position: relative;width: 20%;">
                                             <input class="cartQtyChange form-control"  id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()"/>  
                                             <!-- <i style="position: absolute;
                                             right: 0px;
@@ -153,6 +153,7 @@
                     </div>
                 </div>
             </div>
+            <div id="errorMsg">Please check all the fields and submit again</div>
         </div>
         <div class="container-fluid mt-3" id="finishBtn" style="display: none;">
             <div class="row">
@@ -166,7 +167,7 @@
             <div class="loader1"></div>
         </div>
         <!-- Spinner for End Visit -->
-
+        
    <!-- Footer Starts -->
 <ul class="bottom-nav mdl-layout--fixed-header">
     <li class="nav-img">

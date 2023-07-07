@@ -39,10 +39,7 @@ const updateSampleLineItem=async(sampleParent,sampleLineItem)=>{
     await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`, {...sampleParent,children: updatechildren});
   }
 
-
-(async()=>{
-
-
+const createSampleLineItem=async()=>{
   /*** get Liquid Name and Packtype (i.e 330ml, 500ml, 650ml ...) */
   const recommendation= await getItemFromStore('recommendations',recommendationId)
   const liquidName=recommendation?.Recommended_SKU__r?.Liquid_Layer__r?.Name
@@ -80,14 +77,42 @@ const updateSampleLineItem=async(sampleParent,sampleLineItem)=>{
   if(!sampleLineItem?.Type__c){
 
     /** Set Default Value as sampling */
-    sampleLineItem={...sampleLineItem,Type__c: 'Sampling'}
+    sampleLineItem={...sampleLineItem,Type__c: 'Tasting'}
     children.push(sampleLineItem)
     await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`,{...sampleItem,children})
     await writeData(`${UNSYNCED_SAMPLE_ITEM_SCHEMA}`,sampleLineItem)
   }
-  await handleSamplingData(sampleItem,sampleLineItem,liquidName,packType);
 
-})();
+  return {sampleItem,sampleLineItem,liquidName,packType}
+}
+
+const deleteSampleLineItem= async()=>{
+   /*** get Liquid Name and Packtype (i.e 330ml, 500ml, 650ml ...) */
+   const recommendation= await getItemFromStore('recommendations',recommendationId)
+   const liquidName=recommendation?.Recommended_SKU__r?.Liquid_Layer__r?.Name
+   const packType=recommendation?.Recommended_SKU__r?.Size_ID__r.Volume_Unit__c +" ml"
+   const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_Layer__c
+   if(!liquidName && packType && liquidLayerId){
+     window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
+   }
+ 
+  /*** Delete sample Line Item for the Parent sample*/
+   const sampleTag=`sample-${accountId}-${eventId}`
+   const sampleLineItemTag= `lineItem-${accountId}-${eventId}-${liquidLayerId}`
+   let sampleItem= await getItemFromStore(`${UNSYNCED_SAMPLE_SCHEMA}`, sampleTag)
+  //move back to the recommendations in the event the sample parent is not present
+  if(sampleItem?.children?.length){
+    let children= sampleItem.children.filter((item)=>{
+        return item.sampleTag===sampleLineItemTag
+    })
+    await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`,{...sampleItem,children})
+    await deleteItemFromData(`${UNSYNCED_SAMPLE_ITEM_SCHEMA}`,sampleLineItemTag)
+    alert('Deleted Line item')
+  }
+}
+
+
+
 
 
 const handleSamplingData = async (parentSample,result, liquidName, packType) => {
@@ -139,17 +164,6 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
     await updateSampleLineItem(parentSample,updatedResult);
   });
 
-  /*** Handle Liked (or not) Switch */
-  const likedField = document.getElementById('liked');
-  likedField.checked = updatedResult?.Liked__c;
-  likedField.addEventListener('change', async (event) => {
-    updatedResult = {
-      ...updatedResult,
-      Liked__c: event.target.checked,
-      Interested__c: event.target.checked
-    };  
-    await updateSampleLineItem(parentSample,updatedResult);
-  });
 
   /*** Handle Mouth Feel (or not) Switch */
   const mouthFeel = document.getElementById('mouth-feel');
@@ -184,16 +198,6 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
     await updateSampleLineItem(parentSample,updatedResult);
   });
 
-  /** Handle Required CheckBox */
-  const checkbox = document.getElementById('sample-tasting-required');
-  checkbox.checked = updatedResult?.Is_Accepted__c;
-  checkbox.addEventListener('change', async (event) => {
-    updatedResult = {
-      ...updatedResult,
-      Is_Accepted__c: event.target.checked
-    };
-    await updateSampleLineItem(parentSample,updatedResult);
-  });
 
   /** Handle Feedback */
   const feedback = document.getElementById('feedback');
@@ -205,10 +209,75 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
     };
     await updateSampleLineItem(parentSample,updatedResult);
   });
+
+    /*** Handle Liked (or not) Switch */
+    const likedField = document.getElementById('liked');
+    likedField.checked = updatedResult?.Liked__c;
+    likedField.addEventListener('change', async (event) => {
+
+      if(event.target.checked){
+        updatedResult = {
+          ...updatedResult,
+          Liked__c: event.target.checked,
+          Interested__c: event.target.checked
+        };  
+      }
+      else {
+        updatedResult = {
+          ...updatedResult,
+          Liked__c:  event.target.checked,
+          Interested__c: event.target.checked,
+          Aroma__c:  event.target.checked,
+          Bitterness__c: event.target.checked,
+          Mouth_Feel__c: event.target.checked
+        };  
+        aroma.checked = false; 
+        bitternes.checked=false
+        mouthFeel.checked=false
+      }
+      await updateSampleLineItem(parentSample,updatedResult);
+    });
+  
 };
 
 
+(async()=>{
 
+
+  const {sampleItem,sampleLineItem,liquidName,packType}=await createSampleLineItem();
+  await handleSamplingData(sampleItem,sampleLineItem,liquidName,packType);
+
+
+  const quantity=sampleLineItem.Quantity__c
+  const elementsToHide = document.querySelectorAll('[id^="hide"]');
+  const isSamplingRequired=document.getElementById("sample-tasting-required")
+  isSamplingRequired.checked= quantity?true:false
+  if (!quantity) {
+    elementsToHide.forEach(element => {
+      element.style.display = 'none'; // Hide the element
+    });
+  } else {
+    elementsToHide.forEach(element => {
+      element.style.display = 'block'; // Display the element
+    });
+  }
+  isSamplingRequired.addEventListener('change', async (event) => {
+    const checkedVal = event.target.checked;
+    if (checkedVal) {
+      await updateSampleLineItem(sampleItem,{...sampleLineItem,Quantity__c:quantity});
+      elementsToHide.forEach(element => {
+        element.style.display = ''; // Show the element
+      });
+    } else {
+      await updateSampleLineItem(sampleItem,{...sampleLineItem,Quantity__c:0});
+      elementsToHide.forEach(element => {
+        element.style.display = 'none'; // Hide the element
+      });
+    }
+  });
+
+
+})();
 
 
 

@@ -8,7 +8,8 @@ let imageMap = new Map();
 let itemValueMap = new Map();
 let selectedProducts = new Set();
 const accountID = localStorage.getItem('accountId');
-let accoutnDetails = {}
+let accoutnDetails = {};
+let isError = 0;
 
 let stockVisbility = {};
 const initializeStockVisibility = async () => {
@@ -28,15 +29,17 @@ const initializeStockVisibility = async () => {
     stockVisbility.stock_at_risk_images = [];
   }
 
-  if (stockVisbility.stockVisibilityChilds[0].Stock_at_Risk == undefined) {
+  if (!('Stock_at_Risk' in stockVisbility.stockVisibilityChilds[0])) {
     for (var i = 0; i < stockVisbility.stockVisibilityChilds.length; i++) {
+      console.log('count')
       stockVisbility.stockVisibilityChilds[i].Stock_at_Risk = 0;
 
     }
   }
 
   selectedProducts = stockVisbility.stockVisibilityChilds;
-  console.log('productSelectedTotal', stockVisbility.stockVisibilityChilds)
+  console.log('productSelectedTotal', stockVisbility.stockVisibilityChilds);
+  $('.checkHeader, #showCases').hide();
   displayProducts();
 };
 displayProducts = () => {
@@ -45,10 +48,10 @@ displayProducts = () => {
     console.log('selectedProducts', selectedProducts[i])
     var stockAtRisk = selectedProducts[i].Stock_at_Risk ? selectedProducts[i].Stock_at_Risk : 0;
     $("#stckRiskTbl tbody").prepend(' <tr data-id="' + selectedProducts[i].Item_Master + '">\
-    <td>'+ selectedProducts[i].name + '</td>\
-    <td>'+ selectedProducts[i].Quantity + '</td>\
-    <td><input type="number" class="form-control cartQtyChange" min="0" value="'+ stockAtRisk + '" max="' + selectedProducts[i].Quantity + '" onkeyup="qtyTotalUpdate(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')" onblur="myFunction(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')"></td>\
-    <td>'+ createImgInput(('' + selectedProducts[i].Item_Master + ''), '', stockVisbility['xxxx'], "fileInput(this,`" + selectedProducts[i].Item_Master + "`)", true) + '</td>\
+    <td style="width:50%">'+ selectedProducts[i].name + '</td>\
+    <td style="width:16%;text-align:center;">'+ selectedProducts[i].Quantity + '</td>\
+    <td style="width:16%"><input type="number" class="form-control cartQtyChange" min="0" value="'+ stockAtRisk + '" max="' + selectedProducts[i].Quantity + '" onkeyup="qtyTotalUpdate(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')" name="stockRiskVal"></td>\
+    <td style="width:18%">'+ createImgInput(('' + selectedProducts[i].Item_Master + ''), '', stockVisbility['xxxx'], "fileInput(this,`" + selectedProducts[i].Item_Master + "`)", true) + '</td>\
     </tr>')
   }
 }
@@ -105,29 +108,85 @@ qtyTotalUpdate = (prodId, qty) => {
     var value = parseInt($(this).val());
     if (thisId == prodId) {
       $.each(selectedProducts, function (index, obj) {
-        if (obj.Item_Master == prodId && qty > value) {
-          obj.Stock_at_Risk = value;
-        }
+        if (obj.Item_Master == prodId){
+          if(qty >= value) {
+            if(isError > 0){
+              isError -= 1;
+            }
+            obj.Stock_at_Risk = value;
+          }else if(value > qty){
+            isError += 1;
+          }
+        } 
       });
     }
     if (!isNaN(value)) {
       sum += value;
     }
+  if(sum>0){
+    $('.checkHeader').show();
+  }
   });
   console.log('sum', sum)
   $('#cartTotal').html(sum)
 }
-myFunction = (thisId, qty) => {
-  const thisVal = $('[data-id="' + thisId + '"]').find('.cartQtyChange').val();
-  if (thisVal > qty) {
-    $('[data-id="' + thisId + '"]').find('.cartQtyChange').val(0)
+
+showCases = () =>{
+  var isChecked = $('#showCasesCheck').prop('checked');
+  if (isChecked) {
+    $('#showCases').show();
+  } else {
+    $('#showCases').hide();
   }
 
 }
+
+
+
 saveStockAtRisk = async () => {
+  $('#errorMsg').hide();
+  var isChecked = $('#showCasesCheck').prop('checked');
+  console.log(areAllFieldsEmpty());
+  console.log('isError',isError)
+  if(areAllFieldsEmpty() || isError){
+    $('#errorMsg').show();
+    return false;
+  }
+  if (isChecked) {
+    var showCase =  $('#showCases input').val();
+    if(!showCase || showCase ==0){
+      $('#errorMsg').show();
+      return false;
+    }else{
+      let currentDate = new Date();
+      let year = currentDate.getFullYear();
+      let month = String(currentDate.getMonth() + 1).padStart(2, "0");
+      let day = String(currentDate.getDate()).padStart(2, "0");
+      let acceptedDate = `${year}-${month}-${day}`;
+
+      stockVisbility.liquidPromotion = {
+        Outlet_Name__c : accountID,
+        Is_Accepted__c : true,
+        Number_of_Cases__c : showCase,
+        Accepted_Date__c: acceptedDate
+      }
+    }
+  }
   await writeData('stockVisibility', stockVisbility);
   window.location.href = `/view/sales/recomendation.html?accountId=${accountID}`
 }
+
+areAllFieldsEmpty = () => {
+  const inputFields = document.querySelectorAll('input[name="stockRiskVal"]');
+  for (let i = 0; i < inputFields.length; i++) {
+    const value = inputFields[i].value.trim();
+    if (value === '' || Number(value) < 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
 goBack = () => {
   let urlParams = new URLSearchParams(window.location.search);
   const accountId = urlParams.get('accountId');

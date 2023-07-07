@@ -105,7 +105,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       '</span> <span>|</span>  <strong>Visit: </strong>' +
       '<span>' +
       (VisitDate ? dateformat(VisitDate) : '') +
-      '</span></label><label># ' +
+      '</span></label><label> ' + ( i.BillingStreet? '#'  : '')+  
      ( i.BillingStreet? i.BillingStreet : '') +
       '</label> <label>'+(loc?loc:'')+' </label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
       '<li>' + temp1 + '</li> <li>' +

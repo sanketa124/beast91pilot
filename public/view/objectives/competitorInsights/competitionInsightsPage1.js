@@ -88,7 +88,7 @@ const formRender = () => {
     }
     // tmp += '<div class="col-xs-6" style="color: #6600ff;"><p>Competitor Name</p>';
     // tmp += '</div>';
-    tmp += '<div class="col-xs-6 text-center" style="color: #6600ff;">' + (competitorLableChange.has(competitorVolume[i].Competitor_Name) ?competitorLableChange.get(competitorVolume[i].Competitor_Name) :competitorVolume[i].Competitor_Name);
+    tmp += '<div class="col-xs-6 text-left" style="color: #6600ff;">' + (competitorLableChange.has(competitorVolume[i].Competitor_Name) ?competitorLableChange.get(competitorVolume[i].Competitor_Name) :competitorVolume[i].Competitor_Name);
     // tmp += '<div class="col-xs-6" style="color: #6600ff;">' + competitorVolume[i].Competitor_Name;
     tmp += '</div>';
     tmp += '<div class="col-xs-6">' + createCheckBox(`${i}-show_option`, '', "checkboxListner(this)", (competitorVolume[i]['show_option'] ? competitorVolume[i]['show_option'] : false));

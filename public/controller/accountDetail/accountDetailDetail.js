@@ -10,7 +10,7 @@ const initializeAccountDetail = async () => {
 };
 
 const initializeDetail = () => {
-    showLoader();
+    //showLoader();
     setTimeout(async () => {
         await initializeAccountDetail();
         

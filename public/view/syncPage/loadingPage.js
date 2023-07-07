@@ -35,7 +35,14 @@ const initializeLoadingPage = async() => {
       await pushApprovedRecommendationObjects(loginData[0].username,loginData[0].password);
       await syncSamples(loginData[0].username,loginData[0].password);
       await fetchRecommendations(loginData[0].username,loginData[0].password);
-      await fetchAllLiquids(loginData[0].username,loginData[0].password);
+
+      /*** Outlet 360 */
+      await outlet360Records(loginData[0].username,loginData[0].password);
+      await outlet360RetailDepletion(loginData[0].username,loginData[0].password);
+      await outlet360AccountGoals(loginData[0].username,loginData[0].password);
+      await outlet360VisibilityScores(loginData[0].username,loginData[0].password);
+      await outlet360Events(loginData[0].username,loginData[0].password);
+      await outlet360PosItemRequisition(loginData[0].username,loginData[0].password);
       progressBarLoad(100);
       
 

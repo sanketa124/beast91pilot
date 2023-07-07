@@ -230,7 +230,7 @@ form.example::after {
     width: 65px;
 }
 
-.modal-title {
+/* .modal-title {
     color: #fff;
     font-weight: 600;
     font-size: 14px;
@@ -249,7 +249,7 @@ form.example::after {
     vertical-align: middle;
     height: 400px;
     overflow: scroll;
-}
+} */
 
 #applyFilter {
     background-color: #6600ff;

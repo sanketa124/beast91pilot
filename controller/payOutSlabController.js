@@ -5,9 +5,9 @@ exports.fetchPayOutSlabs = async (req, res) => {
         let timeoutHandler;
         res.setHeader('Content-Type', 'application/json');
         // Time Out Check
-        timeoutHandler = setTimeout(() => {
-            res.write('');
-        }, 20000);
+        // timeoutHandler = setTimeout(() => {
+        //     res.write('');
+        // }, 20000);
         // Time Out Check
         res.status(200).json({ isError: false, isAuth: true, slabs: slabs })
     }
@@ -45,9 +45,9 @@ exports.fetchAccountGoals = async (req, res) => {
         let timeoutHandler;
         res.setHeader('Content-Type', 'application/json');
         // Time Out Check
-        timeoutHandler = setTimeout(() => {
-            res.write('');
-        }, 20000);
+        // timeoutHandler = setTimeout(() => {
+        //     res.write('');
+        // }, 20000);
         // Time Out Check
         res.status(200).json({ isError: false, isAuth: true, goals: goals.records })
     }
@@ -131,7 +131,7 @@ exports.fetchSample = async (req, res) => {
         }
         queryString = queryString.slice(0, -1); // remove trailing comma
         queryString += ' FROM ' + table;
-        queryString += ` WHERE isActive=true `;
+        //queryString += ` WHERE isActive=true `;
         console.log(queryString)
         let goals = await sfConnection.query(queryString);
         //let sobjectUpsert = await sfConnection.upsert(table,goals.records[0],goals.records[0].Id)
@@ -139,9 +139,6 @@ exports.fetchSample = async (req, res) => {
         let timeoutHandler;
         res.setHeader('Content-Type', 'application/json');
         // Time Out Check
-        timeoutHandler = setTimeout(() => {
-            res.write('');
-        }, 20000);
         // Time Out Check
         res.status(200).json({
             isError: false,

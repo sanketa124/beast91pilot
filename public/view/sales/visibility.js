@@ -106,7 +106,7 @@ function handleToggleSwitchQCO() {
     get_camera_Z3_Menu_Listing.classList.add('hide-element');
     stockVisbility['Z3_Menu_Listing'] = isActive_Z3_Menu_Listing__c
     document.getElementById('Z3_Menu_Listing__c_qco_File').value = null
-    stockVisbility['Z3_Menu_Listing__c_File'] = null
+    stockVisbility['Z3_Menu_Listing_File'] = null
     removeBackgroundColor('Z3_Menu_Listing_File')
   }
 }

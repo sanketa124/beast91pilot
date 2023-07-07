@@ -243,8 +243,9 @@ div#salesOrderModal {
 
 .switch {
   position: relative;
-  display: inline-block;
-  height: 50px;
+    display: inline-block;
+    height: 60px;
+    width: 100%;
 }
 
 .switch input {
@@ -296,6 +297,7 @@ input:checked + .slider:before {
 /* Rounded sliders */
 .slider.round {
   border-radius: 34px;
+  margin-top: 5px;
 }
 
 .slider.round:before {

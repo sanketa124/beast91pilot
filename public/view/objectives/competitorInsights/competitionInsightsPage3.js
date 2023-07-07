@@ -248,7 +248,7 @@ const fileAttachedBackgroundChange = (index,key) => {
 showPromotions = (promotionsFor) => {
   if (promotionsFor === 'Not_Applicable') {
     $('#InsightPanel').html('');
-    let tmp = '<div class="text-center alert alert-warning"> Competitor Visibility is not applicable for this account. Click Save & Next to proceed with Competitor Promotions ';
+    let tmp = '<div class="text-left alert alert-warning"> Competitor Visibility is not applicable for this account. Click Save & Next to proceed with Competitor Promotions ';
     $('#InsightPanel').html(tmp);
   }
 

@@ -3,7 +3,7 @@ exports.fetchAllRecommendations=async(req,res,next)=>{
     try{
         /*** Fetch Recommendations, Samples */
         let recommendations = await conn.query(`
-          SELECT Id, Accepted_Date__c, CreatedById, Duration__c, End_Date__c, Is_Accepted__c, Kitchen_Order_Ticket_KOT__c, New_or_Existing__c, Recommended_SKU__r.Display_Name__c, Recommended_SKU__c, Outlet_Name__r.Account_ID_18_digit__c, Outlet_Name__r.Channel__c, OwnerId, Pitch__c, Promotion_Name__c, Name, Promotion_Name_With_Scheme__c, Scheme__c, Start_Date__c, Week__c, Recommended_SKU__r.Liquid_Layer__c, Promotion_Name_With_Scheme__r.Active__c, Recommended_SKU__r.Size_ID__r.Primary_Pack_Size__c, Recommended_SKU__r.Size_ID__r.Volume_Unit__c, Recommended_SKU__r.Liquid_Layer__r.Name
+          SELECT Id, Accepted_Date__c, CreatedById, Duration__c, End_Date__c, Is_Accepted__c, Kitchen_Order_Ticket_KOT__c, New_or_Existing__c, Recommended_SKU__r.Display_Name__c, Recommended_SKU__c, Outlet_Name__r.Account_ID_18_digit__c, Outlet_Name__r.Channel__c, OwnerId, Pitch__c, Promotion_Name__c, Name, Promotion_Name_With_Scheme__c, Scheme__c, Start_Date__c, Week__c, Recommended_SKU__r.Liquid_Layer__c, Promotion_Name__r.Active__c,Promotion_Name__r.Name ,Recommended_SKU__r.Size_ID__r.Primary_Pack_Size__c, Recommended_SKU__r.Size_ID__r.Volume_Unit__c, Recommended_SKU__r.Liquid_Layer__r.Name
           FROM Recommendation__c
           WHERE Start_Date__c <= TODAY AND End_Date__c >= TODAY
         `).execute();
@@ -17,51 +17,78 @@ exports.fetchAllRecommendations=async(req,res,next)=>{
 }
 
 
-exports.processSamples=async(req,res,next) =>{
+exports.processSamples = async (req, res, next) => {
 
-  try{
-    const conn=req.conn
-    const {items}=req.body
-    const batchSize = 100; // Adjust the batch size as per your requirements
-    const numBatches = Math.ceil(items.length / batchSize);
-    const SFDC_PARENT_SAMPLE=`Product_Pre_Sales_Sampling__c`
-    const SFDC_CHILD_SAMPLE=`Product_Pre_Sales_Sampling_Child__c`
-    console.log('Starting to process samples')
-    const processBatch = async (batch) => {
-      try{
-        const promises = batch.map(async (sample,index) => {
-          const { sampleTag, children, ...payload } = sample;
-          const parentSample=await conn.sobject(`${SFDC_PARENT_SAMPLE}`).create(payload)
-          let id='' ;
-          if(parentSample && parentSample.id){
-            id= parentSample.id
+  try {
+      const conn = req.conn
+      const {
+          items
+      } = req.body
+      const batchSize = 100; // Adjust the batch size as per your requirements
+      const numBatches = Math.ceil(items.length / batchSize);
+      const SFDC_PARENT_SAMPLE = `Product_Pre_Sales_Sampling__c`
+      const SFDC_CHILD_SAMPLE = `Product_Pre_Sales_Sampling_Child__c`
+      const processBatch = async (batch) => {
+          try {
+              const promises = batch.map(async (sample, index) => {
+                  let {
+                      sampleTag,
+                      children,
+                      ...payload
+                  } = sample;
+                  children = children.filter((sampleLineItem) => {
+                      return sampleLineItem.Quantity__c > 0
+                  })
+                  if (children.length) {
+
+                      const parentSample = await conn.sobject(`${SFDC_PARENT_SAMPLE}`).create(payload)
+                      let id = '';
+                      if (parentSample && parentSample.id) {
+                          id = parentSample.id
+                      }
+                      const updatedChildren = children.map(({
+                          sampleTag,
+                          ...childWithoutSampleTag
+                      }) => ({
+                          ...childWithoutSampleTag,
+                          Product_Pre_Sales_Sampling__c: id
+                      }));
+                      await conn.sobject(`${SFDC_CHILD_SAMPLE}`).create(updatedChildren)
+                      return {
+                          ...sample,
+                          children: updatedChildren
+                      };
+
+                  }
+              });
+
+              return Promise.all(promises);
+          } catch (err) {
+              console.log(`Bulk create sampling data Error`, console)
           }
-          const updatedChildren = children.map(({ sampleTag, ...childWithoutSampleTag }) => ({
-            ...childWithoutSampleTag,
-            Product_Pre_Sales_Sampling__c:id
-          }));
-           await conn.sobject(`${SFDC_CHILD_SAMPLE}`).create(updatedChildren)
-          return { ...sample, children: updatedChildren };
-        });
-    
-        return Promise.all(promises);
+      };
+
+      const batches = Array.from({
+          length: numBatches
+      }, (_, index) => {
+          const startIndex = index * batchSize;
+          return items.slice(startIndex, startIndex + batchSize);
+      });
+      for (const batch of batches) {
+          await processBatch(batch);
       }
-      catch(err){
-        console.log(`Bulk create sampling data Error`,console)
-      }
-    };
-  
-    const batches = Array.from({ length: numBatches }, (_, index) => {
-      const startIndex = index * batchSize;
-      return items.slice(startIndex, startIndex + batchSize);
-    });
-    for (const batch of batches) {
-      await processBatch(batch);
-    }
-    res.status(200).json({isError : false,isAuth : true, proccessedamples: true});
-  }catch(err){
-    console.log(err);
-    res.status(500).json({isError : true,isAuth :true,message : err});
+      res.status(200).json({
+          isError: false,
+          isAuth: true,
+          proccessedamples: true
+      });
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({
+          isError: true,
+          isAuth: true,
+          message: err
+      });
   }
 
 }
