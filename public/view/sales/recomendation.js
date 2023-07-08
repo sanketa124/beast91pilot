@@ -101,7 +101,8 @@ try{
     'Active__c': true
   }
 
-  //TODO: replace the existing call with two seperate calls to filter out data ( new outlet and product recommendations )
+  const weekFilter =( await getItemFromStore(`recommendation-weekfilter`,accountId))?.expr0 || 0;
+  const weekFilterValue= weekFilter>4? ((weekFilter%4)+1): weekFilter
   const newOutletRecommendation = [];
   const existingProducts = [];
   const promotions = [];
@@ -115,6 +116,7 @@ try{
     && recommendation?.Recommended_SKU__c
     && (recommendation?.Is_Accepted__c===false)
     && (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
+    && (recommendation?.Week__c === weekFilterValue)
 
     const promotionCondition= recommendation?.Promotion_Name__c  && recommendation?.Is_Accepted__c===false &&  (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
 

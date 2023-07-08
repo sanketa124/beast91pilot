@@ -28,10 +28,7 @@ $(function () {
     });
     getProduct();
    // return itemList;
-    
-    
-  
-  
+
   };
   getProduct = () => {
     console.log('itemList', itemsBackend);
@@ -55,7 +52,6 @@ if(retailDepletionData.length>0){
     <td>'+retailDepletionData[i].Item__r.Display_Name__c+'</td>\
     <td><input type="number" class="form-control cartQtyChange" min="0" value="0" name="stockOutletVal" onkeyup="qtyTotalUpdate(`'+retailDepletionData[i].Item__c+'`)"></td>\
     </tr>')
-    //console.log(retailDepletionData[i].Item__r.Display_Name__c)
   }
 }else{
   let totalQty = 0;
@@ -66,7 +62,7 @@ if(retailDepletionData.length>0){
       Quantity__c: stockOutletExistingData[i].Quantity,
       mrp: 0,
       name: stockOutletExistingData[i].name,
-      ...(stockOutletExistingData[i].Stock_at_Risk ? { Stock_at_Risk: stockOutletExistingData[i].Stock_at_Risk } : {})
+      ...(stockOutletExistingData[i].Stock_at_Risk !== null ? { Stock_at_Risk: stockOutletExistingData[i].Stock_at_Risk } : {})
     }
     addedProducts.push(productsAdded)
     addedProductIds.push(stockOutletExistingData[i].Item_Master);
@@ -111,42 +107,45 @@ openSearch = () =>{
 }
 
 
-//$(document).ready(function() {
   $('#productSearch').keyup(function() {
     console.log('sss',addedProductIds)
-    var query = $(this).val().toLowerCase();
+    var value = $(this).val().toLowerCase();
     var results = [];
     console.log('itemsBackend',itemsBackend)
-    if (query.length > 0) {
-      // Perform the search
-      var value = $(this).val().toLowerCase();
+    if (value.length > 0) {
       items = itemsBackend.filter(ele => {
-        console.log(ele.Product__c)
         if(!addedProductIds.includes(ele.Product__c)){
           let displayName = (ele.Product__c ? (ele.Product__r.Display_Name__c) : '');
           displayName = displayName.toLowerCase();
           const obj = { id: ele.Product__c, name: displayName.indexOf(value) > -1 ? displayName : '' };
-          results.push(obj); // Add the object to the array
-          //results.push(displayName.indexOf(value) > -1 ? displayName : '');
+          console.log('obj',obj)
+          {obj.name && results.push(obj)}
         }
-       
       });
+      if(results.length <= 0){
+        results.push({id: 0 , name : 'No result found'});
+      }
     }
     getProduct()
-    // Display the autocomplete suggestions
     displayAutocomplete(results);
   });
   
-  // Function to display the autocomplete suggestions
   function displayAutocomplete(results) {
-    console.log(results)
     var autocompleteList = $('#productList');
     autocompleteList.empty();
-    
-    for (var i = 0; i < results.length; i++) {
-      var suggestion = $('<div  onclick="productClicked(`'+results[i].name+'`,`'+results[i].id+'`)">').addClass('autocomplete-item').text(results[i].name);
-      autocompleteList.append(suggestion);
+    if(results.length > 0){
+      if(results[0].id !== 0){
+        for (var i = 0; i < results.length; i++) {
+          var suggestion = $('<div  onclick="productClicked(`'+results[i].name+'`,`'+results[i].id+'`)">').addClass('autocomplete-item').text(results[i].name);
+          autocompleteList.append(suggestion);
+        }
+      }else{
+        var suggestion = $('<div>').addClass('autocomplete-item').text(results[0].name);
+        autocompleteList.append(suggestion);
+      }
     }
+    
+
   }
 //});
 
@@ -159,6 +158,9 @@ $(".cartQtyChange").each(function() {
   if(thisId == prodId){
     $.each(addedProducts, function(index, obj) {
       if (obj.Item_Master == prodId) {
+        if(isNaN(value)){
+          value = 0;
+        }
         obj.Quantity = value;
         obj.Quantity__c = value;
       }
@@ -170,31 +172,16 @@ $(".cartQtyChange").each(function() {
 });
 console.log(addedProducts)
 console.log('sum',sum)
-$('#cartTotal label span').html(sum)
+$('#cartTotal label span, #totalItem').html(sum)
 }
-
-// saveStockOutlet = () => {
-//   let urlParam = new URLSearchParams(window.location.search);
-//   const individual = urlParam.get('individual')
-//   console.log(individual, 'individual')
-//   if(individual = 'true'){
-//     window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
-//   }else{
-//     window.location.href = `/view/sales/stockatRisk.html?accountId=${accountID}`
-//   }
-// }
-
-
 
 areAllFieldsEmpty = () => {
   $('#errorMsg').hide();
   const inputFields = document.querySelectorAll('input[name="stockOutletVal"]');
-  console.log(inputFields)
   for (let i = 0; i < inputFields.length; i++) {
     const value = inputFields[i].value.trim();
-    if (value === '' || typeof Number(value) !== 'number' || Number(value) < 0 ) {
+    if (Number(value) < 0 ) {
       $('#errorMsg').show();
-      console.log('ddd', value,typeof value)
       return false;
     }
   }

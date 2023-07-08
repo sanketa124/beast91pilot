@@ -5,146 +5,48 @@ initializeAccount = (accountLists) => {
 
 };
 let cardSection = document.querySelector('#listOfAcc');
-// showListOfAccount = (stIndex = 0) => {
-//   var tmp = '';
-//   if (stIndex === 0) {
-//     $('#listOfAcc').html('');
-//   }
-//   if (listOfAccount && listOfAccount.length > 0) {
-//     for (var i = stIndex; i < listOfAccount.length; i++) {
-//       tmp += `
-//       <div class="card">
-//       <div class="card-body">
-//           <div class="row"> 
-//               <div class="col-xs-8">
-//                   <h4 id="storeName" onclick=accountDetail(${[i]})">${listOfAccount[i].Name}</h4>`
 
-//                   if (listOfAccount[i].Channel__c && listOfAccount[i].Account_Status__c) {
-//                     tmp +=
-//                       '       <label>' +
-//                       (listOfAccount[i].Channel__c
-//                         ? listOfAccount[i].Channel__c + '/'
-//                         : 'NA');
-//                     tmp +=
-//                       '         ' +
-//                       (listOfAccount[i].Account_Status__c
-//                         ? listOfAccount[i].Account_Status__c
-//                         : '') +
-//                       '<label>';
-//                   } else {
-//                     if (listOfAccount[i].Channel__c) {
-//                       tmp +=
-//                         '       <label>' +
-//                         (listOfAccount[i].Channel__c
-//                           ? listOfAccount[i].Channel__c + '</label>'
-//                           : 'NA');
-//                     }
-//                     if (listOfAccount[i].Account_Status__c) {
-//                       tmp +=
-//                         '       <label>  ' +
-//                         (listOfAccount[i].Account_Status__c
-//                           ? listOfAccount[i].Account_Status__c
-//                           : '') +
-//                         '</label>';
-//                     }
-//                   }
-//                   tmp+=`
-                 
-//                  <label> `
-
-//                  if (listOfAccount[i].Recent_Retail_Depletion__c) {
-//                   tmp +=
-//                     '  <strong> Last Order : <span>' +
-//                     (listOfAccount[i].Recent_Retail_Depletion__c
-//                       ? new Date(
-//                           listOfAccount[i].Recent_Retail_Depletion__c
-//                         ).toLocaleString('en-IN', {
-//                           day: 'numeric',
-//                           month: 'short',
-//                         })
-//                       : '');
-//                   tmp += `</span></strong></label></div>`
-                  
-//                   tmp+=`<div class="col-xs-4 pl-0 text-right">
-//                   <ul>
-//                       <li>
-//                   `;
-//                 }
-//                 if (listOfAccount[i].Industry_Segment__c != null) {
-//                   if (listOfAccount[i].Industry_Segment__c === 'P0') {
-//                     tmp +=
-//                       '<strong>P0</strong>';
-//                   } else if (listOfAccount[i].Industry_Segment__c === 'P1') {
-//                     tmp +=
-//                     '<strong>P1</strong>';
-//                   } else if (listOfAccount[i].Industry_Segment__c === 'P2') {
-//                     tmp +=
-//                     '<strong>P2</strong>';
-//                   } else {
-//                     tmp +=
-//                       '<strong>P3</strong>';
-//                   }
-//                 } 
-//                 tmp += `</li>`
-//                 if (listOfAccount[i].Beacon_Flag__c=== true) {
-//                   tmp +=
-//                     '       <li><img src="/media/icon12.png" alt="icon"></li>';
-//                 }else {
-//                   tmp +=
-//                   '       <li></li>'
-//                 }
-                
-//                 if(listOfAccount[i].Draft_Ready__c === true){
-//                   tmp +=
-//                   '       <li><img src="/media/icon11.png" alt="icon"></li>';
-
-//                 }else {
-//                   tmp +=
-//                   '      '
-//                 }
-//                 if(listOfAccount[i].QCO_Flag__c=== true){
-//                   tmp +=
-//                   '       <li><img src="/media/icon13.png" alt="icon"></li>';
-
-//                 } else {
-//                   tmp +=
-//                   '       <li></li>'
-//                 }
-//                tmp+= `</ul>
-//                 </div>
-//             </div> 
-//         </div>
-//     </div>`
-
-                 
-//       $('#listOfAcc').append(tmp);
-
-//        showNotification({ message: 'Total records : ' + listOfAccount.length });
-//     }
-//   }else {
-//     showNotification({ message: 'No records Found!' });
-//   }
-// };
 showListOfAccount = (i = 0) => {
     var tmp = '';
     if(i===0){
         $('#listOfAcc').html('');
     }
     if (listOfAccount && listOfAccount.length > 0) {
+    
+    let VisitDate;
+    console.log(listOfAccount, 'listOfAccount')
     for (let i of listOfAccount) {
-      var VisitDate;
-      if (i.Recent_Activity_Date_Time__c) {
-        VisitDate = new Date(i.Recent_Activity_Date_Time__c)
-          .toISOString()
-          .slice(0, 10);
-      }
-      let tmp;
-      let temp1;
-      if((i.Industry_Segment__c !=null && i.Industry_Segment__c !=undefined) ){
-        if(i.Industry_Segment__c == 'P0'){
+        let temp1;
+        if (i?.Recent_Activity_Date_Time__c) {
+          VisitDate = new Date(i?.Recent_Activity_Date_Time__c)
+            .toISOString()
+            .slice(0, 10);
+        }
+        let circle;
+        if(i?.Actual_Start_Visit__c && i.Completed__c == false){
+          circle = '<i class="fa fa-check-circle checkCircle" style="color:#6600ff;"></i>'
+        }else if(i?.Actual_End_Visit__c && i.Completed__c == true){
+          circle = '<i class="fa fa-check-circle checkCircle" style="color:#2DB83D; "></i>'
+        }else{
+          circle = ''
+        }
+        let tmp;
+        if(i.QCO_Flag__c != undefined && i.Beacon_Flag__c != undefined && i.QCO_Flag__c != null && i.Beacon_Flag__c != null){
+          if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
+            tmp = '<img src="/media/icon12.png" alt="icon" />';
+          }
+          if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
+            tmp = '<img src="/media/icon13.png" alt="icon" />';
+          }
+          if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
+            tmp = '<img src="/media/icon12.png" alt="icon" />';
+          }
+        }
+        if(i.Industry_Segment__c != null || i.Industry_Segment__c != undefined){
+          if(i.Industry_Segment__c == 'P0'){
             temp1 = `<strong class="p0">P0</strong>`
           }else  if(i.Industry_Segment__c == 'P1'){
-           temp1 = `<strong class="p1">P1</strong>`
+          temp1 = `<strong class="p1">P1</strong>`
           }else if(i.Industry_Segment__c == 'P2'){
             temp1 = `<strong class="p2">P2</strong>`
           }else  if(i.Industry_Segment__c == 'P3'){
@@ -152,241 +54,48 @@ showListOfAccount = (i = 0) => {
           }else  if(i.Industry_Segment__c == 'P4'){
             temp1 = `<strong class="p4">P4</strong>`
           }
-    }
-        if(i.QCO_Flag__c != undefined && i.QCO_Flag__c != null && i.Beacon_Flag__c != undefined && i.Beacon_Flag__c != null){
-            if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-                tmp = '<img src="/media/icon12.png" alt="icon" />';
-            }
-            if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-                tmp = '<img src="/media/icon13.png" alt="icon" />';
-            }
-            if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-                tmp = '<img src="/media/icon12.png" alt="icon" />';
-            }
-    }
-      const AccId = "'" + i.Id + "'";
-      const event_Id = "'" + i.eventId + "'";
-      cardSection.innerHTML +=
-        '<div class="card"><div class="card-body"><div class="row"> <div class="col-xs-8"><h4 id="storeName" onclick="gotoAccount(' +
-        AccId +
-        ')">' +
-        i.Name +
-        '</h4><label>' +
-        (i.Channel__c ? i.Channel__c : '') +
-      '/ ' +
-      (i.Sub_Channel__c ? i.Sub_Channel__c : '') +
-        '</label>' +
-        '<label> <strong>Order: </strong><span>' +
-        dateformat(i.Recent_Retail_Depletion__c) +
-        (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
-        '</span> <span>|</span>  <strong>Visit: </strong>' +
-        '<span>' +
-        (VisitDate ? dateformat(VisitDate) : '') +
-        '</span></label><label># ' +
-        (i.BillingStreet ? i.BillingStreet : '')+
-        '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
-        '<li>'+(i.Industry_Segment__c != null || i.Industry_Segment__c != undefined ? (i.Industry_Segment__c  ? temp1 : '')  : '')+'</li> <li>' +
-        (i.QCO_Flag__c != undefined && i.QCO_Flag__c != null && i.Beacon_Flag__c != undefined && i.Beacon_Flag__c != null && i.Draft_Status__c == true
-          ? '<img src="/media/icon11.png" alt="icon" />'
-          : '') +
-        '</li><li> ' +
-        (tmp? tmp : '') +
-        ' </li> </ul></div>' +
-        '</div> </div></div>';
-    }
-//     let tmp;
-//     let temp1;
-//     if((i.Industry_Segment__c !=null && i.Industry_Segment__c !=undefined) ){
-//         if(i.Industry_Segment__c == 'P0'){
-//             temp1 = `<strong class="p0">P0</strong>`
-//           }else  if(i.Industry_Segment__c == 'P1'){
-//            temp1 = `<strong class="p1">P1</strong>`
-//           }else if(i.Industry_Segment__c == 'P2'){
-//             temp1 = `<strong class="p2">P2</strong>`
-//           }else  if(i.Industry_Segment__c == 'P3'){
-//             temp1 = `<strong class="p3">P3</strong>`
-//           }else  if(i.Industry_Segment__c == 'P4'){
-//             temp1 = `<strong class="p4">P4</strong>`
-//           }
-//     }
-//     if(i.QCO_Flag__c != undefined && i.QCO_Flag__c != null && i.Beacon_Flag__c != undefined && i.Beacon_Flag__c != null){
-//     if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-//       tmp = '<img src="/media/icon12.png" alt="icon" />';
-//     }
-//     if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-//       tmp = '<img src="/media/icon13.png" alt="icon" />';
-//     }
-//     if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-//       tmp = '<img src="/media/icon12.png" alt="icon" />';
-//     }
-// }
-//     const AccId = "'" + i.Id + "'";
-//     cardSection.innerHTML +=
-//       '<div class="card"><div class="card-body"><div class="row"> <div class="col-xs-8"><h4 id="storeName" onclick="gotoAccount(' +
-//       AccId +
-//       ')">' +
-//       i.Name +
-//       '</h4><label>' +
-//       (i.Channel__c ? i.Channel__c : '') +
-//       '/ ' +
-//       (i.Sub_Channel__c ? i.Sub_Channel__c : '') +
-//       '</label>' +
-//       '<label> <strong>Order: </strong><span>' +
-//       dateformat(i.Recent_Retail_Depletion__c) +
-//       (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
-//       '</span> <span>|</span>  <strong>Visit: </strong>' +
-//       '<span>' +
-//       (VisitDate ? dateformat(VisitDate) : '') +
-//       '</span></label><label># ' +
-//       i.BillingStreet +
-//       '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
-//       '<li>'+(i.Industry_Segment__c != null || i.Industry_Segment__c != undefined ? (i.Industry_Segment__c  ? temp1 : '') : '')+'</li> <li>' +
-//       (i.QCO_Flag__c != undefined && i.QCO_Flag__c != null && i.Beacon_Flag__c != undefined && i.Beacon_Flag__c != null && i.Draft_Status__c == true
-//         ? '<img src="/media/icon11.png" alt="icon" />'
-//         : '') +
-//       '</li><li> ' +
-//       tmp +
-//       ' </li> </ul></div>' +
-      
-    // if (listOfAccount && listOfAccount.length > 0) {
-    //     for (var i = stIndex; i < listOfAccount.length; i++) {
-    //         tmp += '<li class="accountList"  >';
-    //         tmp += '    <div class="main-head" onclick=accountDetail("' + [i] + '")>';
-    //         tmp += '        <span class="accountName">' + listOfAccount[i].Name + '</span> <br/>';
-    //         tmp += '      <div class="heading">';
-    //         // tmp += '        <span class="accountName">' + listOfAccount[i].Name + '</span> <br/>';
-    //         if ((listOfAccount[i].Channel__c && listOfAccount[i].Account_Status__c)) {
-    //             tmp += '       <p style="margin-left:3%;">' + (listOfAccount[i].Channel__c ? listOfAccount[i].Channel__c + '<span class="division"> | </span>' : 'NA');
-    //             tmp += '         ' + (listOfAccount[i].Account_Status__c ? listOfAccount[i].Account_Status__c : '') + '</p>';
-    //         }
-    //         else {
-    //             if (listOfAccount[i].Channel__c) {
-    //                 tmp += '       <p style="margin-left:3%;">' + (listOfAccount[i].Channel__c ? listOfAccount[i].Channel__c + '</p>' : 'NA');
-    //             }
-    //             if (listOfAccount[i].Account_Status__c) {
-    //                 tmp += '       <p style="margin-left:3%;>  ' + (listOfAccount[i].Account_Status__c ? listOfAccount[i].Account_Status__c : '') + '</p>';
-    //             }
-    //         }
-    //         if ((listOfAccount[i].L3M_Billed_Liquids__c && listOfAccount[i].L1M_Billed_Liquids__c)) {
-    //             tmp += '       <p style="margin-left:3%;">' + (listOfAccount[i].L1M_Billed_Liquids__c ? listOfAccount[i].L1M_Billed_Liquids__c + '<span class=""> , </span>' : 'NA');
-    //             tmp += '         ' + (listOfAccount[i].L3M_Billed_Liquids__c ? listOfAccount[i].L3M_Billed_Liquids__c : '') + '</p>';
-    //         }
-    //         else {
-                
-                
-    //             if (listOfAccount[i].L3M_Billed_Liquids__c) {
-    //                 tmp += '       <p style="margin-left:3%;">' + (listOfAccount[i].L3M_Billed_Liquids__c ? listOfAccount[i].L3M_Billed_Liquids__c + '</p>' : 'NA');
-    //             }
-    //             if (listOfAccount[i].L1M_Billed_Liquids__c) {
-                    
-    //                 tmp += '       <p style="margin-left:3%;">  ' + (listOfAccount[i].L1M_Billed_Liquids__c ? listOfAccount[i].L1M_Billed_Liquids__c : '') + '</p>';
-    //             }
-    //         }
-    //         if (listOfAccount[i].Recent_Retail_Depletion__c) {
-    //             tmp += '  <p style="margin-left:3%;"> Last Order : ' + (listOfAccount[i].Recent_Retail_Depletion__c ? new Date(listOfAccount[i].Recent_Retail_Depletion__c).toLocaleString("en-IN", {
-    //                 day: 'numeric',
-    //                 month: 'short',
-    //             }) : '');
-    //             tmp += '</p>';
-    //         }
-    //         if(listOfAccount[i].Beer_Selection__c === "Boom"){
-    //             tmp += '  <span><img class="beerSelection" src="/media/icons/accountSegmentation/boom-led.png" alt=""></span>';
-    //         }
-
-    //         if(listOfAccount[i].Beer_Selection__c === "Premium"){
-    //             tmp += '  <span><img class="beerSelection" src="/media/icons/accountSegmentation/premium-led.png" alt=""></span>';
-    //         }
-    //         tmp += '      </div>';
-            
-    //         tmp += '       <div class="feat">';
-    //         tmp += '         <div>';
-           
-    //         if (listOfAccount[i].Bira_Segment__c != null) {
-    //             if (listOfAccount[i].Bira_Segment__c === "A+") {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a+.png" alt=""></span>';
-    //             } else if (listOfAccount[i].Bira_Segment__c === "A") {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/a.png" alt=""></span>';
-    //             } else if (listOfAccount[i].Bira_Segment__c === "B") {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/b.png" alt=""></span>';
-    //             } else {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/c.png" alt=""></span>';
-    //             }
-
-    //         }
-    //         else {
-    //                 tmp += '  <span class="name"></span>';
-    //         }
-
-    //         if (listOfAccount[i].Industry_Segment__c != null) {
-    //             if (listOfAccount[i].Industry_Segment__c === "P0") {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p0.png" alt=""></span>';
-    //             } else if (listOfAccount[i].Industry_Segment__c === "P1") {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p1.png" alt=""></span>';
-    //             } else if (listOfAccount[i].Industry_Segment__c === "P2") {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p2.png" alt=""></span>';
-    //             } else {
-    //                 tmp += '  <span class="name" style="position:relative;top:-1px;"><img src="/media/icons/accountSegmentation/p3.png" alt=""></span>';
-    //             }
-    //         }
-    //         else {
-    //             tmp += '  <span class="name"></span>';
-    //         }
-
-    //         if (listOfAccount[i].Industry_Segment_Mass__c != null) {
-    //             if (listOfAccount[i].Industry_Segment_Mass__c === "M0") {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m0.png" alt=""></span>';
-    //             } else if (listOfAccount[i].Industry_Segment_Mass__c === "M1") {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m1.png" alt=""></span>';
-    //             } else if (listOfAccount[i].Industry_Segment_Mass__c === "M2") {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m2.png" alt=""></span>';
-    //             } else {
-    //                 tmp += '  <span class="name"><img src="/media/icons/accountSegmentation/m3.png" alt=""></span>';
-    //             }
-
-    //         }
-    //         else {
-    //             tmp += '  <span class="name"></span>';
-    //         }
-
-    //         tmp += '         </div>';
-
-
-
-    //         tmp += '         <div>';
-
-    //         if (listOfAccount[i].Beacon_Flag__c === true) {
-    //             tmp += '         <span><img src="/media/images/homePage/Icons-02.png" alt=""></span>';
-    //         }
-    //         else {
-    //             tmp += '  <span class="name"></span>';
-    //         }
-
-
-    //         if (listOfAccount[i].Draft_Ready__c === true) {
-    //             tmp += '         <span><img src="/media/images/homePage/Icons-04.png" alt=""></span>';
-    //         }
-    //         else {
-    //             tmp += '  <span class="name"></span>';
-    //         }
-
-
-    //         if (listOfAccount[i].QCO_Flag__c === true) {
-    //             tmp += '         <span><img src="/media/images/homePage/Icons-05.png" alt=""></span>';
-    //         }
-    //         else {
-    //             tmp += '  <span class="name"></span>';
-    //         }
-
-    //         tmp += '       </div>';
-    //         tmp += '       </div>';
-
-    //         tmp += '    </div>';
-    //         tmp += '</li>';
-    //     }
-    //     $('#listOfAcc').append(tmp);
-
-    //     showNotification({ message: 'Total records : ' + listOfAccount.length });
-    // }
+        }else{
+          temp1 = '';
+        }
+        let loc;
+        if(i.Geolocation__c != null || i.Geolocation__c != undefined){
+          let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
+          $('.loc').prop('href',map)
+          loc = '<a class="loc" ><span>'+(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')+','+(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')+'</span></a>'
+          //console.log("https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude);
+          
+        }
+    
+    
+        const AccId = i.Id 
+        const event_Id = i.eventId 
+        cardSection.innerHTML +=`<div class="card">
+          <div class="card-body">
+          <i>${circle}</i>
+          <div class="row">
+             <div class="col-xs-8">
+                <h4 id="storeName" onclick="gotoAccount('${AccId}')"> ${i.Name ? i.Name : ''}</h4>
+                <label> ${i.Channel__c? i.Channel__c : ''} /${i.Sub_Channel__c ? i.Sub_Channel__c: ''}</label> <label>
+                <strong>Order: </strong>
+                <span>${(i.Recent_Retail_Depletion__c ? dateformat(i.Recent_Retail_Depletion__c) : '')}${(i.Recent_Retail_Depletion__c ? (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '' ) : '' )} </span>
+                <span>|</span>
+                <strong>Visit: </strong>
+                <span>${(VisitDate ? dateformat(VisitDate) : '' )}</span>
+                </label>
+                <label> ${( i.BillingStreet? '#' : '' )+ ( i.BillingStreet? i.BillingStreet : '' )}</label>
+                <label>${(loc?loc:'')} </label>
+             </div>
+             <div class="col-xs-4 pl-0 text-right">
+                <ul>
+                   <li>${temp1}</li>
+                   <li>${(i.Draft_Status__c == true ? ' <img src="/media/icon11.png" alt="icon" />' : '') } </li>
+                   <li> ${(tmp ? tmp : '')} </li>
+                </ul>
+             </div>
+          </div>
+          </div>
+    </div>`
+      }
     showNotification({ message: 'Total records : ' + listOfAccount.length });
       }
     else {

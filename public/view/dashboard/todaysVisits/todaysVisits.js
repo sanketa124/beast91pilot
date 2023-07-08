@@ -8,28 +8,56 @@ let visitProgress = document.querySelector('.visitProgress');
 //     $('.cardSectionList').removeClass('disabledsection');
 // }
 
+// ${(i.CheckedInStatus ==  false && i.Completed__c == false) ?
+  //   `<button id="checkin_"${AccId} onclick="handleCheckIn('${event_Id}','${AccId}')" class="btn btn-small">Check-In</button>`  :`${(i.CheckedInStatus ==  false && i.Actual_Start_Visit__c == false) ?
+  //     `<button id="checkin_"${AccId} onclick="handleCheckIn('${event_Id}','${AccId}')" class="btn btn-small" disabled>Check-In</button>`  :``
+  //   }`
+  // }
+
 showTodaysVisit = (todaysVisit, currentCheckIn) => {
   let VisitDate;
+  let IsCheckedIn = false;
+  let IsCheckedOut = false;
   console.log(todaysVisit, 'todaysVisit')
-  const completedVisits = todaysVisit.filter(
-    (visit) => visit.Completed__c == true
+  const completedVisits = todaysVisit.filter((visit) => {
+    if(visit.Completed__c == true){
+      visit.CheckedInStatus = true
+      return visit
+    }
+  });
+
+  const checkedInVisits = todaysVisit.filter(
+    (visit) => {
+      if(visit.Actual_Start_Visit__c != null && visit.Completed__c == false){
+        visit.CheckedInStatus = true
+        return visit
+      }
+
+    }
   );
-  let progressPercentage = Math.round(
-    (completedVisits.length / todaysVisit.length) * 100
+
+  const notCheckedInVisits = todaysVisit.filter(
+    (visit) => {
+    if(visit.Actual_Start_Visit__c == null && visit.Completed__c == false){
+      visit.CheckedInStatus = false
+      return visit
+    }
+  }
   );
-  visitProgress.innerHTML =
-    '<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: ' +
-    progressPercentage +
-    '%;"></div></div> <span id="todayVisits"><strong>' +
-    completedVisits.length +
-    '/' +
-    todaysVisit.length +
-    '</strong> (' +
-    progressPercentage +
-    '%) </span>';
-  for (let i of todaysVisit) {
-    console.log(todaysVisit, 'todaysVisit')
-   
+  
+  let finalArray = [...completedVisits, ...checkedInVisits, ...notCheckedInVisits]
+  finalArray.sort(function(a, b) {
+    var c = new Date(a.Start_date_and_time__c);
+    var d = new Date(b.Start_date_and_time__c);
+    return c-d;
+});
+  let progressPercentage = (todaysVisit.length > 0) ? (Math.round((completedVisits.length / todaysVisit.length) * 100)) : 0
+  visitProgress.innerHTML =`<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:${progressPercentage}%"></div></div> 
+  <span id="todayVisits"><strong>${completedVisits.length} / ${todaysVisit.length }</strong> (${progressPercentage}%) </span>`
+
+  for (let i of finalArray) {
+    console.log(finalArray, 'todaysVisit')
     let temp1;
     if (i?.Recent_Activity_Date_Time__c) {
       VisitDate = new Date(i?.Recent_Activity_Date_Time__c)
@@ -41,7 +69,6 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       circle = '<i class="fa fa-check-circle checkCircle" style="color:#6600ff;"></i>'
     }else if(i?.Actual_End_Visit__c && i.Completed__c == true){
       circle = '<i class="fa fa-check-circle checkCircle" style="color:#2DB83D; "></i>'
-      $('#checkin').hide();
     }else{
       circle = ''
     }
@@ -85,93 +112,38 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       //console.log("https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude);
       
     }
-    const AccId = "'" + i.Id + "'";loc
-    const event_Id = "'" + i.eventId + "'";
-    cardSection.innerHTML +=
-      '<div class="card"><div class="card-body"> ' + circle + '</i><div class="row"> <div class="col-xs-8"><h4 id="storeName" onclick="gotoAccount(' +
-      AccId +
-      ')">' +
-      (i.Name ? i.Name : '') +
-      '</h4><label>' +
-      (i.Channel__c? i.Channel__c : '') +
-      '/ ' +
-      (i.Sub_Channel__c ? i.Sub_Channel__c: '') +
-      '</label>' +
-      '<label> <strong>Order: </strong><span>' +
-      (i.Recent_Retail_Depletion__c ?
-      dateformat(i.Recent_Retail_Depletion__c) : '')+
-      (i.Recent_Retail_Depletion__c ? 
-      (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') : '') +
-      '</span> <span>|</span>  <strong>Visit: </strong>' +
-      '<span>' +
-      (VisitDate ? dateformat(VisitDate) : '') +
-      '</span></label><label> ' + ( i.BillingStreet? '#'  : '')+  
-     ( i.BillingStreet? i.BillingStreet : '') +
-      '</label> <label>'+(loc?loc:'')+' </label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
-      '<li>' + temp1 + '</li> <li>' +
-      (i.Draft_Status__c == true
-        ? '<img src="/media/icon11.png" alt="icon" />'
-        : '') +
-      '</li><li> ' +
-      (tmp ? tmp : '') +
-      ' </li> </ul></div>' +
-      '</div> <button id="checkin" onclick="handleCheckIn(' +
-      event_Id +
-      ',' +
-      AccId +
-      ')" class="btn btn-small">Check-In</button></div></div>';
+
+
+    const AccId = i?.Id 
+    const event_Id = i?.eventId 
+    cardSection.innerHTML +=`<div class="card">
+      <div class="card-body">
+      <i>${circle}</i>
+      <div class="row">
+         <div class="col-xs-8">
+            <h4 id="storeName" onclick="gotoAccount('${AccId}')"> ${i.Name ? i.Name : ''}</h4>
+            <label> ${i.Channel__c? i.Channel__c : ''} /${i.Sub_Channel__c ? i.Sub_Channel__c: ''}</label> <label>
+            <strong>Order: </strong>
+            <span>${(i.Recent_Retail_Depletion__c ? dateformat(i.Recent_Retail_Depletion__c) : '')}${(i.Recent_Retail_Depletion__c ? (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '' ) : '' )} </span>
+            <span>|</span>
+            <strong>Visit: </strong>
+            <span>${(VisitDate ? dateformat(VisitDate) : '' )}</span>
+            </label>
+            <label> ${( i.BillingStreet? '#' : '' )+ ( i.BillingStreet? i.BillingStreet : '' )}</label>
+            <label>${(loc?loc:'')} </label>
+         </div>
+         <div class="col-xs-4 pl-0 text-right">
+            <ul>
+               <li>${temp1}</li>
+               <li>${(i.Draft_Status__c == true ? ' <img src="/media/icon11.png" alt="icon" />' : '') } </li>
+               <li> ${(tmp ? tmp : '')} </li>
+            </ul>
+         </div>
+      </div>
+      <button id="checkin_"${AccId} onclick="handleCheckIn('${event_Id}','${AccId}')" class="btn btn-small">Check-In</button>
+      </div>
+</div>`
   }
-  // let tmp;
-  // if (i.QCO_Flag__c == true && i.Beacon_Flag__c == true) {
-  //   tmp = '<img src="/media/icon12.png" alt="icon" />';
-  // }
-  // if (i.QCO_Flag__c == true && i.Beacon_Flag__c == false) {
-  //   tmp = '<img src="/media/icon13.png" alt="icon" />';
-  // }
-  // if (i.QCO_Flag__c == false && i.Beacon_Flag__c == true) {
-  //   tmp = '<img src="/media/icon12.png" alt="icon" />';
-  // }
-  // let temp1;
-  // if(i.Industry_Segment__c == 'P0'){
-  //   temp1 = `<strong class="p0">P0</strong>`
-  // }else  if(i.Industry_Segment__c == 'P1'){
-  //  temp1 = `<strong class="p1">P1</strong>`
-  // }else if(i.Industry_Segment__c == 'P2'){
-  //   temp1 = `<strong class="p2">P2</strong>`
-  // }else  if(i.Industry_Segment__c == 'P3'){
-  //   temp1 = `<strong class="p3">P3</strong>`
-  // }else  if(i.Industry_Segment__c == 'P4'){
-  //   temp1 = `<strong class="p4">P4</strong>`
-  // }
-  //const AccId = "'" + i.Id + "'";
-  // cardSection.innerHTML +=
-  //   '<div class="card"><div class="card-body"><div class="row"> <div class="col-xs-8"><h4 id="storeName" onclick="gotoAccount(' +
-  //   AccId +
-  //   ')">' +
-  //   i.Name +
-  //   '</h4><label>' +
-  //   i.Channel__c +
-  //   '/ ' +
-  //   i.Sub_Channel__c +
-  //   '</label>' +
-  //   '<label> <strong>Order: </strong><span>' +
-  //   dateformat(i.Recent_Retail_Depletion__c) +
-  //   (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '') +
-  //   '</span> <span>|</span>  <strong>Visit: </strong>' +
-  //   '<span>' +
-  //   (VisitDate ? dateformat(VisitDate) : '') +
-  //   '</span></label><label># ' +
-  //   i.BillingStreet +
-  //   '</label> </div> <div class="col-xs-4 pl-0 text-right"><ul>' +
-  //   '<li>' + temp1 +
-  //  '</li> <li>' +
-  //   (i.Draft_Status__c == true
-  //     ? '<img src="/media/icon11.png" alt="icon" />'
-  //     : '') +
-  //   '</li><li> ' +
-  //   tmp +
-  //   ' </li> </ul></div>' +
-  //   '</div> <button onclick="handleCheckIn()" class="btn btn-small">Check-In</button></div></div>';
 };
 
 gotomap = (map) => {
@@ -179,8 +151,8 @@ gotomap = (map) => {
   //console.log(map)
 }
 
-gotoAccount = (id) => {
-    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${id}`
+gotoAccount = (AccId) => {
+    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${AccId}`
 }
 
 dateformat = (date) => {
@@ -196,6 +168,7 @@ getLapsedDate = (target) => {
 };
 
 handleCheckIn = (eventId,accountId) => {
+  console.log(accountId,"accId");
     sessionStorage.setItem('checkinPlace','firstCheckin')
     //checkInFucn(eventId,accountId)
     window.location.href = `/view/checkIn/checkIn.html?accountId=${accountId}&eventId=${eventId}`;

@@ -15,8 +15,10 @@ async function createSlabRows() {
 
     let requiredPayOutSlabs = []
 
-    //Off-PREM and Group will not have Industry_Segment__c
-    if (accountDetail.Channel__c == "Off-Premise" && accountDetail.RecordTypeId == group_id) {
+    //Off-PREM or On-Prem Group will not have Industry_Segment__c
+    if ((accountDetail.Channel__c == "Off-Premise" && accountDetail.RecordTypeId == group_id)
+        || (accountDetail.Channel__c == "On-Premise" && accountDetail.RecordTypeId == group_id)
+    ) {
         console.log("I am inside offline group premise")
         requiredPayOutSlabs = payOutSlabs.filter((eachPayOutSlab) => {
             if (
@@ -157,7 +159,7 @@ async function createSlabRows() {
 
 
         } else {
-            if(filterInnnovationSlabs[i].Max_Range__c){
+            if(filterInnnovationSlabs[i].Max_Range__c){                
                 tempString = `
                 <tr id=${uniqueId - [i]}>
                 <td>${filterInnnovationSlabs[i].Min_Range__c}-${filterInnnovationSlabs[i].Max_Range__c}</td>
@@ -235,14 +237,24 @@ async function createSlabRows() {
                     </tr>
                         `
             } else {
+                if(filterKegsSlabs[i].Max_Range__c){
+                    tempString = `
+                    <tr id=${uniqueId - [i]}>
+                    <td>${filterKegsSlabs[i].Min_Range__c}-${filterKegsSlabs[i].Max_Range__c}</td>
+                    <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
+                    <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
+                </tr>
+                    `
+                }else{
+                    tempString = `
+                    <tr id=${uniqueId - [i]}>
+                    <td>>${filterKegsSlabs[i].Min_Range__c-1}</td>
+                    <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
+                    <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
+                </tr>
+                    `
 
-                tempString = `
-                        <tr id=${uniqueId - [i]}>
-                        <td>${filterKegsSlabs[i].Min_Range__c}-${filterKegsSlabs[i].Max_Range__c}</td>
-                        <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
-                        <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
-                    </tr>
-                        `
+                }
 
             }
 

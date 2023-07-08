@@ -11,6 +11,21 @@ window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
 /**Go back vists page in the event that Recommendation has been previously accepted */
 (async()=>{
     const recommendation= await getItemFromStore('recommendations',recommendationId)
+    const selectElement = document.querySelector('#feedback-options');
+    const options = await readAllData('recommendation-feedback-meta') || [];
+    options.forEach((item) => {
+      const samplingOption = document.createElement('option');
+      samplingOption.value = item.option;
+      samplingOption.text = item.option;
+      selectElement.appendChild(samplingOption);
+    });
+
+    selectElement.value=recommendation?.Recommendation_Feedback__c||options?.[0] ||"" 
+    selectElement.addEventListener('change',async(event) => {
+        const selectedValue = event.target.value;
+        await writeData('recommendations',{...recommendation,Recommendation_Feedback__c:selectedValue});
+      });
+
     if(!recommendation){
         window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
     }
@@ -21,18 +36,10 @@ $('#feedback').hide()
 $('#placeOrderModal').modal('show');
 submit = async() => {
     $('#placeOrderModal').modal('hide');
-    // let urlParams = new URLSearchParams(window.location.search);
-    // const accountId = urlParams.get('accountId');
-    
-    // $('#placeOrderModal').modal('hide');
-    // window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
 
-    /** Marking a recommendation as accepted so that it won't be visible again*/
     const date= new Date();
     const recommendation= await getItemFromStore('recommendations',recommendationId)
-    // const {Recommended_SKU__r,Outlet_Name__r,attributes,...rest }=recommendation
     const acceptedReccomendation= {...recommendation,Is_Accepted__c:true,Accepted_Date__c: date}
-    console.log('accepted recommendation object',acceptedReccomendation)
 
     /** Moving Accepted Recommendations to a new schema that can then be used by the Sales order */
     await writeData('accepted_recommendations',acceptedReccomendation)
@@ -47,3 +54,10 @@ cancel = () => {
     $('#feedback').show()
 }
 
+finish=async()=>{
+    const recommendation= await getItemFromStore('recommendations',recommendationId)
+    await writeData('accepted_recommendations',recommendation)
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/sales/recomendation.html?acountId=${accountId}`
+}

@@ -74,14 +74,9 @@ const createSampleLineItem=async()=>{
     Quantity__c: 0,
     Liquid_Layer__c: `${liquidLayerId}`,
   }
-  if(!sampleLineItem?.Type__c){
-
-    /** Set Default Value as sampling */
-    sampleLineItem={...sampleLineItem,Type__c: 'Tasting'}
-    children.push(sampleLineItem)
     await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`,{...sampleItem,children})
     await writeData(`${UNSYNCED_SAMPLE_ITEM_SCHEMA}`,sampleLineItem)
-  }
+  // }
 
   return {sampleItem,sampleLineItem,liquidName,packType}
 }
@@ -107,7 +102,7 @@ const deleteSampleLineItem= async()=>{
     })
     await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`,{...sampleItem,children})
     await deleteItemFromData(`${UNSYNCED_SAMPLE_ITEM_SCHEMA}`,sampleLineItemTag)
-    alert('Deleted Line item')
+  
   }
 }
 
@@ -117,32 +112,10 @@ const deleteSampleLineItem= async()=>{
 
 const handleSamplingData = async (parentSample,result, liquidName, packType) => {
   let updatedResult = result;
-  let productQuantity = result?.Quantity__c || 1;
+  let productQuantity = result?.Quantity__c || 0;
   let initialValue = 0;
 
-  /**Dropdown Options */
-  $(document).ready(function() {
-    const TYPES = ['Sampling', 'Tasting'];
-    const selectElement = $('#sampling-type');
-    // Handle Type Dropdown
-    TYPES.forEach(function(type) {
-      var option = $('<option>').val(type).text(type);
-      selectElement.append(option);
-    });
   
-    selectElement.val(updatedResult?.Type__c);
-  
-    selectElement.on('change', async function() {
-      var selectedValue = $(this).val();
-      updatedResult = {
-        ...updatedResult,
-        Type__c: selectedValue
-      };
-      await updateSampleLineItem(parentSample, updatedResult);
-    });
-  });
-  
-
   /** Set liquidName and packtype value  */
   const liquidTag = document.getElementById('liquidName');
   liquidTag.innerText = liquidName;
@@ -150,7 +123,7 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
   const packTypeTag = document.getElementById('packType');
   packTypeTag.innerText = packType;
 
-  /**Handle Sampling Types */
+  /**Handle Sampling Quanity */
   const inputField = document.getElementById('sample-child-item-values-qty');
   inputField.value = productQuantity;
   inputField.addEventListener('change', async (event) => {
@@ -210,17 +183,34 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
     await updateSampleLineItem(parentSample,updatedResult);
   });
 
-    /*** Handle Liked (or not) Switch */
-    const likedField = document.getElementById('liked');
-    likedField.checked = updatedResult?.Liked__c;
-    likedField.addEventListener('change', async (event) => {
-
+  /*** Handle Liked (or not) Switch */
+  const dislikedElements=document.querySelectorAll('.row.mt-2.sample-disliked')
+  const nonTastingElements=document.querySelectorAll('.row.mt-2.sampling-disabled')
+  const likedField = document.getElementById('liked');
+  likedField.checked = updatedResult?.Liked__c;
+    if(updatedResult?.Liked__c){
+           // Hide all disliked elements
+           dislikedElements.forEach(element => {
+            element.style.display = 'none';
+          });
+    }
+    else{
+      dislikedElements.forEach(element => {
+        element.style.display = '';
+      });
+    }
+  likedField.addEventListener('change', async (event) => {
       if(event.target.checked){
         updatedResult = {
           ...updatedResult,
           Liked__c: event.target.checked,
           Interested__c: event.target.checked
         };  
+           // Hide all disliked elements
+           dislikedElements.forEach(element => {
+            element.style.display = 'none';
+          });
+
       }
       else {
         updatedResult = {
@@ -229,14 +219,80 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
           Interested__c: event.target.checked,
           Aroma__c:  event.target.checked,
           Bitterness__c: event.target.checked,
-          Mouth_Feel__c: event.target.checked
+          Mouth_Feel__c: event.target.checked,
+          Any_other_feedback__c: null
         };  
-        aroma.checked = false; 
-        bitternes.checked=false
+        aroma.checked=false
         mouthFeel.checked=false
+        bitternes.checked=false
+        feedback.value=''
+        
+        const allElements = document.querySelectorAll('.row');
+        allElements.forEach(element => {
+          element.style.display = '';
+        });
+
       }
       await updateSampleLineItem(parentSample,updatedResult);
     });
+
+
+  /*** Handling Dropdown */
+  if(!updatedResult?.Type__c ||(updatedResult?.Type__c==='Sampling')){
+    nonTastingElements.forEach(element => {
+      element.style.display = 'none';
+    });
+    dislikedElements.forEach(element => {
+      element.style.display = 'none';
+    });
+  }
+  else{
+    nonTastingElements.forEach(element => {
+      element.style.display = '';
+    });
+    dislikedElements.forEach(element => {
+      element.style.display = '';
+    });
+  }
+
+  const selectElement = document.querySelector('#sampling-type');
+  const samplingOption = document.createElement('option');
+  samplingOption.value = 'Sampling';
+  samplingOption.text = 'Sampling';
+  const tastingOption = document.createElement('option');
+  tastingOption.value = 'Tasting';
+  tastingOption.text = 'Tasting';
+  selectElement.add(samplingOption);
+  selectElement.add(tastingOption);
+  selectElement.value = updatedResult?.Type__c? updatedResult?.Type__c:'';
+  console.log('disliked elements',dislikedElements)
+  // Add event listener to the select element
+  selectElement.addEventListener('change', async() =>{
+    const selectedOption = selectElement.value;
+    if(selectedOption==='Sampling'){
+      updatedResult={
+        ...updatedResult, Type__c: selectElement.value, Liked__c: false
+      }
+      nonTastingElements.forEach(element => {
+        element.style.display = 'none';
+      });
+      dislikedElements.forEach(element => {
+        element.style.display = 'none';
+      });
+      await updateSampleLineItem(parentSample,updatedResult);
+    }
+    else{
+      updatedResult={
+        ...updatedResult, Type__c: selectElement.value,Liked__c: true
+      }
+      likedField.checked=true
+      nonTastingElements.forEach(element => {
+        element.style.display = '';
+      });
+      await updateSampleLineItem(parentSample,updatedResult);
+    }
+   
+  });
   
 };
 
@@ -246,9 +302,10 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
 
   const {sampleItem,sampleLineItem,liquidName,packType}=await createSampleLineItem();
   await handleSamplingData(sampleItem,sampleLineItem,liquidName,packType);
+  const nonTastingElements=document.querySelectorAll('.row.mt-2.sampling-disabled')
+  const dislikedElements=document.querySelectorAll('.row.mt-2.sample-disliked')
 
-
-  const quantity=sampleLineItem.Quantity__c
+  const quantity=sampleLineItem?.Quantity__c ||0
   const elementsToHide = document.querySelectorAll('[id^="hide"]');
   const isSamplingRequired=document.getElementById("sample-tasting-required")
   isSamplingRequired.checked= quantity?true:false
@@ -269,9 +326,23 @@ const handleSamplingData = async (parentSample,result, liquidName, packType) => 
         element.style.display = ''; // Show the element
       });
     } else {
-      await updateSampleLineItem(sampleItem,{...sampleLineItem,Quantity__c:0});
+      await updateSampleLineItem(sampleItem,{...sampleLineItem,Quantity__c:0, Liked__c: false,
+        Interested__c: false,
+        Aroma__c: false,
+        Bitterness__c: false,
+        Mouth_Feel__c: false,
+        Any_other_feedback__c: null
+      });
       elementsToHide.forEach(element => {
         element.style.display = 'none'; // Hide the element
+      });
+      const selectElement = document.querySelector('#sampling-type');
+      selectElement.value=''
+      nonTastingElements.forEach(element => {
+        element.style.display = 'none';
+      });
+      dislikedElements.forEach(element => {
+        element.style.display = 'none';
       });
     }
   });

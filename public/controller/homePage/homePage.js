@@ -94,7 +94,7 @@ const displayFetchEvents =async (events,currentCheckIn) => {
                 eventDate.setHours(0,0,0,0);
                 currentDate.setHours(0,0,0,0);
                 if(eventDate.getTime()===currentDate.getTime()){
-                    pulloutApproval.push({...ele.Account__r,eventId :ele.Id,Completed__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Completed__c,Actual_End_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_End_Visit__c, Actual_Start_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_Start_Visit__c});
+                    pulloutApproval.push({...ele.Account__r,eventId :ele.Id,Start_date_and_time__c:ele.eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Start_date_and_time__c,Completed__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Completed__c,Actual_End_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_End_Visit__c, Actual_Start_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_Start_Visit__c});
                 }
             }
             else{
@@ -103,7 +103,7 @@ const displayFetchEvents =async (events,currentCheckIn) => {
                 eventDate.setHours(0,0,0,0);
                 currentDate.setHours(0,0,0,0);
                 if(eventDate.getTime()===currentDate.getTime()){
-                accountList.push({...ele.Account__r,eventId :ele.Id,Completed__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Completed__c,Actual_End_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_End_Visit__c, Actual_Start_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_Start_Visit__c });
+                accountList.push({...ele.Account__r,eventId :ele.Id,Start_date_and_time__c:ele.Start_date_and_time__c,Completed__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Completed__c,Actual_End_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_End_Visit__c, Actual_Start_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_Start_Visit__c });
                 }
             }
         }

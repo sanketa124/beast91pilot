@@ -10,6 +10,7 @@ const initializeSync = async () => {
     await payOutSlabsFetch(loginData[0].username,loginData[0].password);
     await accountGoalsFetch(loginData[0].username,loginData[0].password);
     await marketInventoriesFetch(loginData[0].username,loginData[0].password);
+    await pushPOSMItems(loginData[0].username,loginData[0].password);
     await reportFetch(loginData[0].username,loginData[0].xx);
 };
 
@@ -1098,6 +1099,70 @@ const syncSamples=async(username, password)=>{
     }
 
 }
+
+const recommendationWeekFilter=async(username, password)=>{
+    /**  Push Sample Parent and Sample Line Items to sfdc */
+        try{
+                let res = await fetch('/recommendation/week-filter',{
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                    body : JSON.stringify({
+                        username : username,
+                        password : password,
+                    })
+                });
+                if (res.ok) {
+                    let data = await res.json();
+                    const {events}=data
+                    await clearAllData('recommendation-weekfilter');
+                    await writeDataAll('recommendation-weekfilter',events);
+                } else {
+                    console.error("Error: " + res.status);
+                    await clearAllData('recommendation-weekfilter');
+                    await clearAllData('recommendation-weekfilter');
+                  }
+            
+         
+        }
+        catch(err){
+            console.log(err)
+            await clearAllData('Unsynced_Sample');
+            await clearAllData('Unsynced_Sample_Items');
+        }
+    
+    }
+
+const recommendationFeedbackMeta=async(username, password)=>{
+        /**  Push Sample Parent and Sample Line Items to sfdc */
+            try{
+                    let res = await fetch('/recommendation-feedback-meta',{
+                        method : 'POST',
+                        headers : {
+                            'Content-Type' : 'application/json'
+                        },
+                        body : JSON.stringify({
+                            username : username,
+                            password : password,
+                        })
+                    });
+                    if (res.ok) {
+                        let data = await res.json();
+                        const {feedBackValues}=data
+                        await clearAllData('recommendation-feedback-meta');
+                        await writeDataAll('recommendation-feedback-meta',feedBackValues);
+                    } else {
+                        console.error("Error: " + res.status);
+                        await clearAllData('recommendation-feedback-meta');
+                      }
+            }
+            catch(err){
+                console.log(err)
+                await clearAllData('Urecommendation-feedback-meta');
+            }
+        
+}
 /*** End of Recommendation Controllers */
 
 /** Outlet-360 sync methods */
@@ -1149,6 +1214,33 @@ const outlet360RetailDepletion=async(username,password)=>{
         await clearAllData('outlet360-rate-depletion');
     }
 }
+const outlet360AccountGoalsTarget=async(username,password)=>{
+    try{
+        let res = await fetch('/outlet-360/account-goals',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                    recordTypeName: 'Visibility',
+                    fieldName:'Goal_Quantity__c'
+                })
+            });
+            if (res.ok) {
+                let data = await res.json();
+                const {accountGoals}=data
+                await clearAllData('outlet360-visibility-score-target');
+                await writeDataAll('outlet360-visibility-score-target',accountGoals);
+            }
+    }
+    catch(err){
+        console.log('\n\n\n visibility score board target')
+        console.log(err)
+    }
+}
+
 const outlet360AccountGoals=async(username,password)=>{
     try{
         let res = await fetch('/outlet-360/account-goals',{
@@ -1159,7 +1251,8 @@ const outlet360AccountGoals=async(username,password)=>{
                 body : JSON.stringify({
                     username : username,
                     password : password,
-                    recordTypeName: 'SKU'
+                    recordTypeName: 'SKU',
+                    fieldName:'CE__c'
                 })
             });
             if (res.ok) {
@@ -1354,6 +1447,50 @@ const marketInventoriesFetch = async(username,password) => {
     }
     catch(err){
         showNotification({message : 'Issue in syncing events.Pl contact System Adminstrator for more help!'})
+        console.log(err);
+    }
+};
+
+const pushPOSMItems = async(username,password) => {
+    try{
+    let posm = await readAllData('posm')
+    console.log("POSM from Index DB===>",posm)
+    posm = posm.filter((ele) => !ele.isSynced)
+    console.log("UNSYNCED POSMS===>",posm)
+    let res = await fetch('/posmItems',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+            username : username,
+            password : password,
+            data: {
+                posm : posm
+            }
+        })
+    });
+    let resJson = await res.json();
+    if(resJson.isError){
+        console.log(resJson.isError);
+        // Add Notification method here
+    }
+    else if(resJson.isError===false){
+        if(!resJson.isAuth){
+            clearAll();
+        }
+        else{
+            console.log('Push POSM is Complete');
+            posm = posm.map((eachPOSM) => {
+                eachPOSM.isSynced = true
+                return eachPOSM
+            })
+            await writeDataAll('posm',posm);
+        }        
+    }
+    }
+    catch(err){
+        showNotification({message : 'Issue in syncing POSM.Pl contact System Adminstrator for more help!'})
         console.log(err);
     }
 };

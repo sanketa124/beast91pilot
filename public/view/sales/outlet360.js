@@ -69,38 +69,48 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
         }
 
-         /** iv. Visibility score of the latest Stock Visibility survery for a given account */
+         /** iv. pos items */
           let postItemsObject= await getItemFromStore('outlet360-positems',accountId)
           if(!(postItemsObject && visibilityScoreObject.posmLineItems )){
    
           }
 
-          const achievement=retailDepletionObject?.CE__c  ||0
-          const target=accountGoalObject?.expr0 || 0  
+           /** v. visibility score board target */
+           let visibilityScoreCardTargetObject= await getItemFromStore('outlet360-visibility-score-target',accountId)
+           if(!(visibilityScoreCardTargetObject && visibilityScoreObject.expr0 )){
+    
+           }
+          const achievement=Math.floor(retailDepletionObject?.CE__c  ||0)
+          const target=Math.floor(accountGoalObject?.expr0 || 0 )
           const eventCount=eventCountObject?.expr0 ||0
           const visibilityScore= parseFloat(visibilityScoreObject?.Visibility_Score__c||0) 
-          const {Z3_Menu_Listing__c}=visibilityScoreObject
+          const Z3_Menu_Listing__c=visibilityScoreObject?.Z3_Menu_Listing__c||0
           const posLineItems= postItemsObject?.posmLineItems ||0
-    
+          const visibilityScoreBoardTarget=visibilityScoreCardTargetObject?.expr0 ||0
+         
 
         /** 1. MTD Performance Bar */
         
         const parentDiv = document.querySelector('.progress');
         const progressBar = parentDiv.querySelector('#mtd-performance-bar');
-        progressBar.style.width = `${Math.floor((achievement/(target||1))*100 )}%`;
+        let achievedPercent=`${Math.floor((achievement/(target||1))*100 )}%`
+        progressBar.style.width =achievedPercent ;
 
         const mtoAchievementElement=document.getElementById('mtd-bar-achievement');
-        mtoAchievementElement.textContent = `${achievement}`;
+        mtoAchievementElement.textContent = `${Math.floor(achievement)} CE (${achievedPercent})`;
         const mtoTargetElement=document.getElementById('mtd-bar-target');
-        mtoTargetElement.textContent = `${target}`;
+        mtoTargetElement.textContent = `${target} CE`;
 
 
          /*** 2. Visit Target */
+         const industrySegement= account?.Industry_Segment__c ||'P4'
+         const industrySegementValue=["P0","P1","P2"].includes(industrySegement)?4:["P3"].includes(industrySegement)?2:1
          const visitTarget1= document.getElementById('visit-target-content')
-         visitTarget1.textContent=`${(target-achievement)/(eventCount||1)}`
+         const visitTargetValue=Math.floor((target-achievement)/(industrySegementValue))
+         visitTarget1.textContent=`${visitTargetValue>0?visitTargetValue:0} CE`
 
 
-         /*** 3. B91 Insights and  competitor insights , Order Frequencies */
+         /*** 3. B91 Insights and  competitor insights , Order Frequencies, lapsedKegs */
          if(outlet360Records && outlet360Records.children){
             const {children}=outlet360Records
             const biraInsights= children.find((item)=>{
@@ -121,12 +131,12 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
           /*** 4. Visibility Score card bar */ 
           const visibilityProgressBar =  document.querySelector('#visibility-scorecard');
-          visibilityProgressBar.style.width = `${Math.floor((visibilityScore/(target||1))*100 )}%`;
+          visibilityProgressBar.style.width = `${Math.floor((visibilityScore/(visibilityScoreBoardTarget||1))*100 )}%`;
 
           const visibilityScoreCardAchieved=document.getElementById('visibility-scorecard-achieved');
-          visibilityScoreCardAchieved.textContent = `${`Achv:${visibilityScore}`}(${Math.floor((visibilityScore/(target||1))*100)}%)`;
+          visibilityScoreCardAchieved.textContent = `${`Achv:${visibilityScore}`}(${Math.floor((visibilityScore/(visibilityScoreBoardTarget||1))*100)}%)`;
           const visibilityScoreCardTarget=document.getElementById('visibility-scorecard-target');
-          visibilityScoreCardTarget.textContent = `Target:${target}`;
+          visibilityScoreCardTarget.textContent = `Target:${visibilityScoreBoardTarget}`;
 
 
           /*** 5. Liquid Sales */
@@ -136,7 +146,7 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
             BLONDE:'blonde',
             RISE: 'rise',
             GOLD: 'gold',
-            BOOM: 'boom'
+            BOOM: 'boom strong'
              }
           const PACK_TYPES={
             BOTTLE330:'330',
@@ -148,7 +158,7 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
             L1M:'colorGreen',
             L3M:'colorYellow',
             EVER_BILLED: 'colorRed',
-            Never_BILLED: 'colorMerun'
+            NEVER_BILLED: 'colorMerun'
           }
           const liquidNames=[liquids.BLONDE,liquids.BOOM,liquids.GOLD,liquids.RISE,liquids.WHITE]
           function findLiquidName(string) {
@@ -172,20 +182,28 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
         }
   
            let {L1M_Billed_Liquid__c,L3M_Billed_Liquid__c, Ever_Billed_Liquid__c,Never_Billed_Liquid__c}=account
-           L1M_Billed_Liquid__c=`White@Keg#500, Blonde@Can#500, Boom Strong@Can#500, White@Bottle#330, Blonde@Bottle#330`
-           L3M_Billed_Liquid__c=`Blonde@Can#500, Boom Strong@Can#500`
-           Ever_Billed_Liquid__c=`gold@Can#500, rise@bottle#330`
            L1M_Billed_Liquid__c= (`${L1M_Billed_Liquid__c||''}`).toLocaleLowerCase().split(',').map((billedLiquidString)=>{
-              return resolveItemDetails(billedLiquidString,BILLING_HIGHLIGHT_COLORS.L1M)
+              return resolveItemDetails(billedLiquidString.trim(),BILLING_HIGHLIGHT_COLORS.L1M)
            })
            L3M_Billed_Liquid__c=(`${L3M_Billed_Liquid__c||''}`).toLocaleLowerCase().split(',').map((billedLiquidString)=>{
-              return resolveItemDetails(billedLiquidString,BILLING_HIGHLIGHT_COLORS.L3M)
+              return resolveItemDetails(billedLiquidString.trim(),BILLING_HIGHLIGHT_COLORS.L3M)
            })
            Ever_Billed_Liquid__c=(`${Ever_Billed_Liquid__c||''}`).toLocaleLowerCase().split(',').map((billedLiquidString)=>{
-            return resolveItemDetails(billedLiquidString,BILLING_HIGHLIGHT_COLORS.EVER_BILLED)
-         })
-  
-           const CLUBBED_RESULTS=[...L1M_Billed_Liquid__c, ...L3M_Billed_Liquid__c,...Ever_Billed_Liquid__c].reduce((acc, obj) => {
+            return resolveItemDetails(billedLiquidString.trim(),BILLING_HIGHLIGHT_COLORS.EVER_BILLED)
+            })
+
+         Never_Billed_Liquid__c=(`${Never_Billed_Liquid__c||''}`).toLocaleLowerCase().split(',').map((billedLiquidString)=>{
+          return resolveItemDetails(billedLiquidString.trim(),BILLING_HIGHLIGHT_COLORS.NEVER_BILLED)
+          })
+
+        
+       /** Find all lapsed kegs from Ever Billed and L3M */
+       const lapsedKegs= findLapsedKegs([...Ever_Billed_Liquid__c,...L3M_Billed_Liquid__c])
+       const lapsedKegsElement= document.getElementById("lapsed-kegs")
+       lapsedKegsElement.textContent=lapsedKegs
+
+    
+       const CLUBBED_RESULTS=[...L1M_Billed_Liquid__c, ...L3M_Billed_Liquid__c,...Ever_Billed_Liquid__c,...Never_Billed_Liquid__c].reduce((acc, obj) => {
             const { liquidName } = obj;
             if (!acc[liquidName]) {
               acc[liquidName] = [];
@@ -194,14 +212,21 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
             return acc;
           }, {});
 
-
-          const biraWhiteRowHtml= CLUBBED_RESULTS?.[liquids.WHITE]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.WHITE],liquids.WHITE):''
-          const biraBlondeRowHtml=CLUBBED_RESULTS?.[liquids.BLONDE]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.BLONDE],liquids.BLONDE):''
-          const biraRiseRowHtml=CLUBBED_RESULTS?.[liquids.RISE]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.RISE],liquids.RISE):''
-          const biraGoldRowHtml=CLUBBED_RESULTS?.[liquids.GOLD]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.GOLD],liquids.GOLD):''
-          const biraBoomRowHtml=CLUBBED_RESULTS?.[liquids.BOOM]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.BOOM],liquids.BOOM):''
+          const biraWhiteRowHtml= CLUBBED_RESULTS?.[liquids.WHITE]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.WHITE],liquids.WHITE):`<tr><td>${capitalizeWords(liquids.WHITE)}</td><td><i class="fas "></i></td>   <td> <i class="fas "></i></td>  <td> <i class="fas "></i></td> <td></td></tr>`
+          const biraBlondeRowHtml=CLUBBED_RESULTS?.[liquids.BLONDE]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.BLONDE],liquids.BLONDE):`<tr><td>${capitalizeWords(liquids.BLONDE)}</td><td><i class="fas "></i></td>   <td> <i class="fas "></i></td>  <td> <i class="fas "></i></td> <td></td></tr>`
+          const biraRiseRowHtml=CLUBBED_RESULTS?.[liquids.RISE]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.RISE],liquids.RISE):`<tr><td>${capitalizeWords(liquids.RISE)}</td><td><i class="fas "></i></td>   <td> <i class="fas "></i></td>  <td> <i class="fas "></i></td> <td></td></tr>`
+          const biraGoldRowHtml=CLUBBED_RESULTS?.[liquids.GOLD]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.GOLD],liquids.GOLD):`<tr><td>${capitalizeWords(liquids.GOLD)}</td><td><i class="fas "></i></td>   <td> <i class="fas "></i></td>  <td> <i class="fas "></i></td> <td></td></tr>`
+          const biraBoomRowHtml=CLUBBED_RESULTS?.[liquids.BOOM]?populateLiquidSalesRow(CLUBBED_RESULTS[liquids.BOOM],liquids.BOOM):`<tr><td>${capitalizeWords(liquids.BOOM)}</td><td><i class="fas "></i></td>   <td> <i class="fas "></i></td>  <td> <i class="fas "></i></td> <td></td></tr>`
+      
+          // Filter out liquids that are not Fixed i.e white, blonde, rise , gold or boom strong
+         const CLUBBED_RESULT_KEYS=Object.keys(CLUBBED_RESULTS)
+         const FILTERED_KEYS= CLUBBED_RESULT_KEYS.filter(key => !liquidNames.includes(key) && key!=='')
+          
+         const otherLiquidsHtml=FILTERED_KEYS.map((key)=>{
+           return CLUBBED_RESULTS?.[key]? populateLiquidSalesRow(CLUBBED_RESULTS[key],key):`<tr><td>${capitalizeWords(key)}</td><td><i class="fas "></i></td>   <td> <i class="fas "></i></td>  <td> <i class="fas "></i></td> <td></td></tr>`
+         }).join('')
           const liquidSalesBody = document.getElementById("liquid-sales");
-          let liqSalesHtml=biraWhiteRowHtml+ biraBlondeRowHtml+biraRiseRowHtml+ biraGoldRowHtml+biraBoomRowHtml
+          let liqSalesHtml=biraWhiteRowHtml+ biraBlondeRowHtml+biraRiseRowHtml+ biraGoldRowHtml+biraBoomRowHtml+otherLiquidsHtml
           if(liqSalesHtml){
             liquidSalesBody.innerHTML=liqSalesHtml
           }
@@ -231,9 +256,13 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
         const externalCustomizedBrandingHtml=populatePosItemTable('External',External)
         customizedBranding.innerHTML=internalCustomizedBrandingHtml+externalCustomizedBrandingHtml
 
+        // Menu Listing
+        const menuElement=document.getElementById('menu-listing')
+        menuElement.textContent=Z3_Menu_Listing__c? 'Yes': 'No'
+
         /*** Open Issues */
         const claimSettledTillDate=document.getElementById("claim-settled")
-        claimSettledTillDate.innerHTML= Claims_Settled_Till_Date__c || 'NA'
+        claimSettledTillDate.innerHTML= Claims_Settled_Till_Date__c || ''
         const issuesElement= document.getElementById("open-issues")
         const Issues=( (await readAllData('case'))||[]).filter((item)=>{
           return item.AccountId == accountId && item?.Issue_Resolved__c===false && item?.Issue_Type__c 
@@ -259,9 +288,23 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
           /*** B9 Growth  MTD */
           let  b9GrowthOverall=document.getElementById("b9-growth-overall-mtd")
-          b9GrowthOverall.innerHTML = bira91Insights.Growth_MTD_Overall__c  ?bira91Insights.Growth_MTD_Overall__c :0;
+          let  biraOverAllGrowth=  bira91Insights.Growth_MTD_Overall__c  ?bira91Insights.Growth_MTD_Overall__c :0;
+          if(biraOverAllGrowth>0){
+            b9GrowthOverall.classList.add("colorRed");
+          }else{
+            b9GrowthOverall.classList.add("colorGreen");
+          }
+          b9GrowthOverall.innerHTML= biraOverAllGrowth
+
           let b9GrowthPremium=document.getElementById("b9-growth-premium-mtd")
-          b9GrowthPremium.innerHTML=bira91Insights.Growth_MTD_Premium__c ?bira91Insights.Growth_MTD_Premium__c :0;
+          let biraPremiumValue=bira91Insights.Growth_MTD_Premium__c ?bira91Insights.Growth_MTD_Premium__c :0;
+          if(biraPremiumValue>0){
+            b9GrowthPremium.classList.add("colorGreen");
+          }
+          else{
+            b9GrowthPremium.classList.add("colorRed");
+          }
+          b9GrowthPremium.innerHTML=biraPremiumValue;
   }
 
   const initializeCompetitorInsights=(insightObject,competitorName)=>{
@@ -341,7 +384,7 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
       let resolveCanHtml=`<td> <i class="fas${resolveCanColumn?.color?` fa-check `+resolveCanColumn.color:''}"></i></td>`
       let resolve650mlHtml=`<td> <i class="fas${resolve650mlColumn?.color?` fa-check `+resolve650mlColumn.color:''}"></i></td>`
       let resolveKegHtml=`<td> <i class="fas${resolveKegColumn?.color?` fa-check `+resolveKegColumn.color:''}"></i></td>` 
-      let html=`<tr><td>${liquidName||'Sample SKU'}</td> ${resolve330mlHtml+resolveCanHtml+resolve650mlHtml+  resolveKegHtml}</tr><td>`
+      let html=`<tr><td>${capitalizeWords(liquidName||'Sample SKU')}</td> ${resolve330mlHtml+resolveCanHtml+resolve650mlHtml+  resolveKegHtml}</tr><td>`
       return html
 
   }
@@ -365,4 +408,18 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
     </td>
     
 </tr>`
+  }
+
+  const findLapsedKegs=(items)=>{
+    let lapsedKegsString=items.filter((item)=>{
+        return item?.packType==='keg'
+    }).map((item)=>{
+        return capitalizeWords(item?.liquidName ||'')
+    }).join(', ')
+    return lapsedKegsString
+  }
+
+  /** Util Functions */
+  function capitalizeWords(str) {
+    return str.replace(/\b\w/g, char => char.toUpperCase());
   }

@@ -23,7 +23,7 @@ const initializeShowAssets = async () => {
     // FetchExisting Record
     let existingPOSM = await getItemFromStore('posm',app_id)
     console.log("Existign POSMMMM===>",existingPOSM)
-    if(existingPOSM && !existingPOSM.isSynced){
+    if(existingPOSM){
         assetAddedItems = existingPOSM.POSM_Line_Item__c.filter((eachItem) => eachItem.hasOwnProperty('Space_Available__c'))
     }
     //showAccount();
@@ -35,11 +35,13 @@ async function populateTableWithDefaultAssets() {
 
     //We will get items which are not assets as mentioned in constants/constants.js file
     let itemMaster = await readAllData('nonBeerItems');
+    itemMaster = itemMaster.filter((eachItem)=> eachItem.Only_For_Pilot__c)
     let itemMasterRecordTypes = await readAllData('itemMasterRecordTypes');
+    const alreadySelectedAssets = assetAddedItems.map((item) => item.Name)
 
     let requiredPosId = itemMasterRecordTypes.find((eachItem) => eachItem.name.toLowerCase() === "posm")
 
-    searchItems = itemMaster.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()))
+    searchItems = itemMaster.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()) && !alreadySelectedAssets.includes(eachItem.Name))
 
     // Fetch the default items from IndexedDB (accountGoals table) and store them in an array called 'defaultItems'
     // Iterate over the 'defaultItems' array and add rows to the table
@@ -177,6 +179,9 @@ function updateAssetsTable() {
         checkbox.type = 'checkbox';
         checkbox.classList.add('defaultCheckBox');
         checkboxCell.appendChild(checkbox);
+        if(item.checkBox){
+            checkbox.checked = true
+        }
 
         // Add event listener to check box
         checkbox.addEventListener('change', (e) => handleCheckBoxInput(e, item.Id))
@@ -253,7 +258,11 @@ const createNewAssetRow = () => {
     const clonedCheckBoxId = 'checkBox' + uniqueId;
     const cameraId = 'cameraSearch' + uniqueId;
 
-    const optionsString = searchItems.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Name}</option>`)
+    const alreadySelectedAssets = assetAddedItems.map((item) => item.Name)
+
+    let presentAssets = searchItems.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()) && !alreadySelectedAssets.includes(eachItem.Name))
+
+    const optionsString = presentAssets.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Name}</option>`)
 
     // Create the newSearch HTML string with dynamic IDs
     const newSearchHTML = `
@@ -319,11 +328,21 @@ const toBase64 = (file) => new Promise((resolve, reject) => {
 
 async function uploadBase64Value(key, fileInput) {
 
+    const position  = await getCurrentLocationHelper();
+    Geolocation_Latitude = position.coords.latitude;
+    Geolocation_Longitude = position.coords.longitude;
+
     const base64Image = await toBase64(fileInput);
 
     assetAddedItems.forEach(item => {
         if (item.Id == key) {
-            item.image = base64Image
+            item.image = {
+                PathOnClient: accountRec.Name + ' | POSM & Asset Requisition | ' + accountRec.Channel__c + ' | ' + Geolocation_Latitude + ' ' + Geolocation_Longitude + ' | ' + new Date() + '.' + fileInput.type.split('/').pop(),
+                VersionData: base64Image.replace(/^data:image\/[a-z]+;base64,/, ""),
+                Title: accountRec.Name + ' | POSM & Asset Requisition | ' + accountRec.Channel__c + ' | ' + Geolocation_Latitude + ' ' + Geolocation_Longitude + ' | ' + new Date(),
+                id: key,
+                FileExtension:fileInput.type.split('/').pop()
+              }
         }
     });
     console.log("default Items after updating quantity", assetAddedItems);
@@ -380,12 +399,13 @@ function posmSubmit(){
         defaultItems.forEach((eachPOSItem)=>{
             let tempLineItem = {
                 Account__c : accountId,
-                App_Id__c:app_id,
+                App_Id__c:app_id + '_' + eachPOSItem.Id,
                 Name: eachPOSItem.Name,
                 Product__c:eachPOSItem.Id,
                 quantity: eachPOSItem.quantity,
                 Quantity__c: eachPOSItem.quantity,
-                Status__c : 'Submitted'
+                Status__c : 'Submitted',
+                Parent_App_Id__c:app_id
             }
             bodyToBeSent.POSM_Line_Item__c.push(tempLineItem)
 
@@ -412,15 +432,16 @@ function posmSubmit(){
 
             let tempLineItem = {
                 Account__c : accountId,
-                App_Id__c:app_id,
+                App_Id__c:app_id + '_' + eachPOSItem.Id,
                 Name: eachPOSItem.Name,
                 Product__c:eachPOSItem.Id,
-                Space_Available__c:eachPOSItem.checkBox,
-                checkBox : eachPOSItem.checkBox,
+                Space_Available__c:eachPOSItem.checkBox? eachPOSItem.checkBox : false,
+                checkBox : eachPOSItem.checkBox ? eachPOSItem.checkBox: false,
                 Quantity__c: 1,
                 quantity: 1,
                 image: eachPOSItem.image,
-                Status__c : 'Submitted'
+                Status__c : 'Submitted',
+                Parent_App_Id__c:app_id
             }
             bodyToBeSent.POSM_Line_Item__c.push(tempLineItem)
             if(eachPOSItem.image){

@@ -298,7 +298,21 @@ form.example::after {
     top: 0;
     left: -2px;
 }
-
+#filterModal .modal-body{
+    display: flex;
+}
+#filterModal .filter-head {
+    width: 40%;
+    display: inline-block;
+    overflow-y: scroll;
+}
+#filterModal .filter-content {
+    width: 60%;
+    display: inline-block;
+    /* background-color: #ccc; */
+    padding: 15px;
+    overflow-y: scroll;
+}
 
 .loader-div{
     width: 100%;

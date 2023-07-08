@@ -80,18 +80,18 @@ function populateTableWithDefaultItems() {
 
   console.log("Default Itemsssssss=>", defaultItems)
 
-  const alreadySelectedProducts = defaultItems.map((item) => item.Display_Name__c)
+  const alreadySelectedProducts = defaultItems.map((item) => item.Product__r.Display_Name__c)
   console.log("Already Selected Products===>", alreadySelectedProducts)
   console.log("Line Items ===>", lineItems)
-  const filteredItems = lineItems.filter(item => !alreadySelectedProducts.includes(item.Display_Name__c));
+  const filteredItems = lineItems.filter(item => !alreadySelectedProducts.includes(item.Product__r.Display_Name__c));
   console.log("filteredItems", filteredItems)
 
   // Fetch the default items from IndexedDB (accountGoals table) and store them in an array called 'defaultItems'
   // Iterate over the 'defaultItems' array and add rows to the table
   defaultItems.forEach(item => {
     const newRow = itemTable.insertRow(0);
-    newRow.dataset.id = item.Id;
-    newRow.insertCell().innerText = item.Display_Name__c;
+    newRow.dataset.id = item.Product__c;
+    newRow.insertCell().innerText = item.Product__r.Display_Name__c;
 
     // Create an input field for quantity
     const quantityInput = document.createElement('input');
@@ -100,7 +100,7 @@ function populateTableWithDefaultItems() {
     quantityInput.min = '0';
     quantityInput.class = 'form-control';
     //quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
-    quantityInput.addEventListener('input', () => qtyTotalUpdate(item.Id))
+    quantityInput.addEventListener('input', () => qtyTotalUpdate(item.Product__c))
 
     const quantityCell = newRow.insertCell();
     quantityCell.appendChild(quantityInput);
@@ -120,8 +120,8 @@ function addOptionsToSelect(selectItem, items) {
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     var option = document.createElement("option");
-    option.text = item.Display_Name__c;
-    option.value = item.Id;
+    option.text = item.Product__r.Display_Name__c;
+    option.value = item.Product__c;
     selectItem.appendChild(option);
   }
 
@@ -130,7 +130,7 @@ function addOptionsToSelect(selectItem, items) {
 function updateQuantity(prodId, quantity) {
   let sum = 0;
   defaultItems.forEach(item => {
-    if (item.Id === prodId) {
+    if (item.Product__c === prodId) {
       item.quantity = quantity;
     }
     sum += item.quantity;
@@ -173,7 +173,7 @@ const handleSearch = (e) => {
   console.log("Data====>", data);
   quantityInput.focus()
 
-  let selectedItem = lineItems.find((item) => item.Id == data.id)
+  let selectedItem = lineItems.find((item) => item.Product__c == data.id)
 
   selectedItem['quantity'] = 0
 
@@ -213,8 +213,8 @@ function updateTable() {
   // Iterate over the defaultItems list and add rows to the table
   defaultItems.forEach(item => {
     const newRow = itemTable.insertRow();
-    newRow.dataset.id = item.Id;
-    newRow.insertCell().innerText = item.Display_Name__c;
+    newRow.dataset.id = item.Product__c;
+    newRow.insertCell().innerText = item.Product__r.Display_Name__c;
 
     // Create an input field for quantity
     const quantityInput = document.createElement('input');
@@ -222,7 +222,7 @@ function updateTable() {
     quantityInput.value = item.quantity; // Set the initial value
     quantityInput.min = '0';
     quantityInput.class = 'form-control';
-    quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
+    quantityInput.onkeyup = () => qtyTotalUpdate(item.Product__c); // Attach the qtyTotalUpdate function with the respective item ID
 
     const quantityCell = newRow.insertCell();
     quantityCell.appendChild(quantityInput);
@@ -249,18 +249,18 @@ function openSearch() {
   const clonedSelectSearchId = 'productSearch' + uniqueId;
   const clonedPosmQuantityId = 'prodQ' + uniqueId;
 
-  const alreadySelectedProducts = defaultItems.map((item) => item.Display_Name__c)
+  const alreadySelectedProducts = defaultItems.map((item) => item.Product__r.Display_Name__c)
 
   console.log("Line Items already selected items ===>", alreadySelectedProducts)
-  const filteredItems = lineItems.filter(item => !alreadySelectedProducts.includes(item.Display_Name__c));
-  const optionsString = filteredItems.map((eachItem) => `<option value="${eachItem.Id}">${eachItem.Display_Name__c}</option>`)
+  const filteredItems = lineItems.filter(item => !alreadySelectedProducts.includes(item.Product__r.Display_Name__c));
+  const optionsString = filteredItems.map((eachItem) => `<option value="${eachItem.Product__c}">${eachItem.Product__r.Display_Name__c}</option>`)
 
   // Create the newSearch HTML string with dynamic IDs
   const newSearchHTML = `
         <tr id="newEntry">
         <td style="width: 75%">
           <select name="productSearch" id="${clonedSelectSearchId}" class="form-control">
-            <option value='0' selected='true'> Search Asset</option>
+            <option value='0' selected='true'> Search SKU</option>
             ${optionsString.join('')}
           </select>
         </td>
@@ -333,11 +333,13 @@ async function getDefaultSalesItems() {
 
   if (lineItemIdsOfGoals.length > 0) {
 
+    console.log("Line Items in Account Goals===>",lineItems)
+
     //let lineItems = await readAllData('itemMasterCopy')
 
     lineItems.forEach((eachItem) => {
       lineItemIdsOfGoals.forEach((eachLineItemGoal) => {
-        if (eachLineItemGoal.itemId == eachItem.Id) {
+        if (eachLineItemGoal.itemId == eachItem.Product__c) {
           eachItem['goalQuantity'] = eachLineItemGoal.goalQuantity
           requiredLineItems.push(eachItem)
         }
@@ -345,6 +347,7 @@ async function getDefaultSalesItems() {
     })
 
   }
+  let depletedItems = [];
   if (requiredLineItems.length > 0) {
 
     /* Need to find out the recommended quantity
@@ -356,10 +359,11 @@ async function getDefaultSalesItems() {
     */
 
 
-    let idOfRequiredLineItems = requiredLineItems.map((eachRecord) => eachRecord.Id)
+    let idOfRequiredLineItems = requiredLineItems.map((eachRecord) => eachRecord.Product__c)
 
     //Get the retail depletion rate of requiredLineItems
     let currentMonthDepletionRates = []
+
     console.log("Account Detail===>", accountDetail)
     if (accountDetail.Retail_Depletion1__r && accountDetail.Retail_Depletion1__r.records.length > 0) {
       accountDetail.Retail_Depletion1__r.records.forEach((eachDepletedRecord) => {
@@ -402,26 +406,27 @@ async function getDefaultSalesItems() {
 
       requiredLineItems.forEach((eachRequiredLineItem) => {
         summedQuantities.forEach((eachSummedQuantity) => {
-          if (eachSummedQuantity.itemId == eachRequiredLineItem.Id) {
+          if (eachSummedQuantity.itemId == eachRequiredLineItem.Product__c) {
 
             eachRequiredLineItem['quantity'] = Math.max(eachRequiredLineItem['goalQuantity'] - eachSummedQuantity.quantity, 0) / Math.max(numberOfVisits, 1)
 
             defaultItems.push(eachRequiredLineItem)
+            depletedItems.push(eachRequiredLineItem.Product__c)
           }
 
 
         })
       })
 
-    } else {
+    } 
 
-      requiredLineItems.forEach((eachRequiredLineItem) => {
+    let nonDepletedItems = requiredLineItems.filter((eachItem) => !depletedItems.includes(eachItem.Product__c))
+    let nonDepletedItemIds = nonDepletedItems.map((eachNonDepletedItem) => eachNonDepletedItem.Product__c)
+
+    nonDepletedItems.forEach((eachRequiredLineItem) => {
         eachRequiredLineItem['quantity'] = eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1)
         defaultItems.push(eachRequiredLineItem)
       })
-
-
-    }
   }
 
   // Check for recommendations
@@ -439,7 +444,7 @@ async function getDefaultSalesItems() {
           .filter((eachRecommendation) => eachRecommendation.Outlet_Name__r.Account_ID_18_digit__c === accountId)
           .forEach((reco) => {
             lineItems.forEach((eachLineItem) => {
-              if(eachLineItem.Id === reco.Recommended_SKU__c){
+              if(eachLineItem.Product__c === reco.Recommended_SKU__c && !depletedItems.includes(eachLineItem.Product__c) && !nonDepletedItemIds.includes(eachLineItem.Product__c)){
                 eachLineItem.quantity = 0
                 defaultItems.push(eachLineItem)
               }
@@ -462,8 +467,15 @@ async function getDefaultSalesItems() {
 
 async function getLineItems() {
 
+  let products = await readAllData('itemMaster');
+  console.log("Account State==>",accountRec.BillingState)
+  console.log("Products====>",products)
+  lineItems = products.filter(ele => {
+      return (ele.State__r&&accountRec.BillingState&&ele.State__r.Name===accountRec.BillingState);
+  });
 
-  lineItems = await readAllData('itemMasterCopy')
+
+  //lineItems = await readAllData('itemMasterCopy')
 
   let accountId = accountRec.Id
   let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
@@ -471,7 +483,7 @@ async function getLineItems() {
   // Check if a record is already present in the indexDB for today
   let existingRecord = await getItemFromStore('salesOrderSync', orderKey)
 
-  if (existingRecord && !existingRecord.isSynced) {
+  if (existingRecord) {
     defaultItems = existingRecord.products;
     selectionMap = existingRecord.Reasons_For_Zero_Products;
     lessReasonSelect = existingRecord.Reasons_For_Less_Products;

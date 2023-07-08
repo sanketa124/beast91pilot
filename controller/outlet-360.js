@@ -3,7 +3,7 @@
 exports.populateAccountGoals=async(req,res,next)=>{
     /*** Store in schema outlet360-account-goals ,tag: Account__c*/
     const conn= req.conn
-    const {recordTypeName}=req.body
+    const {recordTypeName,fieldName}=req.body
     try{
       let Record = await conn.query(
         `SELECT Id FROM RecordType WHERE SobjectType='Account_Goal__c' and Name='${recordTypeName}'`
@@ -11,9 +11,9 @@ exports.populateAccountGoals=async(req,res,next)=>{
       let skuRecordTypeId = Record && Record.records && Record.records[0] && Record.records[0].Id;
       const dateConditions = `(Start_Date__c <= THIS_MONTH ) AND (End_Date__c >= THIS_MONTH )`;
       const result = await conn.query(`
-        SELECT Account__c, SUM(CE__c)
+        SELECT Account__c, SUM(${fieldName})
         FROM Account_Goal__c
-        WHERE RecordTypeId='${skuRecordTypeId}' AND ${dateConditions} AND CE__c != NULL
+        WHERE RecordTypeId='${skuRecordTypeId}' AND ${dateConditions} AND ${fieldName} != NULL
         GROUP BY Account__c
       `);
       

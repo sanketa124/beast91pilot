@@ -4,6 +4,7 @@ const initializeLoadingPage = async() => {
     const nonSales = await isTechnicianAuditorFuncHelper();
     let loginData = await loginDataFetch();
       await itemsFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
+      await pushPOSMItems(loginData[0].username,loginData[0].password);
       // showNotification({message : 'Items sync complete!'});
       progressBarLoad(20);
       await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
@@ -26,6 +27,7 @@ const initializeLoadingPage = async() => {
       await payOutSlabsFetch(loginData[0].username,loginData[0].password);
       await accountGoalsFetch(loginData[0].username,loginData[0].password);
       await marketInventoriesFetch(loginData[0].username,loginData[0].password);
+      //await posmItemsPush(loginData[0].username,loginData[0].password)
       // showNotification({message : 'Events sync complete!'});
       progressBarLoad(80);
       
@@ -35,14 +37,17 @@ const initializeLoadingPage = async() => {
       await pushApprovedRecommendationObjects(loginData[0].username,loginData[0].password);
       await syncSamples(loginData[0].username,loginData[0].password);
       await fetchRecommendations(loginData[0].username,loginData[0].password);
-
+      await recommendationWeekFilter(loginData[0].username,loginData[0].password);
+      await recommendationFeedbackMeta(loginData[0].username,loginData[0].password);
       /*** Outlet 360 */
+      await outlet360AccountGoalsTarget(loginData[0].username,loginData[0].password);
       await outlet360Records(loginData[0].username,loginData[0].password);
       await outlet360RetailDepletion(loginData[0].username,loginData[0].password);
       await outlet360AccountGoals(loginData[0].username,loginData[0].password);
       await outlet360VisibilityScores(loginData[0].username,loginData[0].password);
       await outlet360Events(loginData[0].username,loginData[0].password);
       await outlet360PosItemRequisition(loginData[0].username,loginData[0].password);
+
       progressBarLoad(100);
       
 

@@ -66,7 +66,7 @@ const initializeShowPOSM = async () => {
   // FetchExisting Record
   let existingPOSM = await getItemFromStore('posm',app_id)
   console.log("Existign POSMMMM===>",existingPOSM)
-  if(existingPOSM && !existingPOSM.isSynced){
+  if(existingPOSM){
     defaultItems = existingPOSM.POSM_Line_Item__c.filter((eachItem) => !eachItem.hasOwnProperty('Space_Available__c'))
   }
   //showAccount();
@@ -78,6 +78,7 @@ async function populateTableWithDefaultItems() {
 
     //We will get items which are not assets as mentioned in constants/constants.js file
     let itemMaster = await readAllData('nonBeerItems');
+    itemMaster = itemMaster.filter((eachItem)=> eachItem.Only_For_Pilot__c)
     let itemMasterRecordTypes = await readAllData('itemMasterRecordTypes');
     const alreadySelectedProducts = defaultItems.map((item) => item.Name)
 
@@ -92,7 +93,7 @@ async function populateTableWithDefaultItems() {
     
     console.log("posm items===>",POSMItems)
 
-    items = itemMaster.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && !posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()) && !alreadySelectedProducts.includes(eachItem.name))
+    items = itemMaster.filter((eachItem) => eachItem.RecordType.DeveloperName.toLowerCase() == "posm" && !posmAssets.includes(eachItem.Sub_Channel__c.toLowerCase()) && !alreadySelectedProducts.includes(eachItem.Name))
 
     console.log("Items ====>",items)
 
@@ -284,7 +285,7 @@ const createNewRow = () => {
       <tr id="newSearch">
         <td style="width: 75%">
           <select name="selectSearch" id="${clonedSelectSearchId}" class="form-control">
-            <option value='0' selected='true'> Search Asset</option>
+            <option value='0' selected='true'> Search POSM</option>
             ${optionsString.join('')}
           </select>
         </td>

@@ -292,7 +292,7 @@ WHERE
 
         casesList = await sfConnection.query('Select Id, Issue_Resolved__c,AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type from Case Where Issue_Resolved__c = false');
         //  console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
-        let taskList = await sfConnection.query('SELECT  WhatId,Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
+        let taskList = await sfConnection.query('SELECT  WhatId, What.Name, What.Id, Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
         //let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
         //let NeverBilledAccounts = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and  RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') and Recent_Retail_Depletion__c = null");
@@ -537,7 +537,6 @@ exports.objectiveSync = async (req, res) => {
                 });
         }
 
-        // console.log('stockVisibilites',stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0])
         let body = {
             User_Name: req.body.username,
             stockVisibilites: JSON.stringify(stockVisibilites),
@@ -550,13 +549,13 @@ exports.objectiveSync = async (req, res) => {
             productPreSalesSamples: JSON.stringify(productSampling)
         };
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
-        if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images){
-            const imageBodyArr = stockVisibilites[0].stock_at_risk_images.length > 0 && stockVisibilites[0].stock_at_risk_images;
+        if(stockVisibilites &&  stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images.length > 0){
+            const imageBodyArr = stockVisibilites[0].stock_at_risk_images;
             const imageBody = imageBodyArr.map(obj => {
-                const updatedObj = { ...obj }; // Create a shallow copy of the object
+                const updatedObj = { ...obj }; 
                 delete updatedObj['id'];
                 return updatedObj;
-              });
+            });
             await postStockImages(req.conn, imageBody);
         }
 
@@ -566,7 +565,6 @@ exports.objectiveSync = async (req, res) => {
                 conn: req.conn,
                 liquidPromotionData: promotionBody
             }
-            console.log('promotionBody', promotionBody)
             await updateLiquidPromotion(liquidPromotionData, res);
         }
 
@@ -695,14 +693,26 @@ exports.objectiveSync = async (req, res) => {
             });
         }
         // Draft Pull Out
-        posm = posm.map(ele => {
-            delete ele.isSynced;
-            ele.Requisition_Date__c = formatDate(ele.Requisition_Date__c);
-            posmLine = posmLine.concat(ele.posmLineItem);
-            delete ele.Created_Date;
-            delete ele.posmLineItem;
-            return ele;
-        });
+        // posm = posm.map(ele => {
+        //     delete ele.isSynced;
+        //     ele.Requisition_Date__c = formatDate(ele.Requisition_Date__c);
+        //     //Output ---> { id: 'a0fBi0000005yJhIAI', success: true, errors: [] }
+        //     let posLineItems = ele.POSM_Line_Item__c.map((eachLineItem) => {
+        //         delete eachLineItem.quantity
+        //         delete eachLineItem.checkBox
+        //         delete eachLineItem.image
+        //         return eachLineItem
+
+        //     })
+        //     console.log("POSM LIne Items===>",posLineItems)
+        //     posmLine = posmLine.concat(posLineItems);
+        //     delete ele.Created_Date;
+        //     delete ele.POSM_Line_Item__c;
+        //     delete ele.App_Id__c;
+        //     let posmRequistion = ele.POSM_Requisition__c
+        //     posmRequistion.Requisition_Date__c = formatDate(posmRequistion.Requisition_Date__c)
+        //     return ele.posmRequistion;
+        // });
 
         draftSignup = draftSignup.map(ele => {
             if (ele['Over_the_counter_space_available_File']) {
@@ -807,8 +817,9 @@ exports.objectiveSync = async (req, res) => {
             draftProcessesStr: JSON.stringify(draftProcesses),
             draftPulloutStr: JSON.stringify(draftPullout)
         };
-        await sfConnection.apex.post('/ObjectivesCheckoutHelper2/', bodyHelper2);
-        let nonBeerproducts = await sfConnection.query("SELECT Id,RecordType.DeveloperName,ProductCode,Description,Name,QuantityUnitOfMeasure,Channel_On_Off__c,Sub_Channel__c,Type__c,Category__c,Draft_Section__c, Liquid_Layer__r.Name FROM Product2 WHERE (RecordType.DeveloperName='POSM' OR RecordType.DeveloperName='Draft' ) AND IsActive=true ");
+        let ObjectiveHelper2 = await sfConnection.apex.post('/ObjectivesCheckoutHelper2/', bodyHelper2);
+        console.log("ObjectiveHelper2====>",ObjectiveHelper2)
+        let nonBeerproducts = await sfConnection.query("SELECT Id,RecordType.DeveloperName,ProductCode,Description,Name,QuantityUnitOfMeasure,Channel_On_Off__c,Sub_Channel__c,Type__c,Category__c,Draft_Section__c, Liquid_Layer__r.Name,Only_For_Pilot__c	FROM Product2 WHERE (RecordType.DeveloperName='POSM' OR RecordType.DeveloperName='Draft' ) AND IsActive=true ");
 
         if (req.body.nonSales.isSales) {
             posmSetting = await sfConnection.query("SELECT Account_Fields__c,DeveloperName,Off_Premise_POSM_Code__c,Off_Premise_Record_Type_Allowed__c,On_Premise_POSM_Code__c,On_Premise_Record_Type_Allowed__c,Channel_Allowed__c FROM POSM__mdt WHERE DeveloperName='POSM_App_Setup' OR DeveloperName='Draft_App_Setting'");
@@ -847,7 +858,8 @@ exports.objectiveSync = async (req, res) => {
                 //Create the Line Items
                 let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
                     return {
-                        Item_Name__c: eachLineItem.Id,
+                        Item_Name__c: eachLineItem.Product__c,
+                        Cases__c: eachLineItem.quantity,
                         SO__c: createSalesOrder.id
                     }
                 })
@@ -862,35 +874,6 @@ exports.objectiveSync = async (req, res) => {
                     console.log("Error in creating Sales Orders")
                 }
             }
-        }
-        console.log("PSOMsss===>", posm)
-        //POSM Items
-        for (let i = 0; i < posm.length; i++) {
-
-
-            let posmTable = 'POSM_Requisition__c';
-            let posmLineItemsTable = 'POSM_Line_Item__c';
-
-            let eachPOSM = posm[i].POSM_Requisition__c
-
-            console.log(eachPOSM)
-
-            let createRequisition = await sfConnection.sobject(posmTable).create(eachPOSM)
-
-            //Output ---> { id: 'a0fBi0000005yJhIAI', success: true, errors: [] }
-            let posLineItems = posm[i].POSM_Line_Item__c.map((eachLineItem) => {
-                delete eachLineItem.quantity
-                delete eachLineItem.checkBox
-                return {
-                    ...eachLineItem,
-                    POSM_Requisition__c: createRequisition.id
-                }
-
-            })
-
-            let createLineItems = await sfConnection.sobject(posmLineItemsTable).create(posLineItems)
-
-            console.log("createPOSMItems===>", JSON.stringify(createLineItems))
         }
 
         // Schedule Visit Procedure
@@ -907,21 +890,21 @@ const updateContactMeeting = async (req, res) => {
         let sfConnection = req.conn;
         req.contactMeetingData.forEach(ele => {
             console.log('ele', ele)
-            sfConnection.sobject("Contact_Meeting__c").create( ele.meetingData,
-                function(err, rets) {
-                  //console.error('error',rets[0].errors);
-                  if (err) { 
-                     console.error('Updateerror',err);
-                     return console.error(err);
-                   }
-                  for (var i=0; i < rets.length; i++) {
-                    if (rets[i].success) {
-                      console.log("Created record id : " + rets[i].id);
+            sfConnection.sobject("Contact_Meeting__c").create(ele.meetingData,
+                function (err, rets) {
+                    //console.error('error',rets[0].errors);
+                    if (err) {
+                        console.error('Updateerror', err);
+                        return console.error(err);
                     }
-                  }
+                    for (var i = 0; i < rets.length; i++) {
+                        if (rets[i].success) {
+                            console.log("Created record id : " + rets[i].id);
+                        }
+                    }
                 });
         });
-       
+
     } catch (e) {
         console.log("Error in Updating contact meeting", e)
         res.status(500).json({ isError: true, isAuth: true, message: e });
@@ -967,9 +950,6 @@ const updateLiquidPromotion = async (req, res) => {
     }
 
 }
-
-
-
 
 const draftProcessesHelper = (req) => {
     let machineCommissioning = req.body.machineCommissioning;
