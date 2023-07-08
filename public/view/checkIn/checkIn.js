@@ -7,6 +7,7 @@ localStorage.setItem('eventId',eventId)
 
 
 const checkInFucn = async (eventId,accountId) => {
+  alert("Hello I am syncing to heroku")
   let accountRec = await getItemFromStore('account', accountId);
   //showLoaderSpinner();
   const position = await getCurrentLocationHelper();
