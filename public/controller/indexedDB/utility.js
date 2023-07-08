@@ -165,40 +165,39 @@ var dbPromise = idb.open('bira91', 2, function (db) {
   }
 
    /** Recommendations */
+   
    if (!db.objectStoreNames.contains('recommendations')) {
-    /** Both recommendations and Promotions are store in the same schema in SDFC, Recommendation__c */
     db.createObjectStore('recommendations', { keyPath: 'Id' });
   }
-  if (!db.objectStoreNames.contains('Unsynced_Sample')) 
-    /** To store Parent  that has been created for an account,event and item(Master).Schema to push items to salesforce */
-    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */{
+  if (!db.objectStoreNames.contains('Unsynced_Sample')) {
     const objectStoreEvent = db.createObjectStore('Unsynced_Sample', { keyPath: 'sampleTag' });
     objectStoreEvent.createIndex('primaryIndex', 'sampleTag', { unique: true });
   }
   if (!db.objectStoreNames.contains('Unsynced_Sample_Items')) {
-    /** To store Sample Line Item that has been created for an account,event and item(Master).Schema to push items to salesforce */
-    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */
-
-    /** Note : Parent Samples are pushed to SFDc-> Id is retrieved Each Sample parent -> populate this field in child Sample Item */
     const objectStoreEvent = db.createObjectStore('Unsynced_Sample_Items', { keyPath: 'sampleTag' });
     objectStoreEvent.createIndex('primaryIndex', 'sampleTag', { unique: false });
   }
-
   if (!db.objectStoreNames.contains('accepted_recommendations')) {
-    /** Store Recommendations that have been accepted by a store and needs to be pushed to sfdc */
-    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */
     const objectStoreEvent = db.createObjectStore('accepted_recommendations', { keyPath: 'Id' });
     objectStoreEvent.createIndex('primaryIndex', 'Id', { unique: false });
   }
   
   if (!db.objectStoreNames.contains('activated_promotions')) {
-    /** Store Promotions that have been applied to a store and needs to be pushed to sfdc */
-    /** Fields used: Id, Is_Accepted__c,Accepted_Date__ */
     const objectStoreEvent = db.createObjectStore('activated_promotions', { keyPath: 'Id' });
     objectStoreEvent.createIndex('primaryIndex', 'Id', { unique: false });
   }
-
   
+  if (!db.objectStoreNames.contains('recommendation-weekfilter')) {
+    const objectStoreEvent = db.createObjectStore('recommendation-weekfilter', { keyPath: 'Account__c' });
+    objectStoreEvent.createIndex('recommendation-weekfilter', 'Account__c', { unique: false });
+  }
+
+  if (!db.objectStoreNames.contains('recommendation-feedback-meta')) {
+      db.createObjectStore('recommendation-feedback-meta', { keyPath: 'option' });
+  }
+
+  /*** End of recommendation object stores */
+
   if (!db.objectStoreNames.contains('payOutSlabs')) {
     db.createObjectStore('payOutSlabs', { keyPath: 'Id' });
   }
@@ -221,6 +220,10 @@ var dbPromise = idb.open('bira91', 2, function (db) {
   /** Outlet-360 */
   if (!db.objectStoreNames.contains('outlet360-account-goals')) {
     db.createObjectStore('outlet360-account-goals', { keyPath: 'Account__c' });
+  }
+
+  if (!db.objectStoreNames.contains('outlet360-visibility-score-target')) {
+    db.createObjectStore('outlet360-visibility-score-target', { keyPath: 'Account__c' });
   }
   if (!db.objectStoreNames.contains('outlet360-rate-depletion')) {
     db.createObjectStore('outlet360-rate-depletion', { keyPath: 'Account__c' });

@@ -3,9 +3,22 @@ gotoAddTasks = (Id) => {
 }
 let cardSection = document.querySelector('.cardSectionList')
 
+let urlParam = new URLSearchParams(window.location.search);
+const eventId = urlParam.get('eventId')
+const accountId =  urlParam.get('accountId')
+
 const initializeFollowUps = async() => {
     tasks = await readAllData('taskOriginal');
     console.log(tasks, 'tasks')
+    tasks.sort(function(a, b) {
+            var c = new Date(a.ActivityDate);
+            var d = new Date(b.ActivityDate);
+            return c-d;
+    });
+    if(accountId){
+        tasks = tasks.filter((task) => task?.What?.Id == accountId);
+    }
+     //console.log(newTasks, 'tasnewTasksks')
     for(task of tasks){
         cardSection.innerHTML +=`<div class="card">
         <div class="card-body">

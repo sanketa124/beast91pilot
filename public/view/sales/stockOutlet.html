@@ -97,7 +97,7 @@
                     <div class="defaultTable">
                         <article class="tblHead">
                             <h4>Stock</h4>
-                            <p>Items In Stock - <span id="totalItem"></span></p>
+                            <p>Items In Stock - <span id="totalItem">0</span></p>
                         </article>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="stckOutletTbl">
@@ -155,13 +155,7 @@
             </div>
             <div id="errorMsg">Please check all the fields and submit again</div>
         </div>
-        <div class="container-fluid mt-3" id="finishBtn" style="display: none;">
-            <div class="row">
-                <div class="col-xs-12 text-center">
-                    <button class="btn finishBtn" onclick="saveStockOutlet()">Finish</button>
-                </div>
-            </div>
-        </div>
+
         <!-- Spinner for Start Visit -->
         <div id="loader-main" style="display: none;">
             <div class="loader1"></div>

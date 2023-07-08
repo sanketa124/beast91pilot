@@ -134,4 +134,40 @@ exports.fetchSellSheet=async(req,res,next)=>{
     }
   
 }
+
+exports.completedEvents=async(req,res,next)=>{
+    /*** Store in schema outlet360-events ,tag: Account__c*/
+    const conn= req.conn
+    try{
+        
+        let recordType= await conn.query(
+            `SELECT Id,Name FROM RecordType WHERE SobjectType='Event__c' and Name='Salesperson'`
+          );
+        const recordTypeId = recordType && recordType.records && recordType.records[0] && recordType.records[0].Id;
+        const month=new Date().toLocaleString('en-IN', { month: 'long' });
+        const result= await conn.query(`SELECT Account__c, COUNT(Id)  FROM Event__c  where Month__c='${month}' and RecordTypeId='${recordTypeId}' and Completed__c=true GROUP BY Account__c`)
+        const records = result && result.records ? result.records : [];  
+        res.status(200).json({isError : false,isAuth : true,events:records});
+    }catch(err){
+        console.log('\n\populate events  error')
+        res.status(500).json({isError : true,isAuth :true,message : err});
+    }
+}
+
+
+exports.feedbackMetadata=async(req,res,next)=>{
+    /*** Store in schema outlet360-events ,tag: Account__c*/
+    const conn= req.conn
+    try{
+        const meta= await  conn.sobject('Recommendation__c').describe() 
+        const fields=  meta.fields.find(f => f.name === 'Recommendation_Feedback__c');
+        const values= fields && fields.picklistValues ? fields.picklistValues.map((item)=>{
+        return {option:item.value}
+        }):[] 
+        res.status(200).json({isError : false,isAuth : true,feedBackValues:values});
+    }catch(err){
+        console.log('\n\populate events  error')
+        res.status(500).json({isError : true,isAuth :true,message : err});
+    }
+}
   

@@ -22,10 +22,9 @@ submit = async() => {
      await writeData('activated_promotions',acceptedPromotion)
      await writeData('recommendations',{...promotion,Is_Accepted__c:true,Accepted_Date__c: date});
      localStorage.removeItem("promotionId");
-     window.location.href = 'recomendation.html'
+     window.location.href = `recomendation.html?accountId=${accountId}`
 }
 cancel = () => {
-    $('#placeOrderModal').modal('hide');
-    $('#feedback').show()
+    window.location.href = `recomendation.html?accountId=${accountId}`
 }
 

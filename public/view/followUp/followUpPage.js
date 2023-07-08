@@ -21,7 +21,6 @@ $('#isFollowUp').click(function() {
   });
 
 async function validate(followUpTask){
-    alert("333333")
     if(followUpTask){
         $('#FollowUpsContent').show()
     }else{

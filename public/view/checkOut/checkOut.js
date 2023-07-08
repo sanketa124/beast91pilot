@@ -13,6 +13,7 @@ finalSubmit = async () => {
     const nonSales = await isTechnicianAuditorFuncHelper();
     let loginData = await loginDataFetch();
       await itemsFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
+      await pushPOSMItems(loginData[0].username,loginData[0].password);
       // showNotification({message : 'Items sync complete!'});
       progressBarLoad(20);
       await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
