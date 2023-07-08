@@ -1194,7 +1194,7 @@ const handlePreInstallApproval = (ele) =>{
                 backgroundColor: 'red'
             },
             {
-                rule: '%v > 26 && %v < 50',
+                rule: '%v >= 26 && %v <= 50',
                 backgroundColor: 'yellow'
             },
             {

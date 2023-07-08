@@ -14,7 +14,7 @@ let isError = 0;
 let stockVisbility = {};
 const initializeStockVisibility = async () => {
   var currentDate = new Date();
-  currentDate.setMonth(currentDate.getMonth() + 1);
+  currentDate.setMonth(currentDate.getMonth() + 2);
   currentDate.setDate(0);
   var options = { day: 'numeric', month: 'long', year: 'numeric' };
   var lastFullDateOfNextMonth = currentDate.toLocaleDateString('en-US', options);
@@ -43,17 +43,19 @@ const initializeStockVisibility = async () => {
   displayProducts();
 };
 displayProducts = () => {
-
+  let totalQty = 0;
   for (var i = 0; i < selectedProducts.length; i++) {
     console.log('selectedProducts', selectedProducts[i])
     var stockAtRisk = selectedProducts[i].Stock_at_Risk ? selectedProducts[i].Stock_at_Risk : 0;
     $("#stckRiskTbl tbody").prepend(' <tr data-id="' + selectedProducts[i].Item_Master + '">\
-    <td style="width:50%">'+ selectedProducts[i].name + '</td>\
-    <td style="width:16%;text-align:center;">'+ selectedProducts[i].Quantity + '</td>\
-    <td style="width:16%"><input type="number" class="form-control cartQtyChange" min="0" value="'+ stockAtRisk + '" max="' + selectedProducts[i].Quantity + '" onkeyup="qtyTotalUpdate(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')" name="stockRiskVal"></td>\
+    <td style="width:45%">'+ selectedProducts[i].name + '</td>\
+    <td style="width:14%;text-align:center;">'+ selectedProducts[i].Quantity + '</td>\
+    <td style="width:23%"><input type="number" style="padding:0;" class="form-control cartQtyChange" min="0" value="'+ stockAtRisk + '" max="' + selectedProducts[i].Quantity + '" onkeyup="qtyTotalUpdate(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')" name="stockRiskVal"></td>\
     <td style="width:18%">'+ createImgInput(('' + selectedProducts[i].Item_Master + ''), '', stockVisbility['xxxx'], "fileInput(this,`" + selectedProducts[i].Item_Master + "`)", true) + '</td>\
     </tr>')
+    totalQty += stockAtRisk ;
   }
+  $('#cartTotal').html(totalQty)
 }
 
 
@@ -86,9 +88,8 @@ const uploadBase64Value = async (key, fileInput) => {
     PathOnClient: accoutnDetails.Name + ' | Stock at Risk | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date() + '.' + fileInput.type.split('/').pop(),
     VersionData: newImgPath.replace(/^data:image\/[a-z]+;base64,/, ""),
     Title: accoutnDetails.Name + ' | Stock at Risk | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date(),
-    //FileExtension: fileInput.type.split('/').pop()
+    id: key
   }
-
   stockVisbility['stock_at_risk_images'].push(newImg);
   fileAttachedBackgroundChange(key);
 };
@@ -125,6 +126,8 @@ qtyTotalUpdate = (prodId, qty) => {
     }
   if(sum>0){
     $('.checkHeader').show();
+  }else{
+    $('.checkHeader').hide();
   }
   });
   console.log('sum', sum)
@@ -144,6 +147,7 @@ showCases = () =>{
 
 
 saveStockAtRisk = async () => {
+  console.log('stockVisbility',stockVisbility)
   $('#errorMsg').hide();
   var isChecked = $('#showCasesCheck').prop('checked');
   console.log(areAllFieldsEmpty());
@@ -151,6 +155,32 @@ saveStockAtRisk = async () => {
   if(areAllFieldsEmpty() || isError){
     $('#errorMsg').show();
     return false;
+  }
+
+  let isValid = true;
+  for (let i in stockVisbility.stockVisibilityChilds) {
+    const notPresent = stockVisbility.stock_at_risk_images.every(obj => obj['id'] !== stockVisbility.stockVisibilityChilds[i].Item_Master);
+
+    if (stockVisbility.stockVisibilityChilds[i].Stock_at_Risk >0) {
+      if (stockVisbility.stock_at_risk_images.length <= 0 || (stockVisbility.stock_at_risk_images.length>0 && notPresent)) {
+        isValid = false;
+        break;
+      }
+    }
+  }
+  console.log('isValid',isValid)
+  if (!isValid) {
+    $('#stockSubmit').modal('show');
+    $('#stockSubmit .modal-body').html('Images are mandatory where elements are present! Press Toggle off if image is not available');
+    $('.modal-footer .btn-success').css('display', 'none');
+    $('.modal-footer .btn-danger').html('Close');
+    return false;
+  }
+  else {
+    $('#stockSubmit').modal('hide');
+    $('.modal-footer .btn').css('display', '');
+    $('#stockSubmit .modal-body').html('Are you sure you want to submit ? ');
+    $('.modal-footer .btn-danger').html('No');
   }
   if (isChecked) {
     var showCase =  $('#showCases input').val();

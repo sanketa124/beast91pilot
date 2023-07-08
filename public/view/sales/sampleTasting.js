@@ -290,5 +290,5 @@ goBack = () => {
 goForward = () => {
   let urlParams = new URLSearchParams(window.location.search);
   const accountId = urlParams.get('accountId');
-  window.location.href = `/view/sales/placeOrder.html?acountId=${accountId}`
+  window.location.href = `/view/sales/placeOrder.html?accountId=${accountId}`
 }

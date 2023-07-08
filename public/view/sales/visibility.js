@@ -356,7 +356,7 @@ function handleToggleOffPremises() {
     get_camera_Z_3_Island_Unit__c_off.classList.add('hide-element');
     checkBox_Island_Unit_Non_working.classList.add('hide-element')
     stockVisbility['Z_3_Island_Unit'] = isActive_Z_3_Island_Unit__c_off
-    stockVisbility['Island_Unit_Non_working_off'] = false;
+    stockVisbility['Island_Unit_Non_working'] = false;
     document.getElementById('Island_Unit_Non_working_off').checked = false
     document.getElementById('Z_3_Island_Unit__c_off_File').value = null
     stockVisbility['Z_3_Island_Unit_File'] = null

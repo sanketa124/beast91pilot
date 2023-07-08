@@ -23,7 +23,7 @@ const initializeShowAssets = async () => {
     // FetchExisting Record
     let existingPOSM = await getItemFromStore('posm',app_id)
     console.log("Existign POSMMMM===>",existingPOSM)
-    if(existingPOSM){
+    if(existingPOSM && !existingPOSM.isSynced){
         assetAddedItems = existingPOSM.POSM_Line_Item__c.filter((eachItem) => eachItem.hasOwnProperty('Space_Available__c'))
     }
     //showAccount();

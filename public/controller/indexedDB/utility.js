@@ -249,7 +249,6 @@ function writeData(st, data) {
     .then(function (db) {
       var tx = db.transaction(st, 'readwrite');
       var store = tx.objectStore(st);
-      console.log('sata',data)
       store.put(data);
       return tx.complete;
     });

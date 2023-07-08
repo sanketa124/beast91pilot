@@ -17,7 +17,7 @@ $("#showGridTbl2").click(function(){
 
 let urlParams = new URLSearchParams(window.location.search);
 const accountId = localStorage.getItem('accountId')||urlParams.get('accountId');
-const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId') || localStorage;
+const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
   goBack = () => {
     window.location.href = `/view/checkIn/checkIn.html?accountId=${accountId}&eventId=${eventId}`
@@ -37,7 +37,6 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId') || loc
         
     let outlet360Records= await getItemFromStore('outlet360',accountId)
     if(!outlet360Records){
-     window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
     }
 
         /*****  Outlet-360 page 1 ****/
@@ -207,7 +206,6 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId') || loc
             liquidSalesBody.innerHTML=liqSalesHtml
           }
          
-
           /*** 6. Premium Visibility & Assets ,Customized branding */
           const premiumVisibilityElement = document.getElementById("premium-visibility-assets");
           const customizedBranding=document.getElementById("customized-branding")
@@ -232,7 +230,6 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId') || loc
         const internalCustomizedBrandingHtml=populatePosItemTable('Internal',Internal)
         const externalCustomizedBrandingHtml=populatePosItemTable('External',External)
         customizedBranding.innerHTML=internalCustomizedBrandingHtml+externalCustomizedBrandingHtml
-
 
         /*** Open Issues */
         const claimSettledTillDate=document.getElementById("claim-settled")
@@ -368,5 +365,4 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId') || loc
     </td>
     
 </tr>`
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&eventId=${eventId}`
   }

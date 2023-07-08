@@ -13,6 +13,7 @@ $(document).ready(function () {
   let reasonSection = document.querySelector('.reasonSection');
   // Set the style property to hide the div element
   reasonSection.style.display = 'none';
+  //let visits = visits
   //reasonSection.remove()
 })
 
@@ -77,7 +78,7 @@ let defaultItems = [
 // Function to populate the table with default items
 function populateTableWithDefaultItems() {
 
-  console.log("Default Itemsssssss=>",defaultItems)
+  console.log("Default Itemsssssss=>", defaultItems)
 
   const alreadySelectedProducts = defaultItems.map((item) => item.Display_Name__c)
   console.log("Already Selected Products===>", alreadySelectedProducts)
@@ -294,38 +295,29 @@ async function getDefaultSalesItems() {
   let accountId = accountRec.Id
   let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
 
-      // Get the current account details
+  let visits = new Map()
+  visits.set("P0", 4)
+  visits.set("P1", 4)
+  visits.set("P2", 4)
+  visits.set("P3", 2)
+  visits.set("P4", 1)
+
+  // Get the current account details
   let accountDetail = await getItemFromStore('account', accountId);
+  let industrySegment = accountDetail.Industry_Segment__c
   let currentDate = new Date()
   let currentMonth = currentDate.getMonth()
   let currentYear = currentDate.getFullYear()
 
   // Get the visit details
-  let numberOfVisits = 0
-  let events = await readAllData('events')
-  events?.forEach((eachEvent) => {
-    if (
-      eachEvent.Account__c
-      &&
-      eachEvent.Account__c == accountId
-      &&
-      new Date(eachEvent.Start_date_and_time__c).getMonth == currentMonth - 1
-      &&
-      new Date(eachEvent.Start_date_and_time__c).getFullYear == currentYear
-    ) {
-
-      numberOfVisits = numberOfVisits + 1
-
-    }
-  })
-
-  console.log("Number of visists===>", numberOfVisits)
+  let numberOfVisits = 1
+  if (industrySegment) {
+    numberOfVisits = visits.get(industrySegment)
+  }
 
   //Read from the account goals from indexDB
   let accountGoals = await readAllData('accountGoals');
-  let goalsOfCurrentAccount = accountGoals.filter(eachGoal => eachGoal.Account__c === accountId && currentDate >= eachGoal.Start_Date__c && currentDate <= eachGoal.End_Date__c)
-
-  console.log("AccountGoals===>", goalsOfCurrentAccount)
+  let goalsOfCurrentAccount = accountGoals.filter(eachGoal => eachGoal.Account__c === accountId && currentDate >= new Date(eachGoal.Start_Date__c) && currentDate <= new Date(eachGoal.End_Date__c))
 
   //Find line Items with account goals
   let lineItemIdsOfGoals = []
@@ -334,15 +326,16 @@ async function getDefaultSalesItems() {
     goalsOfCurrentAccount.forEach((eachGoal) => {
       lineItemIdsOfGoals.push({
         itemId: eachGoal.Item_Master__c,
-        goalQuantity: eachGoal.Goal_Quantity_CE__c
+        goalQuantity: eachGoal.Goal_Quantity__c
       })
     })
   }
+
   if (lineItemIdsOfGoals.length > 0) {
 
     //let lineItems = await readAllData('itemMasterCopy')
 
-    items.forEach((eachItem) => {
+    lineItems.forEach((eachItem) => {
       lineItemIdsOfGoals.forEach((eachLineItemGoal) => {
         if (eachLineItemGoal.itemId == eachItem.Id) {
           eachItem['goalQuantity'] = eachLineItemGoal.goalQuantity
@@ -367,58 +360,103 @@ async function getDefaultSalesItems() {
 
     //Get the retail depletion rate of requiredLineItems
     let currentMonthDepletionRates = []
-    accountDetail.Retail_Depletion1__r.records.forEach((eachDepletedRecord) => {
-      if (
-        eachDepletedRecord.Item__c
-        &&
-        eachDepletedRecord.Date__c
-        &&
-        idOfRequiredLineItems.includes(eachDepletedRecord.Item__c)
-        &&
-        new Date(eachDepletedRecord.Date__c).getMonth() == currentMonth
-        &&
-        new Date(eachDepletedRecord.Date__c).getFullYear() == currentYear
-      ) {
+    console.log("Account Detail===>", accountDetail)
+    if (accountDetail.Retail_Depletion1__r && accountDetail.Retail_Depletion1__r.records.length > 0) {
+      accountDetail.Retail_Depletion1__r.records.forEach((eachDepletedRecord) => {
+        if (
+          eachDepletedRecord.Item__c
+          &&
+          eachDepletedRecord.Date__c
+          &&
+          idOfRequiredLineItems.includes(eachDepletedRecord.Item__c)
+          &&
+          new Date(eachDepletedRecord.Date__c).getMonth() == currentMonth
+          &&
+          new Date(eachDepletedRecord.Date__c).getFullYear() == currentYear
+        ) {
 
-        currentMonthDepletionRates.push({
-          itemId: eachDepletedRecord.Item__c,
-          quantity: eachDepletedRecord.Physical_Cases__c
-        })
-      }
-
-    })
-
-    // Reduce the array to calculate sum of quantities for each unique itemId
-    const summedQuantities = currentMonthDepletionRates.reduce((acc, obj) => {
-      const existingItem = acc.find(item => item.itemId === obj.itemId);
-      if (existingItem) {
-        existingItem.quantity += obj.quantity;
-      } else {
-        acc.push({ itemId: obj.itemId, quantity: obj.quantity });
-      }
-      return acc;
-    }, []);
-
-
-
-    requiredLineItems.forEach((eachRequiredLineItem) => {
-      summedQuantities.forEach((eachSummedQuantity) => {
-        if (eachSummedQuantity.itemId == eachRequiredLineItem.Id) {
-
-          eachRequiredLineItem['quantity'] = Math.max(eachRequiredLineItem['goalQuantity'] - eachSummedQuantity.quantity, 0) / Math.max(numberOfVisits, 1)
-
-          defaultItems.push(eachRequiredLineItem)
+          currentMonthDepletionRates.push({
+            itemId: eachDepletedRecord.Item__c,
+            quantity: eachDepletedRecord.Physical_Cases__c
+          })
         }
 
-
       })
-    })
+    }
 
 
+    // Reduce the array to calculate sum of quantities for each unique itemId
+    let summedQuantities = [];
+
+    if (currentMonthDepletionRates.length > 0) {
+
+      summedQuantities = currentMonthDepletionRates.reduce((acc, obj) => {
+        const existingItem = acc.find(item => item.itemId === obj.itemId);
+        if (existingItem) {
+          existingItem.quantity += obj.quantity;
+        } else {
+          acc.push({ itemId: obj.itemId, quantity: obj.quantity });
+        }
+        return acc;
+      }, []);
+
+      requiredLineItems.forEach((eachRequiredLineItem) => {
+        summedQuantities.forEach((eachSummedQuantity) => {
+          if (eachSummedQuantity.itemId == eachRequiredLineItem.Id) {
+
+            eachRequiredLineItem['quantity'] = Math.max(eachRequiredLineItem['goalQuantity'] - eachSummedQuantity.quantity, 0) / Math.max(numberOfVisits, 1)
+
+            defaultItems.push(eachRequiredLineItem)
+          }
+
+
+        })
+      })
+
+    } else {
+
+      requiredLineItems.forEach((eachRequiredLineItem) => {
+        eachRequiredLineItem['quantity'] = eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1)
+        defaultItems.push(eachRequiredLineItem)
+      })
+
+
+    }
   }
+
+  // Check for recommendations
+  let urlParam = new URLSearchParams(window.location.search);
+  const individual = urlParam.get('individual')
+  if(!individual){
+
+        let recommendedItems = await readAllData('accepted_recommendations')
+
+        console.log("Recommende==>",recommendedItems)
+
+        if(recommendedItems){
+          recommendedItems = 
+          recommendedItems
+          .filter((eachRecommendation) => eachRecommendation.Outlet_Name__r.Account_ID_18_digit__c === accountId)
+          .forEach((reco) => {
+            lineItems.forEach((eachLineItem) => {
+              if(eachLineItem.Id === reco.Recommended_SKU__c){
+                eachLineItem.quantity = 0
+                defaultItems.push(eachLineItem)
+              }
+            })
+          })
+        }
+  }
+
+  initialLength = defaultItems.reduce((accumulator, item) => {
+    if (item.quantity) {
+      return accumulator + item.quantity;
+    }
+    return accumulator;
+  }, 0);
+  console.log("initial length==>", initialLength)
+
   populateTableWithDefaultItems();
-
-
 
 }
 
@@ -431,32 +469,28 @@ async function getLineItems() {
   let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
 
   // Check if a record is already present in the indexDB for today
-  let existingRecord = await getItemFromStore('salesOrderSync',orderKey)
+  let existingRecord = await getItemFromStore('salesOrderSync', orderKey)
 
-  console.log("Existing Record===>",existingRecord)
-  
-  if(existingRecord){
+  if (existingRecord && !existingRecord.isSynced) {
     defaultItems = existingRecord.products;
     selectionMap = existingRecord.Reasons_For_Zero_Products;
     lessReasonSelect = existingRecord.Reasons_For_Less_Products;
     initialLength = existingRecord.recommended_quantity;
-    if(existingRecord.Has_Zero_Quantity_Product){
+    if (existingRecord.Has_Zero_Quantity_Product) {
       populateTableWithDefaultItems();
-      console.log("Keyss====>",Array.from(selectionMap.keys()));
+      console.log("Keyss====>", Array.from(selectionMap.keys()));
       constructReasonNotLikingSelect(Array.from(selectionMap.keys()));
       handleReasonSelectOption(selectionMap.keys())
-    }else if(existingRecord.Has_Less_Products){
+    } else if (existingRecord.Has_Less_Products) {
       populateTableWithDefaultItems();
       constructReasonLessSelect(lessReasonSelect);
       handleLessReasonSelectOption(lessReasonSelect);
-    }else{
+    } else {
       populateTableWithDefaultItems();
     }
-}else{
-  getDefaultSalesItems();
-  initialLength = 5
-  //defaultItems.length
-}
+  } else {
+    getDefaultSalesItems();
+  }
 }
 
 // Function to calculate the total quantity of defaultItems
@@ -483,34 +517,32 @@ checkout = async () => {
 };
 
 const checkforPreSalesOrder = () => {
-  if(!totalCart){
-    console.log("I am in zeroSales Order")
-    if(selectionMap && selectionMap.size > 0){
-      console.log("I am in zeroSales Order selection Map",selectionMap.size)
+  if (!totalCart) {
+    if (selectionMap && selectionMap.size > 0) {
       return false
     }
-    else if(document.getElementById('reasonBox')){
+    else if (document.getElementById('reasonBox')) {
       $('#confirmOrder').modal('hide');
       alert("Please fill the reasons before moving forward")
       return true
     }
-    else{
-      console.log("I am in zeroSales Order not selection Map",selectionMap.size)
+    else {
+      console.log("I am in zeroSales Order not selection Map", selectionMap.size)
       $('#confirmOrder').modal('hide');
       let urlParam = new URLSearchParams(window.location.search);
       constructReasonNotLikingSelect([]);
       return true;
     }
-  }else if(totalCart>0 && totalCart < initialLength){
-    if(lessReasonSelect.length>0){
+  } else if (totalCart > 0 && totalCart < initialLength) {
+    if (lessReasonSelect.length > 0) {
       return false
     }
-    else if(document.getElementById('lessBox')){
+    else if (document.getElementById('lessBox')) {
       $('#confirmOrder').modal('hide');
       alert("Please fill the reasons before moving forward")
       return true
     }
-    else{
+    else {
       $('#confirmOrder').modal('hide');
       let urlParam = new URLSearchParams(window.location.search);
       constructReasonLessSelect([]);
@@ -528,13 +560,13 @@ const constructReasonNotLikingSelect = (selectedOptions) => {
   let optionsArray = ["Pricing/ Promotion/ Discount", "Competition Tie-up", "Operational Feedback", "Other"];
 
   let options = optionsArray.map((choice, index) => {
-    if(selectedOptions.length >0 && selectedOptions.includes(choice)){
-      return   `<option  selected id="${index}" value="${choice}">${choice}</option>`
-    }else{
-      return   `<option id="${index}" value="${choice}">${choice}</option>`
+    if (selectedOptions.length > 0 && selectedOptions.includes(choice)) {
+      return `<option  selected id="${index}" value="${choice}">${choice}</option>`
+    } else {
+      return `<option id="${index}" value="${choice}">${choice}</option>`
     }
   }
-)
+  )
 
   console.log("Options===>", options.join(''))
 
@@ -580,19 +612,18 @@ const constructReasonLessSelect = (selectedOptions) => {
   // reasonBox.remove()
   $('#lessBox').empty();
 
-  console.log("LessBoc oprtions===>",selectedOptions)
+  console.log("LessBoc oprtions===>", selectedOptions)
 
   let optionsArray = ["Stock is not available regularly", "Service is not regular", "Past issues not settled", "Outlet needs more time to decide", "Not met decision maker"];
 
-  let options = optionsArray.map((choice, index) =>
-  {
-    if(selectedOptions.length>0 && selectedOptions.includes(choice)){
+  let options = optionsArray.map((choice, index) => {
+    if (selectedOptions.length > 0 && selectedOptions.includes(choice)) {
       return `<option  selected id="${index}" value="${choice}">${choice}</option>`
-    }else{
+    } else {
       return `<option  id="${index}" value="${choice}">${choice}</option>`
     }
-  } 
-)
+  }
+  )
 
   console.log("Options===>", options.join(''))
 
@@ -630,7 +661,7 @@ const constructReasonLessSelect = (selectedOptions) => {
 }
 
 function handleReasonSelectOption(event) {
-  const selectedOptions = Array.from(event).map(option => option.value ? option.value: option);
+  const selectedOptions = Array.from(event).map(option => option.value ? option.value : option);
 
   console.log("Selected Options===>", selectedOptions);
 
@@ -659,15 +690,14 @@ function handleReasonSelectOption(event) {
               <div class="secondary-reason-container">
                   <select class="secondary-reason-select" multiple="multiple" name="" id="sec_reason_select-${index}" onchange="handleSuboptionsSelect(this)">
                       <option value="">--None--</option>
-                      ${subOptions.map(subOption => 
-                        {
-                          if(selectionMap.get(option) && selectionMap.get(option).includes(subOption)){
-                            return `<option selected value="${subOption}">${subOption}</option>`
+                      ${subOptions.map(subOption => {
+          if (selectionMap.get(option) && selectionMap.get(option).includes(subOption)) {
+            return `<option selected value="${subOption}">${subOption}</option>`
 
-                          }else{
-                            return `<option value="${subOption}">${subOption}</option>`                            
-                          }
-                        }).join('')}
+          } else {
+            return `<option value="${subOption}">${subOption}</option>`
+          }
+        }).join('')}
                   </select>
                   <span class="reason showError">This Field is required</span><br/>
               </div>
@@ -699,12 +729,12 @@ function handleReasonSelectOption(event) {
 function handleLessReasonSelectOption(event) {
   let selectedOptions = [];
 
-  console.log("Arrayyyy==>",event)
-  console.log("Arrayyyy==>",Array.isArray(event))
+  console.log("Arrayyyy==>", event)
+  console.log("Arrayyyy==>", Array.isArray(event))
 
-  if(Array.isArray(event)){
+  if (Array.isArray(event)) {
     selectedOptions = event.map(option => option)
-  }else{
+  } else {
     selectedOptions = Array.from(event.selectedOptions).map(option => option.value);
   }
 
@@ -783,7 +813,7 @@ function handleSuboptionsSelect(event) {
 
 //);
 
-function finalsubmit(){
+function finalsubmit() {
   checkout()
 }
 
@@ -800,28 +830,30 @@ confirmOrder = () => {
 }
 
 
-async function salesOrderSubmit(){
+async function salesOrderSubmit() {
 
   let accountId = accountRec.Id
   let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
 
   salesOrderSyncData.accountId = accountId
   salesOrderSyncData.App_Id = orderKey
-  salesOrderSyncData.products = defaultItems
-  salesOrderSyncData.Has_Zero_Quantity_Product = !defaultItems.length>0 && selectionMap.size >0? true : false
-  salesOrderSyncData.Has_Less_Products = totalCart<initialLength && lessReasonSelect.length > 0 ? true: false
-  salesOrderSyncData.Reasons_For_Zero_Products = !defaultItems.length>0? selectionMap: new Map()
-  salesOrderSyncData.Reasons_For_Less_Products = totalCart<initialLength? lessReasonSelect:[]
+  salesOrderSyncData.products = !totalCart > 0? [] : defaultItems
+  salesOrderSyncData.Has_Zero_Quantity_Product = !totalCart > 0 && selectionMap.size > 0 ? true : false
+  salesOrderSyncData.Has_Less_Products = totalCart < initialLength && lessReasonSelect.length > 0 ? true : false
+  salesOrderSyncData.Reasons_For_Zero_Products = !totalCart > 0 ? selectionMap : new Map()
+  salesOrderSyncData.Stringified_Reasons_For_Zero_Products = !totalCart > 0 ? Array.from(selectionMap.keys()).join(';') : '',
+  salesOrderSyncData.Stringified_Sub_reasons__c = !totalCart > 0 ? [...selectionMap.values()].flat().filter(child => child).join(';') : '',
+  salesOrderSyncData.Reasons_For_Less_Products = !totalCart > 0 < initialLength ? lessReasonSelect : []
   salesOrderSyncData.recommended_quantity = initialLength
   salesOrderSyncData.total_quantity = totalCart
   salesOrderSyncData.Created_Date = new Date();
   salesOrderSyncData.isSynced = false;
-  
-  await writeData('salesOrderSync',salesOrderSyncData)
+
+  await writeData('salesOrderSync', salesOrderSyncData)
 
 }
 
-function goSales(){    
+function goSales() {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
   window.location.href = `/view/objectives/salesOrder/distributorReport.html?accountId=${accountID}`

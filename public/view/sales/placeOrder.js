@@ -30,15 +30,17 @@ submit = async() => {
     /** Marking a recommendation as accepted so that it won't be visible again*/
     const date= new Date();
     const recommendation= await getItemFromStore('recommendations',recommendationId)
-    const {Recommended_SKU__r,Outlet_Name__r,attributes,...rest }=recommendation
-    const acceptedReccomendation= {...rest,Is_Accepted__c:true,Accepted_Date__c: date}
+    // const {Recommended_SKU__r,Outlet_Name__r,attributes,...rest }=recommendation
+    const acceptedReccomendation= {...recommendation,Is_Accepted__c:true,Accepted_Date__c: date}
     console.log('accepted recommendation object',acceptedReccomendation)
 
     /** Moving Accepted Recommendations to a new schema that can then be used by the Sales order */
     await writeData('accepted_recommendations',acceptedReccomendation)
     await writeData('recommendations',{...recommendation,Is_Accepted__c:true,Accepted_Date__c: date});
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId2 = urlParams.get('accountId');
     localStorage.removeItem("recommendationId");
-    window.location.href = 'recomendation.html'
+    window.location.href = `recomendation.html?accountId=${accountId2}`
 }
 cancel = () => {
     $('#placeOrderModal').modal('hide');

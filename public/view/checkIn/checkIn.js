@@ -56,7 +56,7 @@ const checkInFucn = async (eventId,accountId) => {
   const sfdc_outlet_dist = event.Distance_from_Account__c * 1000
   const startDate = new Date(event.Actual_Start_Visit__c).toLocaleString("en-US", {timeZone: 'Asia/Kolkata'})
   document.getElementById('checked-in-time').innerHTML = startDate;
-  document.getElementById('outlet_distance').innerHTML = `Current location is ${(event.Distance_from_Account__c)? sfdc_outlet_dist :outletDistance} meters from outlet location`
+  document.getElementById('outlet_distance').innerHTML = `Current location is <strong> ${(event.Distance_from_Account__c)? sfdc_outlet_dist :outletDistance} </strong> meters from outlet location`
 
   // }
 };

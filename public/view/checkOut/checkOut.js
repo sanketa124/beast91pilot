@@ -139,8 +139,8 @@ const checkedOut = async () => {
       const endDate = (eventRecV2?.Actual_End_Visit__c) ? eventRecV2?.Actual_End_Visit__c : eventRecV2?.Actual_End_Visit
       const Actual_End_Visit_Date= new Date(endDate).toLocaleString("en-US", {timeZone: 'Asia/Kolkata'})
       document.getElementById('checked-out-time').innerHTML = Actual_End_Visit_Date;  
-      document.getElementById('TimeSpent@Outlet').innerHTML = `Spent ${time_spent_in_outlet} minutes at the outlet.`
-      document.getElementById('DistfromStore').innerHTML = ` Current location is  ${(sfdc_outlet_dist)?sfdc_outlet_dist : outletDistance} metres from the outlet location.`
+      document.getElementById('TimeSpent@Outlet').innerHTML = `Spent <strong>${time_spent_in_outlet} </strong> minutes at the outlet.`
+      document.getElementById('DistfromStore').innerHTML = ` Current location is <strong> ${(sfdc_outlet_dist)?sfdc_outlet_dist : outletDistance} </strong> metres from the outlet location.`
       hideLoader()
     }
     catch(e){

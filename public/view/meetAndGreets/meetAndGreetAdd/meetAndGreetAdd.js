@@ -9,9 +9,9 @@ onHandlePrevious = () => {
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
     const individual = urlParams.get('individual')
-    if(individual == 'true'){
+    if (individual == 'true') {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`;
-    }else{
+    } else {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`;
     }
 }
@@ -20,7 +20,7 @@ goBack = () => {
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
     window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
-  }
+}
 
 const validateEmail = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -87,35 +87,35 @@ const handleMeetSaveContact = () => {
     contactRec["Phone"] = contactPhone;
     contactRec["Email"] = contactEmail;
     contactRec["Active__c"] = isActive;
-    console.log(contactTitle)
-    if (contactTitle && contactFirstName  && contactLastName && contactRole ){
+    if (contactTitle && contactFirstName && contactLastName && contactRole && contactPhone) {
         if (contactId) {
             handleUpdateSubmitContact()
+        } else {
+            handleNewSaveSubmitContact()
+        }
     } else {
-        handleNewSaveSubmitContact()
-    }}else{
         alert('Please enter the required details')
     }
 };
 
 const handleUpdateSubmitContact = async () => {
-    await writeData('contact',contactRec);
-    await writeData('contactsync',contactRec);
-    let index = accountRec.Contacts.records.findIndex(ele => ele.Id===contactId);
-    accountRec.Contacts.records.splice(index,1,contactRec);
-    await writeData('account',accountRec);
+    await writeData('contact', contactRec);
+    await writeData('contactsync', contactRec);
+    let index = accountRec.Contacts.records.findIndex(ele => ele.Id === contactId);
+    accountRec.Contacts.records.splice(index, 1, contactRec);
+    await writeData('account', accountRec);
     let urlParams = new URLSearchParams(window.location.search);
     const enroll = urlParams.get('enroll');
     const individual = urlParams.get('individual')
-    if(enroll == 'true'){
+    if (enroll == 'true') {
         window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
-    }else if(individual == 'true'){
+    } else if (individual == 'true') {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`
     }
-    else{
+    else {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
     }
-    
+
 };
 
 const handleNewSaveSubmitContact = async () => {
@@ -136,11 +136,11 @@ const handleNewSaveSubmitContact = async () => {
     const enroll = urlParams.get('enroll');
     const individual = urlParams.get('individual')
 
-    if(enroll == 'true'){
+    if (enroll == 'true') {
         window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
-    }else if(individual == 'true'){
+    } else if (individual == 'true') {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`
-    }else{
+    } else {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
     }
 };

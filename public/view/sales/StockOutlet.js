@@ -58,6 +58,7 @@ if(retailDepletionData.length>0){
     //console.log(retailDepletionData[i].Item__r.Display_Name__c)
   }
 }else{
+  let totalQty = 0;
   for (var i = 0; i < stockOutletExistingData.length; i++) {
     let productsAdded = {
       Item_Master: stockOutletExistingData[i].Item_Master,
@@ -73,7 +74,10 @@ if(retailDepletionData.length>0){
     <td>'+stockOutletExistingData[i].name+'</td>\
     <td><input type="number" class="form-control cartQtyChange" name="stockOutletVal" min="0" value="'+stockOutletExistingData[i].Quantity+'" onkeyup="qtyTotalUpdate(`'+stockOutletExistingData[i].Item_Master+'`)"></td>\
     </tr>')
+    totalQty += stockOutletExistingData[i].Quantity;
+
 }
+$('#cartTotal label span, #totalItem').html(totalQty)
 }
   getProduct();
 }

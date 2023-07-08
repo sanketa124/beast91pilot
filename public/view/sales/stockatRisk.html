@@ -106,9 +106,9 @@
                                 <thead>
                                 <tr>
 
-                                    <th style="width: 50%;">Item</th>
-                                    <th style="width: 16%;">Stock</th>
-                                    <th style="width: 16%;">Qty</th>
+                                    <th style="width: 45%;">Item</th>
+                                    <th style="width: 14%;">Stock</th>
+                                    <th style="width: 23%;">Qty</th>
                                     <th style="width: 18%;"></th>
                                 </tr>
                                 </thead>
@@ -149,7 +149,7 @@
                             </div>
                            
                         </div>
-                        <div id="errorMsg">Please check all the fields and submit again</div>
+                        <div id="errorMsg">Stock at risk cannot be more than stock at outlet</div>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,7 @@
         <a><i class="fas fa-shopping-cart"></i><span>Order</span></a>
     </li>
     <li class="nav-img">
-        <a href="javascrit:;"><i class="fas fa-file-contract"></i><span>Contract</span></a>
+        <a href="https://docs.google.com/document/d/1SFQRtN8732Mw57EHnC-p8d9OSKYFnjQtJuINqx_G6pU/edit"><i class="fas fa-file-contract"></i><span>Contract</span></a>
     </li>
     <li class="nav-img">
         <a><i class="fas fa-cocktail"></i><span>POSM</span></a>
@@ -221,18 +221,17 @@
 
         <!-- End More menu options Modal -->
         <!-- End Visit Modal -->
-        <div id="endVisit" class="modal fade" role="dialog">
+        <div id="stockSubmit" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="tit">Action!</h3>
+                        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
                     </div>
                     <div class="modal-body text-center">
-                        <h5>Are you sure you want to end your visit ? </h5>
+                        <!-- <h5>Are you sure you want to submit ?</h5> -->
                     </div>
                     <div class="modal-footer text-center">
-                        <button type="button" data-dismiss="modal" onclick="handleEndDayHandler()"
-                            class="btn btn-success">Yes</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                     </div>
                 </div>

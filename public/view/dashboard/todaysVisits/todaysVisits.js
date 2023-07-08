@@ -80,8 +80,8 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     // }
     if(i.Geolocation__c != null || i.Geolocation__c != undefined){
       let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
-
-      loc = '<a id="loc" onclick="gotomap('+ map +')"><span>'+(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')+','+(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')+'</span></a>'
+      $('.loc').prop('href',map)
+      loc = '<a class="loc" ><span>'+(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')+','+(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')+'</span></a>'
       //console.log("https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude);
       
     }

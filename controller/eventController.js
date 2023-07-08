@@ -5,7 +5,7 @@ exports.fetchEvents = async (req, res) => {
         const sfConnection = req.conn;
         let tasks = req.body.tasks;
         let cases = req.body.case;
-        console.log(":::::::::::::EVENTS CASE DATA :::::::::::::::",cases)
+        console.log(":::::::::::::EVENTS CASE DATA :::::::::::::::", cases)
         const syncDateTime = req.syncDateTime;
         let events = null;
         let casesList = []
@@ -24,22 +24,22 @@ exports.fetchEvents = async (req, res) => {
             await sfConnection.sobject('Task').update(taskUpdate);
 
         }
-        if(cases && cases.length > 0 ){
+        if (cases && cases.length > 0) {
             cases = cases.map(item => {
-                if(item.Unique_Identifier__c){
+                if (item.Unique_Identifier__c) {
                     delete item.Id;
                     delete item.Unique_Identifier__c;
                     delete item.isSynced
-                }else{
+                } else {
                     delete item.isSynced
                 }
-                if(item.Unique_Identifier__c == null)
+                if (item.Unique_Identifier__c == null)
                     delete item.Unique_Identifier__c;
                 return item;
-              });
-            console.log(cases,"cases----------------------------888888888888888");
-            const caseUpdate = cases.filter(item =>  item.Id);
-            const caseInsert = cases.filter(item =>  !item.Id);
+            });
+            console.log(cases, "cases----------------------------888888888888888");
+            const caseUpdate = cases.filter(item => item.Id);
+            const caseInsert = cases.filter(item => !item.Id);
             const d = await sfConnection.sobject('Case').insert(caseInsert);
             const q = await sfConnection.sobject('Case').update(caseUpdate);
             // console.log(caseUpdate,"demo1",JSON.stringify(q))
@@ -286,12 +286,12 @@ FROM
 WHERE 
   Status__c = 'Submitted to SO' 
   AND Draft_Sign_up__r.CreatedBy.Id = '${req.conn.userInfo.id}'`);
-}
+        }
 
         standardEvents = await sfConnection.query(`Select Id,WhatId,StartDateTime, Description, EndDateTime, Location, Subject from Event WHERE StartDateTime>=LAST_90_DAYS AND Custom_Event__c=null AND OwnerId='${req.conn.userInfo.id}' ORDER BY StartDateTime DESC`);
 
         casesList = await sfConnection.query('Select Id, Issue_Resolved__c,AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type from Case Where Issue_Resolved__c = false');
-      //  console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
+        //  console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
         let taskList = await sfConnection.query('SELECT  WhatId,Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
         //let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
@@ -309,7 +309,7 @@ WHERE
             return ele;
         });
         let lapAcc = LapsedAccountDetails
-        if(req.body.nonSales.isSales){
+        if (req.body.nonSales.isSales) {
             let stateClusterMapping = await sfConnection.query(`SELECT Name,Id,RecordType.DeveloperName,Country__c,District__c,State__c,(SELECT Cluster__r.Name, Cluster__c FROM Cluster_State_Mappings__r ORDER BY Cluster__r.Name) FROM Geo_Hierarchy__c   ORDER BY Name`);
             let isCompleted = false;
             isCompleted = stateClusterMapping.done;
@@ -327,22 +327,22 @@ WHERE
         }
         let eventObjects = await sfConnection.sobject('Event__c').describe()
         let eventRecordTypes = eventObjects.recordTypeInfos
-      //  console.log("EventRecordTypes",eventRecordTypes)
+        //  console.log("EventRecordTypes",eventRecordTypes)
         //console.log(LapsedAccountDetails,"AccountDetails");
         //res.status(200).json({isError : false,isAuth : true, NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
-        res.status(200).json({ 
-            isError: false, 
-            isAuth: true, 
-            issueList: casesList ? casesList.records : [], 
-            NBA: NeverBilledAccounts, 
-            lapsedAcc: lapAcc, 
-            events: events ? events.records : [], 
-            taskList: taskList, 
-            stateClusterMapping: stateClusterMappingArr.length > 0 ? stateClusterMappingArr : [], 
-            territoryRecords: territoryRecords ? territoryRecords.records : [], 
-            draftInstallationPendingApproval: draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], 
+        res.status(200).json({
+            isError: false,
+            isAuth: true,
+            issueList: casesList ? casesList.records : [],
+            NBA: NeverBilledAccounts,
+            lapsedAcc: lapAcc,
+            events: events ? events.records : [],
+            taskList: taskList,
+            stateClusterMapping: stateClusterMappingArr.length > 0 ? stateClusterMappingArr : [],
+            territoryRecords: territoryRecords ? territoryRecords.records : [],
+            draftInstallationPendingApproval: draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [],
             standardEvents: standardEvents ? standardEvents.records : [],
-            eventRecordTypes: eventRecordTypes ? eventRecordTypes:[]
+            eventRecordTypes: eventRecordTypes ? eventRecordTypes : []
         });
     }
     catch (e) {
@@ -356,7 +356,7 @@ exports.fetchIssues = async (req, res) => {
         console.log(":::::::::::::Issues SYNC :::::::::::::::")
         const sfConnection = req.conn;
         let cases = req.body.case;
-     //   console.log(":::::::::::::Issues cases SYNC :::::::::::::::", cases)
+        //   console.log(":::::::::::::Issues cases SYNC :::::::::::::::", cases)
         const syncDateTime = req.syncDateTime;
         if (cases.length > 0) {
             cases = cases.map(item => {
@@ -370,9 +370,9 @@ exports.fetchIssues = async (req, res) => {
             console.log(caseUpdate, "demo1")
             console.log(caseInsert, "demo")
         }
-        
+
         let casesList = await sfConnection.query('Select Id,AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type from Case');
-        res.status(200).json({isError : false,isAuth : true, issueList :casesList })
+        res.status(200).json({ isError: false, isAuth: true, issueList: casesList })
     }
     catch (e) {
         console.log(e, "------------------------------------------");
@@ -502,8 +502,8 @@ exports.objectiveSync = async (req, res) => {
             return ele;
         });
 
-        for (eve of event){
-            let event_data ={
+        for (eve of event) {
+            let event_data = {
                 'End_date_and_time__c': eve.End_date_and_time__c,
                 'Start_date_and_time__c': eve.Start_date_and_time__c,
                 'Account__c': eve.Account__c,
@@ -515,99 +515,28 @@ exports.objectiveSync = async (req, res) => {
                 'RecordTypeId': eve.RecordTypeId,
                 'Check_In__Latitude__s': eve.Check_In__Latitude__s,
                 'Check_In__Longitude__s': eve.Check_In__Longitude__s,
-                'Check_Out__Latitude__s' : eve.Check_Out__Latitude__s,
-                'Check_Out__Longitude__s' : eve.Check_Out__Longitude__s
-              }
-              sfConnection.sobject("Event__c")
+                'Check_Out__Latitude__s': eve.Check_Out__Latitude__s,
+                'Check_Out__Longitude__s': eve.Check_Out__Longitude__s
+            }
+            sfConnection.sobject("Event__c")
                 .update(event_data, function (err, rets) {
-                if (err) {
-                    return console.error(err);
-                }
-                if (err || !rets.success) {
-                    console.log("Error on updating contact", JSON.stringify(err));
-                    return console.error(err, rets);
-                }
-                console.log("Updated Successfully : " + rets.id);
-
-                for (var i = 0; i < rets.length; i++) {
-                    if (rets[i].success) {
-                    console.log("Updated Successfully : " + rets[i].id);
+                    if (err) {
+                        return console.error(err);
                     }
-                }
+                    if (err || !rets.success) {
+                        console.log("Error on updating contact", JSON.stringify(err));
+                        return console.error(err, rets);
+                    }
+                    console.log("Updated Successfully : " + rets.id);
+
+                    for (var i = 0; i < rets.length; i++) {
+                        if (rets[i].success) {
+                            console.log("Updated Successfully : " + rets[i].id);
+                        }
+                    }
                 });
         }
-        
-        // Syncing Sales Orders
-        for(let i=0;i<salesOrder.length;i++){
 
-            let eachSalesOrder = salesOrder[i]
-
-            let salesOrderBody = {
-                Account__c: eachSalesOrder.accountId,
-                App_Id__c: eachSalesOrder.App_Id,
-                Created_Date__c : eachSalesOrder.Created_Date,
-                Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
-                Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products? eachSalesOrder.Reasons_For_Less_Products.join(';'): '',
-                Reasons_for_not_Liking_Product__c : eachSalesOrder.Has_Zero_Quantity_Product__c? Array.from(eachSalesOrder.Reasons_For_Zero_Products.keys()).join(';'): '',
-                Sub_reasons__c:eachSalesOrder.Has_Zero_Quantity_Product? [...eachSalesOrder.Reasons_For_Zero_Products.values()]
-                .flat()
-                .filter(child => child) // Remove any falsy child elements (e.g., empty strings)
-                .join(';') : ''
-            }
-
-            let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
-
-            if(createSalesOrder && eachSalesOrder.products.length > 0){
-                //Create the Line Items
-                let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
-                    return {
-                        Item_Name__c : eachLineItem.Id,
-                        SO__c: createSalesOrder.id
-                    }
-                })
-
-                let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
-
-                console.log("Creating line itemss====>",JSON.stringify(createLineItems))
-
-                if(createLineItems){
-                    console.log("Sales order created successfully")
-                }else{
-                    console.log("Error in creating Sales Orders")
-                }
-            }
-        }
-        console.log("PSOMsss===>",posm)
-        //POSM Items
-        for(let i=0;i<posm.length;i++){
-
-
-            let posmTable = 'POSM_Requisition__c';
-            let posmLineItemsTable = 'POSM_Line_Item__c';
-
-            let eachPOSM = posm[i].POSM_Requisition__c
-    
-            console.log(eachPOSM)
-    
-            let createRequisition = await sfConnection.sobject(posmTable).create(eachPOSM)
-    
-            //Output ---> { id: 'a0fBi0000005yJhIAI', success: true, errors: [] }
-            let posLineItems = posm[i].POSM_Line_Item__c.map((eachLineItem)=>{
-                delete eachLineItem.quantity
-                delete eachLineItem.checkBox
-                return {
-                    ...eachLineItem,
-                    POSM_Requisition__c: createRequisition.id
-                }
-    
-            })
-    
-            let createLineItems = await sfConnection.sobject(posmLineItemsTable).create(posLineItems)
-
-            console.log("createPOSMItems===>",JSON.stringify(createLineItems))
-        }
-
-   
         // console.log('stockVisibilites',stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0])
         let body = {
             User_Name: req.body.username,
@@ -622,26 +551,31 @@ exports.objectiveSync = async (req, res) => {
         };
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
         if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images){
-            const imageBody = stockVisibilites[0].stock_at_risk_images.length > 0 && stockVisibilites[0].stock_at_risk_images;
+            const imageBodyArr = stockVisibilites[0].stock_at_risk_images.length > 0 && stockVisibilites[0].stock_at_risk_images;
+            const imageBody = imageBodyArr.map(obj => {
+                const updatedObj = { ...obj }; // Create a shallow copy of the object
+                delete updatedObj['id'];
+                return updatedObj;
+              });
             await postStockImages(req.conn, imageBody);
         }
 
-        if(stockVisibilites && stockVisibilites.length>0 && stockVisibilites[0].liquidPromotion){
+        if (stockVisibilites && stockVisibilites.length > 0 && stockVisibilites[0].liquidPromotion) {
             const promotionBody = stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion;
             const liquidPromotionData = {
                 conn: req.conn,
                 liquidPromotionData: promotionBody
             }
-            console.log('promotionBody',promotionBody)
-            await updateLiquidPromotion(liquidPromotionData,res);
+            console.log('promotionBody', promotionBody)
+            await updateLiquidPromotion(liquidPromotionData, res);
         }
 
-        if(req.body.contactMeeting && req.body.contactMeeting.length>0){
+        if (req.body.contactMeeting && req.body.contactMeeting.length > 0) {
             const reqContactMeetingData = {
                 conn: req.conn,
-                contactMeetingData: req.body.contactMeeting[0].meetingData
+                contactMeetingData: req.body.contactMeeting
             }
-            await updateContactMeeting(reqContactMeetingData,res);
+            await updateContactMeeting(reqContactMeetingData, res);
         }
 
 
@@ -888,6 +822,77 @@ exports.objectiveSync = async (req, res) => {
             await sfConnection.sobject('Event__c').create(scheduleVisits);
 
         }
+        // Syncing Sales Orders
+        for (let i = 0; i < salesOrder.length; i++) {
+
+            let eachSalesOrder = salesOrder[i]
+
+            console.log("Sales Order===>", eachSalesOrder)
+
+            console.log("Values===>", eachSalesOrder.Reasons_For_Zero_Products)
+
+            let salesOrderBody = {
+                Account__c: eachSalesOrder.accountId,
+                App_Id__c: eachSalesOrder.App_Id,
+                Created_Date__c: eachSalesOrder.Created_Date,
+                Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
+                Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : '',
+                Reasons_for_not_Liking_Product__c: eachSalesOrder.Stringified_Reasons_For_Zero_Products,
+                Sub_reasons__c: eachSalesOrder.Stringified_Sub_reasons__c
+            }
+
+            let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
+
+            if (createSalesOrder && eachSalesOrder.products.length > 0) {
+                //Create the Line Items
+                let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+                    return {
+                        Item_Name__c: eachLineItem.Id,
+                        SO__c: createSalesOrder.id
+                    }
+                })
+
+                let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+
+                console.log("Creating line itemss====>", JSON.stringify(createLineItems))
+
+                if (createLineItems) {
+                    console.log("Sales order created successfully")
+                } else {
+                    console.log("Error in creating Sales Orders")
+                }
+            }
+        }
+        console.log("PSOMsss===>", posm)
+        //POSM Items
+        for (let i = 0; i < posm.length; i++) {
+
+
+            let posmTable = 'POSM_Requisition__c';
+            let posmLineItemsTable = 'POSM_Line_Item__c';
+
+            let eachPOSM = posm[i].POSM_Requisition__c
+
+            console.log(eachPOSM)
+
+            let createRequisition = await sfConnection.sobject(posmTable).create(eachPOSM)
+
+            //Output ---> { id: 'a0fBi0000005yJhIAI', success: true, errors: [] }
+            let posLineItems = posm[i].POSM_Line_Item__c.map((eachLineItem) => {
+                delete eachLineItem.quantity
+                delete eachLineItem.checkBox
+                return {
+                    ...eachLineItem,
+                    POSM_Requisition__c: createRequisition.id
+                }
+
+            })
+
+            let createLineItems = await sfConnection.sobject(posmLineItemsTable).create(posLineItems)
+
+            console.log("createPOSMItems===>", JSON.stringify(createLineItems))
+        }
+
         // Schedule Visit Procedure
         res.status(200).json({ isError: false, isAuth: true, competitorInsightJSON: dealerWiseVisitInfoJSON.competitorInsights, StockVisibilityJSON: dealerWiseVisitInfoJSON.StockVisibilitySurveyWrapper, nonBeerProducts: nonBeerproducts ? nonBeerproducts.records : [], posmSetting: posmSetting ? posmSetting.records : [], licenseType: licenseTypeStateWise ? licenseTypeStateWise.records : [], draftStarterKit: draftStarterKit ? draftStarterKit.records : [] });
     }
@@ -897,66 +902,70 @@ exports.objectiveSync = async (req, res) => {
     }
 };
 
-const updateContactMeeting = async (req,res) => {
+const updateContactMeeting = async (req, res) => {
     try {
         let sfConnection = req.conn;
-        sfConnection.sobject("Contact_Meeting__c").create( req.contactMeetingData,
-          function(err, rets) {
-            //console.error('error',rets[0].errors);
-            if (err) { 
-               console.error('Updateerror',err);
-               return console.error(err);
-             }
-            for (var i=0; i < rets.length; i++) {
-              if (rets[i].success) {
-                console.log("Created record id : " + rets[i].id);
-              }
-            }
-          });
+        req.contactMeetingData.forEach(ele => {
+            console.log('ele', ele)
+            sfConnection.sobject("Contact_Meeting__c").create( ele.meetingData,
+                function(err, rets) {
+                  //console.error('error',rets[0].errors);
+                  if (err) { 
+                     console.error('Updateerror',err);
+                     return console.error(err);
+                   }
+                  for (var i=0; i < rets.length; i++) {
+                    if (rets[i].success) {
+                      console.log("Created record id : " + rets[i].id);
+                    }
+                  }
+                });
+        });
+       
     } catch (e) {
-        console.log("Error in Updating contact meeting",e)
+        console.log("Error in Updating contact meeting", e)
         res.status(500).json({ isError: true, isAuth: true, message: e });
 
     }
-  
+
 }
 
-const updateLiquidPromotion = async (req,res) => {
+const updateLiquidPromotion = async (req, res) => {
     try {
         let sfConnection = req.conn;
-        let recordTypeData= await sfConnection.query(
+        let recordTypeData = await sfConnection.query(
             `SELECT Id FROM RecordType WHERE Name='Promotion'`
-          );
-        let promotionIdData= await sfConnection.query(
-        `SELECT ID FROM Promotion_Master__c WHERE Name='Liquidation promotion'`
+        );
+        let promotionIdData = await sfConnection.query(
+            `SELECT ID FROM Promotion_Master__c WHERE Name='Liquidation promotion'`
         );
         let recordType = recordTypeData.records[0].Id;
         let promotionId = promotionIdData.records[0].Id;
 
         req.liquidPromotionData["Promotion_Name__c"] = promotionId;
         req.liquidPromotionData["RecordTypeId"] = recordType;
-        console.log('liquidPromotionData',req.liquidPromotionData)
-        sfConnection.sobject("Recommendation__c").create( req.liquidPromotionData,
-          function(err, rets) {
-            //console.error('error',rets[0].errors);
-            if (err) { 
-               console.error('Updateerror',err);
-               return console.error(err);
-             }else{
-                res.status(200).json({ isError: false, isAuth: true, message: "posted successfully" })
-             }
-            for (var i=0; i < rets.length; i++) {
-              if (rets[i].success) {
-                console.log("Created record id : " + rets[i].id);
-              }
-            }
-          });
+        console.log('liquidPromotionData', req.liquidPromotionData)
+        sfConnection.sobject("Recommendation__c").create(req.liquidPromotionData,
+            function (err, rets) {
+                //console.error('error',rets[0].errors);
+                if (err) {
+                    console.error('Updateerror', err);
+                    return console.error(err);
+                } else {
+                    res.status(200).json({ isError: false, isAuth: true, message: "posted successfully" })
+                }
+                for (var i = 0; i < rets.length; i++) {
+                    if (rets[i].success) {
+                        console.log("Created record id : " + rets[i].id);
+                    }
+                }
+            });
     } catch (e) {
-        console.log("Error in Updating liquid promotion",e)
+        console.log("Error in Updating liquid promotion", e)
         res.status(500).json({ isError: true, isAuth: true, message: e });
 
     }
-  
+
 }
 
 
@@ -983,7 +992,7 @@ const draftProcessesHelper = (req) => {
 };
 
 
-const postStockImages = async (conn,imageBody) => {
+const postStockImages = async (conn, imageBody) => {
     //console.log('imageBody',imageBody)
     try {
         let sfConnection = conn;
@@ -995,7 +1004,7 @@ const postStockImages = async (conn,imageBody) => {
         // console.log(e);
         // res.status(500).json({isError : true,isAuth : true,message : e});
         console.log(e);
-     //   res.status(500).json({ isError: true, isAuth: true, message: e });
+        //   res.status(500).json({ isError: true, isAuth: true, message: e });
 
     }
 
