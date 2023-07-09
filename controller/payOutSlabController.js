@@ -78,12 +78,13 @@ exports.postPOSMItems = async (req, res) => {
                 eachPOSM.POSM_Requisition__c.Requisition_Date__c = formatDate(eachPOSM.POSM_Requisition__c.Requisition_Date__c)
     
                 let createRequisition = await sfConnection.sobject(posmTable).create(eachPOSM['POSM_Requisition__c'])
+                let posLineItems;
     
                 console.log("Create Requisition===>",createRequisition)
     
                 //Output ---> { id: 'a0fBi0000005yJhIAI', success: true, errors: [] }
                 if(createRequisition){
-                    let posLineItems = eachPOSM.POSM_Line_Item__c.map((eachLineItem)=>{
+                    posLineItems = eachPOSM.POSM_Line_Item__c.map((eachLineItem)=>{
                         delete eachLineItem.quantity
                         delete eachLineItem.image
                         delete eachLineItem.checkBox
@@ -95,13 +96,17 @@ exports.postPOSMItems = async (req, res) => {
                     })
     
                 }
+                console.log("Line Items to be inserted===>",posLineItems)
                 let createLineItems = await sfConnection.sobject(posmLineItemsTable).create(posLineItems)
-                console.log("Create Requisition===>",createLineItems)
-                
-            }
+                console.log("Create Requisition Line Items===>",JSON.stringify(createLineItems))
+
+                if(req.body.data.posm[i].images.length > 0){
+                    console.log("Images to be posted===>",req.body.data.posm[i].images)
+                    let createImages = await sfConnection.sobject('ContentVersion').create(req.body.data.posm[i].images)
     
-            if(req.body.data.posm.images.length > 0){
-                let createImages = await sfConnection.sobject('ContentVersion').create(req.body.data.posm.images)
+                    console.log("Create Images===>",JSON.stringify(createImages))
+                }
+                
             }
         }
 

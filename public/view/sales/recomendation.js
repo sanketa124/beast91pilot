@@ -110,7 +110,7 @@ try{
   result.map((recommendation) => {
     const {Recommended_SKU__r,Outlet_Name__r}=recommendation
     const skuRecommendationCondition=Recommended_SKU__r?.Size_ID__r?.Volume_Unit__c
-    && Recommended_SKU__r?.Liquid_Layer__r?.Name
+    && recommendation?.Variant_Name__c
     && Recommended_SKU__r?.Display_Name__c 
     && recommendation?.Pitch__c 
     && recommendation?.Recommended_SKU__c

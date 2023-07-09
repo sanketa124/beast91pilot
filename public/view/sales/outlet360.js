@@ -97,17 +97,17 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
         progressBar.style.width =achievedPercent ;
 
         const mtoAchievementElement=document.getElementById('mtd-bar-achievement');
-        mtoAchievementElement.textContent = `${Math.floor(achievement)} CE (${achievedPercent})`;
+        mtoAchievementElement.textContent =`${Math.round(achievement)} (${achievedPercent}) CE  `;
         const mtoTargetElement=document.getElementById('mtd-bar-target');
-        mtoTargetElement.textContent = `${target} CE`;
+        mtoTargetElement.textContent = `${Math.round(target)} CE`
 
 
          /*** 2. Visit Target */
          const industrySegement= account?.Industry_Segment__c ||'P4'
          const industrySegementValue=["P0","P1","P2"].includes(industrySegement)?4:["P3"].includes(industrySegement)?2:1
          const visitTarget1= document.getElementById('visit-target-content')
-         const visitTargetValue=Math.floor((target-achievement)/(industrySegementValue))
-         visitTarget1.textContent=`${visitTargetValue>0?visitTargetValue:0} CE`
+         const targetVal = ((target-achievement)/(industrySegementValue||1))
+         visitTarget1.textContent= `${( !isNaN(targetVal) ? targetVal.toFixed(2) :``)} CE`
 
 
          /*** 3. B91 Insights and  competitor insights , Order Frequencies, lapsedKegs */
@@ -265,10 +265,10 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
         claimSettledTillDate.innerHTML= Claims_Settled_Till_Date__c || ''
         const issuesElement= document.getElementById("open-issues")
         const Issues=( (await readAllData('case'))||[]).filter((item)=>{
-          return item.AccountId == accountId && item?.Issue_Resolved__c===false && item?.Issue_Type__c 
+          return item.AccountId == accountId && item?.Issue_Resolved__c===false && item?.Subject 
         })
         const issuesHtml=Issues.map((item)=>{
-            return `<tr><td>${item?.Issue_Type__c || ''} </td><td> ${item.Settlement_Date__c} <i class="fas fa-calendar-alt"></i></td></tr>`
+            return `<tr><td>${item?.Subject || ''} </td><td> ${item.Settlement_Date__c} <i class="fas fa-calendar-alt"></i></td></tr>`
         }).join('')
         issuesElement.innerHTML=issuesHtml
   })();
@@ -290,9 +290,9 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
           let  b9GrowthOverall=document.getElementById("b9-growth-overall-mtd")
           let  biraOverAllGrowth=  bira91Insights.Growth_MTD_Overall__c  ?bira91Insights.Growth_MTD_Overall__c :0;
           if(biraOverAllGrowth>0){
-            b9GrowthOverall.classList.add("colorRed");
-          }else{
             b9GrowthOverall.classList.add("colorGreen");
+          }else{
+            b9GrowthOverall.classList.add("colorRed");
           }
           b9GrowthOverall.innerHTML= biraOverAllGrowth
 
@@ -380,10 +380,10 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
           return item?.packType==='keg'
         })
 
-      let resolve330mlHtml=`<td> <i class="fas${resolve330mlColumn?.color?` fa-check `+resolve330mlColumn.color:''}"></i></td>`
-      let resolveCanHtml=`<td> <i class="fas${resolveCanColumn?.color?` fa-check `+resolveCanColumn.color:''}"></i></td>`
-      let resolve650mlHtml=`<td> <i class="fas${resolve650mlColumn?.color?` fa-check `+resolve650mlColumn.color:''}"></i></td>`
-      let resolveKegHtml=`<td> <i class="fas${resolveKegColumn?.color?` fa-check `+resolveKegColumn.color:''}"></i></td>` 
+      let resolve330mlHtml=`<td> <i class="fas${resolve330mlColumn?.color? ` fa-check `+resolve330mlColumn.color  :''}"></i></td>`
+      let resolveCanHtml=`<td> <i class="fas${resolveCanColumn?.color? ` fa-check `+resolveCanColumn.color :''}"></i></td>`
+      let resolve650mlHtml=`<td> <i class="fas${resolve650mlColumn?.color? ` fa-check `+resolve650mlColumn.color :''}"></i></td>`
+      let resolveKegHtml=`<td> <i class="fas${resolveKegColumn?.color?  ` fa-check `+resolveKegColumn.color:''}"></i></td>` 
       let html=`<tr><td>${capitalizeWords(liquidName||'Sample SKU')}</td> ${resolve330mlHtml+resolveCanHtml+resolve650mlHtml+  resolveKegHtml}</tr><td>`
       return html
 
@@ -392,19 +392,19 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
   const populatePosItemTable=(itemName,positemArray)=>{
     return `<tr>
     <td>
-        <strong>${itemName}</strong>
+        <strong>${itemName || ''}</strong>
     </td>
     <td>
-        ${positemArray?.[0]? positemArray[0]?.Product__r?.Name:''}
+        ${ positemArray?.[0]?.Product__r?.Name|| ''}
     </td>
     <td>
-        ${positemArray?.[1]? positemArray[1]?.Product__r?.Name:''}
+        ${positemArray?.[1]?.Product__r?.Name ||''}
     </td>
     <td>
-        ${positemArray?.[2]? positemArray[2]?.Product__r?.Name:''}
+        ${ positemArray?.[2]?.Product__r?.Name || ''}
     </td>
     <td>
-        ${positemArray?.[3]? positemArray[3]?.POSM_Requisition__r?.Name:''}
+        ${positemArray?.[3]?.POSM_Requisition__r?.Name || ''}
     </td>
     
 </tr>`

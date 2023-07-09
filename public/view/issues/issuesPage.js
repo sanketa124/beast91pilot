@@ -41,7 +41,7 @@ const IntializeIssues = async () => {
       $('#item_count').text(`Item - ${issues.length}`)
       issues.map(issue => {
         issueContainer.innerHTML += `<div class="content-wrapper">
-        <div class="content-wrapper-primary-inside">${issue.Issue_Type__c}</div>
+        <div class="content-wrapper-primary-inside">${issue.Subject}</div>
         <div class="content-wrapper-primary-inside" style="text-align:center;">${issue.Settlement_Date__c}</div>
         <div class="content-wrapper-secondary-inside"><input type="checkbox" id="is_resolved_${issue.Id}" class="defaultCheckBox" value="${issue.Id}" ${(issue.Issue_Resolved__c ==true)? 'checked' : ''} ></div>
     </div>`

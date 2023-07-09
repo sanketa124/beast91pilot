@@ -1,6 +1,3 @@
-//TODO: remove hardcoded values
-// let accountId=localStorage.getItem('accountId') || '001Bi000007JSMPIA4'
-// let eventId=localStorage.getItem('eventId') ||'a0KBi000003NchCMAS'
 
 let accountId=localStorage.getItem('accountId') 
 let eventId=localStorage.getItem('eventId')
@@ -18,7 +15,7 @@ if(!(accountId && eventId && recommendationId)){
          window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
        }
 
-       const liquidName= recommendation?.Recommended_SKU__r?.Liquid_Layer__r?.Name
+       const liquidName= recommendation?.Variant_Name__c
        if(!liquidName){
         window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
        }
