@@ -3,7 +3,7 @@ exports.fetchAllRecommendations=async(req,res,next)=>{
     try{
         /*** Fetch Recommendations, Samples */
         let recommendations = await conn.query(`
-          SELECT Id, Accepted_Date__c, CreatedById, Duration__c, End_Date__c, Is_Accepted__c, Kitchen_Order_Ticket_KOT__c, New_or_Existing__c, Recommended_SKU__r.Display_Name__c, Recommended_SKU__c, Outlet_Name__r.Account_ID_18_digit__c, Outlet_Name__r.Channel__c, OwnerId, Pitch__c, Promotion_Name__c, Name, Promotion_Name_With_Scheme__c, Scheme__c, Start_Date__c, Week__c, Recommended_SKU__r.Liquid_Layer__c, Promotion_Name__r.Active__c,Promotion_Name__r.Name ,Recommended_SKU__r.Size_ID__r.Primary_Pack_Size__c, Recommended_SKU__r.Size_ID__r.Volume_Unit__c, Recommended_SKU__r.Liquid_Layer__r.Name
+          SELECT Id, Accepted_Date__c,	Variant_Name__c, CreatedById, Duration__c, End_Date__c, Is_Accepted__c, Kitchen_Order_Ticket_KOT__c, New_or_Existing__c, Recommended_SKU__r.Display_Name__c, Recommended_SKU__c, Outlet_Name__r.Account_ID_18_digit__c, Outlet_Name__r.Channel__c, OwnerId, Pitch__c, Promotion_Name__c, Name, Promotion_Name_With_Scheme__c, Scheme__c, Start_Date__c, Week__c, Recommended_SKU__r.Liquid_Layer__c, Promotion_Name__r.Active__c,Promotion_Name__r.Name ,Recommended_SKU__r.Size_ID__r.Primary_Pack_Size__c, Recommended_SKU__r.Size_ID__r.Volume_Unit__c, Recommended_SKU__r.Liquid_Layer__r.Name
           FROM Recommendation__c
           WHERE Start_Date__c <= TODAY AND End_Date__c >= TODAY
         `).execute();

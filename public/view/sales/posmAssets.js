@@ -340,8 +340,7 @@ async function uploadBase64Value(key, fileInput) {
                 PathOnClient: accountRec.Name + ' | POSM & Asset Requisition | ' + accountRec.Channel__c + ' | ' + Geolocation_Latitude + ' ' + Geolocation_Longitude + ' | ' + new Date() + '.' + fileInput.type.split('/').pop(),
                 VersionData: base64Image.replace(/^data:image\/[a-z]+;base64,/, ""),
                 Title: accountRec.Name + ' | POSM & Asset Requisition | ' + accountRec.Channel__c + ' | ' + Geolocation_Latitude + ' ' + Geolocation_Longitude + ' | ' + new Date(),
-                id: key,
-                FileExtension:fileInput.type.split('/').pop()
+                //FileExtension:fileInput.type.split('/').pop()
               }
         }
     });
@@ -450,7 +449,14 @@ function posmSubmit(){
 
         })
     }
-    $('#endVisit').modal('show');
+    console.log("POSM Items===>",bodyToBeSent)
+
+    if(bodyToBeSent.POSM_Line_Item__c.length>0){
+        $('#endVisit').modal('show');
+    }else{
+        handleEndDayHandler()
+    }
+
 
 }
 
@@ -488,14 +494,15 @@ async function apiToPostData(){
 async function handleEndDayHandler(){
 
         //let apiResponse = await apiToPostData()
-
-        await writeData('posm',bodyToBeSent)
         
+        if(bodyToBeSent.POSM_Line_Item__c.length>0){
+            await writeData('posm',bodyToBeSent)
+        }        
         let urlParam = new URLSearchParams(window.location.search);
         const accountID = urlParam.get('accountId')
         const individual = urlParam.get('individual')
 
-        if(individual == true){
+        if(individual == 'true'){
             window.location.href = '/view/homePage/homePage.html'
         }else{
             gotoCompitation1()

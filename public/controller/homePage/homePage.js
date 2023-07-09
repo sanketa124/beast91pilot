@@ -186,12 +186,12 @@ const fetchAccounts = async() => {
     showDropdown();
 };
 
-const initializeHomePage = () => {
+const initializeHomePage = async () => {
+    let dailyTracker = await getItemFromStore('dailyTracker',fetchCurrentDateIdStr());
     setTimeout(() => {
-
     fetchAccounts();
     reportDataFetch();
-    fetchTodayVisit();
+    if(dailyTracker) fetchTodayVisit();
     renderTodaysTasks();
     },100);
 };

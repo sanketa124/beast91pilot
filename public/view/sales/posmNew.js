@@ -28,9 +28,9 @@ goBack = () => {
   
   
   gotoCompitation1 = () => {
-    localStorage.getItem('accountId')
-    const accountID = localStorage.getItem('accountId') 
-    window.location.href = `/view/objectives/competitorInsights/competitionInsightsPage1.html?accountId=${accountID}`
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
+    window.location.href = `/view/objectives/competitorInsights/competitionInsightsPage1.html?accountId=${accountId}`
   }
 
 

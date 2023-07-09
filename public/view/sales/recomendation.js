@@ -1,5 +1,7 @@
-// let accountId=localStorage.getItem('accountId') || '001Bi000007JSMPIA4'
-// let eventId=localStorage.getItem('eventId') ||'a0KBi000003NchCMAS'
+const CONTRACT_URLS={
+  OFF_PREMISE:"https://form.jotform.com/231873132476054",
+  ON_PREMISE:"https://form.jotform.com/231894930377063"
+}
 
 let accountId=localStorage.getItem('accountId') 
 let eventId=localStorage.getItem('eventId')
@@ -110,7 +112,7 @@ try{
   result.map((recommendation) => {
     const {Recommended_SKU__r,Outlet_Name__r}=recommendation
     const skuRecommendationCondition=Recommended_SKU__r?.Size_ID__r?.Volume_Unit__c
-    && Recommended_SKU__r?.Liquid_Layer__r?.Name
+    && recommendation?.Variant_Name__c
     && Recommended_SKU__r?.Display_Name__c 
     && recommendation?.Pitch__c 
     && recommendation?.Recommended_SKU__c
@@ -147,6 +149,21 @@ try{
  const container3 = document.getElementById('promotions');
  const generatedHTML3 = displayPromotions(promotions||[]);
  container3.innerHTML = generatedHTML3;
+
+
+ /*** Contract */
+ let accountDetail = await getItemFromStore('account',accountId);
+ const channel= accountDetail?.Channel__c||''
+ const buttonElement = document.getElementById('contract-link');
+ buttonElement.addEventListener('click', function() {
+  // Set the value of the input element
+  if(channel=== "On-Premise"){
+    buttonElement.href = CONTRACT_URLS.ON_PREMISE;
+  }
+  if(channel==="Off-Premise"){
+      buttonElement.href = CONTRACT_URLS.OFF_PREMISE;
+    }
+});
 }catch(err){
   console.log(err)
 }

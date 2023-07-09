@@ -42,7 +42,7 @@ const updateSampleLineItem=async(sampleParent,sampleLineItem)=>{
 const createSampleLineItem=async()=>{
   /*** get Liquid Name and Packtype (i.e 330ml, 500ml, 650ml ...) */
   const recommendation= await getItemFromStore('recommendations',recommendationId)
-  const liquidName=recommendation?.Recommended_SKU__r?.Liquid_Layer__r?.Name
+  const liquidName=recommendation?.Variant_Name__c
   const packType=recommendation?.Recommended_SKU__r?.Size_ID__r.Volume_Unit__c +" ml"
   const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_Layer__c
   if(!liquidName && packType && liquidLayerId){
@@ -84,7 +84,7 @@ const createSampleLineItem=async()=>{
 const deleteSampleLineItem= async()=>{
    /*** get Liquid Name and Packtype (i.e 330ml, 500ml, 650ml ...) */
    const recommendation= await getItemFromStore('recommendations',recommendationId)
-   const liquidName=recommendation?.Recommended_SKU__r?.Liquid_Layer__r?.Name
+   const liquidName=recommendation?.Variant_Name__c
    const packType=recommendation?.Recommended_SKU__r?.Size_ID__r.Volume_Unit__c +" ml"
    const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_Layer__c
    if(!liquidName && packType && liquidLayerId){
