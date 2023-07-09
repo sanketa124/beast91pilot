@@ -348,6 +348,7 @@ async function getDefaultSalesItems() {
 
   }
   let depletedItems = [];
+  let nonDepletedItemIds = [];
   if (requiredLineItems.length > 0) {
 
     /* Need to find out the recommended quantity
@@ -421,7 +422,7 @@ async function getDefaultSalesItems() {
     } 
 
     let nonDepletedItems = requiredLineItems.filter((eachItem) => !depletedItems.includes(eachItem.Product__c))
-    let nonDepletedItemIds = nonDepletedItems.map((eachNonDepletedItem) => eachNonDepletedItem.Product__c)
+    nonDepletedItemIds = nonDepletedItems.map((eachNonDepletedItem) => eachNonDepletedItem.Product__c)
 
     nonDepletedItems.forEach((eachRequiredLineItem) => {
         eachRequiredLineItem['quantity'] = eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1)
