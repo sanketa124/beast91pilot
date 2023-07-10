@@ -4,12 +4,23 @@ let currentContactSelection = {}
 let accountRec = {}
 let accountId = '';
 let contactId = '';
+let urlParams = new URLSearchParams(window.location.search);
+const enroll = urlParams.get('enroll');
+if(enroll == 'true'){
+    $('#title').html('Add contacts for Allstars')
+}else{
+    $('#title').html('Meet and Greet Add')
+}
+
 
 onHandlePrevious = () => {
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
+    const enroll = urlParams.get('enroll');
     const individual = urlParams.get('individual')
-    if (individual == 'true') {
+    if (enroll == 'true') {
+        window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
+    }else if (individual == 'true') {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`;
     } else {
         window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`;
@@ -18,8 +29,15 @@ onHandlePrevious = () => {
 
 goBack = () => {
     let urlParams = new URLSearchParams(window.location.search);
-    const accountId = urlParams.get('accountId');
-    window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+    const enroll = urlParams.get('enroll');
+    const individual = urlParams.get('individual')
+    if (enroll == 'true') {
+        window.location.href = `/view/sales/enroll.html?accountId=${accountId}`
+    } else if (individual == 'true') {
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}&individual=true`
+    } else {
+        window.location.href = `/view/meetAndGreets/meetAndGreetDetails/meetAndGreetDetails.html?accountId=${accountId}`
+    }
 }
 
 const validateEmail = (email) => {
@@ -57,17 +75,22 @@ const populateContactModal = () => {
     $('#contactEmail').prop('value', currentContactSelection.Email ? currentContactSelection.Email : "");
     $('#contactRole').prop('value', currentContactSelection.Role__c ? currentContactSelection.Role__c : "");
     $('#flexCheckChecked').prop('value', currentContactSelection.Active__c ? currentContactSelection.Active__c : "");
+
 };
 
 const handleMeetSaveContact = () => {
+    let mobileError = document.getElementById('mobileError');
+    let emailError = document.getElementById('emailError');
+    let isEmailValid = true;
     if ($('#contactEmail').val()) {
         if (!validateEmail($('#contactEmail').val())) {
-            $('.emailConReq').css('display', 'block');
-            alert('Email is invalid');
+            emailError.classList.remove('hide-element');
+            isEmailValid = false;
             return;
         }
         else {
-            $('.emailConReq').css('display', 'none');
+            emailError.classList.add('hide-element');
+            isEmailValid = true;
         }
     }
     const contactTitle = $('#contactTitle').val();
@@ -87,11 +110,16 @@ const handleMeetSaveContact = () => {
     contactRec["Phone"] = contactPhone;
     contactRec["Email"] = contactEmail;
     contactRec["Active__c"] = isActive;
-    if (contactTitle && contactFirstName && contactLastName && contactRole && contactPhone) {
-        if (contactId) {
-            handleUpdateSubmitContact()
+    if (contactTitle && contactFirstName && contactLastName && contactRole && contactPhone && isEmailValid) {
+        if (contactPhone.length === 10) {
+            mobileError.classList.add('hide-element');
+            if (contactId) {
+                handleUpdateSubmitContact()
+            } else {
+                handleNewSaveSubmitContact()
+            }
         } else {
-            handleNewSaveSubmitContact()
+            mobileError.classList.remove('hide-element');
         }
     } else {
         alert('Please enter the required details')

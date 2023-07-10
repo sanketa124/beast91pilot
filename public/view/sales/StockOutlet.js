@@ -1,4 +1,5 @@
 const accountID = localStorage.getItem('accountId');
+var totalItem = 0;
 $(document).ready(function(){
   let urlParam = new URLSearchParams(window.location.search);
   const individual = urlParam.get('individual')
@@ -36,6 +37,7 @@ $(function () {
  
 let stockOutletList = [];
 getStockOutletList = () => {
+
 console.log('retailDepletionDataExisting', retailDepletionData)
 if(retailDepletionData.length>0){
   for (var i = 0; i < retailDepletionData.length; i++) {
@@ -53,6 +55,8 @@ if(retailDepletionData.length>0){
     <td><input type="number" class="form-control cartQtyChange" min="0" value="0" name="stockOutletVal" onkeyup="qtyTotalUpdate(`'+retailDepletionData[i].Item__c+'`)"></td>\
     </tr>')
   }
+  totalItem = retailDepletionData.length;
+  $("#totalItem").html(totalItem);
 }else{
   let totalQty = 0;
   for (var i = 0; i < stockOutletExistingData.length; i++) {
@@ -70,10 +74,12 @@ if(retailDepletionData.length>0){
     <td>'+stockOutletExistingData[i].name+'</td>\
     <td><input type="number" class="form-control cartQtyChange" name="stockOutletVal" min="0" value="'+stockOutletExistingData[i].Quantity+'" onkeyup="qtyTotalUpdate(`'+stockOutletExistingData[i].Item_Master+'`)"></td>\
     </tr>')
-    totalQty += stockOutletExistingData[i].Quantity;
+    totalQty += parseInt(stockOutletExistingData[i].Quantity);
 
 }
-$('#cartTotal label span, #totalItem').html(totalQty)
+totalItem = stockOutletExistingData.length;
+$('#cartTotal label span').html(totalQty);
+$("#totalItem").html(totalItem);
 }
   getProduct();
 }
@@ -84,7 +90,7 @@ const productClicked = (name, id) => {
   var quantity = $("#newEntry #prodQ").val();
   $("#stckOutletTbl tbody tr").filter(":last").before(' <tr data-id="'+id+'">\
   <td>'+name+'</td>\
-  <td><input type="number" class="form-control cartQtyChange" min="0" value="'+quantity+'"  onkeyup="qtyTotalUpdate(`'+id+'`)"></td>\
+  <td><input type="number" class="form-control cartQtyChange" min="0" name="stockOutletVal" value="'+quantity+'"  onkeyup="qtyTotalUpdate(`'+id+'`)"></td>\
   </tr>')
   let productsAdded = {
     Item_Master: id,
@@ -93,7 +99,9 @@ const productClicked = (name, id) => {
     mrp: 0,
     name: name
   }
-  addedProducts.push(productsAdded)
+  addedProducts.push(productsAdded);
+  totalItem += 1;
+  $("#totalItem").html(totalItem);
   $("#newEntry").hide();
 
 };
@@ -116,8 +124,7 @@ openSearch = () =>{
       items = itemsBackend.filter(ele => {
         if(!addedProductIds.includes(ele.Product__c)){
           let displayName = (ele.Product__c ? (ele.Product__r.Display_Name__c) : '');
-          displayName = displayName.toLowerCase();
-          const obj = { id: ele.Product__c, name: displayName.indexOf(value) > -1 ? displayName : '' };
+          const obj = { id: ele.Product__c, name: displayName.toLowerCase().indexOf(value) > -1 ? displayName : '' };
           console.log('obj',obj)
           {obj.name && results.push(obj)}
         }
@@ -172,7 +179,7 @@ $(".cartQtyChange").each(function() {
 });
 console.log(addedProducts)
 console.log('sum',sum)
-$('#cartTotal label span, #totalItem').html(sum)
+$('#cartTotal label span').html(sum)
 }
 
 areAllFieldsEmpty = () => {
@@ -181,7 +188,8 @@ areAllFieldsEmpty = () => {
   for (let i = 0; i < inputFields.length; i++) {
     const value = inputFields[i].value.trim();
     if (Number(value) < 0 ) {
-      $('#errorMsg').show();
+      $('#errorMsg').html('Stock at outlet quantity cannot be a negative value').show();
+      $("html, body").scrollTop($("#errorMsg").offset().top);
       return false;
     }
   }

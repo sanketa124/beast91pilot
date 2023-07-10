@@ -12,6 +12,13 @@ let eventId = localStorage.getItem('eventId');
         contactMeetingData.meetingData = [];
     }else{
         contactMeetingData = meetingDataArr;
+        console.log('contactMeetingData', contactMeetingData);
+        if(contactMeetingData.isSynced){
+            contactMeetingData = {};
+            contactMeetingData.App_Id = `${fetchCurrentDateIdStr()}-${accountID}`;
+            contactMeetingData.meetingData = [];
+        }
+
     }
     if (individual == 'true') {
         $('#closeIco').hide();

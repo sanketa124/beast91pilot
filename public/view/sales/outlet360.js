@@ -1,9 +1,7 @@
-$('#gridTbl1 tbody tr:nth-child(n+6)').hide()
-$('#gridTbl1 tbody tr:last-child').show()
-$("#showGridTbl1").click(function(){
-  $('#gridTbl1 tbody tr:nth-child(n+6)').toggle();
-  $('#gridTbl1 tbody tr:last-child').show()
-  $(this).toggleClass('addtrans')
+
+$("#showGridTbl1").on('click',function(){
+  alert('hi')
+ 
 })
 
 $('#gridTbl2 tbody tr:nth-child(n+6)').hide()
@@ -107,7 +105,7 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
          const industrySegementValue=["P0","P1","P2"].includes(industrySegement)?4:["P3"].includes(industrySegement)?2:1
          const visitTarget1= document.getElementById('visit-target-content')
          const targetVal = ((target-achievement)/(industrySegementValue||1))
-         visitTarget1.textContent= `${( !isNaN(targetVal) ? targetVal.toFixed(2) :``)} CE`
+         visitTarget1.textContent= `${( !isNaN(Math.round(targetVal)) ? Math.round(targetVal) :``)} CE`
 
 
          /*** 3. B91 Insights and  competitor insights , Order Frequencies, lapsedKegs */
@@ -227,6 +225,7 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
          }).join('')
           const liquidSalesBody = document.getElementById("liquid-sales");
           let liqSalesHtml=biraWhiteRowHtml+ biraBlondeRowHtml+biraRiseRowHtml+ biraGoldRowHtml+biraBoomRowHtml+otherLiquidsHtml
+          
           if(liqSalesHtml){
             liquidSalesBody.innerHTML=liqSalesHtml
           }
@@ -271,7 +270,25 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
             return `<tr><td>${item?.Subject || ''} </td><td> ${item.Settlement_Date__c} <i class="fas fa-calendar-alt"></i></td></tr>`
         }).join('')
         issuesElement.innerHTML=issuesHtml
-  })();
+        // $('#gridTbl1 tbody tr:nth-child(n+6)').hide()
+        // //$('#gridTbl1 tbody tr:last-child').show()
+        // $("#showGridTbl1").on('click',function(){
+        //   alert('hi')
+        //   //$('#gridTbl1 tbody tr:nth-child(n+6)').toggle();
+        //  // $('#gridTbl1 tbody tr:last-child').show()
+        //   //$(this).toggleClass('addtrans')
+        // })
+        // let lastChild = `<tr>
+        //                       <td>Innovation</td>
+        //                       <td>
+        //                           <i class="fa fa-sort-down sortClick" id="showGridTbl1"></i>
+        //                       </td>
+        //                       <td></td>
+        //                       <td></td>
+        //                       <td></td>
+        //                   </tr>`
+        //   $('#gridTbl1 tbody').append(lastChild)
+      })();
 
   const initializeBiraInsights=(bira91Insights)=>{
          /*** B9 Volume MTD */
@@ -384,7 +401,7 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
       let resolveCanHtml=`<td> <i class="fas${resolveCanColumn?.color? ` fa-check `+resolveCanColumn.color :''}"></i></td>`
       let resolve650mlHtml=`<td> <i class="fas${resolve650mlColumn?.color? ` fa-check `+resolve650mlColumn.color :''}"></i></td>`
       let resolveKegHtml=`<td> <i class="fas${resolveKegColumn?.color?  ` fa-check `+resolveKegColumn.color:''}"></i></td>` 
-      let html=`<tr><td>${capitalizeWords(liquidName||'Sample SKU')}</td> ${resolve330mlHtml+resolveCanHtml+resolve650mlHtml+  resolveKegHtml}</tr><td>`
+      let html=`<tr><td>${capitalizeWords(liquidName||'Sample SKU')}</td> ${resolve330mlHtml+resolveCanHtml+resolve650mlHtml+  resolveKegHtml}</tr>`
       return html
 
   }
@@ -423,3 +440,8 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
   function capitalizeWords(str) {
     return str.replace(/\b\w/g, char => char.toUpperCase());
   }
+
+  $(".sortClick").on('click',function(){
+    alert('hi')
+   
+  })

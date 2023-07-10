@@ -22,19 +22,19 @@
             if (ele.Active__c) {
                 temp += '<div class="row contactDetailsBorder">'
                 temp += '<div class="col-xs-1">'
-                temp += '<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>'
+                temp += '<input class="form-check-input" name="radio" type="radio" value="" id="flexCheckChecked">'
                 temp += ' </div>'
-                temp += '<div class="col-xs-1">'
-                temp += '<label class="contactDetailsTxt">' + ele.Salutation + '.</label>'
+                temp += '<div class="col-xs-2">'
+                temp += '<label class="contactDetailsTxt">' + ele.Salutation + '</label>'
                 temp += ' </div>'
-                temp += '<div class="col-xs-4">'
+                temp += '<div class="col-xs-3">'
                 temp += ' <label class="contactDetailsTxt">' + ele.FirstName + '</label>'
                 temp += '</div>'
                 temp += '<div class="col-xs-2">'
                 temp += '<label class="contactDetailsTxt">' + ele.LastName + '</label>'
                 temp += '</div>'
                 temp += '<div class="col-xs-3">'
-                temp += '<label class="contactDetailsTxt">' + ele.Phone + '</label>'
+                temp += '<label class="contactDetailsTxt">' + (ele.Phone ? ele.Phone : '') + '</label>'
                 temp += '</div>'
                 temp += '<div class="col-xs-1" style="margin-right:"5px">'
                 temp += `<img onclick="onHandleEdit('${ele.Id}')" class="editIcon" src="/media/icons/editIcon.png" />`
@@ -53,7 +53,15 @@
 finalSubmit = () => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
-    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
+    const selectedMeetingsCount = [...document.querySelectorAll('input[name="radio"]')].filter(radio => radio.checked).length;
+    console.log(selectedMeetingsCount, 'selectedMeetingsCount')
+    if(selectedMeetingsCount == 0){
+        $('#contactMeetingSubmit').modal('show');
+    }else{
+        $('#smsPopup').modal('show');
+    }
+   
+    //window.location.href = `/view/accountLanding/accountLanding.html?accountId=${accountID}`
 }
 
 openAddMeetAndGreet = () => {

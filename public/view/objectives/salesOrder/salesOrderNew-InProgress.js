@@ -409,7 +409,7 @@ async function getDefaultSalesItems() {
         summedQuantities.forEach((eachSummedQuantity) => {
           if (eachSummedQuantity.itemId == eachRequiredLineItem.Product__c) {
 
-            eachRequiredLineItem['quantity'] = Math.max(eachRequiredLineItem['goalQuantity'] - eachSummedQuantity.quantity, 0) / Math.max(numberOfVisits, 1)
+            eachRequiredLineItem['quantity'] = Math.floor(Math.max(eachRequiredLineItem['goalQuantity'] - eachSummedQuantity.quantity, 0) / Math.max(numberOfVisits, 1))
 
             defaultItems.push(eachRequiredLineItem)
             depletedItems.push(eachRequiredLineItem.Product__c)
@@ -425,7 +425,7 @@ async function getDefaultSalesItems() {
     nonDepletedItemIds = nonDepletedItems.map((eachNonDepletedItem) => eachNonDepletedItem.Product__c)
 
     nonDepletedItems.forEach((eachRequiredLineItem) => {
-        eachRequiredLineItem['quantity'] = eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1)
+        eachRequiredLineItem['quantity'] = Math.floor(eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1))
         defaultItems.push(eachRequiredLineItem)
       })
   }

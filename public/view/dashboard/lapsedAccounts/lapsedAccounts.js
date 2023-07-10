@@ -5,6 +5,7 @@ const initializeFollowUps = async() => {
     let lapsedAcc = localStorage.getItem('lapsedAccount')
     lapsedAcc = JSON.parse(lapsedAcc)
     lapsedAcc.records.map(ele => {
+        console.log(ele)
         let DepletionDate,VisitDate
         if(ele.Recent_Retail_Depletion__c){
             DepletionDate = FormatDate(ele.Recent_Retail_Depletion__c)
@@ -39,6 +40,14 @@ const initializeFollowUps = async() => {
         }else  if(ele.Industry_Segment__c == 'P4'){
             temp1 = `<strong class="p4">P4</strong>`
         }
+        let loc;
+        if(ele?.Geolocation__c != null || ele?.Geolocation__c != undefined){
+            // let map = "https://maps.google.com?q="+ele?.Geolocation__c?.latitude+','+ele?.Geolocation__c?.longitude;
+            // $('.loc').prop('href',map)
+            loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(ele?.Geolocation__c?.latitude ? ele?.Geolocation__c?.latitude : '')},${(ele?.Geolocation__c?.longitude ? ele?.Geolocation__c?.longitude : '')}"><span>${(ele?.Geolocation__c?.latitude ? ele?.Geolocation__c?.latitude : '')},${(ele?.Geolocation__c?.longitude ? ele?.Geolocation__c?.longitude : '')}</span></a>`
+            //console.log("https://maps.google.com?q="+ele?.Geolocation__c?.latitude+','+ele?.Geolocation__c?.longitude);
+            
+          }
         cardSection.innerHTML +=`<div class="card">
     <div class="card-body">
         <div class="row">
@@ -47,6 +56,7 @@ const initializeFollowUps = async() => {
                 <label>${(ele.Channel__c) ?ele.Channel__c :""}/ ${(ele.Sub_Channel__c)?ele.Sub_Channel__c :""}</label>
                 <label> <strong>Order: </strong> <span>${(DepletionDate)?DepletionDate: ""}</span> <span>|</span>  <strong>Visit: </strong> <span>${(VisitDate)?VisitDate : ""}</span></label>
                 <label>${(ele.BillingStreet)?ele.BillingStreet:""}</label>
+                <label>${loc? loc : ''}</label>
             </div>
             <div class="col-xs-4 pl-0 text-right">
                 <ul>

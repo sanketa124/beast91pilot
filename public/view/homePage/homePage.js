@@ -198,10 +198,10 @@ showSliderData = async (targetnAchieved) => {
               tmp += '                    </div>';
           }
     
-          const volumeAch = parseFloat((targetnAchieved[0].achievement).toFixed(2));
-          const volumeTarget = parseFloat((targetnAchieved[0].target).toFixed(2));
-          const podAch = parseFloat((targetnAchieved[6].achievement).toFixed(2));
-          const podTarget = parseFloat((targetnAchieved[6].target).toFixed(2));
+          const volumeAch =  Math.round(parseFloat((targetnAchieved[0].achievement)).toFixed(2));
+          const volumeTarget =  Math.round(parseFloat((targetnAchieved[0].target)).toFixed(2));
+          const podAch =  Math.round(parseFloat((targetnAchieved[6].achievement)).toFixed(2));
+          const podTarget =  Math.round(parseFloat((targetnAchieved[6].target)).toFixed(2));
           const overallVolumePercent = Math.round(parseFloat((targetnAchieved[0].achievement / (targetnAchieved[0].target === 0 ? 1 : targetnAchieved[0].target)) * 100).toFixed(2));
           const podPercent = Math.round(parseFloat((targetnAchieved[6].achievement / (targetnAchieved[6].target === 0 ? 1 : targetnAchieved[6].target)) * 100).toFixed(2));
             if(overallVolumePercent > 100){
@@ -220,7 +220,7 @@ showSliderData = async (targetnAchieved) => {
          
           $("#volAch").html('Ach: '+volumeAch+' CE');
           $("#volTarget").html('Target: '+volumeTarget+' CE' );
-          $("#volPercent").html('('+overallVolumePercent+')%');
+          $("#volPercent").html('('+overallVolumePercent+'%)');
           $("#podAch").html('Ach: '+podAch);
           $("#podTarget").html('Target: '+podTarget);
           $("#podPercent").html(`(${podPercent}%)`);

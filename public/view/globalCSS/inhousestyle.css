@@ -811,7 +811,7 @@ div#sliderInfo {
   color: #E8E02B !important;
 }
 .colorMerun{
-  color: rgb(251 7 7 / 50%) !important;
+  color: #800080 !important;
 }
 .bgGreen{
   background: #67E476 !important;
@@ -823,7 +823,8 @@ div#sliderInfo {
   background: #F80000 !important;
 }
 .bgMerun{
-  background: rgb(251 7 7 / 50%) !important;
+  background: #800080 !important;
+  color: #fff !important;
 }
 .tableOne{
 

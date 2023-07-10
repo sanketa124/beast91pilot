@@ -337,7 +337,8 @@ handleSubmit = () =>{
         showAlertmsg("Images are mandatory where elements are present! Press Toggle off if image is not available");
         return;
     }else{
-      $('#competitorSubmit').modal('show');
+      handleSubmitPromotions();
+     // $('#competitorSubmit').modal('show');
     }
 }
 

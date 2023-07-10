@@ -9,7 +9,7 @@ let itemValueMap = new Map();
 let selectedProducts = new Set();
 const accountID = localStorage.getItem('accountId');
 let accoutnDetails = {};
-let isError = 0;
+let totalStockAtRiskQty = 0;
 
 let stockVisbility = {};
 const initializeStockVisibility = async () => {
@@ -44,20 +44,19 @@ const initializeStockVisibility = async () => {
   updateImageColorOnLoad();
 };
 displayProducts = () => {
-  let totalQty = 0;
   for (var i = 0; i < selectedProducts.length; i++) {
     console.log('selectedProducts', selectedProducts[i])
     var stockAtRisk = selectedProducts[i].Stock_at_Risk ? selectedProducts[i].Stock_at_Risk : 0;
     $("#stckRiskTbl tbody").prepend(' <tr data-id="' + selectedProducts[i].Item_Master + '">\
     <td style="width:45%">'+ selectedProducts[i].name + '</td>\
-    <td style="width:14%;text-align:center;">'+ selectedProducts[i].Quantity + '</td>\
+    <td style="width:14%;text-align:center;" class="itemOty">'+ selectedProducts[i].Quantity + '</td>\
     <td style="width:23%"><input type="number" style="padding:0;" class="form-control cartQtyChange" min="0" value="'+ stockAtRisk + '" max="' + selectedProducts[i].Quantity + '" onkeyup="qtyTotalUpdate(`' + selectedProducts[i].Item_Master + '`,' + selectedProducts[i].Quantity + ')" name="stockRiskVal"></td>\
     <td style="width:18%">'+ createImgInput(('' + selectedProducts[i].Item_Master + ''), '', stockVisbility['xxxx'], "fileInput(this,`" + selectedProducts[i].Item_Master + "`)", true) + '</td>\
     </tr>')
-    totalQty += stockAtRisk;
+    totalStockAtRiskQty += stockAtRisk;
   }
-  $('#cartTotal').html(totalQty);
-  if (totalQty > 0) {
+  $('#cartTotal').html(totalStockAtRiskQty);
+  if (totalStockAtRiskQty > 0) {
     $('.checkHeader').show();
     if (typeof stockVisbility.liquidPromotion !== 'undefined' && stockVisbility.liquidPromotion !== null) {
       $("#showCasesCheck").prop("checked", true);
@@ -137,12 +136,7 @@ qtyTotalUpdate = (prodId, qty) => {
             value = 0;
           }
           if (qty >= value) {
-            if (isError > 0) {
-              isError -= 1;
-            }
             obj.Stock_at_Risk = value;
-          } else if (value > qty) {
-            isError += 1;
           }
         }
       });
@@ -156,6 +150,7 @@ qtyTotalUpdate = (prodId, qty) => {
       $('.checkHeader').hide();
     }
   });
+  totalStockAtRiskQty = sum
   console.log('sum', sum)
   $('#cartTotal').html(sum);
 }
@@ -174,11 +169,10 @@ saveStockAtRisk = async () => {
   console.log('stockVisbility', stockVisbility)
   $('#errorMsg').hide();
   var isChecked = $('#showCasesCheck').prop('checked');
-  console.log(areAllFieldsEmpty());
-  console.log('isError', isError)
-  if (areAllFieldsEmpty() || isError) {
-    var errmsg = areAllFieldsEmpty() ? 'Stock at risk quantity cannot be a negative value' : isError ? 'Stock at risk cannot be more than stock at outlet' : '';
+  if (inputError()) {
+    var errmsg = inputError() == 'negative_error' ? 'Stock at risk quantity cannot be a negative value' : inputError() == 'stock_error' ? 'Stock at risk cannot be more than stock at outlet' : '';
     $('#errorMsg').html(errmsg).show();
+    $("html, body").scrollTop($("#errorMsg").offset().top);
     return false;
   }
 
@@ -195,7 +189,7 @@ saveStockAtRisk = async () => {
   console.log('isValid', isValid)
   if (!isValid) {
     $('#stockSubmit').modal('show');
-    $('#stockSubmit .modal-body').html('Images are mandatory where elements are present! Press Toggle off if image is not available');
+    $('#stockSubmit .modal-body').html('Images are mandatory for stock at risk items');
     $('.modal-footer .btn-success').css('display', 'none');
     $('.modal-footer .btn-danger').html('Close');
     return false;
@@ -211,19 +205,26 @@ saveStockAtRisk = async () => {
     var showCase = $('#showCases input').val();
     if (!showCase || showCase == 0) {
       $('#errorMsg').html('Number of cases must be more than 0').show();
+      $("html, body").scrollTop($("#errorMsg").offset().top);
       return false;
     } else {
-      let currentDate = new Date();
-      let year = currentDate.getFullYear();
-      let month = String(currentDate.getMonth() + 1).padStart(2, "0");
-      let day = String(currentDate.getDate()).padStart(2, "0");
-      let acceptedDate = `${year}-${month}-${day}`;
+      if (showCase > totalStockAtRiskQty) {
+        $('#errorMsg').html('Number of cases for promotion should not be more than total stock at risk').show();
+        $("html, body").scrollTop($("#errorMsg").offset().top);
+        return false;
+      } else {
+        let currentDate = new Date();
+        let year = currentDate.getFullYear();
+        let month = String(currentDate.getMonth() + 1).padStart(2, "0");
+        let day = String(currentDate.getDate()).padStart(2, "0");
+        let acceptedDate = `${year}-${month}-${day}`;
 
-      stockVisbility.liquidPromotion = {
-        Outlet_Name__c: accountID,
-        Is_Accepted__c: true,
-        Number_of_Cases__c: showCase,
-        Accepted_Date__c: acceptedDate
+        stockVisbility.liquidPromotion = {
+          Outlet_Name__c: accountID,
+          Is_Accepted__c: true,
+          Number_of_Cases__c: showCase,
+          Accepted_Date__c: acceptedDate
+        }
       }
     }
   } if ($('#cartTotal').html() == '0') {
@@ -233,13 +234,29 @@ saveStockAtRisk = async () => {
   window.location.href = `/view/sales/recomendation.html?accountId=${accountID}`
 }
 
-areAllFieldsEmpty = () => {
-  const inputFields = document.querySelectorAll('input[name="stockRiskVal"]');
-  for (let i = 0; i < inputFields.length; i++) {
-    const value = inputFields[i].value.trim();
+inputError = () => {
+  let err = 0;
+  let errMsg = ''
+  const inputFields = $('input[name="stockRiskVal"]');
+
+  inputFields.each(function () {
+    const value = parseInt($(this).val());
+
     if (Number(value) < 0) {
-      return true;
+      err += 1;
+      errMsg = 'negative_error';
+    } else {
+      const stockOutletQty = parseInt($(this).parent().siblings('.itemOty').html());
+      console.log(stockOutletQty, value)
+      if (Number(value) > stockOutletQty) {
+        err += 1;
+        errMsg = 'stock_error';
+      }
     }
+
+  });
+  if (err > 0) {
+    return errMsg;
   }
   return false;
 }
