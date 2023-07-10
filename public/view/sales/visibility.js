@@ -412,7 +412,7 @@ function handleToggleSwitchDraft() {
   const get_camera_Empty_Kegs__c_draft = document.getElementById('Empty_Kegs__c_draft_File');
 
 
-  // const checkBox_LED_NON_working = document.getElementById('LED_Non_working_Requires_Maintenance__c_draft');
+  const checkBox_LED_NON_working = document.getElementById('LED_Non_working_Requires_Maintenance__c_draft');
   const checkBox_Facade_Non_working = document.getElementById('Facade_Non_working_Requires_Maintenance__c_draft');
   const checkBox_Medallions_only_Non_working = document.getElementById('Medallions_only_Non_working__c_draft');
 
@@ -420,14 +420,15 @@ function handleToggleSwitchDraft() {
 
   if (isActive_Z_2_Bira_91_LED_Signage__c_draft) {
     get_camera_Z_2_Bira_91_draft.classList.remove('hide-element');
-    // checkBox_LED_NON_working.classList.remove('hide-element')
+    checkBox_LED_NON_working.classList.remove('hide-element')
     stockVisbility['Z_2_Bira_91_LED_Signage'] = isActive_Z_2_Bira_91_LED_Signage__c_draft
 
   } else {
     get_camera_Z_2_Bira_91_draft.classList.add('hide-element');
-    // checkBox_LED_NON_working.classList.add('hide-element')
+    checkBox_LED_NON_working.classList.add('hide-element')
     stockVisbility['Z_2_Bira_91_LED_Signage'] = isActive_Z_2_Bira_91_LED_Signage__c_draft
     document.getElementById('Z_2_Bira_91_LED_Signage__c_draft_File').value = null
+    document.getElementById('LED_Non_working_Requires_Maintenance__c_draft').value = null
     stockVisbility['Z_2_Bira_91_LED_Signage_File'] = null
     removeBackgroundColor('Z_2_Bira_91_LED_Signage_File')
   }
@@ -586,8 +587,10 @@ function saveVisibilityAndNext() {
   if (draft_status) {
     const checkBox_Facade_Non_working = $("#Facade_Non_working_draft").is(":checked");
     const checkBox_Medallions_only_Non_working = $("#Medallions_only_Non_working_draft").is(":checked");
+    const checkBox_Led_Non_working = $("#Led_Non_working_Draft").is(":checked");
     stockVisbility['Facade_Non_working_Requires_Maintenance'] = checkBox_Facade_Non_working;
     stockVisbility['Medallions_only_Non_working'] = checkBox_Medallions_only_Non_working;
+    stockVisbility['LED_Non_working_Requires_Maintenance'] = checkBox_Led_Non_working;  
   } else if (qco_status) {
     let checkBox_Led_Non_Working_Status = $("#LED_Non_working_qco_check").is(":checked");
     let checkBox_Facade_Non_working_Status = $("#Facade_Non_working_qco_check").is(":checked");
@@ -717,7 +720,7 @@ const populatePrevDetails = (draft_status, qco_status, channel_type) => {
     }
     document.getElementById('Z_1_Facade_Signage__c_draft_File').value = stockVisbility['Z_1_Facade_Signage_File']
     if (stockVisbility['Z_1_Facade_Signage_File']) {
-      fileAttachedBackgroundChange('Z_1_Facade_Signage__c_File')
+      fileAttachedBackgroundChange('Z_1_Facade_Signage_File')
     }
     document.getElementById('Z_3_Coaster__c_draft_File').value = stockVisbility['Z_3_Coaster_File']
     if (stockVisbility['Z_3_Coaster_File']) {
@@ -765,7 +768,9 @@ const populatePrevDetails = (draft_status, qco_status, channel_type) => {
       fileAttachedBackgroundChange('Empty_Kegs_File')
     }
     document.getElementById('Medallions_only_Non_working_draft').checked = stockVisbility['Medallions_only_Non_working']
-    document.getElementById('Facade_Non_working_draft').checked = stockVisbility['Z_1_Facade_Signage']
+    document.getElementById('Facade_Non_working_draft').checked = stockVisbility['Facade_Non_working_Requires_Maintenance']
+    document.getElementById('Led_Non_working_Draft').checked = stockVisbility['LED_Non_working_Requires_Maintenance']
+
 
     handleToggleSwitchDraft()
   } else if (qco_status) {
@@ -841,7 +846,7 @@ const populatePrevDetails = (draft_status, qco_status, channel_type) => {
     }
 
     document.getElementById('LED_Non_working_Requires_Maintenance__c_on').checked = stockVisbility['LED_Non_working_Requires_Maintenance']
-    document.getElementById('Facade_Non_working_Requires_Maintenance__c_on').checked = stockVisbility['Z_1_Facade_Signage']
+    document.getElementById('Facade_Non_working_Requires_Maintenance__c_on').checked = stockVisbility['Facade_Non_working_Requires_Maintenance']
     handleToggleONPremises()
   } else if (channel_type === 'Off-Premise') {
     document.getElementById('Z_2_Bira_91_LED_Signage__c_off').checked = stockVisbility['Z_2_Bira_91_LED_Signage']
@@ -900,7 +905,7 @@ const populatePrevDetails = (draft_status, qco_status, channel_type) => {
     }
 
     document.getElementById('LED_Non_working_off').checked = stockVisbility['LED_Non_working_Requires_Maintenance']
-    document.getElementById('Facade_Non_working_off').checked = stockVisbility['Z_1_Facade_Signage']
+    document.getElementById('Facade_Non_working_off').checked = stockVisbility['Facade_Non_working_Requires_Maintenance']
     document.getElementById('One_way_vision_Non_working_off').checked = stockVisbility['One_way_vision_Non_working']
     document.getElementById('cooler_Non_working_off').checked = stockVisbility['cooler_Non_working_Requires_Maintenance']
     document.getElementById('Island_Unit_Non_working_off').checked = stockVisbility['Island_Unit_Non_working']

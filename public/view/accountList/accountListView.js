@@ -58,13 +58,13 @@ showListOfAccount = (i = 0) => {
           temp1 = '';
         }
         let loc;
-        if(i.Geolocation__c != null || i.Geolocation__c != undefined){
-          let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
-          $('.loc').prop('href',map)
-          loc = '<a class="loc" ><span>'+(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')+','+(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')+'</span></a>'
-          //console.log("https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude);
-          
-        }
+        if(i?.Geolocation__c != null || i?.Geolocation__c != undefined){
+            // let map = "https://maps.google.com?q="+i?.Geolocation__c?.latitude+','+i?.Geolocation__c?.longitude;
+            // $('.loc').prop('href',map)
+            loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i?.Geolocation__c?.latitude ? i?.Geolocation__c?.latitude : '')},${(i?.Geolocation__c?.longitude ? i?.Geolocation__c?.longitude : '')}"><span>${(i?.Geolocation__c?.latitude ? i?.Geolocation__c?.latitude : '')},${(i?.Geolocation__c?.longitude ? i?.Geolocation__c?.longitude : '')}</span></a>`
+            //console.log("https://maps.google.com?q="+i?.Geolocation__c?.latitude+','+i?.Geolocation__c?.longitude);
+            
+          }
     
     
         const AccId = i.Id 

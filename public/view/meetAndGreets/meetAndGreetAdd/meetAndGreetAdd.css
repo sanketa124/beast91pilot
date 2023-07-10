@@ -30,7 +30,7 @@
 
 .cancelBtn {
     color: #3274CC;
-    
+
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -38,7 +38,7 @@
 }
 
 .contactsText {
-    
+
     font-style: normal;
     font-weight: 700;
     font-size: 20px;
@@ -46,7 +46,7 @@
 }
 
 .existingCountText {
-    
+
     font-style: normal;
     font-weight: 700;
     font-size: 15px;
@@ -54,7 +54,7 @@
 }
 
 .existingCountValue {
-    
+
     font-style: normal;
     font-weight: 700;
     font-size: 15px;
@@ -73,7 +73,7 @@
 }
 
 .addNewContactBtnTxt {
-    
+
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
@@ -83,7 +83,7 @@
 }
 
 .saveBtnTxt {
-    
+
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
@@ -103,6 +103,7 @@
     font-weight: 600;
     font-size: 16px;
 }
+
 .previousBtnTxt {
     width: 92px;
     height: 35px;
@@ -133,7 +134,8 @@
 .hrColor {
     border: 1px solid #000 !important;
 }
-body{
+
+body {
     overflow-x: hidden;
 }
 
@@ -147,28 +149,52 @@ body{
     margin-left: 7px;
     padding-top: 5px;
 }
-.saveBtnPadding{
+
+.saveBtnPadding {
     padding-left: 70px;
 }
-.bottomBtnDiv{
+
+.bottomBtnDiv {
     padding-top: 30px;
 }
-.fieldPadding{
+
+.fieldPadding {
     padding-bottom: 10px;
 }
-.borderStyle{
-    width:15px;
-    height:15px
+
+.borderStyle {
+    width: 15px;
+    height: 15px
 }
-.form-group{
+
+.form-group {
     margin: 0 0 10px 0 !important;
 }
-.form-control{
+
+.form-control {
     height: 40px;
 }
+
 .form-group {
     padding-right: 7px;
 }
+
 .checkBoxPadding {
     padding-top: 20px;
+}
+
+.mobileErrorMessage {
+    color: red;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.hide-element {
+    display: none;
+}
+
+.emailErrorMessage {
+    color: red;
+    font-weight: 400;
+    font-size: 12px;
 }

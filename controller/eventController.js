@@ -537,6 +537,49 @@ exports.objectiveSync = async (req, res) => {
                 });
         }
 
+                // Syncing Sales Orders
+                for (let i = 0; i < salesOrder.length; i++) {
+
+                    let eachSalesOrder = salesOrder[i]
+        
+                    console.log("Sales Order===>", eachSalesOrder)
+        
+                    console.log("Values===>", eachSalesOrder.Reasons_For_Zero_Products)
+        
+                    let salesOrderBody = {
+                        Account__c: eachSalesOrder.accountId,
+                        App_Id__c: eachSalesOrder.App_Id,
+                        Created_Date__c: eachSalesOrder.Created_Date,
+                        Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
+                        Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : '',
+                        Reasons_for_not_Liking_Product__c: eachSalesOrder.Stringified_Reasons_For_Zero_Products,
+                        Sub_reasons__c: eachSalesOrder.Stringified_Sub_reasons__c
+                    }
+        
+                    let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
+        
+                    if (createSalesOrder && eachSalesOrder.products.length > 0) {
+                        //Create the Line Items
+                        let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+                            return {
+                                Item_Name__c: eachLineItem.Product__c,
+                                Cases__c: eachLineItem.quantity,
+                                SO__c: createSalesOrder.id
+                            }
+                        })
+        
+                        let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+        
+                        console.log("Creating line itemss====>", JSON.stringify(createLineItems))
+        
+                        if (createLineItems) {
+                            console.log("Sales order created successfully")
+                        } else {
+                            console.log("Error in creating Sales Orders")
+                        }
+                    }
+                }
+
         let body = {
             User_Name: req.body.username,
             stockVisibilites: JSON.stringify(stockVisibilites),
@@ -548,11 +591,19 @@ exports.objectiveSync = async (req, res) => {
             syncDateTime: req.body.syncDateTime,
             productPreSalesSamples: JSON.stringify(productSampling)
         };
+        const ContactMeeting = req.body.contactMeeting
+        if (ContactMeeting && ContactMeeting.length > 0) {
+            const reqContactMeetingData = {
+                conn: req.conn,
+                contactMeetingData: ContactMeeting
+            }
+            await updateContactMeeting(reqContactMeetingData, res);
+        }
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
-        if(stockVisibilites &&  stockVisibilites.length>0 && stockVisibilites[0].stock_at_risk_images.length > 0){
+        if (stockVisibilites && stockVisibilites.length > 0 && stockVisibilites[0].stock_at_risk_images.length > 0) {
             const imageBodyArr = stockVisibilites[0].stock_at_risk_images;
             const imageBody = imageBodyArr.map(obj => {
-                const updatedObj = { ...obj }; 
+                const updatedObj = { ...obj };
                 delete updatedObj['id'];
                 return updatedObj;
             });
@@ -567,16 +618,6 @@ exports.objectiveSync = async (req, res) => {
             }
             await updateLiquidPromotion(liquidPromotionData, res);
         }
-
-        if (req.body.contactMeeting && req.body.contactMeeting.length > 0) {
-            const reqContactMeetingData = {
-                conn: req.conn,
-                contactMeetingData: req.body.contactMeeting
-            }
-            await updateContactMeeting(reqContactMeetingData, res);
-        }
-
-
 
         dealerWiseVisitInfoJSON = JSON.parse(dealerWiseVisitInfo);
 
@@ -832,48 +873,6 @@ exports.objectiveSync = async (req, res) => {
         if (scheduleVisits && scheduleVisits.length > 0) {
             await sfConnection.sobject('Event__c').create(scheduleVisits);
 
-        }
-        // Syncing Sales Orders
-        for (let i = 0; i < salesOrder.length; i++) {
-
-            let eachSalesOrder = salesOrder[i]
-
-            console.log("Sales Order===>", eachSalesOrder)
-
-            console.log("Values===>", eachSalesOrder.Reasons_For_Zero_Products)
-
-            let salesOrderBody = {
-                Account__c: eachSalesOrder.accountId,
-                App_Id__c: eachSalesOrder.App_Id,
-                Created_Date__c: eachSalesOrder.Created_Date,
-                Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
-                Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : '',
-                Reasons_for_not_Liking_Product__c: eachSalesOrder.Stringified_Reasons_For_Zero_Products,
-                Sub_reasons__c: eachSalesOrder.Stringified_Sub_reasons__c
-            }
-
-            let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
-
-            if (createSalesOrder && eachSalesOrder.products.length > 0) {
-                //Create the Line Items
-                let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
-                    return {
-                        Item_Name__c: eachLineItem.Product__c,
-                        Cases__c: eachLineItem.quantity,
-                        SO__c: createSalesOrder.id
-                    }
-                })
-
-                let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
-
-                console.log("Creating line itemss====>", JSON.stringify(createLineItems))
-
-                if (createLineItems) {
-                    console.log("Sales order created successfully")
-                } else {
-                    console.log("Error in creating Sales Orders")
-                }
-            }
         }
 
         // Schedule Visit Procedure

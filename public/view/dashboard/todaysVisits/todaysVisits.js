@@ -106,22 +106,23 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
     //   loc = $('#loc').attr('href',"");
     // }
     if(i.Geolocation__c != null || i.Geolocation__c != undefined){
-      let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
-      $('.loc').prop('href',map)
-      loc = '<a class="loc" ><span>'+(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')+','+(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')+'</span></a>'
+      // let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
+      // $('.loc').prop('href',map)
+      loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')},${(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')}"><span>${(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')},${(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')}</span></a>`
       //console.log("https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude);
       
     }
 
 
     const AccId = i?.Id 
+    const Accname = i?.Name;
     const event_Id = i?.eventId 
     cardSection.innerHTML +=`<div class="card">
       <div class="card-body">
       <i>${circle}</i>
       <div class="row">
          <div class="col-xs-8">
-            <h4 id="storeName" onclick="gotoAccount('${AccId}')"> ${i.Name ? i.Name : ''}</h4>
+            <h4 id="storeName" onclick="gotoAccount('${AccId}','${Accname}')"> ${i.Name ? i.Name : ''}</h4>
             <label> ${i.Channel__c? i.Channel__c : ''} /${i.Sub_Channel__c ? i.Sub_Channel__c: ''}</label> <label>
             <strong>Order: </strong>
             <span>${(i.Recent_Retail_Depletion__c ? dateformat(i.Recent_Retail_Depletion__c) : '')}${(i.Recent_Retail_Depletion__c ? (getLapsedDate(i.Recent_Retail_Depletion__c) <= -90 ? '(Lapsed)' : '' ) : '' )} </span>
@@ -151,8 +152,9 @@ gotomap = (map) => {
   //console.log(map)
 }
 
-gotoAccount = (AccId) => {
-    window.location.href = `/view/accountLanding/accountLanding.html?accountId=${AccId}`
+gotoAccount = (AccId,Accname) => {
+  localStorage.setItem('Accname', Accname);
+   window.location.href = `/view/accountLanding/accountLanding.html?accountId=${AccId}`
 }
 
 dateformat = (date) => {
