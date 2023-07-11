@@ -291,7 +291,6 @@ WHERE
         standardEvents = await sfConnection.query(`Select Id,WhatId,StartDateTime, Description, EndDateTime, Location, Subject from Event WHERE StartDateTime>=LAST_90_DAYS AND Custom_Event__c=null AND OwnerId='${req.conn.userInfo.id}' ORDER BY StartDateTime DESC`);
 
         casesList = await sfConnection.query('Select Id, Issue_Resolved__c,AccountId,Priority,Event__c,Issue_Type__c,Settlement_Date__c,Type,Subject from Case Where Issue_Resolved__c = false');
-        //  console.log(casesList,"casesList casesListcasesListcasesListcasesListcasesLists");
         let taskList = await sfConnection.query('SELECT  WhatId, What.Name, What.Id, Priority,Subject,Description,ActivityDate,Status,Id,OwnerId FROM Task WHERE ActivityDate>=LAST_90_DAYS  ORDER BY ActivityDate DESC');
         let Acc = await sfConnection.query('SELECT  Id, Name FROM Account');
         //let LapsedAccountDetails = await sfConnection.query("SELECT  Id, Name,Recent_Retail_Depletion__c,BillingStreet,BillingAddress,Recent_Activity_Date_Time__c,Draft_Status__c,Beacon_Flag__c,Channel__c,Draft_Ready__c,Sub_Channel__c,QCO_Flag__c,Industry_Segment__c FROM Account Where Account_Status__c != \'Permanently Closed\' and Recent_Retail_Depletion__c < LAST_90_DAYS and RecordTypeId IN (\'0122w000000Y7wvAAC\', \'0122w000000Y7wyAAC\',\'0122w000000Y7wzAAC\',\'0122w000000Y7wxAAC\',\'0122w000000Y7x2AAC\',\'0122w000000Y7wuAAC\',\'0122w000000Y7wtAAC\') ");
@@ -327,9 +326,12 @@ WHERE
         }
         let eventObjects = await sfConnection.sobject('Event__c').describe()
         let eventRecordTypes = eventObjects.recordTypeInfos
-        //  console.log("EventRecordTypes",eventRecordTypes)
-        //console.log(LapsedAccountDetails,"AccountDetails");
-        //res.status(200).json({isError : false,isAuth : true, NBA:NeverBilledAccounts,lapsedAcc: lapAcc, events :events ?  events.records : [],taskList : taskList,stateClusterMapping : stateClusterMappingArr.length>0 ? stateClusterMappingArr :[],territoryRecords : territoryRecords ? territoryRecords.records : [],draftInstallationPendingApproval : draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [], standardEvents : standardEvents ? standardEvents.records : [] });
+        const issuePicklist= await  sfConnection.sobject('Case').describe()
+        const issueValues  = issuePicklist.fields.find(f => f.name === 'Issue_Type__c');
+        const pickListValues =  issueValues.picklistValues
+        const taskPicklist = await  sfConnection.sobject('Task').describe()
+        const taskSubjectValues  = taskPicklist.fields.find(f => f.name === 'Subject');
+           
         res.status(200).json({
             isError: false,
             isAuth: true,
@@ -342,7 +344,9 @@ WHERE
             territoryRecords: territoryRecords ? territoryRecords.records : [],
             draftInstallationPendingApproval: draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [],
             standardEvents: standardEvents ? standardEvents.records : [],
-            eventRecordTypes: eventRecordTypes ? eventRecordTypes : []
+            eventRecordTypes: eventRecordTypes ? eventRecordTypes : [],
+            issuePicklist : pickListValues,
+            taskSubject : taskSubjectValues.picklistValues
         });
     }
     catch (e) {
@@ -476,6 +480,10 @@ exports.objectiveSync = async (req, res) => {
         let kycDetail = req.body.kycDetail;
         let salesOrder = req.body.salesOrder;
         let stockVisibilites = req.body.stockVisibility;
+        if(stockVisibilites.length>0){
+            {stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0 && delete stockVisibilites[0]['stock_at_risk_images']}
+            { stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion.length > 0 && delete stockVisibilites[0]['liquidPromotion']}
+        }
         let sfConnection = req.conn;
         let competitorInsight = req.body.competitorInsight;
         let dailyTracker = req.body.dailyTracker;
@@ -582,7 +590,7 @@ exports.objectiveSync = async (req, res) => {
 
         let body = {
             User_Name: req.body.username,
-            stockVisibilites: JSON.stringify(stockVisibilites),
+           // stockVisibilites: JSON.stringify(stockVisibilites),
             //SalesOrders: JSON.stringify(salesOrder),
             competitorInsightJSON: JSON.stringify(competitorInsight),
             accountJSON: JSON.stringify(kycDetail),
@@ -600,7 +608,14 @@ exports.objectiveSync = async (req, res) => {
             await updateContactMeeting(reqContactMeetingData, res);
         }
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
-        if (stockVisibilites && stockVisibilites.length > 0 && stockVisibilites[0].stock_at_risk_images.length > 0) {
+
+        const stockVisibilityReqData = {
+            conn: req.conn,
+            stockVisibilityBody : req.body.stockVisibility
+        }
+        {req.body.stockVisibility.length>0 && await(postStockVisibiltyData(stockVisibilityReqData, res))}
+
+        if (stockVisibilites && stockVisibilites.length > 0 && stockVisibilites[0].stock_at_risk_images  && stockVisibilites[0].stock_at_risk_images.length > 0) {
             const imageBodyArr = stockVisibilites[0].stock_at_risk_images;
             const imageBody = imageBodyArr.map(obj => {
                 const updatedObj = { ...obj };
@@ -883,6 +898,151 @@ exports.objectiveSync = async (req, res) => {
         res.status(500).json({ isError: true, isAuth: true, message: e });
     }
 };
+
+const postStockVisibiltyData = async (req, res) =>{
+    let sfConnection = req.conn;
+    let stockVisibilites = req.stockVisibilityBody[0];
+    delete stockVisibilites['liquidPromotion'];
+    delete stockVisibilites['stock_at_risk_images'];
+
+    // const dataToInsert = {
+    //     Account__c : "001Bi000007JTVMIA4",
+    //     App_Id__c : "Tue Jul 11 2023-001Bi000007JTVMIA4",
+    //     Event__c : "a0KBi000003YTttMAG",
+    //     Geolocation__latitude__s : '2.958184',
+    //     Geolocation__longitude__s : '77.6421466'
+
+    // }
+
+    const dataToInsert = {
+        Account__c : stockVisibilites.accountId,
+        App_Id__c : stockVisibilites.App_Id,
+        Event__c : stockVisibilites.Event_Id,
+        Geolocation__latitude__s : stockVisibilites.Geolocation_Latitude,
+        Geolocation__longitude__s : stockVisibilites.Geolocation_Longitude,
+
+    }
+
+    console.log('dataToInsertStockV', dataToInsert);
+    let existingStockVisiblitySurveyData = await sfConnection.query(
+        `SELECT Id FROM Stock_Visibility_Survey__c WHERE App_Id__c='${dataToInsert.App_Id__c}'`
+    );
+console.log('existingStockVisiblitySurveyData',existingStockVisiblitySurveyData)
+    let existingStockVisiblitySurveyID = existingStockVisiblitySurveyData && existingStockVisiblitySurveyData.totalSize> 0 ?existingStockVisiblitySurveyData.records[0].Id : "";
+    console.log('existingStockVisiblitySurveyID',existingStockVisiblitySurveyID)
+
+    if(!existingStockVisiblitySurveyID){
+    sfConnection.sobject("Stock_Visibility_Survey__c").create(dataToInsert,
+        function (err, rets) {
+            console.log('insertRets', err, rets);
+         //   console.log('ele inside insert query', ele)
+            if (err) {
+                console.error('insertError', err);
+                return console.error(err);
+            }
+            if (rets.success) {
+               // if (ele.meeting) {
+                let stockVisibilityChildData = []
+                for (var i = 0; i < stockVisibilites.stockVisibilityChilds.length; i++) {
+                    let stockData = {
+                      Stock_Visibility_Survey__c : rets.id,
+                      Item_Master__c: stockVisibilites.stockVisibilityChilds[i].Item_Master,
+                      Quantity__c: stockVisibilites.stockVisibilityChilds[i].Quantity,
+                      Stock_at_Risk__c: stockVisibilites.stockVisibilityChilds[i].Stock_at_Risk 
+                    }
+                    stockVisibilityChildData.push(stockData);
+                }
+                //   stockVisibilityChildData = {
+                //     Stock_Visibility_Survey__c : rets.id,
+                //     Item_Master__c: "01tBi0000009Q9lIAE",
+                //     Quantity__c : 3,
+                //     Stock_at_Risk__c: 1
+                //   }
+                  console.log('stockVisibilityChildData',stockVisibilityChildData)
+                  sfConnection.sobject("Stock_Visibility_Survey_Child__c").create(stockVisibilityChildData,
+                      function (err, rets) {
+                        console.error('SurveyChildDataInsertError rets',err, rets);
+  
+                          if (err) {
+                              console.error('Update stock error', err);
+                              return console.error(err);
+                          }
+                          for (var i = 0; i < rets.length; i++) {
+                              if (rets[i].success) {
+                                  console.log("Created record id : " + rets[i].id);
+                              }
+                          }
+                          
+                      });
+             // }
+                  //console.log("Created record id : " + rets[i].id);
+           //   }
+          }
+        });
+    }else{
+        let existingStockVisiblitySurveyChildData = await sfConnection.query(
+            `SELECT Id FROM Stock_Visibility_Survey_Child__c WHERE Stock_Visibility_Survey__c='${existingStockVisiblitySurveyID}'`
+        );
+
+
+
+        const existingStockVisiblitySurveyChildDataId = existingStockVisiblitySurveyChildData.records[0].Id;
+        console.log('existingStockVisiblitySurveyChildData'),existingStockVisiblitySurveyChildData
+        sfConnection.sobject("Stock_Visibility_Survey__c").update({ 
+            Id : existingStockVisiblitySurveyID,
+            Geolocation__latitude__s : stockVisibilites.Geolocation_Latitude,
+            Geolocation__longitude__s : stockVisibilites.Geolocation_Longitude,
+          }, function(err, ret) {
+            console.log('updateRets', err, ret);
+            if (err || !ret.success) { return console.error(err, ret); }
+         //   if(ret){
+                let stockVisibilityChildData = []
+                for (var i = 0; i < stockVisibilites.stockVisibilityChilds.length; i++) {
+                    let stockData = {
+                      Stock_Visibility_Survey__c : existingStockVisiblitySurveyID,
+                      Item_Master__c: stockVisibilites.stockVisibilityChilds[i].Item_Master,
+                      Quantity__c: stockVisibilites.stockVisibilityChilds[i].Quantity,
+                      Stock_at_Risk__c: stockVisibilites.stockVisibilityChilds[i].Stock_at_Risk 
+                    }
+                    stockVisibilityChildData.push(stockData);
+                }
+               
+                sfConnection.sobject('Stock_Visibility_Survey_Child__c')
+                .find({ Stock_Visibility_Survey__c : existingStockVisiblitySurveyID })
+                .destroy(function(err, rets) {
+                  if (err) { return console.error(err); }
+                  console.log(rets);
+                  sfConnection.sobject("Stock_Visibility_Survey_Child__c").create(stockVisibilityChildData,
+                    function (err, ret) {
+                      console.error('SurveyChildDataUpdateError rets',err, ret);
+
+                        if (err) {
+                            console.error('Update stock error', err);
+                            return console.error(err);
+                        }
+                        // for (var i = 0; i < rets.length; i++) {
+                        //     if (rets[i].success) {
+                        //         console.log("Created record id : " + rets[i].id);
+                        //     }
+                        // }
+                        if (err || !ret.success) { return console.error(err, ret); }
+                        console.log("Created record id : " + ret.id);
+                        
+                    });
+                  // ...
+                });
+
+
+            
+                 
+        //    }
+            // ...
+          });
+    }
+  //  })
+
+}
+
 
 const updateContactMeeting = async (req, res) => {
     try {

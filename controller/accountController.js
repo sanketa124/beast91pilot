@@ -24,16 +24,21 @@ exports.fetchAccounts = async (req, res) => {
       return ele;
     });
 
+
     if (contacts.length > 0) {
       const contactUpdate = contacts.filter((ele) => !ele.newContact);
-      const contactInsert = contacts
-        .filter((ele) => ele.newContact)
-        .map((ele) => {
-          delete ele.Id;
-          delete ele.newContact;
-          return ele;
-        });
+      // const contactInsert = contacts
+      //   .filter((ele) => ele.newContact)
+      //   .map((ele) => {
+      //     delete ele.Id;
+      //     delete ele.newContact;
+      //     return ele;
+      //   });
 
+      const contactInsert = contacts
+      .filter((ele) => ele.newContact);
+
+      
       sfConnection
         .sobject("Contact")
         .update(contactUpdate, function (err, rets) {
@@ -53,24 +58,102 @@ exports.fetchAccounts = async (req, res) => {
           }
         });
 
-        sfConnection
-        .sobject("Contact")
-        .insert(contactInsert, function (err, rets) {
-          if (err) {
-            return console.error(err);
-          }
-          if (err || !rets.success) {
-            console.log("Error on contact creation", JSON.stringify(err));
-            return console.error(err, rets);
-          }
-          console.log("Inserted Successfully : " + rets.id);
 
-          for (var i = 0; i < rets.length; i++) {
-            if (rets[i].success) {
-              console.log("Inserted Successfully : " + rets[i].id);
+//////////////
+
+contactInsert.forEach(ele => {
+  console.log('ele', ele)
+  let dataToInsert =  { ...ele };
+  delete dataToInsert['Id'];
+  delete dataToInsert['newContact'];
+  delete dataToInsert['meeting'];
+  delete dataToInsert['event_id'];
+console.log('dataToInsert',dataToInsert)
+  sfConnection.sobject("Contact").create(dataToInsert,
+    function (err, rets) {
+        console.log('insertRets', err, rets);
+        console.log('ele inside insert query', ele)
+        if (err) {
+            console.error('insertError', err);
+            return console.error(err);
+        }
+       // for (var i = 0; i < rets.length; i++) {
+            if (rets.success) {
+              if (ele.meeting) {
+                const meetingDataToInsert = {
+                  Event__c : ele.event_id,
+                  Contact__c : rets.id
+                }
+                console.log('meetingDataToInsert',meetingDataToInsert)
+                sfConnection.sobject("Contact_Meeting__c").create(meetingDataToInsert,
+                    function (err, ret) {
+                      console.error('meetingError rets',err, ret);
+
+                        if (err) {
+                            console.error('Update meeting error', err);
+                            return console.error(err);
+                        }
+                        // for (var i = 0; i < rets.length; i++) {
+                        //     if (rets[i].success) {
+                        //         console.log("Created record id : " + rets[i].id);
+                        //     }
+                        // }
+                        if (err || !ret.success) { return console.error(err, ret); }
+                        console.log("Created record id : " + ret.id);
+                        
+                    });
+           // }
+                //console.log("Created record id : " + rets[i].id);
             }
-          }
-        });
+        }
+    });
+
+
+});
+/////////////
+
+        
+        // sfConnection
+        // .sobject("Contact")
+        // .insert(contactInsert, function (err, rets) {
+        //   if (err) {
+        //     return console.error(err);
+        //   }
+        //   if (err || !rets.success) {
+        //     console.log("Error on contact creation", JSON.stringify(err));
+        //     return console.error(err, rets);
+        //   }
+        //   console.log("Inserted Successfully : " + rets.id);
+
+        //   for (var i = 0; i < rets.length; i++) {
+        //     if (rets[i].success) {
+        //       console.log("Inserted Successfully : " + rets[i].id);
+        //       const contactMeetingUpdate = contacts;
+        //       for (var key in contactMeetingUpdate) {
+        //         if (key !== 'id' && key !== 'event_id') {
+        //           delete obj[key];
+        //         }
+        //       }
+        //       sfConnection.sobject("Contact_Meeting__c").create({
+        //         Event__c: 'a0KBi000003WAH4MAO',
+        //         Contact__c: rets[i].id
+        //       },
+        //         function (err, rets) {
+        //             //console.error('error',rets[0].errors);
+        //             if (err) {
+        //                 console.error('Updateerror', err);
+        //                 return console.error(err);
+        //             }
+        //             for (var i = 0; i < rets.length; i++) {
+        //                 if (rets[i].success) {
+        //                     console.log("Created record id : " + rets[i].id);
+        //                 }
+        //             }
+        //         });
+              
+        //     }
+        //   }
+        // });
     }
 
     if (leads.length > 0) {
@@ -107,7 +190,7 @@ exports.fetchAccounts = async (req, res) => {
             
         }
         res.setHeader('Content-Type','application/json');
-        let queryString = "Select Account_Name_IndexedDB_Helper__c,L1M_Billed_Liquid__c,	L3M_Billed_Liquid__c, Ever_Billed_Liquid__c,	Never_Billed_Liquid__c ,Claims_Settled_Till_Date__c,Recent_Sanitization_Date__c,Recent_Preventive_Maintenance_Date__c,Distributor_Warehouse__c,Quaterly_Sales_CE__c, Monthly_Sales_CE__c, Lead_Status__c,Cluster__c,Cluster__r.Name,UB_Monthly_Mass_Volume__c,UB_Monthly_Premium_Volume__c,ABI_Monthly_Mass_Volume__c,ABI_Monthly_Premium_Volume__c,Carlsberg_Monthly_Mass_Volume__c,Carlsberg_Monthly_Premium_Volume__c,Craft_Monthly_Mass_Volume__c,Craft_Monthly_Premium_Volume__c,Recent_Activity_Comments__c,Recent_Activity_Date_Time__c,IsDeleted,District__r.Name,Tehsil__r.Name,Id,Recent_Retail_Depletion__c,L1M_Billed_Liquids__c,L3M_Billed_Liquids__c,Ever_Billed_Liquids__c,Never_Billed_Liquids__c,MTD_Sales_Premium__c,L3M_Sales_Avg_Premium__c,L3M_Sales_Avg__c,Industry_Segment_Mass__c,Website,Average_Velocity_of_Kegs__c,Name,ParentId,Account_Status__c,Beacon_Flag__c,Beer_Selection__c,BIRA_Non_Premium_Sales__c,BIRA_Premium_Sales__c,Bira_Segment__c,Central_Sales_Tax_Number__c,Channel__c,Close_Reason__c,Competitor_Non_Premium_Sales__c,Competitor_Premium_Sales__c,Corporation_Outlet__c,Credit_Limit__c,Cuisine__c,Current_Outstanding__c,Delivery_Constraints_Details__c,Direct_Billing_Flag__c,Draft_Agreement_Number__c,Draft_Ready__c,Draft_Status__c,Email__c,Excise_Code__c,Flag_for_Customer_on_Hold_Finance_Hold__c,GeoLocation__c,Group_Account_Flag__c,Group_Number__c,Growth_Type__c,GST__c,Hold_Status__c,Imported_Brands__c,Industry_Segment__c,Keg_Stock_Limit__c,KYC_Done__c,Last_Keg_Order_Date__c,License_Name__c,License_Number__c,License_Type__c,Liquor_Available__c,Local_Sales_Tax_Number__c,Location__c,Market_Share__c,Minibar_Available__c,MTD_Sales__c,No_of_Banquets__c,No_of_Rooms__c,Non_Premium_Brands_Share_Bira__c,Non_Premium_Brands_Share_Competitor__c,Number_of_Draft_Machines__c,Ocassion__c,Other_Entertainment__c,Outdoor_Seating__c,PAN__c,PAN_Reference_Number__c,Phone,Pool_Side__c,POSM_ready__c,Preferred_Delivery_Day__c,Preferred_Delivery_Time__c,Premium_Brands__c,Premium_Brands_Share_Bira__c,Premium_Brands_Share_Competitor__c,QCO_Flag__c,QTD_Sales__c,Registered_Name__c,Sales_Type__c,Size_Format__c,Star_Rating__c,Sub_Channel__c,TIN__c,Total_Market_Size_Absolute_Value__c,Total_Market_Size_Sales__c,Type__c,VAT_Registration_Number__c,YTD_Sales__c,Zomato_Cost_for_2__c,RecordType.DeveloperName,RecordType.Name,Neighbourhood__c,BIRA_ID__c,BillingCity,BillingCountry,BillingPostalCode,BillingState,BillingStreet,ShippingCity,ShippingCountry,ShippingPostalCode,ShippingState,ShippingStreet,Distributor_Warehouse__r.Name,Parent.Name,(SELECT Id,MobilePhone,Name,FirstName,LastName,Active__c,Role__c,Account.Name,Contact_Method__c,Aadhaar_Number__c,Email,Department,Work_Email__c,Decision_Maker__c,Phone,Loyalty_Enabled__c,Favorite_Destination_s__c,Facebook_Fan__c,Favorite_Hotel_s__c,Birthdate,Favorite_Restaurant_s__c,Age__c,Level__c,Referred_By__r.Name,MailingCity,MailingState,MailingCountry,MailingPostalCode,MailingStreet,Salutation FROM Contacts ORDER BY LastModifiedDate),(SELECT Item__c,Item__r.Display_Name__c,Last_90_Days__c,Date__c,Name,Invoice_Amount__c,Liquid_Name__c,Has_Keg_Item__c,Physical_Cases__c,Salesperson__r.Name,Last_180_Days__c FROM Retail_Depletion1__r ORDER BY LastModifiedDate),Estimated_Monthly_Premium_Mass_Sales__c,(SELECT Display_Machine_Id__c,Machine_Id_Not_Sign_Up__c,Recommended_Machine_type__c,Recommended_Machine_Type_Sales__c,Recommended_Tower_Type__c,Recommended_Tower_Type_Sales__c,RecordType.DeveloperName,Status__c,Id,Draft_Pre_Installation__c,Draft_Sign_up__r.Number__c,Draft_Sign_up__c,Draft_Pre_Installation__r.RGP_Number__c,Draft_Sign_up__r.Deposit_Amount__c, Draft_Sign_up__r.Payment_Status__c, Draft_Sign_up__r.Recommended_Machine_type__c,Draft_Sign_up__r.Recommended_Tower_Type__c,Draft_Pre_Installation__r.Recommended_Tower_Type__c,Draft_Pre_Installation__r.Machine_Model_RGP_Number__c,Draft_Pre_Installation__r.Recommended_Machine_type__c,Requisition_Date__c FROM Draft_Installations__r ORDER BY CreatedDate),Technician__c,Technician__r.Name,(SELECT Id,Name,CreatedDate,Chiller_Purity__c FROM Stock_Visibility_Survey__r ORDER BY LastModifiedDate),(SELECT Name,CreatedDate,Id FROM Product_Pre_Sales_Sampling__r ORDER BY LastModifiedDate),(SELECT Requisition_Date__c,Status__c,Name,Id FROM POSM_Requisitions__r) FROM Account WHERE Account_Status__c!='Permanently Closed' ";
+        let queryString = "Select Account_Name_IndexedDB_Helper__c,L1M_Billed_Liquid__c,	L3M_Billed_Liquid__c, Ever_Billed_Liquid__c,	Never_Billed_Liquid__c ,Claims_Settled_Till_Date__c,Recent_Sanitization_Date__c,Recent_Preventive_Maintenance_Date__c,Distributor_Warehouse__c,Quaterly_Sales_CE__c, Monthly_Sales_CE__c, Lead_Status__c,Cluster__c,Cluster__r.Name,UB_Monthly_Mass_Volume__c,UB_Monthly_Premium_Volume__c,ABI_Monthly_Mass_Volume__c,ABI_Monthly_Premium_Volume__c,Carlsberg_Monthly_Mass_Volume__c,Carlsberg_Monthly_Premium_Volume__c,Craft_Monthly_Mass_Volume__c,Craft_Monthly_Premium_Volume__c,Recent_Activity_Comments__c,Recent_Activity_Date_Time__c,IsDeleted,District__r.Name,Tehsil__r.Name,Id,Recent_Retail_Depletion__c,L1M_Billed_Liquids__c,L3M_Billed_Liquids__c,Ever_Billed_Liquids__c,Never_Billed_Liquids__c,MTD_Sales_Premium__c,L3M_Sales_Avg_Premium__c,L3M_Sales_Avg__c,Industry_Segment_Mass__c,Website,Average_Velocity_of_Kegs__c,Name,ParentId,Account_Status__c,Beacon_Flag__c,Beer_Selection__c,BIRA_Non_Premium_Sales__c,BIRA_Premium_Sales__c,Bira_Segment__c,Central_Sales_Tax_Number__c,Channel__c,Close_Reason__c,Competitor_Non_Premium_Sales__c,Competitor_Premium_Sales__c,Corporation_Outlet__c,Credit_Limit__c,Cuisine__c,Current_Outstanding__c,Delivery_Constraints_Details__c,Direct_Billing_Flag__c,Draft_Agreement_Number__c,Draft_Ready__c,Draft_Status__c,Email__c,Excise_Code__c,Flag_for_Customer_on_Hold_Finance_Hold__c,GeoLocation__c,Group_Account_Flag__c,Group_Number__c,Growth_Type__c,GST__c,Hold_Status__c,Imported_Brands__c,Industry_Segment__c,Keg_Stock_Limit__c,KYC_Done__c,Last_Keg_Order_Date__c,License_Name__c,License_Number__c,License_Type__c,Liquor_Available__c,Local_Sales_Tax_Number__c,Location__c,Market_Share__c,Minibar_Available__c,MTD_Sales__c,No_of_Banquets__c,No_of_Rooms__c,Non_Premium_Brands_Share_Bira__c,Non_Premium_Brands_Share_Competitor__c,Number_of_Draft_Machines__c,Ocassion__c,Other_Entertainment__c,Outdoor_Seating__c,PAN__c,PAN_Reference_Number__c,Phone,Pool_Side__c,POSM_ready__c,Preferred_Delivery_Day__c,Preferred_Delivery_Time__c,Premium_Brands__c,Premium_Brands_Share_Bira__c,Premium_Brands_Share_Competitor__c,QCO_Flag__c,QTD_Sales__c,Registered_Name__c,Sales_Type__c,Size_Format__c,Star_Rating__c,Sub_Channel__c,TIN__c,Total_Market_Size_Absolute_Value__c,Total_Market_Size_Sales__c,Type__c,VAT_Registration_Number__c,YTD_Sales__c,Zomato_Cost_for_2__c,RecordType.DeveloperName,RecordType.Name,Neighbourhood__c,BIRA_ID__c,BillingCity,BillingCountry,BillingPostalCode,BillingState,BillingStreet,ShippingCity,ShippingCountry,ShippingPostalCode,ShippingState,ShippingStreet,Distributor_Warehouse__r.Name,Parent.Name,(SELECT Id,MobilePhone,Name,FirstName,LastName,Active__c,Role__c,Account.Name,Contact_Method__c,Aadhaar_Number__c,Email,Department,Work_Email__c,Decision_Maker__c,Phone,Loyalty_Enabled__c,Favorite_Destination_s__c,Facebook_Fan__c,Favorite_Hotel_s__c,Birthdate,Favorite_Restaurant_s__c,Age__c,Level__c,Referred_By__r.Name,MailingCity,MailingState,MailingCountry,MailingPostalCode,MailingStreet,Salutation FROM Contacts ORDER BY LastModifiedDate),(SELECT Item__c,Item__r.Display_Name__c,Last_90_Days__c,Date__c,Name,Invoice_Amount__c,Liquid_Name__c,Has_Keg_Item__c,Physical_Cases__c,Salesperson__r.Name,Last_180_Days__c FROM Retail_Depletion1__r ORDER BY LastModifiedDate),Estimated_Monthly_Premium_Mass_Sales__c,(SELECT Display_Machine_Id__c,Machine_Id_Not_Sign_Up__c,Recommended_Machine_type__c,Recommended_Machine_Type_Sales__c,Recommended_Tower_Type__c,Recommended_Tower_Type_Sales__c,RecordType.DeveloperName,Status__c,Id,Draft_Pre_Installation__c,Draft_Sign_up__r.Number__c,Draft_Sign_up__c,Draft_Pre_Installation__r.RGP_Number__c,Draft_Sign_up__r.Deposit_Amount__c, Draft_Sign_up__r.Payment_Status__c, Draft_Sign_up__r.Recommended_Machine_type__c,Draft_Sign_up__r.Recommended_Tower_Type__c,Draft_Pre_Installation__r.Recommended_Tower_Type__c,Draft_Pre_Installation__r.Machine_Model_RGP_Number__c,Draft_Pre_Installation__r.Recommended_Machine_type__c,Requisition_Date__c FROM Draft_Installations__r ORDER BY CreatedDate),Technician__c,Technician__r.Name,(SELECT Id,Name,CreatedDate,Chiller_Purity__c FROM Stock_Visibility_Survey__r ORDER BY LastModifiedDate),(SELECT Name,CreatedDate,Id FROM Product_Pre_Sales_Sampling__r ORDER BY LastModifiedDate),(SELECT Requisition_Date__c,Status__c,Name,Id FROM POSM_Requisitions__r) FROM Account WHERE Account_Status__c!='Permanently Closed'";
         if (req.body.syncDateTime) {
             queryString += "AND LastModifiedDate >= " + req.body.syncDateTime+" ORDER BY LastModifiedDate";
         }

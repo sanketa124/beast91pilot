@@ -7,6 +7,8 @@ handleCheckedOut = () => {
 
 finalSubmit = async () => {
   $('#checkoutSection').hide()
+  $('#closeIco').hide();
+  $('.arrowIcons').hide();
   $('#progress-bar-container').show()
   $('#loader-img').show()
   if(navigator.onLine){
@@ -47,7 +49,6 @@ finalSubmit = async () => {
       await fetchRecommendations(loginData[0].username,loginData[0].password);
       await fetchAllLiquids(loginData[0].username,loginData[0].password);
       progressBarLoad(100);
-      
 
       loginData[0].syncDateTime = new Date((new Date().setMinutes(new Date().getMinutes() - 10)));
       loginData[0].reminderDateTime = new Date((new Date().setMinutes(new Date().getMinutes() - 10)));

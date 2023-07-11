@@ -98,10 +98,10 @@ async function createSlabRows() {
     }
 
     //Innovation__c slabs
-    const filterInnnovationSlabs = requiredPayOutSlabs.filter((slab) => slab.Innovation__c)
+    const filterInnnovationSlabs = requiredPayOutSlabs.filter((slab) => slab.Packaged_Kegs__c === "Packaged")
 
     //Innovation_Kegs__c
-    const filterKegsSlabs = requiredPayOutSlabs.filter((slab) => slab.Innovation_Kegs__c)
+    const filterKegsSlabs = requiredPayOutSlabs.filter((slab) => slab.Packaged_Kegs__c === "Kegs")
 
     console.log("Kegs Slabs===>",filterKegsSlabs)
 
@@ -221,8 +221,8 @@ async function createSlabRows() {
                 tempString = `
                     <tr class="activeTr" id=${uniqueId - [i]}>
                     <td>${filterKegsSlabs[i].Min_Range__c}-${filterKegsSlabs[i].Max_Range__c}</td>
-                    <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
-                    <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
+                    <td>${filterKegsSlabs[i].Premium__c}</td>
+                    <td>${filterKegsSlabs[i].Innovation__c}</td>
                 </tr>
                     `
 
@@ -232,8 +232,8 @@ async function createSlabRows() {
                 tempString = `
                         <tr class="activeTr" id=${uniqueId - [i]}>
                         <td>>${filterKegsSlabs[i].Min_Range__c-1}</td>
-                        <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
-                        <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
+                        <td>${filterKegsSlabs[i].Premium__c}</td>
+                        <td>${filterKegsSlabs[i].Innovation__c}</td>
                     </tr>
                         `
             } else {
@@ -241,16 +241,16 @@ async function createSlabRows() {
                     tempString = `
                     <tr id=${uniqueId - [i]}>
                     <td>${filterKegsSlabs[i].Min_Range__c}-${filterKegsSlabs[i].Max_Range__c}</td>
-                    <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
-                    <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
+                    <td>${filterKegsSlabs[i].Premium__c}</td>
+                    <td>${filterKegsSlabs[i].Innovation__c}</td>
                 </tr>
                     `
                 }else{
                     tempString = `
                     <tr id=${uniqueId - [i]}>
                     <td>>${filterKegsSlabs[i].Min_Range__c-1}</td>
-                    <td>${filterKegsSlabs[i].Premium_Kegs__c}</td>
-                    <td>${filterKegsSlabs[i].Innovation_Kegs__c}</td>
+                    <td>${filterKegsSlabs[i].Premium__c}</td>
+                    <td>${filterKegsSlabs[i].Innovation__c}</td>
                 </tr>
                     `
 

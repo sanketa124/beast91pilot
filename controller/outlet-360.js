@@ -63,7 +63,7 @@ exports.populateEvents=async(req,res,next)=>{
           );
           const recordTypeId = recordType && recordType.records && recordType.records[0] && recordType.records[0].Id;
           const month=new Date().toLocaleString('en-IN', { month: 'long' });
-          const result= await conn.query(`SELECT Account__c, COUNT(Id)  FROM Event__c  where Month__c='${month}' and RecordTypeId='${recordTypeId}' GROUP BY Account__c`)
+          const result= await conn.query(`SELECT Account__c, COUNT(Id)  FROM Event__c  where Month__c='${month}' and RecordTypeId='${recordTypeId}' and Completed__c=false and 	Start_Date__c<=TODAY  GROUP BY Account__c`)
           const records = result && result.records ? result.records : [];
         res.status(200).json({isError : false,isAuth : true,events:records});
     }catch(err){

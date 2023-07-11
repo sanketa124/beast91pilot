@@ -1,3 +1,5 @@
+const CONSTANTS=require('../constants')
+const axios = require('axios');
 exports.fetchAllRecommendations=async(req,res,next)=>{
     const conn= req.conn
     try{
@@ -171,3 +173,37 @@ exports.feedbackMetadata=async(req,res,next)=>{
     }
 }
   
+exports.sendSms=async(req,res,next)=>{
+    const {mobile}= req.body
+    try{
+        let data = JSON.stringify({
+            "root": {
+              "sms": [
+                {
+                  "to": mobile,
+                  "body": `Hello! Your sales rep has invited you to join Bira 91 All Stars! Click here to complete your registration: ${CONSTANTS.ALL_STARS_APP_LINK}`
+                }
+              ]
+            }
+          });
+          
+          let config = {
+            method: 'post',
+            url: 'https://apac.api.capillarytech.com/v1.1/communications/sms?format=json',
+            headers: { 
+              'Content-Type': 'application/json', 
+              'Accept': 'application/json', 
+              'Authorization': `Basic ${CONSTANTS.CAPILLARY_BASIC_AUTH}`
+            },
+            data : data
+          };
+          
+         const response=await axios.request(config)
+         const responseData= response && response.data? response.data :{}
+         res.status(200).json({isError : false,isAuth : true,result: responseData});
+    }catch(err){
+        console.log('Send sms error')
+        console.log(err)
+        res.status(500).json({isError : true,isAuth :true,message : err});
+    }
+}

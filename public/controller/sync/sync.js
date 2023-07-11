@@ -80,6 +80,7 @@ const accountFetch = async (username,password,syncDateTime) => {
             password : password,
             syncDateTime : syncDateTime,
             contacts : contacts,
+            //contactMeeting: contactMeeting,
             leads : newLeads,
         })
         });
@@ -106,6 +107,7 @@ const accountFetch = async (username,password,syncDateTime) => {
         }
         // await writeDataAll('account',JSON.parse(message));
         await clearAllData('contactsync');
+        await clearAllData('contactMeeting');
         await clearAllData('leadsync');
         if(isAccountSyncWithoutError)
             showNotification({message : 'Account sync complete!'});
@@ -207,7 +209,6 @@ const eventsFetch = async(username,password,nonSales) => {
             localStorage.setItem('NBA',JSON.stringify(resJson.NBA))
             await clearAllData('case');
             await clearAllData('caseSync');
-            console.log(resJson.issueList, ":::::::::::::::::::::::::::::KHATAl:::::::::::::::::::::::::::::");
             await writeDataAll('case',resJson.issueList);
             //localStorage.setItem('case',JSON.stringify(resJson.issueList))
             //await writeDataAll('events.lapsedAccount',resJson.lapsedAcc);
@@ -216,6 +217,10 @@ const eventsFetch = async(username,password,nonSales) => {
             await writeDataAll('standardEvents',resJson.standardEvents);
             await clearAllData('eventRecordTypes');
             await writeDataAll('eventRecordTypes',resJson.eventRecordTypes);
+            await clearAllData('issuePicklist');
+            await writeDataAll('issuePicklist',resJson.issuePicklist);
+            await clearAllData('taskPicklist');
+            await writeDataAll('taskPicklist',resJson.taskSubject);
         }
         
     }
@@ -1494,5 +1499,4 @@ const pushPOSMItems = async(username,password) => {
         console.log(err);
     }
 };
-
 

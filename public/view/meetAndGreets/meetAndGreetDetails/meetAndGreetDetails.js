@@ -1,10 +1,12 @@
-let contactMeetingData = {};
 let eventId = localStorage.getItem('eventId');
+let contactMeetingData = {};
+let contactSyncData = [];
 (async function () {
     let urlParam = new URLSearchParams(window.location.search);
     var accountID = urlParam.get('accountId')
     const individual = urlParam.get('individual');
     const key = `${fetchCurrentDateIdStr()}-${accountID}`;
+    
     let meetingDataArr = await getItemFromStore('contactMeeting', key);
 
     if (!meetingDataArr) {
@@ -12,13 +14,11 @@ let eventId = localStorage.getItem('eventId');
         contactMeetingData.meetingData = [];
     }else{
         contactMeetingData = meetingDataArr;
-        console.log('contactMeetingData', contactMeetingData);
         if(contactMeetingData.isSynced){
             contactMeetingData = {};
             contactMeetingData.App_Id = `${fetchCurrentDateIdStr()}-${accountID}`;
             contactMeetingData.meetingData = [];
         }
-
     }
     if (individual == 'true') {
         $('#closeIco').hide();
@@ -39,6 +39,8 @@ let eventId = localStorage.getItem('eventId');
         let hasMet = false;
         let checkedBox = '';
         if (meetingDataArr) {
+            console.log('meetingDataArr.meetingData', meetingDataArr.meetingData);
+            console.log('ele.Id', ele.Id)
             hasMet = meetingDataArr.meetingData.some(obj => obj.Contact__c === ele.Id);
             if(hasMet){
                 checkedBox = 'checked';
@@ -71,21 +73,34 @@ let eventId = localStorage.getItem('eventId');
     $("#contactsCard").prepend(temp);
 })();
 
-manageContactMeeting = (contactID) => {
+getConatcSyncData = async(contactID) =>{
+    const data = await getItemFromStore('contactsync', contactID);
+    return data;
+}
+manageContactMeeting = async (contactID) => {
+    contactSyncData = await getItemFromStore('contactsync', contactID);
+    console.log('contactSyncData',contactSyncData)
     console.log('checked',contactMeetingData.meetingData)
+    const checkVal = $("#"+contactID).prop('checked');
+    if(contactSyncData){
+        delete contactSyncData.meeting ;
+        if(checkVal){
+            contactSyncData.meeting = true;
+            contactSyncData.event_id = eventId
+            console.log('contactSyncDataAfter',contactSyncData)
+            await writeData('contactsync', contactSyncData);
+        }
+    }
     const updatedContact = contactMeetingData.meetingData.filter(obj => obj.Contact__c !== contactID);
     console.log('updatedContact',updatedContact)
     contactMeetingData.meetingData = updatedContact;
-    
-    const checkVal = $("#"+contactID).prop('checked');
     if(checkVal){
         contactMeetingData.meetingData.push({
             Event__c: eventId,
-            Contact__c: contactID
+            Contact__c: contactID,
+            ...(contactSyncData? { new_contact: true } : {})
         })
     }
-
-    
 }
 
 finalSubmit = async () => {

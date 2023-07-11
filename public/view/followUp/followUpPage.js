@@ -1,6 +1,11 @@
 let followUpTask;
 const initializeFollowUps = async() => {
     tasks = await readAllData('taskSync');
+    const tasksSubjectPicklist = await readAllData('taskPicklist');
+    const subjectPicklist = tasksSubjectPicklist.map(Subject => {return Subject.value})
+    $( "#Subject" ).autocomplete({
+        source: subjectPicklist
+      });
     $('#Subject').val(tasks[0].Subject)
     $('#Priority').val(tasks[0].Priority);
     $('#ActivityDate').prop('value',(new Date(tasks[0].ActivityDate)).toISOString().substring(0, 10) );
