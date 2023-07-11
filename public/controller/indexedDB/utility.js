@@ -1,13 +1,19 @@
 
+const ENVIRONMENT = 'DEV'
 var objectStore;
-var dbPromise = idb.open('bira91', 2, function (db) {
+var dbPromise = idb.open(`biraBeast-${ENVIRONMENT}`, 2, function (db) {
   if (!db.objectStoreNames.contains('case')) {
     db.createObjectStore('case', { keyPath: 'Id' });
   }
   if (!db.objectStoreNames.contains('caseSync')) {
     db.createObjectStore('caseSync', { keyPath: 'Id' });
   }
-  
+  if (!db.objectStoreNames.contains('issuePicklist')) {
+    db.createObjectStore('issuePicklist', { keyPath: 'label' });
+  }
+  if (!db.objectStoreNames.contains('taskPicklist')) {
+    db.createObjectStore('taskPicklist', { keyPath: 'label' });
+  }
   if (!db.objectStoreNames.contains('login')) {
     db.createObjectStore('login', { keyPath: 'username' });
   }
@@ -454,7 +460,7 @@ const deleteDatabase = async () => {
   for(let i=0;i<cachesList.length;i++){
     await  caches.delete(cachesList[i]);
   }
-await window.indexedDB.deleteDatabase('bira91');
+await window.indexedDB.deleteDatabase(`biraBeast-${ENVIRONMENT}`);
 };
 
 // http redirection 

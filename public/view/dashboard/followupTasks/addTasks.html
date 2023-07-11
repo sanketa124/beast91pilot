@@ -97,23 +97,24 @@
                         <form>
                             <div class="form-group">
                                 <label>Subject</label>
-                                <input type="text" class="form-control" />
+                                <input type="text" class="form-control" id="subject" disabled/>
                             </div>
                             <div class="form-group">
                                 <label>Account</label>
-                                <input type="text" class="form-control" />
+                                <input type="text" class="form-control" id="account" disabled />
                             </div>
                             <div class="form-group">
                                 <label>Due Date</label>
-                                <input type="date" class="form-control" />
+                                <input type="date" class="form-control" id="due-date"disabled />
                             </div>
                             <div class="form-group">
                                 <label>Priority</label>
-                                <select name="" id="" class="form-control">
-                                    <opton value="">Low</opton>
-                                    <opton value="">Medium</opton>
-                                    <opton value="">High</opton>
-                                </select>
+                                <!-- <select class="form-control" id="priority"  >
+                                    <opton value="Low">Low</opton>
+                                    <opton value="Medium">Medium</opton>
+                                    <opton value="High">High</opton>
+                                </select> -->
+                                <input type="text" class="form-control" id="priority" disabled />
                             </div>
                             <div class="form-group">
                                <div class="row">
@@ -121,12 +122,12 @@
                                     <label>Closed ?</label>
                                 </div>
                                 <div class="col-xs-6 text-right">
-                                    <input type="checkbox" class="defaultCheckBox" />
+                                    <input type="checkbox" class="defaultCheckBox" id="close-task" />
                                 </div>
                                </div>
                             </div>
                             <div class="form-group">
-                                <button data-toggle="modal" type="button" data-target="#submitForm" class="btn btnSubmit">Submit</button>
+                                <button data-toggle="modal" type="button" data-target="#submitForm" class="btn btnSubmit" id="submit-button">Submit</button>
                             </div>
                         </form>
                     </section>
@@ -304,7 +305,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
         integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
     <script src="/view/globalJS/main.js"></script>
-    <script src="addTasks.js"></script>
+   
     <!--Front End script-->
     <!--Backend Scripts-->
     <script src="/controller/indexedDB/idb.js"></script>
@@ -312,6 +313,7 @@
     <script src="/controller/sync/sync.js"></script>
     <!-- <script src="/controller/homePage/homePage.js"></script> -->
     <script src="/controller/globalJS/globalJS.js"></script>
+    <script src="addTasks.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
 

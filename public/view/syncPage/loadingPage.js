@@ -4,7 +4,7 @@ const initializeLoadingPage = async() => {
     const nonSales = await isTechnicianAuditorFuncHelper();
     let loginData = await loginDataFetch();
       await itemsFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
-      await pushPOSMItems(loginData[0].username,loginData[0].password);
+     await pushPOSMItems(loginData[0].username,loginData[0].password);
       // showNotification({message : 'Items sync complete!'});
       progressBarLoad(20);
       await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
@@ -27,8 +27,8 @@ const initializeLoadingPage = async() => {
       await payOutSlabsFetch(loginData[0].username,loginData[0].password);
       await accountGoalsFetch(loginData[0].username,loginData[0].password);
       await marketInventoriesFetch(loginData[0].username,loginData[0].password);
-      //await posmItemsPush(loginData[0].username,loginData[0].password)
       // showNotification({message : 'Events sync complete!'});
+      
       progressBarLoad(80);
       
       await libraryFilesFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime);

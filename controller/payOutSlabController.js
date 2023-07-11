@@ -74,9 +74,51 @@ exports.postPOSMItems = async (req, res) => {
             for(let i=0;i<req.body.data.posm.length;i++){
 
                 let eachPOSM = req.body.data.posm[i]
-    
+
                 eachPOSM.POSM_Requisition__c.Requisition_Date__c = formatDate(eachPOSM.POSM_Requisition__c.Requisition_Date__c)
-    
+
+                //Check if POSM already exists
+                let query = `SELECT Id,App_Id__c from ${posmTable} where App_Id__c='${eachPOSM.App_Id__c}'`
+
+                let getPOSM = await sfConnection.query(query)
+
+                console.log("Get POSM===>",getPOSM)
+
+                if(getPOSM){
+                    let existingPOSM = getPOSM.records[0]
+                    let updatePOSM = `
+                    UPDATE 
+                    ${posmTable}
+                     SET
+                     Requisition_Date__c = ${eachPOSM.POSM_Requisition__c.Requisition_Date__c}
+                     WHERE
+                     Id = ${existingPOSM.Id}
+                      `
+                    // Delete Child Elements and create them again
+                    // let deleteLineItems = `DELETE FROM ${posmLineItemsTable} WHERE POSM_Requisition__c = ${getPOSM.Id}`
+
+                    // if(deleteLineItems){
+                    //   let newPosLineItems = eachPOSM.POSM_Line_Item__c.map((eachLineItem)=>{
+                    //         delete eachLineItem.quantity
+                    //         delete eachLineItem.image
+                    //         delete eachLineItem.checkBox
+                    //         return {
+                    //             ...eachLineItem,
+                    //             POSM_Requisition__c: createRequisition.id
+                    //         }
+                
+                    //     })
+        
+                    
+                    // console.log("Line Items to be inserted===>",newPosLineItems)
+                    // let createLineItems = await sfConnection.sobject(posmLineItemsTable).create(newPosLineItems)
+                    // console.log("Create Requisition Line Items===>",JSON.stringify(createLineItems))
+
+                    // }
+                    
+                    
+                }else{
+                                    
                 let createRequisition = await sfConnection.sobject(posmTable).create(eachPOSM['POSM_Requisition__c'])
                 let posLineItems;
     
@@ -105,6 +147,8 @@ exports.postPOSMItems = async (req, res) => {
                     let createImages = await sfConnection.sobject('ContentVersion').create(req.body.data.posm[i].images)
     
                     console.log("Create Images===>",JSON.stringify(createImages))
+                }
+
                 }
                 
             }
@@ -154,7 +198,7 @@ exports.fetchSample = async (req, res) => {
         }
         queryString = queryString.slice(0, -1); // remove trailing comma
         queryString += ' FROM ' + table;
-        //queryString += ` WHERE isActive=true `;
+        //queryString += ` WHERE App_Id__c='123' `;
         console.log(queryString)
         let goals = await sfConnection.query(queryString);
         //let sobjectUpsert = await sfConnection.upsert(table,goals.records[0],goals.records[0].Id)

@@ -54,6 +54,7 @@ const newEntry = document.getElementById('newEntry');
 let selectProduct = document.getElementById('productSearch');
 // Get the reference to the div element
 var reasonSection = document.querySelector('.reasonSection');
+let reasonElement = document.getElementById('reasonForNotLikingSelect');
 //const accountId = localStorage.getItem('accountId');
 // Reason for not liking Product drop downs 
 const subReason = new Map([
@@ -61,14 +62,6 @@ const subReason = new Map([
   ['Competition Tie-up', ['Premium', 'Mass', 'Draft', 'Craft', 'Overall']],
   ['Operational Feedback', ['Stock is not available regularly', 'Service is not regular',
     'Past issues not settled', 'Outlet needs more time to decide', 'Not met decision maker']],
-]);
-
-
-const subReasonId = new Map([
-  ['Pricing/ Promotion/ Discount', 'pricing_promotion_discount'],
-  ['Competition Tie-up', 'competition_tie_up'],
-  ['Operational Feedback', 'operational_feedback'],
-  ['Other', 'Comment']
 ]);
 
 let lineItems = []
@@ -91,7 +84,9 @@ function populateTableWithDefaultItems() {
   defaultItems.forEach(item => {
     const newRow = itemTable.insertRow(0);
     newRow.dataset.id = item.Product__c;
-    newRow.insertCell().innerText = item.Product__r.Display_Name__c;
+    const itemElement =  newRow.insertCell()
+    itemElement.innerText = item.Product__r.Display_Name__c;
+    itemElement.width = "75%"
 
     // Create an input field for quantity
     const quantityInput = document.createElement('input');
@@ -99,11 +94,29 @@ function populateTableWithDefaultItems() {
     quantityInput.value = item.quantity; // Set the initial value
     quantityInput.min = '0';
     quantityInput.class = 'form-control';
+    quantityInput.float = 'right';
     //quantityInput.onkeyup = () => qtyTotalUpdate(item.Id); // Attach the qtyTotalUpdate function with the respective item ID
     quantityInput.addEventListener('input', () => qtyTotalUpdate(item.Product__c))
 
     const quantityCell = newRow.insertCell();
-    quantityCell.appendChild(quantityInput);
+    quantityCell.width = '25%'
+    const divElement = document.createElement('div')
+    divElement.style.display = 'flex';
+    divElement.style['flex-direction'] = 'row'
+    divElement.style['align-items'] = 'center'
+    divElement.style['justify-content'] = 'space-even'
+    divElement.appendChild(quantityInput)
+    if (item.recommended_quantity && item.recommended_quantity > item.quantity) {
+      // Create and append the <i> element
+      const iconElement = document.createElement('i');
+      iconElement.className = 'fa fas fa-exclamation';
+      //iconElement.align='right';
+      //iconElement.style.float = 'right';
+      iconElement.style.alignItems = 'center';
+      divElement.appendChild(iconElement);
+      //inputElement.style.backgroundColor ='red'
+    }
+    quantityCell.appendChild(divElement);
   });
 
   console.log("Item Table===>", itemTable)
@@ -129,16 +142,37 @@ function addOptionsToSelect(selectItem, items) {
 
 function updateQuantity(prodId, quantity) {
   let sum = 0;
+  const inputElement = document.querySelector(`tr[data-id="${prodId}"]`);
+  console.log("Input element=======>",inputElement)
+  const tdElement = inputElement.childNodes[1].childNodes[0];
+  console.log("TD ELEMENET===>",tdElement)
   defaultItems.forEach(item => {
     if (item.Product__c === prodId) {
       item.quantity = quantity;
     }
+    if (item.Product__c === prodId && item.recommended_quantity && item.recommended_quantity > quantity) {
+      // Create and append the <i> element
+      const getIconElement = tdElement.getElementsByTagName('i')[0]
+      console.log("Get ICON ELEMENT===>",getIconElement)
+      if(!getIconElement){
+        const iconElement = document.createElement('i');
+        iconElement.className = 'fa fas fa-exclamation';
+        //iconElement.align='right';
+        //iconElement.style.float = 'right';
+        iconElement.style.alignItems = 'center';
+        tdElement.appendChild(iconElement);
+        //inputElement.style.backgroundColor ='red'
+      }
+    }
     sum += item.quantity;
   });
   console.log(defaultItems);
+  localStorage.setItem('itemsToBeDisplayed',JSON.stringify(defaultItems))
   console.log('sum', sum);
   document.getElementById('cartTotal').querySelector('label span').textContent = sum;
   totalCart = sum
+
+
 }
 
 function qtyTotalUpdate(prodId) {
@@ -222,17 +256,35 @@ function updateTable() {
     quantityInput.value = item.quantity; // Set the initial value
     quantityInput.min = '0';
     quantityInput.class = 'form-control';
-    quantityInput.onkeyup = () => qtyTotalUpdate(item.Product__c); // Attach the qtyTotalUpdate function with the respective item ID
+    quantityInput.addEventListener('input', () => qtyTotalUpdate(item.Product__c))
 
     const quantityCell = newRow.insertCell();
-    quantityCell.appendChild(quantityInput);
+    quantityCell.width = '25%'
+    const divElement = document.createElement('div')
+    divElement.style.display = 'flex';
+    divElement.style['flex-direction'] = 'row'
+    divElement.style['align-items'] = 'center'
+    divElement.style['justify-content'] = 'space-even'
+    divElement.appendChild(quantityInput)
+    if (item.recommended_quantity && item.recommended_quantity > item.quantity) {
+      // Create and append the <i> element
+      const iconElement = document.createElement('i');
+      iconElement.className = 'fa fas fa-exclamation';
+      //iconElement.align='right';
+      //iconElement.style.float = 'right';
+      iconElement.style.alignItems = 'center';
+      divElement.appendChild(iconElement);
+      //inputElement.style.backgroundColor ='red'
+    }
+    quantityCell.appendChild(divElement);
   });
 
   // Clear the dropdown and hide it
   selectProduct.innerHTML = '';
   selectProduct.style.display = 'none';
   newEntry.style.display = 'none';
-
+  
+  localStorage.setItem('itemsToBeDisplayed',JSON.stringify(defaultItems))
   calculateTotalQuantity()
   calculateTotalLineItemQuantity()
 }
@@ -264,7 +316,12 @@ function openSearch() {
             ${optionsString.join('')}
           </select>
         </td>
-        <td style="width: 25%" class="cartQtyChange"><input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control"></td>
+        <div style="display: flex; flex-direction: row; align-items: center;"><input type="number" min="0"><i class="fa fas fa-exclamation" style="align-items: center;"></i></div>
+        <td style="width: 25%" class="cartQtyChange">
+          <div style="display: flex; flex-direction: row; align-items: center;">
+            <input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control">
+          </div>  
+        </td>
     </tr>
         `;
 
@@ -310,10 +367,31 @@ async function getDefaultSalesItems() {
   let currentYear = currentDate.getFullYear()
 
   // Get the visit details
-  let numberOfVisits = 1
-  if (industrySegment) {
-    numberOfVisits = visits.get(industrySegment)
-  }
+  // let numberOfVisits = 1
+  // if (industrySegment) {
+  //   numberOfVisits = visits.get(industrySegment)
+  // }
+  // Get the visit details
+  let numberOfVisits = 0
+  let events = await readAllData('events')
+  events?.forEach((eachEvent) => {
+    if (
+      eachEvent.Account__c
+      &&
+      eachEvent.Account__c == accountId
+      &&
+      new Date(eachEvent.Start_date_and_time__c).getMonth() == currentMonth
+      &&
+      new Date(eachEvent.Start_date_and_time__c).getFullYear() == currentYear
+      &&
+      new Date(eachEvent.Start_date_and_time__c) >= currentDate
+      &&
+      !eachEvent.Completed__c
+    ) {
+      numberOfVisits = numberOfVisits + 1
+    }
+  })
+  console.log("Number of visists===>", numberOfVisits)
 
   //Read from the account goals from indexDB
   let accountGoals = await readAllData('accountGoals');
@@ -410,6 +488,7 @@ async function getDefaultSalesItems() {
           if (eachSummedQuantity.itemId == eachRequiredLineItem.Product__c) {
 
             eachRequiredLineItem['quantity'] = Math.floor(Math.max(eachRequiredLineItem['goalQuantity'] - eachSummedQuantity.quantity, 0) / Math.max(numberOfVisits, 1))
+            eachRequiredLineItem['recommended_quantity'] = eachRequiredLineItem['quantity']
 
             defaultItems.push(eachRequiredLineItem)
             depletedItems.push(eachRequiredLineItem.Product__c)
@@ -426,6 +505,7 @@ async function getDefaultSalesItems() {
 
     nonDepletedItems.forEach((eachRequiredLineItem) => {
         eachRequiredLineItem['quantity'] = Math.floor(eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1))
+        eachRequiredLineItem['recommended_quantity'] = eachRequiredLineItem['quantity']
         defaultItems.push(eachRequiredLineItem)
       })
   }
@@ -475,8 +555,15 @@ async function getLineItems() {
       return (ele.State__r&&accountRec.BillingState&&ele.State__r.Name===accountRec.BillingState);
   });
 
+  // If directly coming from Depot Inventory
+  let localStorageItems = localStorage.getItem('itemsToBeDisplayed')
 
-  //lineItems = await readAllData('itemMasterCopy')
+  if(localStorageItems){
+    defaultItems = JSON.parse(localStorageItems)
+
+    return populateTableWithDefaultItems()
+
+  }
 
   let accountId = accountRec.Id
   let orderKey = `${fetchCurrentDateIdStr()}-${accountId}`
@@ -532,7 +619,13 @@ checkout = async () => {
 const checkforPreSalesOrder = () => {
   if (!totalCart) {
     if (selectionMap && selectionMap.size > 0) {
-      return false
+      $('#confirmOrder').modal('hide');
+      $('#reasonForNotLiking').modal('show');
+
+      let urlParam = new URLSearchParams(window.location.search);
+      constructReasonNotLikingSelect(Array.from(selectionMap.keys()));
+      handleReasonSelectOption(selectionMap.keys())
+      return true;
     }
     else if (document.getElementById('reasonBox')) {
       $('#confirmOrder').modal('hide');
@@ -542,13 +635,21 @@ const checkforPreSalesOrder = () => {
     else {
       console.log("I am in zeroSales Order not selection Map", selectionMap.size)
       $('#confirmOrder').modal('hide');
+      $('#reasonForNotLiking').modal('show');
+
       let urlParam = new URLSearchParams(window.location.search);
       constructReasonNotLikingSelect([]);
       return true;
     }
   } else if (totalCart > 0 && totalCart < initialLength) {
     if (lessReasonSelect.length > 0) {
-      return false
+      $('#confirmOrder').modal('hide');
+      $('#reasonForLessProduct').modal('show');
+
+      let urlParam = new URLSearchParams(window.location.search);
+      constructReasonLessSelect(lessReasonSelect);
+      handleLessReasonSelectOption(lessReasonSelect);
+      return true
     }
     else if (document.getElementById('lessBox')) {
       $('#confirmOrder').modal('hide');
@@ -557,6 +658,7 @@ const checkforPreSalesOrder = () => {
     }
     else {
       $('#confirmOrder').modal('hide');
+      $('#reasonForLessProduct').modal('show');
       let urlParam = new URLSearchParams(window.location.search);
       constructReasonLessSelect([]);
       return true;
@@ -566,9 +668,10 @@ const checkforPreSalesOrder = () => {
 
 const constructReasonNotLikingSelect = (selectedOptions) => {
   reasonSection.style.display = 'block';
+  //let reasonElement = document.getElementById('reasonForNotLikingSelect')
   // const lessReasonSelection = document.getElementById('lessBox')
   // lessReasonSelection.style.display = 'none'
-  // $('#reasonBox').empty();
+  $('#reasonBox').empty();
 
   let optionsArray = ["Pricing/ Promotion/ Discount", "Competition Tie-up", "Operational Feedback", "Other"];
 
@@ -594,7 +697,7 @@ const constructReasonNotLikingSelect = (selectedOptions) => {
   
   <div class="col-xs-6">
       <div class="">
-      <select multiple="multiple" name="" id="first_reason_select" onchange="handleReasonSelectOption(this.selectedOptions)">
+      <select class= "form-control" multiple="multiple" name="" id="first_reason_select" onchange="handleReasonSelectOption(this.selectedOptions)">
           <option value="">--None--</option>
           ${options.join('')}
       </select>
@@ -602,8 +705,10 @@ const constructReasonNotLikingSelect = (selectedOptions) => {
   </div>
   </div>
   `
-  reasonSection.insertAdjacentHTML('beforeend', htmlElement);
+  //reasonSection.insertAdjacentHTML('beforeend', htmlElement);
+  reasonElement.insertAdjacentHTML('beforeend', htmlElement);
 
+  /*
   // Load the Bootstrap Multiselect script after adding the HTML element
   const scriptElement = document.createElement('script');
   scriptElement.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js';
@@ -613,6 +718,7 @@ const constructReasonNotLikingSelect = (selectedOptions) => {
     });
   };
   document.body.appendChild(scriptElement);
+  */
   //handleReasonSelectOption(orderRec.Reasons_for_not_Liking_Product &&orderRec.Reasons_for_not_Liking_Product.length > 0 ?orderRec.Reasons_for_not_Liking_Product : [] );
 
 };
@@ -625,9 +731,17 @@ const constructReasonLessSelect = (selectedOptions) => {
   // reasonBox.remove()
   $('#lessBox').empty();
 
+  let lessReasonElement = document.getElementById('reasonForLessSelect');
+
+  console.log("Less Reason Element===>",lessReasonElement)
+
   console.log("LessBoc oprtions===>", selectedOptions)
 
-  let optionsArray = ["Stock is not available regularly", "Service is not regular", "Past issues not settled", "Outlet needs more time to decide", "Not met decision maker"];
+  let optionsArray = 
+  ["Stock is Slow Moving",
+   "Settlements are not Happening Regularly", 
+   "Supply Issues", 
+   "Need Better Discounts"];
 
   let options = optionsArray.map((choice, index) => {
     if (selectedOptions.length > 0 && selectedOptions.includes(choice)) {
@@ -651,7 +765,7 @@ const constructReasonLessSelect = (selectedOptions) => {
   
   <div class="col-xs-6">
       <div class="">
-      <select multiple="multiple" name="" id="low_reason_select" onchange="handleLessReasonSelectOption(this)">
+      <select class="form-control" multiple="multiple" name="" id="low_reason_select" onchange="handleLessReasonSelectOption(this)">
           <option value="">--None--</option>
           ${options.join('')}
       </select>
@@ -659,17 +773,17 @@ const constructReasonLessSelect = (selectedOptions) => {
   </div>
   </div>
   `
-  reasonSection.insertAdjacentHTML('beforeend', htmlElement);
+  lessReasonElement.insertAdjacentHTML('beforeend', htmlElement);
 
   // Load the Bootstrap Multiselect script after adding the HTML element
-  const scriptElement = document.createElement('script');
-  scriptElement.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js';
-  scriptElement.onload = function () {
-    $('#low_reason_select').multiselect({
-      includeSelectAllOption: true,
-    });
-  };
-  document.body.appendChild(scriptElement);
+  // const scriptElement = document.createElement('script');
+  // scriptElement.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js';
+  // scriptElement.onload = function () {
+  //   $('#low_reason_select').multiselect({
+  //     includeSelectAllOption: true,
+  //   });
+  // };
+  // document.body.appendChild(scriptElement);
 
 }
 
@@ -701,7 +815,7 @@ function handleReasonSelectOption(event) {
           </div>
           <div class="col-xs-6">
               <div class="secondary-reason-container">
-                  <select class="secondary-reason-select" multiple="multiple" name="" id="sec_reason_select-${index}" onchange="handleSuboptionsSelect(this)">
+                  <select class="form-control" multiple="multiple" name="" id="sec_reason_select-${index}" onchange="handleSuboptionsSelect(this)">
                       <option value="">--None--</option>
                       ${subOptions.map(subOption => {
           if (selectionMap.get(option) && selectionMap.get(option).includes(subOption)) {
@@ -718,13 +832,17 @@ function handleReasonSelectOption(event) {
         `;
 
         // Append the new reason box to the reasonSection div
-        reasonSection.appendChild(newReasonBox);
+        //reasonSection.appendChild(newReasonBox);
+
+        reasonElement.appendChild(newReasonBox);
 
         // Convert the new <select> element to a multiple select checkbox
         const secReasonSelect = newReasonBox.querySelector(`#sec_reason_select-${index}`);
         secReasonSelect.setAttribute('multiple', 'multiple');
         secReasonSelect.style.height = 'auto';
 
+
+        /*
         // Load the Bootstrap Multiselect script after adding the HTML element
         const scriptElement = document.createElement('script');
         scriptElement.src = 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js';
@@ -734,6 +852,7 @@ function handleReasonSelectOption(event) {
           });
         };
         document.body.appendChild(scriptElement);
+        */
       }
     });
   }
@@ -856,20 +975,33 @@ async function salesOrderSubmit() {
   salesOrderSyncData.Reasons_For_Zero_Products = !totalCart > 0 ? selectionMap : new Map()
   salesOrderSyncData.Stringified_Reasons_For_Zero_Products = !totalCart > 0 ? Array.from(selectionMap.keys()).join(';') : '',
   salesOrderSyncData.Stringified_Sub_reasons__c = !totalCart > 0 ? [...selectionMap.values()].flat().filter(child => child).join(';') : '',
-  salesOrderSyncData.Reasons_For_Less_Products = !totalCart > 0 < initialLength ? lessReasonSelect : []
+  salesOrderSyncData.Reasons_For_Less_Products = totalCart < initialLength ? lessReasonSelect : []
   salesOrderSyncData.recommended_quantity = initialLength
   salesOrderSyncData.total_quantity = totalCart
   salesOrderSyncData.Created_Date = new Date();
   salesOrderSyncData.isSynced = false;
 
   await writeData('salesOrderSync', salesOrderSyncData)
+  localStorage.removeItem("itemsToBeDisplayed");
 
 }
 
 function goSales() {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
+  localStorage.setItem('itemsToBeDisplayed',JSON.stringify(defaultItems))
   window.location.href = `/view/objectives/salesOrder/distributorReport.html?accountId=${accountID}`
+}
+
+function goBackToSales(){
+    let urlParam = new URLSearchParams(window.location.search);
+    const accountID = urlParam.get('accountId')
+    window.location.href = `/view/objectives/salesOrder/salesOrderLanding.html?accountId=${accountID}`
+  }
+
+async function submitPostReasonNotLiking(){
+             await salesOrderSubmit()
+             confirmOrder()
 }
 
 initializeShowAccount();

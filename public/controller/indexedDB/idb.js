@@ -285,8 +285,6 @@
     open: function(name, version, upgradeCallback) {
       var p = promisifyRequestCall(indexedDB, 'open', [name, version]);
       var request = p.request;
-console.log('pppp',p)
-console.log('pppp4444',upgradeCallback)
       request.onupgradeneeded = function(event) {
         if (upgradeCallback) {
           upgradeCallback(new UpgradeDB(request.result, event.oldVersion, request.transaction));

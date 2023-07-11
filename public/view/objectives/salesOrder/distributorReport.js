@@ -5,11 +5,16 @@ const marketInventory = [
     // Add more objects representing inventory items here
 ];
 
-goBack = () => {
-    let urlParam = new URLSearchParams(window.location.search);
-    const accountID = urlParam.get('accountId')
-    window.location.href = `/view/objectives/salesOrder/salesOrderLanding.html?accountId=${accountID}`
-  }
+// goBack = () => {
+//     let urlParam = new URLSearchParams(window.location.search);
+//     const accountID = urlParam.get('accountId')
+//     //window.close()
+//     console.log(popupWindow)
+//     if (popupWindow && !popupWindow.closed) {
+//         popupWindow.close();
+//       }
+//     //window.location.href = `/view/objectives/salesOrder/salesOrderLanding.html?accountId=${accountID}`
+//   }
 
 const prepareTable = async () => {
 

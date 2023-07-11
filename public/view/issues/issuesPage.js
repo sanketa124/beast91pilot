@@ -1,5 +1,6 @@
 const issueList = document.querySelector('.issueList');
 const newIssueList = document.querySelector('#NewIssueContainer')
+let issuePicklist
 console.log(newIssueList,"newIssueList");
 let count = 0;
 var today = new Date();
@@ -16,10 +17,8 @@ function addElement() {
   newIssueList.innerHTML +=`<div class="add-issues content-wrapper">
                     <div class="content-wrapper-primary-inside">
                         <select class="form-control" id="issue_type_${count}">
-                            <option>select issue type</option>
-                            <option>POSM/ Asset Delivery Pending</option>
-                            <option>Pending Settlement</option>
-                            <option>Require Reconciliation of Accounts</option>
+                          <option>select issue type</option>
+                          ${issuePicklist.map(picklistValue => {return `<option>${picklistValue.value}</option>`})}
                         </select>
                     </div>
                     <div class="getdate content-wrapper-primary-inside">
@@ -34,14 +33,17 @@ const IntializeIssues = async () => {
   const issueContainer = document.querySelector('#issueContainer');
   const accountId = localStorage.getItem('accountId');
   let issues =  await readAllData('case')
-  
+  issuePicklist =  await readAllData('issuePicklist')
   if(issues.length > 0){
       $('#no_issues_container').hide()
       issues = issues.filter(issue => issue.AccountId == accountId);
       $('#item_count').text(`Item - ${issues.length}`)
       issues.map(issue => {
+        console.log("Issues",issue)
+        console.log("Issues",issue.Subject)
+        console.log("Issues",issue.Issue_Type__c)
         issueContainer.innerHTML += `<div class="content-wrapper">
-        <div class="content-wrapper-primary-inside">${issue.Subject}</div>
+        <div class="content-wrapper-primary-inside">${(issue?.Subject) ? issue?.Subject : issue?.Issue_Type__c}</div>
         <div class="content-wrapper-primary-inside" style="text-align:center;">${issue.Settlement_Date__c}</div>
         <div class="content-wrapper-secondary-inside"><input type="checkbox" id="is_resolved_${issue.Id}" class="defaultCheckBox" value="${issue.Id}" ${(issue.Issue_Resolved__c ==true)? 'checked' : ''} ></div>
     </div>`
@@ -86,6 +88,7 @@ const createIssues = async () => {
               Issue_Resolved__c:issue.Issue_Resolved__c,
               Settlement_Date__c: issue.Settlement_Date__c,
               Issue_Type__c: issue.Issue_Type__c,
+              Subject :issue.Subject,
               Issue_Resolved__c: true,
               Origin:'Sales Rep Visit',
               Unique_Identifier__c :(issue.Unique_Identifier__c) ? issue.Unique_Identifier__c : null
@@ -100,6 +103,7 @@ const createIssues = async () => {
                 Event__c: eventId,
                 Settlement_Date__c: issue_date,
                 Issue_Type__c: issue_type,
+                Subject :issue_type,
                 Issue_Resolved__c: true,
                 Origin:'Sales Rep Visit'
               }
@@ -116,6 +120,7 @@ const createIssues = async () => {
           Issue_Resolved__c:true,
           Settlement_Date__c: issue_date,
           Issue_Type__c: issue_type,
+          Subject :issue_type,
           Origin:'Sales Rep Visit'
         }
         updated_issue.push(new_issues)
@@ -137,6 +142,7 @@ const createIssues = async () => {
               Id:issue.Id,
               AccountId:issue.AccountId,
               Event__c: issue.Event__c,
+              Subject :issue.Subject,
               Issue_Resolved__c:issue.Issue_Resolved__c,
               Settlement_Date__c: issue.Settlement_Date__c,
               Issue_Type__c: issue.Issue_Type__c,
@@ -153,6 +159,7 @@ const createIssues = async () => {
                 AccountId:accountId,
                 Event__c: eventId,
                 Settlement_Date__c: issue_date,
+                Subject :issue_type,
                 Issue_Type__c: issue_type,
                 Issue_Resolved__c: false,
                 Origin:'Sales Rep Visit'
@@ -162,7 +169,6 @@ const createIssues = async () => {
           }
         }
       }else{
-        console.log("HERE I GO",resIssue);
         if(issue_date && issue_type ){
           new_issues = {
             Id:`${new Date().getTime()}${resIssue}`,
@@ -171,6 +177,7 @@ const createIssues = async () => {
             Event__c: eventId,
             Settlement_Date__c: issue_date,
             Issue_Type__c: issue_type,
+            Subject :issue_type,
             Issue_Resolved__c: false,
             Origin:'Sales Rep Visit'
           }

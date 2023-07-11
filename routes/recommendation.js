@@ -12,4 +12,5 @@ router.post('/sfdc/push-recommendations',isAuth,recommendationController.process
 router.post('/sfdc/push-samples',isAuth,recommendationController.processSamples);
 router.post('/recommendation/week-filter',isAuth, recommendationController.completedEvents);
 router.post('/recommendation-feedback-meta',isAuth, recommendationController.feedbackMetadata);
+router.post('/recommendation/send-sms',isAuth, recommendationController.sendSms);
 module.exports = router;

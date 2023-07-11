@@ -101,8 +101,8 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
 
          /*** 2. Visit Target */
-         const industrySegement= account?.Industry_Segment__c ||'P4'
-         const industrySegementValue=["P0","P1","P2"].includes(industrySegement)?4:["P3"].includes(industrySegement)?2:1
+         //Removed industry segement value decided based on P0, P1, P2, P3
+         const industrySegementValue=eventCount
          const visitTarget1= document.getElementById('visit-target-content')
          const targetVal = ((target-achievement)/(industrySegementValue||1))
          visitTarget1.textContent= `${( !isNaN(Math.round(targetVal)) ? Math.round(targetVal) :``)} CE`

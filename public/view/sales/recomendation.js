@@ -9,27 +9,44 @@ if(!(accountId && eventId )){
   window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
 }
 
-// gotoDetail = (recommendationId) => {
-//   console.log('clicking recommendationId',recommendationId)
-//     localStorage.setItem('recommendationId',recommendationId)
-//     window.location.href = `productDetail.html`
-// }
+const gotoDetailCheck=async(recommendationObj)=>{
+  const itemName= (recommendationObj?.Variant_Name__c ||'Not Found').toLowerCase()
+  let account= await getItemFromStore('account',accountId)
+  let {L1M_Billed_Liquid__c,L3M_Billed_Liquid__c, Ever_Billed_Liquid__c}=account
+  let presentInL1M= (L1M_Billed_Liquid__c||'').toLowerCase().includes(itemName)
+  let presentInL3M= (L3M_Billed_Liquid__c||'').toLowerCase().includes(itemName)
+  let presentInEverBilled= (Ever_Billed_Liquid__c||'').toLowerCase().includes(itemName)
+  if(!(presentInL1M || presentInL3M || presentInEverBilled)){
+    return true
+  }
+  return false;
+}
+
+gotoDetail = (recommendationId) => {
+    localStorage.setItem('recommendationId',recommendationId)
+    window.location.href = `productDetail.html?accountId=${accountId}`
+}
 
 goToPromotion=(promotionId)=>{
-  console.log('promotionId',promotionId)
   localStorage.setItem('promotionId',promotionId)
-  window.location.href = `confirm-promotion.html`
+  window.location.href = `productDetail.html?accountId=${accountId}`
+}
+
+placeOrderNav = (recommendationId) => {
+   localStorage.setItem('recommendationId',recommendationId)
+   window.location.href = `placeOrder.html?accountId=${accountId}`
 }
 
 
-const newOutletRecommendations = (recommendationData) => {
+const newOutletRecommendations = async(recommendationData) => {
     let title = recommendationData.length?'<div class="linkSec"><a href="">NEW OUTLET ACTIVATION</a></div>':'';
-    let html=''
-    recommendationData.forEach((recommendation) => {
-    const {Recommended_SKU__r,Outlet_Name__r}=recommendation
-    html += `
+    const promises= recommendationData.map(async(recommendation) => {
+    const displayIcon=await gotoDetailCheck(recommendation)
+    const {Recommended_SKU__r}=recommendation
+    const navigationCondition=displayIcon? `gotoDetail(${JSON.stringify(recommendation?.Id)})`:`placeOrderNav(${JSON.stringify(recommendation?.Id)})`
+    return `
         <div class="linkSec">
-          <div class="row"${`onClick=gotoDetail(${JSON.stringify(recommendation?.Id)})`}>
+        <div class="row"${`onClick=${navigationCondition}`}>
             <div class="col-xs-9">
               <div class="boxLink">
               <h4>${Recommended_SKU__r.Display_Name__c }</h4>
@@ -37,23 +54,25 @@ const newOutletRecommendations = (recommendationData) => {
               </div>
             </div>
             <div class="col-xs-3">
-            ${Outlet_Name__r.Channel__c==='On-Premise'?`<i class="fa fa-external-link"></i>`:``}
+            ${displayIcon?`<i class="fa fa-external-link"></i>`:``}
             </div>
           </div>
         </div>
       `;
     });
-  return title+html
+    const result=(await Promise.all(promises)).join('')
+    return title+result
   };
-const existingRecommendations=(recommendationData)=>{
+const existingRecommendations=async(recommendationData)=>{
 
     let title = recommendationData.length?'<div class="linkSec"><a href="">NEW PRODUCT RECOMMENDATION</a></div>':'';
-    let html=''
-    recommendationData.forEach((recommendation) => {
-      const {Recommended_SKU__r,Outlet_Name__r}=recommendation
-      html += `
+    const promises=recommendationData.map(async(recommendation) => {
+    const {Recommended_SKU__r}=recommendation
+    const displayIcon=await gotoDetailCheck(recommendation) 
+    const navigationCondition=displayIcon? `gotoDetail(${JSON.stringify(recommendation?.Id)})`:`placeOrderNav(${JSON.stringify(recommendation?.Id)})`
+    return `
         <div class="linkSec">
-        <div class="row"${`onClick=gotoDetail(${JSON.stringify(recommendation?.Id)})`}>
+        <div class="row"${`onClick=${navigationCondition}`}>
             <div class="col-xs-9">
               <div class="boxLink">
                 <h4>${Recommended_SKU__r.Display_Name__c }</h4>
@@ -61,13 +80,14 @@ const existingRecommendations=(recommendationData)=>{
               </div>
             </div>
             <div class="col-xs-3">
-            ${Outlet_Name__r.Channel__c==='On-Premise'?`<i class="fa fa-external-link"></i>`:``}
+            ${displayIcon?`<i class="fa fa-external-link"></i>`:``}
             </div>
           </div>
         </div>
       `;
     });
-  return title+html
+    const result= (await Promise.all(promises)).join('')
+    return title+result
 }
 const displayPromotions=(promotionData)=>{
   
@@ -135,13 +155,13 @@ try{
 
  /**New outlet Activation */
  const container = document.getElementById('new-outlet-recommendations');
- const generatedHTML1 = newOutletRecommendations(newOutletRecommendation||[]);
+ const generatedHTML1 =await newOutletRecommendations(newOutletRecommendation||[]);
  container.innerHTML = generatedHTML1;
    
    
  /** Existing Product Recommendation */
  const container2 = document.getElementById('existing-product-recommendation');
- const generatedHTML2 = existingRecommendations(existingProducts||[]);
+ const generatedHTML2 = await existingRecommendations(existingProducts||[]);
  container2.innerHTML = generatedHTML2;
 
 
@@ -185,6 +205,7 @@ gotoDetail = (event) => {
       window.location.href = `placeOrder.html?accountId=${accountId}`
   }
 }
+
 
 goBack = () => {
   let urlParams = new URLSearchParams(window.location.search);

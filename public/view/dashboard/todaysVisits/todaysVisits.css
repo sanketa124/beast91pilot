@@ -1,111 +1,139 @@
-.mt-80{
-    margin-top: 80px;
+.mt-80 {
+  margin-top: 80px;
 }
-.visitProgress .progress{
-    background-color: #c7c7c7;
-    margin-bottom: 10px;
-    border: 0;
-    box-shadow: none;
-    height: 25px;
-    border-radius: 20px;
-  }
-  
-  .visitProgress .progress .progress-bar{
-    background-color: #2DB83D;
-    border-radius: 20px;
-  }
-  
-  .visitProgress span{
-    display: block;
-    text-align: center;
-    font-size: 18px;
-    color:#222;
-    margin-top: 15px;
-    margin: 0 0 10px 0; 
-  }
-  .visitProgress span strong{
-    font-weight: normal;  
-  }
-  .loginSection{
 
-  }
-  .loginSection button,
-  .loginSection button:focus,
-  .loginSection button:active,
-  .loginSection button:visited{
-    width: 90px;
-    height: 35px;
-    background: #28269A !important;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    border-color: #28269A !important;
-    box-shadow: none !important;
-    outline: 0 !important;
-    outline-offset:0 !important;
-  }
-.cardSectionList{
-    margin-top: 25px;
+.visitProgress .progress {
+  background-color: #c7c7c7;
+  margin-bottom: 10px;
+  border: 0;
+  box-shadow: none;
+  height: 25px;
+  border-radius: 20px;
 }
-  .card{
-    border: 1px solid #777;
-    border-radius: 20px;
-    position: relative;
-    margin-bottom: 20px;
-  }
- .card .card-body{
-    padding: 15px;
-    position: relative;
-  }
-.card .card-body h4{
-    margin: 0 0 5px 0;
-    font-size: 18px;
-    color: #000;
-    font-weight: 700;
-}
-.card .card-body label{
-    font-size: 14px;
-    color: #777;
-}
-.card .card-body label strong{
 
+.visitProgress .progress .progress-bar {
+  background-color: #2DB83D;
+  border-radius: 20px;
 }
-.card .card-body label span{
-    font-weight: normal;
+
+.visitProgress span {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: #222;
+  margin-top: 15px;
+  margin: 0 0 10px 0;
 }
-.card .card-body ul{
-    padding: 0;
+
+.visitProgress span strong {
+  font-weight: normal;
 }
-.card .card-body ul li{
-    display: inline-block;
+
+.loginSection {}
+
+.loginSection button,
+.loginSection button:focus,
+.loginSection button:active,
+.loginSection button:visited {
+  width: 90px;
+  height: 35px;
+  background: #28269A !important;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  border-color: #28269A !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
 }
-.card .card-body ul li strong{
-    border: 1px solid #000;
-    padding: 2px 4px 3px 4px;
+
+.cardSectionList {
+  margin-top: 25px;
 }
-.card .card-body ul li img{
-    height: 20px;
-    width: 20px;
+
+.card {
+  border: 1px solid #777;
+  border-radius: 20px;
+  position: relative;
+  margin-bottom: 20px;
 }
-.card .card-body button{
-    background-color: #6600ff;
-    border-color: #6600ff;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 16px;
-    padding: 3px 12px 2px 12px;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    color:#fff
+
+.card .card-body {
+  padding: 15px;
+  position: relative;
 }
-#endDayTime{
-    float: right;
+
+.card .card-body h4 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  color: #000;
+  font-weight: 700;
 }
-.checkCircle{
+
+.card .card-body label {
+  font-size: 14px;
+  color: #777;
+}
+
+.card .card-body label strong {}
+
+.card .card-body label span {
+  font-weight: normal;
+}
+
+.card .card-body ul {
+  padding: 0;
+}
+
+.card .card-body ul li {
+  display: inline-block;
+}
+
+.card .card-body ul li strong {
+  border: 1px solid #000;
+  padding: 2px 4px 3px 4px;
+}
+
+.card .card-body ul li img {
+  height: 20px;
+  width: 20px;
+}
+
+.card .card-body button {
+  background-color: #6600ff;
+  border-color: #6600ff;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 3px 12px 2px 12px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #fff
+}
+
+#endDayTime {
+  float: right;
+}
+
+.checkCircle {
   font-size: 18px;
   /* position: absolute; */
   top: 0;
   left: 0;
+}
+
+.updateLoc {
+  color: #337ab7 !important;
+  font-weight: 500 !important;
+}
+.infoIcon {
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+  margin-left: 0;
+}
+.tooltipIcon{
+  padding-left: 10px;
 }

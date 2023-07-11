@@ -222,7 +222,11 @@
                                             <option value='0' selected='true'> Search SKU</option>
                                           </select>
                                         </td>
-                                        <td style="width: 25%;" class="cartQtyChange"><input id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()" class="form-control"></td>
+                                        <td style="width: 20%;" class="cartQtyChange">
+                                            <div style="display: flex; flex-direction: row; align-items: center;">
+                                                <input id="prodQ" type="number" min="0" value="0" onkeyup="qtyTotalUpdate()" class="form-control">
+                                            </div>
+                                        </td>
                                     </tr>
                             </tr>
                             </tbody>
@@ -435,8 +439,37 @@
                         </div>
                     </div>
                     <div class="modal-footer text-center">
-                        <button type="button" onclick="submitPostReasonNotLiking()" class="btn btn-success">Yes</button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                        <button type="button" onclick="submitPostReasonNotLiking()" class="btn btn-success">Continue</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="reasonForLessProduct" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title" style="color: white;"><b>Specify Reasons</b></h5>
+                    </div>
+                    <div class="modal-body">
+                        <label>Reason for Low Sales Order</label>
+                        <div id="reasonForLessSelect">
+
+                        </div>
+
+                        <br />
+                        <!-- <label>Sub Reasons</label>
+                        <select name="" class="form-control" id="subReason"></select> -->
+
+                        <div id="subReasonsForLessSelect">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" onclick="submitPostReasonNotLiking()" class="btn btn-success">Continue</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -624,6 +657,7 @@
     <script src="../../../constants/constants.js"></script>
     <script src="payOutSlabs.js"></script>
     <script src="salesOrderNew-InProgress.js"></script>
+    <script src="distributorReport.js"></script>
     <!--Backend Scripts-->
     <!--Script imported-->
         <script

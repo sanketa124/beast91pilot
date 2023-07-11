@@ -195,6 +195,10 @@ function updateAssetsTable() {
         cameraLabel.setAttribute('for', item.Id);
         const cameraIcon = document.createElement('i');
         cameraIcon.classList.add('fa', 'fa-camera', item.Id);
+        if(item.image){
+            cameraIcon.style.color = '#5cb85c';
+            fileAttachedBackgroundChange(item.Id);
+        }
         cameraLabel.appendChild(cameraIcon);
 
         const fileInput = document.createElement('input');

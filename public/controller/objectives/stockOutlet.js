@@ -1,6 +1,7 @@
 let stockOutlet = {};
 let retailDepletionData = []
 let stockOutletExistingData = []
+let eventId = localStorage.getItem('eventId');
 const initializeStockVisibility = async () => {
     // let urlParams = new URLSearchParams(window.location.search);
     // const accountId = urlParams.get('accountId');
@@ -80,7 +81,7 @@ const saveStockOutlet = async () => {
 
     //  if(!stockOutlet){
     stockOutlet.isSynced = false;
-    stockOutlet.Event_Id = fetchCurrentDateIdStr() + '-' + accountRec.Id;
+    stockOutlet.Event_Id = eventId;
     stockOutlet.Daily_Tracker = fetchCurrentDateIdStr();
     stockOutlet.Last_Modified = new Date();
     const position = await getCurrentLocationHelper();

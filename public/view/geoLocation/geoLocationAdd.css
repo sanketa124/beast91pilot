@@ -1,6 +1,7 @@
 .mainDiv {
     padding: 20px;
     padding-top: 150px;
+    text-align: center;
 }
 
 .cancelDiv {
@@ -43,18 +44,11 @@
     cursor: pointer;
 }
 
-/* .finishBtn {
-    width: 92px;
-    height: 35px;
-    background: #255CBF;
-    border-radius: 10px;
-    border-style: solid;
-    position: absolute;
-    bottom: 70px;
-    right: 0;
-    margin-right: 20px;
-    margin-bottom: 20px;
-} */
+.tit{
+    text-align: center;
+    font-size: 20px;
+    margin: 0;
+  }
 
 .hrColor {
     border: 1px solid #000 !important;
@@ -74,8 +68,19 @@
     font-weight: 700;
     font-size: 24px;    
     color: #585858;
-    text-transform:none !important
+    text-transform:none !important;
+    padding-right: 10px
 }
 .nav-logo{
     width: 93%;
+}
+.finishBtnDiv{
+    padding-top: 50px;
+}
+.backBtn{
+    width: 80px;
+    color: #fff;
+    font-size: 18px;
+    background: #6600ff;
+    font-weight: 700;
 }
