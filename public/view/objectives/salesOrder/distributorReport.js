@@ -18,9 +18,8 @@ const marketInventory = [
 
 const prepareTable = async () => {
 
-    console.log("I am called to prepare table")
-
-    const accountId = localStorage.getItem('accountId')
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
     let accountRec = await getItemFromStore('account', accountId);
     console.log("Account Record",accountRec.Distributor_Warehouse__c)
     let inventories = await readAllData('marketInventory');

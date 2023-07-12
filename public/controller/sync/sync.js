@@ -11,6 +11,7 @@ const initializeSync = async () => {
     await accountGoalsFetch(loginData[0].username,loginData[0].password);
     await marketInventoriesFetch(loginData[0].username,loginData[0].password);
     await pushPOSMItems(loginData[0].username,loginData[0].password);
+    await pushSalesOrder(loginData[0].username,loginData[0].password);
     await reportFetch(loginData[0].username,loginData[0].xx);
 };
 
@@ -64,6 +65,29 @@ const loginDataFetch = async () => {
 //         console.log(err, "Erorororororororor");
 //     }
 // };
+
+const updateAccountGeolocations=async(username,password)=>{
+    try{
+            const items= await readAllData('account-push-geolocations')
+            let res = await fetch('/account/geo-location',{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    username : username,
+                    password : password,
+                    items
+                })
+            });
+            let resJson = await res.json();
+            console.log('account geolocation result',resJson?.data?.result)
+            await clearAllData('account-push-geolocations');
+    }catch(err){
+            await clearAllData('account-push-geolocations');
+            console.log(err)
+    }
+}
 
 
 const accountFetch = async (username,password,syncDateTime) => {
@@ -1491,6 +1515,50 @@ const pushPOSMItems = async(username,password) => {
                 return eachPOSM
             })
             await writeDataAll('posm',posm);
+        }        
+    }
+    }
+    catch(err){
+        showNotification({message : 'Issue in syncing POSM.Pl contact System Adminstrator for more help!'})
+        console.log(err);
+    }
+};
+
+const pushSalesOrder = async(username,password) => {
+    try{
+    let salesOrder = await readAllData('salesOrderSync')
+    console.log("Sales Order from Index DB===>",salesOrder)
+    salesOrder = salesOrder.filter((ele) => !ele.isSynced)
+    console.log("UNSYNCED SALES ORDER===>",salesOrder)
+    let res = await fetch('/salesOrder/push',{
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+            username : username,
+            password : password,
+            data: {
+                salesOrder : salesOrder
+            }
+        })
+    });
+    let resJson = await res.json();
+    if(resJson.isError){
+        console.log(resJson.isError);
+        // Add Notification method here
+    }
+    else if(resJson.isError===false){
+        if(!resJson.isAuth){
+            clearAll();
+        }
+        else{
+            console.log('Push Sales Order is Complete');
+            salesOrder = salesOrder.map((eachOrder) => {
+                eachOrder.isSynced = true
+                return eachOrder
+            })
+            await writeDataAll('salesOrderSync',salesOrder);
         }        
     }
     }

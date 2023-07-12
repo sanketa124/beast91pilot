@@ -6,7 +6,8 @@ async function createSlabRows() {
     const group_id = "0129B0000004L9xQAE"
 
     let payOutSlabs = await readAllData('payOutSlabs');
-    let accountId = localStorage.getItem('accountId');
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
     let accountDetail = await getItemFromStore('account', accountId);
     let currentDate = new Date()
     let currentMonth = currentDate.getMonth()
@@ -24,11 +25,11 @@ async function createSlabRows() {
             if (
                 eachPayOutSlab.Channel__c == accountDetail.Channel__c
             ) {
-                if (eachPayOutSlab.Valid_Till__c && eachPayOutSlab.Valid_From__c <= currentDate
-                    && eachPayOutSlab.Valid_Till__c >= currentDate
+                if (eachPayOutSlab.Valid_Till__c && new Date(eachPayOutSlab.Valid_From__c) <= currentDate
+                    && new Date(eachPayOutSlab.Valid_Till__c) >= currentDate
                 ) {
                     return eachPayOutSlab
-                } else if (!eachPayOutSlab.Valid_Till__c && eachPayOutSlab.Valid_From__c <= currentDate) {
+                } else if (!eachPayOutSlab.Valid_Till__c && new Date(eachPayOutSlab.Valid_From__c) <= currentDate) {
                     return eachPayOutSlab
                 }
 
@@ -44,7 +45,7 @@ async function createSlabRows() {
                 eachPayOutSlab.Industry_Segment__c.split(";").includes(accountDetail.Industry_Segment__c)
             ) {
                 if (eachPayOutSlab.Valid_Till__c && new Date(eachPayOutSlab.Valid_From__c) <= currentDate
-                    && new Date(eachPayOutSlab.Valid_Till__c >= currentDate)
+                    && new Date(eachPayOutSlab.Valid_Till__c) >= currentDate
                 ) {
                     return eachPayOutSlab
                 } else if (!eachPayOutSlab.Valid_Till__c && new Date(eachPayOutSlab.Valid_From__c) <= currentDate) {
@@ -57,9 +58,13 @@ async function createSlabRows() {
 
     if (requiredPayOutSlabs.length == 0) {
         const getSlabElement = document.getElementById('individualSlabs')
-        getSlabElement.remove()
+        if(getSlabElement){
+            getSlabElement.remove()
+        }
         const getKegsElement = document.getElementById('kegsTable')
-        getKegsElement.remove()
+        if(getKegsElement){
+            getKegsElement.remove()
+        }
         return
     }
 

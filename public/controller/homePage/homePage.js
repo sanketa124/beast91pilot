@@ -191,7 +191,8 @@ const initializeHomePage = async () => {
     setTimeout(() => {
     fetchAccounts();
     reportDataFetch();
-    if(dailyTracker) fetchTodayVisit();
+    //if(dailyTracker) 
+    fetchTodayVisit();
     renderTodaysTasks();
     },100);
 };
@@ -202,6 +203,8 @@ handleStartDayHandler = () =>{
 
 startDayConfirm =  () => {
     $('#loader-main').css('display','block');
+    //$('.cardSectionList').css('display','block');
+    
     dailyTracker = {};
     dailyTracker.Last_Modified = new Date();
     dailyTracker.App_Id = fetchCurrentDateIdStr();
@@ -275,18 +278,22 @@ EndDayConfirm = async () => {
     dailyTracker.End_Date_Time = new Date();
     dailyTracker.isSynced = false;
     let salesOrderCreated = await salesOrderMandateCondition();
-    if(!salesOrderCreated){
-        $('#loader-main').css('display','none');
-        showNotification({message: 'Sales Order for all planned event is mandatory!'});
-        return;
-    }
+    // if(!salesOrderCreated){
+    //     $('#loader-main').css('display','none');
+    //     showNotification({message: 'Sales Order for all planned event is mandatory!'});
+    //     return;
+    // }
     await writeData('dailyTracker',dailyTracker);
     if(navigator.onLine){
         let loginData = await loginDataFetch(); 
         let nonSales = await isTechnicianAuditorFuncHelper();
         await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
     }
+    //$('.cardSectionList').css('display','none');
+    $(".cardSectionList").empty();
+    //$('# endDayTime').css('display','none');
     $('#loader-main').css('display','none');
+    //if(dailyTracker && !dailyTracker.End_Date_Time) 
     fetchTodayVisit();
 };
 

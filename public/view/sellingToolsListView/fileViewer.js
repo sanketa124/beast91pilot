@@ -2,6 +2,11 @@
 let pdfjsLib = window['pdfjs-dist/build/pdf'];
 
  let base64 = null;
+ 
+ $('#imgSec').click(function(){
+  $(this).toggleClass('zoomParent');
+  $('#imageZoom').toggleClass('zoomImage');
+ })
 const initializeFile = () =>{
 
     let urlParams = new URLSearchParams(window.location.search);
@@ -42,7 +47,7 @@ const initializeFile = () =>{
         <div class="container-fluid">
           <div class="row">
             <div class="col-xs-12">
-            <img src="data:image/${ext};base64,${base64.VersionData}" alt="Image Not Supported" style="width:100%" />
+            <img id="imageZoom" src="data:image/${ext};base64,${base64.VersionData}" alt="Image Not Supported" style="width:100%" />
             </div>  
           </div>
         </div>

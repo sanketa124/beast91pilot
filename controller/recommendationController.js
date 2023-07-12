@@ -104,8 +104,8 @@ exports.processAcceptedRecommnedations=async (req,res,next)=>{
         const condition=item && item.Accepted_Date__c && item.Id
         return condition && (item.hasOwnProperty('Is_Accepted__c') && typeof item['Is_Accepted__c'] === "boolean")
       }).map((item)=>{
-        const  {Id,Accepted_Date__c,Is_Accepted__c}=item
-        return {Id,Accepted_Date__c,Is_Accepted__c}
+        const  {Id,Accepted_Date__c,Is_Accepted__c,Recommendation_Feedback__c}=item
+        return {Id,Accepted_Date__c,Is_Accepted__c,Recommendation_Feedback__c}
       })
       if(filteredItems && filteredItems.length){
         const result=await conn.sobject('Recommendation__c').update(filteredItems);

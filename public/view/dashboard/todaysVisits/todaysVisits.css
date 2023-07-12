@@ -137,3 +137,7 @@
 .tooltipIcon{
   padding-left: 10px;
 }
+
+h4#storeName {
+  text-decoration: underline;
+}

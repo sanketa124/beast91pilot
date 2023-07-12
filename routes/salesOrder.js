@@ -13,6 +13,7 @@ router.post('/salesOrderPayOut',isAuth,payOutController.fetchPayOutSlabs);
 router.post('/accountGoals',isAuth,payOutController.fetchAccountGoals);
 router.post('/sample',isAuth,payOutController.fetchSample)
 router.post('/posmItems',isAuth,payOutController.postPOSMItems);
+router.post('/salesOrder/push',isAuth,payOutController.postSalesOrder);
 
 
 module.exports = router;

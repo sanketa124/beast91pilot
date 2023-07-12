@@ -14,12 +14,14 @@ $("#showGridTbl2").click(function(){
   $(this).toggleClass('addtrans')
 })
 
-
-  const accountName = localStorage.getItem('Accname');
-  console.log(localStorage.getItem('Accname'),'accname')
-  $('#selectedAccount').html(accountName)
-
-
+  const initializeAccount = async () => {
+    let urlParam = new URLSearchParams(window.location.search);
+    const accountID = urlParam.get('accountId')
+    const accoutnDetails = await getItemFromStore('account', accountID);
+    const accountName = accoutnDetails.Name;
+    console.log(localStorage.getItem('Accname'),'accname')
+    $('#selectedAccount').html(accountName)
+  }
 const openMeetAndGreet = () => {
     let urlParam = new URLSearchParams(window.location.search);
     const accountID = urlParam.get('accountId')
@@ -136,7 +138,8 @@ if(!(accountId || eventId)){
 
 
   (async()=>{
-        
+    let urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('accountId');
     let outlet360Records= await getItemFromStore('outlet360',accountId)
     if(!outlet360Records){
     }
@@ -549,5 +552,6 @@ if(!(accountId || eventId)){
     alert('hi')
    
   })
+  initializeAccount();
 
 

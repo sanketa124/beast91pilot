@@ -1596,3 +1596,14 @@ input[type=number]{
 .claimSettled strong{
   font-weight: 600;
 }
+
+.zoomImage{
+  width: 100%;
+  /* zoom: 99; */
+  transform: scale(1.5);
+  transform-origin: 0 0;
+}
+
+.zoomParent{
+  overflow: auto;
+}

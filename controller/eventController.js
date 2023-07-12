@@ -326,12 +326,12 @@ WHERE
         }
         let eventObjects = await sfConnection.sobject('Event__c').describe()
         let eventRecordTypes = eventObjects.recordTypeInfos
-        const issuePicklist= await  sfConnection.sobject('Case').describe()
-        const issueValues  = issuePicklist.fields.find(f => f.name === 'Issue_Type__c');
-        const pickListValues =  issueValues.picklistValues
-        const taskPicklist = await  sfConnection.sobject('Task').describe()
-        const taskSubjectValues  = taskPicklist.fields.find(f => f.name === 'Subject');
-           
+        const issuePicklist = await sfConnection.sobject('Case').describe()
+        const issueValues = issuePicklist.fields.find(f => f.name === 'Issue_Type__c');
+        const pickListValues = issueValues.picklistValues
+        const taskPicklist = await sfConnection.sobject('Task').describe()
+        const taskSubjectValues = taskPicklist.fields.find(f => f.name === 'Subject');
+
         res.status(200).json({
             isError: false,
             isAuth: true,
@@ -345,8 +345,8 @@ WHERE
             draftInstallationPendingApproval: draftInstallationPendingApproval ? draftInstallationPendingApproval.records : [],
             standardEvents: standardEvents ? standardEvents.records : [],
             eventRecordTypes: eventRecordTypes ? eventRecordTypes : [],
-            issuePicklist : pickListValues,
-            taskSubject : taskSubjectValues.picklistValues
+            issuePicklist: pickListValues,
+            taskSubject: taskSubjectValues.picklistValues
         });
     }
     catch (e) {
@@ -480,9 +480,9 @@ exports.objectiveSync = async (req, res) => {
         let kycDetail = req.body.kycDetail;
         let salesOrder = req.body.salesOrder;
         let stockVisibilites = req.body.stockVisibility;
-        if(stockVisibilites.length>0){
-            {stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0 && delete stockVisibilites[0]['stock_at_risk_images']}
-            { stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion.length > 0 && delete stockVisibilites[0]['liquidPromotion']}
+        if (stockVisibilites.length > 0) {
+            { stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0 && delete stockVisibilites[0]['stock_at_risk_images'] }
+            { stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion.length > 0 && delete stockVisibilites[0]['liquidPromotion'] }
         }
         let sfConnection = req.conn;
         let competitorInsight = req.body.competitorInsight;
@@ -545,52 +545,52 @@ exports.objectiveSync = async (req, res) => {
                 });
         }
 
-                // Syncing Sales Orders
-                for (let i = 0; i < salesOrder.length; i++) {
+        // Syncing Sales Orders
+        // for (let i = 0; i < salesOrder.length; i++) {
 
-                    let eachSalesOrder = salesOrder[i]
-        
-                    console.log("Sales Order===>", eachSalesOrder)
-        
-                    console.log("Values===>", eachSalesOrder.Reasons_For_Zero_Products)
-        
-                    let salesOrderBody = {
-                        Account__c: eachSalesOrder.accountId,
-                        App_Id__c: eachSalesOrder.App_Id,
-                        Created_Date__c: eachSalesOrder.Created_Date,
-                        Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
-                        Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : '',
-                        Reasons_for_not_Liking_Product__c: eachSalesOrder.Stringified_Reasons_For_Zero_Products,
-                        Sub_reasons__c: eachSalesOrder.Stringified_Sub_reasons__c
-                    }
-        
-                    let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
-        
-                    if (createSalesOrder && eachSalesOrder.products.length > 0) {
-                        //Create the Line Items
-                        let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
-                            return {
-                                Item_Name__c: eachLineItem.Product__c,
-                                Cases__c: eachLineItem.quantity,
-                                SO__c: createSalesOrder.id
-                            }
-                        })
-        
-                        let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
-        
-                        console.log("Creating line itemss====>", JSON.stringify(createLineItems))
-        
-                        if (createLineItems) {
-                            console.log("Sales order created successfully")
-                        } else {
-                            console.log("Error in creating Sales Orders")
-                        }
-                    }
-                }
+        //     let eachSalesOrder = salesOrder[i]
+
+        //     console.log("Sales Order===>", eachSalesOrder)
+
+        //     console.log("Values===>", eachSalesOrder.Reasons_For_Zero_Products)
+
+        //     let salesOrderBody = {
+        //         Account__c: eachSalesOrder.accountId,
+        //         App_Id__c: eachSalesOrder.App_Id,
+        //         Created_Date__c: eachSalesOrder.Created_Date,
+        //         Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
+        //         Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : '',
+        //         Reasons_for_not_Liking_Product__c: eachSalesOrder.Stringified_Reasons_For_Zero_Products,
+        //         Sub_reasons__c: eachSalesOrder.Stringified_Sub_reasons__c
+        //     }
+
+        //     let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
+
+        //     if (createSalesOrder && eachSalesOrder.products.length > 0) {
+        //         //Create the Line Items
+        //         let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+        //             return {
+        //                 Item_Name__c: eachLineItem.Product__c,
+        //                 Cases__c: eachLineItem.quantity,
+        //                 SO__c: createSalesOrder.id
+        //             }
+        //         })
+
+        //         let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+
+        //         console.log("Creating line itemss====>", JSON.stringify(createLineItems))
+
+        //         if (createLineItems) {
+        //             console.log("Sales order created successfully")
+        //         } else {
+        //             console.log("Error in creating Sales Orders")
+        //         }
+        //     }
+        // }
 
         let body = {
             User_Name: req.body.username,
-           // stockVisibilites: JSON.stringify(stockVisibilites),
+            // stockVisibilites: JSON.stringify(stockVisibilites),
             //SalesOrders: JSON.stringify(salesOrder),
             competitorInsightJSON: JSON.stringify(competitorInsight),
             accountJSON: JSON.stringify(kycDetail),
@@ -611,12 +611,22 @@ exports.objectiveSync = async (req, res) => {
 
         const stockVisibilityReqData = {
             conn: req.conn,
-            stockVisibilityBody : req.body.stockVisibility
+            stockVisibilityBody: req.body.stockVisibility
         }
-        {req.body.stockVisibility.length>0 && await(postStockVisibiltyData(stockVisibilityReqData, res))}
+        { req.body.stockVisibility.length > 0 && await (postStockVisibiltyData(stockVisibilityReqData, res)) }
 
-        if (stockVisibilites && stockVisibilites.length > 0 && stockVisibilites[0].stock_at_risk_images  && stockVisibilites[0].stock_at_risk_images.length > 0) {
+        if (stockVisibilites && stockVisibilites.length > 0 && (stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0)) {
             const imageBodyArr = stockVisibilites[0].stock_at_risk_images;
+            const imageBody = imageBodyArr.map(obj => {
+                const updatedObj = { ...obj };
+                delete updatedObj['id'];
+                return updatedObj;
+            });
+            await postStockImages(req.conn, imageBody);
+        }
+
+        if (stockVisibilites && stockVisibilites.length > 0 && (stockVisibilites[0].visibilityImages && stockVisibilites[0].visibilityImages.length > 0)) {
+            const imageBodyArr = stockVisibilites[0].visibilityImages;
             const imageBody = imageBodyArr.map(obj => {
                 const updatedObj = { ...obj };
                 delete updatedObj['id'];
@@ -874,7 +884,7 @@ exports.objectiveSync = async (req, res) => {
             draftPulloutStr: JSON.stringify(draftPullout)
         };
         let ObjectiveHelper2 = await sfConnection.apex.post('/ObjectivesCheckoutHelper2/', bodyHelper2);
-        console.log("ObjectiveHelper2====>",ObjectiveHelper2)
+        console.log("ObjectiveHelper2====>", ObjectiveHelper2)
         let nonBeerproducts = await sfConnection.query("SELECT Id,RecordType.DeveloperName,ProductCode,Description,Name,QuantityUnitOfMeasure,Channel_On_Off__c,Sub_Channel__c,Type__c,Category__c,Draft_Section__c, Liquid_Layer__r.Name,Only_For_Pilot__c	FROM Product2 WHERE (RecordType.DeveloperName='POSM' OR RecordType.DeveloperName='Draft' ) AND IsActive=true ");
 
         if (req.body.nonSales.isSales) {
@@ -891,7 +901,7 @@ exports.objectiveSync = async (req, res) => {
         }
 
         // Schedule Visit Procedure
-        res.status(200).json({ isError: false, isAuth: true, competitorInsightJSON: dealerWiseVisitInfoJSON.competitorInsights, StockVisibilityJSON: dealerWiseVisitInfoJSON.StockVisibilitySurveyWrapper, nonBeerProducts: nonBeerproducts ? nonBeerproducts.records : [], posmSetting: posmSetting ? posmSetting.records : [], licenseType: licenseTypeStateWise ? licenseTypeStateWise.records : [], draftStarterKit: draftStarterKit ? draftStarterKit.records : [] });
+        res.status(200).json({ isError: false, isAuth: true, competitorInsightJSON: dealerWiseVisitInfoJSON.competitorInsights, nonBeerProducts: nonBeerproducts ? nonBeerproducts.records : [], posmSetting: posmSetting ? posmSetting.records : [], licenseType: licenseTypeStateWise ? licenseTypeStateWise.records : [], draftStarterKit: draftStarterKit ? draftStarterKit.records : [] });
     }
     catch (e) {
         console.log(e);
@@ -899,148 +909,123 @@ exports.objectiveSync = async (req, res) => {
     }
 };
 
-const postStockVisibiltyData = async (req, res) =>{
+const postStockVisibiltyData = async (req) => {
     let sfConnection = req.conn;
     let stockVisibilites = req.stockVisibilityBody[0];
-    delete stockVisibilites['liquidPromotion'];
-    delete stockVisibilites['stock_at_risk_images'];
-
-    // const dataToInsert = {
-    //     Account__c : "001Bi000007JTVMIA4",
-    //     App_Id__c : "Tue Jul 11 2023-001Bi000007JTVMIA4",
-    //     Event__c : "a0KBi000003YTttMAG",
-    //     Geolocation__latitude__s : '2.958184',
-    //     Geolocation__longitude__s : '77.6421466'
-
-    // }
 
     const dataToInsert = {
-        Account__c : stockVisibilites.accountId,
-        App_Id__c : stockVisibilites.App_Id,
-        Event__c : stockVisibilites.Event_Id,
-        Geolocation__latitude__s : stockVisibilites.Geolocation_Latitude,
-        Geolocation__longitude__s : stockVisibilites.Geolocation_Longitude,
-
+        Account__c: stockVisibilites.accountId,
+        App_Id__c: stockVisibilites.App_Id,
+        Event__c: stockVisibilites.Event_Id,
+        Geolocation__latitude__s: stockVisibilites.Geolocation_Latitude,
+        Geolocation__longitude__s: stockVisibilites.Geolocation_Longitude,
     }
 
+    if (stockVisibilites.visibilityChecks) {
+        Object.keys(stockVisibilites.visibilityChecks).forEach(key => {
+            dataToInsert[key] = stockVisibilites.visibilityChecks[key];
+            console.log(key, stockVisibilites.visibilityChecks[key]);
+        });
+    }
     console.log('dataToInsertStockV', dataToInsert);
     let existingStockVisiblitySurveyData = await sfConnection.query(
         `SELECT Id FROM Stock_Visibility_Survey__c WHERE App_Id__c='${dataToInsert.App_Id__c}'`
     );
-console.log('existingStockVisiblitySurveyData',existingStockVisiblitySurveyData)
-    let existingStockVisiblitySurveyID = existingStockVisiblitySurveyData && existingStockVisiblitySurveyData.totalSize> 0 ?existingStockVisiblitySurveyData.records[0].Id : "";
-    console.log('existingStockVisiblitySurveyID',existingStockVisiblitySurveyID)
+    console.log('existingStockVisiblitySurveyData', existingStockVisiblitySurveyData)
+    let existingStockVisiblitySurveyID = existingStockVisiblitySurveyData && existingStockVisiblitySurveyData.totalSize > 0 ? existingStockVisiblitySurveyData.records[0].Id : "";
+    console.log('existingStockVisiblitySurveyID', existingStockVisiblitySurveyID)
 
-    if(!existingStockVisiblitySurveyID){
-    sfConnection.sobject("Stock_Visibility_Survey__c").create(dataToInsert,
-        function (err, rets) {
-            console.log('insertRets', err, rets);
-         //   console.log('ele inside insert query', ele)
-            if (err) {
-                console.error('insertError', err);
-                return console.error(err);
-            }
-            if (rets.success) {
-               // if (ele.meeting) {
-                let stockVisibilityChildData = []
-                for (var i = 0; i < stockVisibilites.stockVisibilityChilds.length; i++) {
-                    let stockData = {
-                      Stock_Visibility_Survey__c : rets.id,
-                      Item_Master__c: stockVisibilites.stockVisibilityChilds[i].Item_Master,
-                      Quantity__c: stockVisibilites.stockVisibilityChilds[i].Quantity,
-                      Stock_at_Risk__c: stockVisibilites.stockVisibilityChilds[i].Stock_at_Risk 
-                    }
-                    stockVisibilityChildData.push(stockData);
+    if (!existingStockVisiblitySurveyID) {
+        sfConnection.sobject("Stock_Visibility_Survey__c").create(dataToInsert,
+            function (err, rets) {
+                console.log('insertRets', err, rets);
+                //   console.log('ele inside insert query', ele)
+                if (err) {
+                    console.error('insertError', err);
+                    return console.error(err);
                 }
-                //   stockVisibilityChildData = {
-                //     Stock_Visibility_Survey__c : rets.id,
-                //     Item_Master__c: "01tBi0000009Q9lIAE",
-                //     Quantity__c : 3,
-                //     Stock_at_Risk__c: 1
-                //   }
-                  console.log('stockVisibilityChildData',stockVisibilityChildData)
-                  sfConnection.sobject("Stock_Visibility_Survey_Child__c").create(stockVisibilityChildData,
-                      function (err, rets) {
-                        console.error('SurveyChildDataInsertError rets',err, rets);
-  
-                          if (err) {
-                              console.error('Update stock error', err);
-                              return console.error(err);
-                          }
-                          for (var i = 0; i < rets.length; i++) {
-                              if (rets[i].success) {
-                                  console.log("Created record id : " + rets[i].id);
-                              }
-                          }
-                          
-                      });
-             // }
-                  //console.log("Created record id : " + rets[i].id);
-           //   }
-          }
-        });
-    }else{
-        let existingStockVisiblitySurveyChildData = await sfConnection.query(
-            `SELECT Id FROM Stock_Visibility_Survey_Child__c WHERE Stock_Visibility_Survey__c='${existingStockVisiblitySurveyID}'`
-        );
+                if (rets.success) {
+                    let stockVisibilityChildData = []
+                    for (var i = 0; i < stockVisibilites.stockVisibilityChilds.length; i++) {
+                        let stockData = {
+                            Stock_Visibility_Survey__c: rets.id,
+                            Item_Master__c: stockVisibilites.stockVisibilityChilds[i].Item_Master,
+                            Quantity__c: stockVisibilites.stockVisibilityChilds[i].Quantity,
+                            Stock_at_Risk__c: stockVisibilites.stockVisibilityChilds[i].Stock_at_Risk
+                        }
+                        stockVisibilityChildData.push(stockData);
+                    }
+                    //   stockVisibilityChildData = {
+                    //     Stock_Visibility_Survey__c : rets.id,
+                    //     Item_Master__c: "01tBi0000009Q9lIAE",
+                    //     Quantity__c : 3,
+                    //     Stock_at_Risk__c: 1
+                    //   }
+                    sfConnection.sobject("Stock_Visibility_Survey_Child__c").create(stockVisibilityChildData,
+                        function (err, rets) {
+                            console.error('SurveyChildDataInsertError rets', err, rets);
 
+                            if (err) {
+                                console.error('Update stock error', err);
+                                return console.error(err);
+                            }
+                            for (var i = 0; i < rets.length; i++) {
+                                if (rets[i].success) {
+                                    console.log("Created record id : " + rets[i].id);
+                                }
+                            }
 
+                        });
 
-        const existingStockVisiblitySurveyChildDataId = existingStockVisiblitySurveyChildData.records[0].Id;
-        console.log('existingStockVisiblitySurveyChildData'),existingStockVisiblitySurveyChildData
-        sfConnection.sobject("Stock_Visibility_Survey__c").update({ 
-            Id : existingStockVisiblitySurveyID,
-            Geolocation__latitude__s : stockVisibilites.Geolocation_Latitude,
-            Geolocation__longitude__s : stockVisibilites.Geolocation_Longitude,
-          }, function(err, ret) {
+                }
+            });
+    } else {
+
+        let dataToUpdate = {
+            Id: existingStockVisiblitySurveyID,
+            Geolocation__latitude__s: stockVisibilites.Geolocation_Latitude,
+            Geolocation__longitude__s: stockVisibilites.Geolocation_Longitude,
+        }
+        if (stockVisibilites.visibilityChecks) {
+            Object.keys(stockVisibilites.visibilityChecks).forEach(key => {
+                dataToUpdate[key] = stockVisibilites.visibilityChecks[key];
+                console.log(key, stockVisibilites.visibilityChecks[key]);
+            });
+        }
+        sfConnection.sobject("Stock_Visibility_Survey__c").update(dataToUpdate, function (err, ret) {
             console.log('updateRets', err, ret);
             if (err || !ret.success) { return console.error(err, ret); }
-         //   if(ret){
-                let stockVisibilityChildData = []
-                for (var i = 0; i < stockVisibilites.stockVisibilityChilds.length; i++) {
-                    let stockData = {
-                      Stock_Visibility_Survey__c : existingStockVisiblitySurveyID,
-                      Item_Master__c: stockVisibilites.stockVisibilityChilds[i].Item_Master,
-                      Quantity__c: stockVisibilites.stockVisibilityChilds[i].Quantity,
-                      Stock_at_Risk__c: stockVisibilites.stockVisibilityChilds[i].Stock_at_Risk 
-                    }
-                    stockVisibilityChildData.push(stockData);
+            let stockVisibilityChildData = []
+            for (var i = 0; i < stockVisibilites.stockVisibilityChilds.length; i++) {
+                let stockData = {
+                    Stock_Visibility_Survey__c: existingStockVisiblitySurveyID,
+                    Item_Master__c: stockVisibilites.stockVisibilityChilds[i].Item_Master,
+                    Quantity__c: stockVisibilites.stockVisibilityChilds[i].Quantity,
+                    Stock_at_Risk__c: stockVisibilites.stockVisibilityChilds[i].Stock_at_Risk
                 }
-               
-                sfConnection.sobject('Stock_Visibility_Survey_Child__c')
-                .find({ Stock_Visibility_Survey__c : existingStockVisiblitySurveyID })
-                .destroy(function(err, rets) {
-                  if (err) { return console.error(err); }
-                  console.log(rets);
-                  sfConnection.sobject("Stock_Visibility_Survey_Child__c").create(stockVisibilityChildData,
-                    function (err, ret) {
-                      console.error('SurveyChildDataUpdateError rets',err, ret);
+                stockVisibilityChildData.push(stockData);
+            }
+            sfConnection.sobject('Stock_Visibility_Survey_Child__c')
+                .find({ Stock_Visibility_Survey__c: existingStockVisiblitySurveyID })
+                .destroy(function (err, rets) {
+                    if (err) { return console.error(err); }
+                    console.log(rets);
+                    sfConnection.sobject("Stock_Visibility_Survey_Child__c").create(stockVisibilityChildData,
+                        function (err, ret) {
+                            console.error('SurveyChildDataUpdateError rets', err, ret);
 
-                        if (err) {
-                            console.error('Update stock error', err);
-                            return console.error(err);
-                        }
-                        // for (var i = 0; i < rets.length; i++) {
-                        //     if (rets[i].success) {
-                        //         console.log("Created record id : " + rets[i].id);
-                        //     }
-                        // }
-                        if (err || !ret.success) { return console.error(err, ret); }
-                        console.log("Created record id : " + ret.id);
-                        
-                    });
-                  // ...
+                            if (err) {
+                                console.error('Update stock error', err);
+                                return console.error(err);
+                            }
+                            if (err || !ret.success) { return console.error(err, ret); }
+                            console.log("Created record id : " + ret.id);
+
+                        });
+                    // ...
                 });
-
-
-            
-                 
-        //    }
-            // ...
-          });
+        });
     }
-  //  })
-
 }
 
 
@@ -1056,18 +1041,16 @@ const updateContactMeeting = async (req, res) => {
                         console.error('Updateerror', err);
                         return console.error(err);
                     }
-                    for (var i = 0; i < rets.length; i++) {
-                        if (rets[i].success) {
-                            console.log("Created record id : " + rets[i].id);
-                        }
-                    }
+                    // for (var i = 0; i < rets.length; i++) {
+                    //     if (rets[i].success) {
+                    //         console.log("Created record id : " + rets[i].id);
+                    //     }
+                    // }
                 });
         });
 
     } catch (e) {
         console.log("Error in Updating contact meeting", e)
-        res.status(500).json({ isError: true, isAuth: true, message: e });
-
     }
 
 }
@@ -1086,26 +1069,22 @@ const updateLiquidPromotion = async (req, res) => {
 
         req.liquidPromotionData["Promotion_Name__c"] = promotionId;
         req.liquidPromotionData["RecordTypeId"] = recordType;
-        console.log('liquidPromotionData', req.liquidPromotionData)
+        // console.log('liquidPromotionData', req.liquidPromotionData)
         sfConnection.sobject("Recommendation__c").create(req.liquidPromotionData,
             function (err, rets) {
                 //console.error('error',rets[0].errors);
                 if (err) {
-                    console.error('Updateerror', err);
+                    console.error('error in updating stock promotion', err);
                     return console.error(err);
-                } else {
-                    res.status(200).json({ isError: false, isAuth: true, message: "posted successfully" })
                 }
-                for (var i = 0; i < rets.length; i++) {
-                    if (rets[i].success) {
-                        console.log("Created record id : " + rets[i].id);
-                    }
-                }
+                // for (var i = 0; i < rets.length; i++) {
+                //     if (rets[i].success) {
+                //         console.log("Created record id : " + rets[i].id);
+                //     }
+                // }
             });
     } catch (e) {
         console.log("Error in Updating liquid promotion", e)
-        res.status(500).json({ isError: true, isAuth: true, message: e });
-
     }
 
 }
@@ -1140,11 +1119,7 @@ const postStockImages = async (conn, imageBody) => {
         console.log("CreateFile", createFile[0] && createFile[0].errors)
     }
     catch (e) {
-        // console.log(e);
-        // res.status(500).json({isError : true,isAuth : true,message : e});
         console.log(e);
-        //   res.status(500).json({ isError: true, isAuth: true, message: e });
-
     }
 
 };

@@ -22,6 +22,11 @@ var dbPromise = idb.open(`biraBeast-${ENVIRONMENT}`, 2, function (db) {
     objectStoreAccount.createIndex('Name', 'Name', { unique: false });
     objectStoreAccount.createIndex('Account_Name_IndexedDB_Helper__c', 'Account_Name_IndexedDB_Helper__c', { unique: false });
   }
+
+  if (!db.objectStoreNames.contains('account-push-geolocations')) {
+    db.createObjectStore('account-push-geolocations', { keyPath: 'Id' });
+  }
+
   if (!db.objectStoreNames.contains('lead')) {
     var objectStoreLead = db.createObjectStore('lead', { keyPath: 'Id' });
     objectStoreLead.createIndex('Name', 'Name', { unique: false });

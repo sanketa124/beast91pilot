@@ -43,7 +43,7 @@ const initializeFollowUps = async() => {
     <div class="card-body">
         <div class="row">
             <div class="col-xs-8">
-                <h4 onclick="gotoAccountPage('${ele?.Id}')">${(ele.Name)?ele.Name:""}</h4>
+                <h4 id="storeName" onclick="gotoAccountPage('${ele?.Id}')">${(ele.Name)?ele.Name:""}</h4>
                 <label>${(ele.Channel__c) ?ele.Channel__c :""}/ ${(ele.Sub_Channel__c)?ele.Sub_Channel__c :""}</label>
                 <label> <strong>Order: </strong> <span>${(DepletionDate)?DepletionDate: ""}</span> <span>|</span>  <strong>Visit: </strong> <span>${(VisitDate)?VisitDate : ""}</span></label>
                 <label>${(ele.BillingStreet)?ele.BillingStreet:""}</label>

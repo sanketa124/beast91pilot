@@ -56,3 +56,7 @@
     right: 10px;
     color:#fff
 }
+
+h4#storeName {
+    text-decoration: underline;
+}

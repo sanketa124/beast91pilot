@@ -105,7 +105,8 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
          const industrySegementValue=eventCount
          const visitTarget1= document.getElementById('visit-target-content')
          const targetVal = ((target-achievement)/(industrySegementValue||1))
-         visitTarget1.textContent= `${( !isNaN(Math.round(targetVal)) ? Math.round(targetVal) :``)} CE`
+         const visitTargetValue=!isNaN(Math.round(targetVal)) ? Math.round(targetVal) :0
+         visitTarget1.textContent= `${visitTargetValue>0? visitTargetValue+ ' CE': ''} `
 
 
          /*** 3. B91 Insights and  competitor insights , Order Frequencies, lapsedKegs */
@@ -128,13 +129,13 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
 
           /*** 4. Visibility Score card bar */ 
-          const visibilityProgressBar =  document.querySelector('#visibility-scorecard');
-          visibilityProgressBar.style.width = `${Math.floor((visibilityScore/(visibilityScoreBoardTarget||1))*100 )}%`;
+          // const visibilityProgressBar =  document.querySelector('#visibility-scorecard');
+          // visibilityProgressBar.style.width = `${Math.floor((visibilityScore/(visibilityScoreBoardTarget||1))*100 )}%`;
 
-          const visibilityScoreCardAchieved=document.getElementById('visibility-scorecard-achieved');
-          visibilityScoreCardAchieved.textContent = `${`Achv:${visibilityScore}`}(${Math.floor((visibilityScore/(visibilityScoreBoardTarget||1))*100)}%)`;
-          const visibilityScoreCardTarget=document.getElementById('visibility-scorecard-target');
-          visibilityScoreCardTarget.textContent = `Target:${visibilityScoreBoardTarget}`;
+          // const visibilityScoreCardAchieved=document.getElementById('visibility-scorecard-achieved');
+          // visibilityScoreCardAchieved.textContent = `${`Achv:${visibilityScore}`}(${Math.floor((visibilityScore/(visibilityScoreBoardTarget||1))*100)}%)`;
+          // const visibilityScoreCardTarget=document.getElementById('visibility-scorecard-target');
+          // visibilityScoreCardTarget.textContent = `Target:${visibilityScoreBoardTarget}`;
 
 
           /*** 5. Liquid Sales */
