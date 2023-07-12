@@ -82,9 +82,9 @@ exports.postPOSMItems = async (req, res) => {
 
                 let getPOSM = await sfConnection.query(query)
 
-                console.log("Get POSM===>",getPOSM)
+                console.log("Get POSM===>",getPOSM.records.length)
 
-                if(getPOSM){
+                if(getPOSM.records.length>0){
                     let existingPOSM = getPOSM.records[0]
                     let updatePOSM = `
                     UPDATE 
@@ -136,6 +136,12 @@ exports.postPOSMItems = async (req, res) => {
                         }
             
                     })
+                    
+                    posLineItems = posLineItems.filter((eachPOSM)=> {
+                        if(!eachPOSM.hasOwnProperty('Space_Available__c') || eachPOSM.Space_Available__c){
+                            return eachPOSM
+                        }
+                    })
     
                 }
                 console.log("Line Items to be inserted===>",posLineItems)
@@ -148,6 +154,121 @@ exports.postPOSMItems = async (req, res) => {
     
                     console.log("Create Images===>",JSON.stringify(createImages))
                 }
+
+                }
+                
+            }
+        }
+
+
+
+        res.status(200).json({ isError: false, isAuth: true, message: "POSM items posted successfully" })
+
+        
+    } catch (e) {
+        console.log("Error in Posting POS Items",e)
+        res.status(500).json({ isError: true, isAuth: true, message: e });
+
+    }
+};
+
+exports.postSalesOrder = async (req, res) => {
+    try {
+
+        let sfConnection = req.conn;
+        let salesOrderTable = 'Sales_Orders__c';
+        let salesLineItemsTable = 'Sales_Order_Line_Items__c';
+
+        console.log(req.body.data.salesOrder)
+
+        if(req.body.data.salesOrder.length > 0){
+            for(let i=0;i<req.body.data.salesOrder.length;i++){
+
+                let eachSalesOrder = req.body.data.salesOrder[i]
+
+                //eachSalesOrder.POSM_Requisition__c.Requisition_Date__c = formatDate(eachPOSM.POSM_Requisition__c.Requisition_Date__c)
+
+                let salesOrderBody = {
+                    Account__c: eachSalesOrder.accountId,
+                    App_Id__c: eachSalesOrder.App_Id,
+                    Created_Date__c: eachSalesOrder.Created_Date,
+                    Has_Zero_Quantity_Product__c: eachSalesOrder.Has_Zero_Quantity_Product,
+                    Reason_for_Low_Sales_order__c: eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : '',
+                    Reasons_for_not_Liking_Product__c: eachSalesOrder.Stringified_Reasons_For_Zero_Products,
+                    Sub_reasons__c: eachSalesOrder.Stringified_Sub_reasons__c
+                }
+
+                console.log("App_Id__c",eachSalesOrder.App_Id)
+
+                //Check if POSM already exists
+                let query = `SELECT Id,App_Id__c from ${salesOrderTable} where App_Id__c='${eachSalesOrder.App_Id}'`
+
+                let getSalesOrder = await sfConnection.query(query)
+
+                console.log("Get Sales Order===>",getSalesOrder.records)
+
+                if(getSalesOrder.records.length>0){
+                    let existingSalesOrder = getSalesOrder.records[0]
+                    let updateSalesOrder = `
+                    UPDATE 
+                    ${salesOrderTable}
+                     SET
+                     Has_Zero_Quantity_Product__c = ${eachSalesOrder.Has_Zero_Quantity_Product},
+                     Reason_for_Low_Sales_order__c = ${eachSalesOrder.Has_Less_Products ? eachSalesOrder.Reasons_For_Less_Products.join(';') : ''},
+                     Reasons_for_not_Liking_Product__c = ${eachSalesOrder.Stringified_Reasons_For_Zero_Products},
+                     Sub_reasons__c = ${eachSalesOrder.Stringified_Sub_reasons__c}
+                     WHERE
+                     Id = ${existingSalesOrder.Id}
+                      `
+                    // Delete Child Elements and create them again
+                    let deleteLineItems = `DELETE FROM ${salesLineItemsTable} WHERE SO__c = '${existingSalesOrder.Id}'`
+
+                    if (deleteLineItems && eachSalesOrder.products.length > 0) {
+                        //Create the Line Items
+                        let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+                            return {
+                                Item_Name__c: eachLineItem.Product__c,
+                                Cases__c: eachLineItem.quantity,
+                                SO__c: existingSalesOrder.Id
+                            }
+                        })
+        
+                        let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+        
+                        console.log("Creating line itemss====>", JSON.stringify(createLineItems))
+        
+                        if (createLineItems) {
+                            console.log("Sales order created successfully")
+                        } else {
+                            console.log("Error in creating Sales Orders")
+                        }
+                    }
+                    
+                    
+                }else{
+                                    
+                    let createSalesOrder = await sfConnection.sobject('Sales_Orders__c').create(salesOrderBody)
+
+                    if (createSalesOrder && eachSalesOrder.products.length > 0) {
+                        //Create the Line Items
+                        let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+                            return {
+                                Item_Name__c: eachLineItem.Product__c,
+                                Cases__c: eachLineItem.quantity,
+                                SO__c: createSalesOrder.id
+                            }
+                        })
+        
+                        let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+        
+                        console.log("Creating line itemss====>", JSON.stringify(createLineItems))
+        
+                        if (createLineItems) {
+                            console.log("Sales order created successfully")
+                        } else {
+                            console.log("Error in creating Sales Orders")
+                        }
+                    }
 
                 }
                 

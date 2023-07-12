@@ -5,6 +5,7 @@ $(document).ready(function () {
   const individual = urlParam.get('individual')
   console.log(individual, 'individual')
   if (individual == 'true') {
+    console.log("I am inside the if block===>")
     $('#closeIco').hide();
     $('.arrowIcons').hide();
     $('.logoSection').css('width', '93%')
@@ -164,6 +165,14 @@ function updateQuantity(prodId, quantity) {
         //inputElement.style.backgroundColor ='red'
       }
     }
+    if (item.Product__c === prodId && item.recommended_quantity && item.recommended_quantity <= quantity) {
+      // Create and append the <i> element
+      const getIconElement = tdElement.getElementsByTagName('i')[0]
+      console.log("Get ICON ELEMENT===>",getIconElement)
+      if(getIconElement){
+            getIconElement.remove()
+      }
+    }
     sum += item.quantity;
   });
   console.log(defaultItems);
@@ -266,6 +275,7 @@ function updateTable() {
     divElement.style['align-items'] = 'center'
     divElement.style['justify-content'] = 'space-even'
     divElement.appendChild(quantityInput)
+    console.log("Recommended quantity===>",item.recommended_quantity)
     if (item.recommended_quantity && item.recommended_quantity > item.quantity) {
       // Create and append the <i> element
       const iconElement = document.createElement('i');
@@ -291,9 +301,10 @@ function updateTable() {
 
 function openSearch() {
   // Destroy the old newSearch
-  const existingNewSearch = document.getElementById('productSearch');
+  const existingNewSearch = document.getElementById('newEntry');
+  console.log("Existing New Search===>",existingNewSearch)
   if (existingNewSearch) {
-    existingNewSearch.remove();
+    return
   }
 
   // Generate unique IDs for the new elements
@@ -316,7 +327,6 @@ function openSearch() {
             ${optionsString.join('')}
           </select>
         </td>
-        <div style="display: flex; flex-direction: row; align-items: center;"><input type="number" min="0"><i class="fa fas fa-exclamation" style="align-items: center;"></i></div>
         <td style="width: 25%" class="cartQtyChange">
           <div style="display: flex; flex-direction: row; align-items: center;">
             <input id="${clonedPosmQuantityId}" type="number" min="0" value="0" class="form-control">
@@ -373,29 +383,19 @@ async function getDefaultSalesItems() {
   // }
   // Get the visit details
   let numberOfVisits = 0
-  let events = await readAllData('events')
-  events?.forEach((eachEvent) => {
-    if (
-      eachEvent.Account__c
-      &&
-      eachEvent.Account__c == accountId
-      &&
-      new Date(eachEvent.Start_date_and_time__c).getMonth() == currentMonth
-      &&
-      new Date(eachEvent.Start_date_and_time__c).getFullYear() == currentYear
-      &&
-      new Date(eachEvent.Start_date_and_time__c) >= currentDate
-      &&
-      !eachEvent.Completed__c
-    ) {
-      numberOfVisits = numberOfVisits + 1
-    }
-  })
-  console.log("Number of visists===>", numberOfVisits)
+
+  let eventRecord = await getItemFromStore('outlet360-events',accountId);
+
+  if(eventRecord){
+    numberOfVisits = eventRecord.expr0
+  }
 
   //Read from the account goals from indexDB
   let accountGoals = await readAllData('accountGoals');
+  console.log("Account Goals===>",accountGoals);
   let goalsOfCurrentAccount = accountGoals.filter(eachGoal => eachGoal.Account__c === accountId && currentDate >= new Date(eachGoal.Start_Date__c) && currentDate <= new Date(eachGoal.End_Date__c))
+
+  console.log("Goals of Current Account===>",goalsOfCurrentAccount)
 
   //Find line Items with account goals
   let lineItemIdsOfGoals = []
@@ -410,10 +410,6 @@ async function getDefaultSalesItems() {
   }
 
   if (lineItemIdsOfGoals.length > 0) {
-
-    console.log("Line Items in Account Goals===>",lineItems)
-
-    //let lineItems = await readAllData('itemMasterCopy')
 
     lineItems.forEach((eachItem) => {
       lineItemIdsOfGoals.forEach((eachLineItemGoal) => {
@@ -483,6 +479,8 @@ async function getDefaultSalesItems() {
         return acc;
       }, []);
 
+      console.log("Summed Quantitites===>",summedQuantities)
+
       requiredLineItems.forEach((eachRequiredLineItem) => {
         summedQuantities.forEach((eachSummedQuantity) => {
           if (eachSummedQuantity.itemId == eachRequiredLineItem.Product__c) {
@@ -499,9 +497,13 @@ async function getDefaultSalesItems() {
       })
 
     } 
+    console.log("RequiredLineItems===>",requiredLineItems)
+    console.log("Depleted Items===>",depletedItems)
 
     let nonDepletedItems = requiredLineItems.filter((eachItem) => !depletedItems.includes(eachItem.Product__c))
     nonDepletedItemIds = nonDepletedItems.map((eachNonDepletedItem) => eachNonDepletedItem.Product__c)
+
+    console.log("Non Depleted Items===>",nonDepletedItems)
 
     nonDepletedItems.forEach((eachRequiredLineItem) => {
         eachRequiredLineItem['quantity'] = Math.floor(eachRequiredLineItem['goalQuantity'] / Math.max(numberOfVisits, 1))
@@ -522,7 +524,7 @@ async function getDefaultSalesItems() {
         if(recommendedItems){
           recommendedItems = 
           recommendedItems
-          .filter((eachRecommendation) => eachRecommendation.Outlet_Name__r.Account_ID_18_digit__c === accountId)
+          .filter((eachRecommendation) => eachRecommendation.Outlet_Name__r.Account_ID_18_digit__c === accountId && eachRecommendation.Is_Accepted__c)
           .forEach((reco) => {
             lineItems.forEach((eachLineItem) => {
               if(eachLineItem.Product__c === reco.Recommended_SKU__c && !depletedItems.includes(eachLineItem.Product__c) && !nonDepletedItemIds.includes(eachLineItem.Product__c)){
@@ -549,8 +551,6 @@ async function getDefaultSalesItems() {
 async function getLineItems() {
 
   let products = await readAllData('itemMaster');
-  console.log("Account State==>",accountRec.BillingState)
-  console.log("Products====>",products)
   lineItems = products.filter(ele => {
       return (ele.State__r&&accountRec.BillingState&&ele.State__r.Name===accountRec.BillingState);
   });

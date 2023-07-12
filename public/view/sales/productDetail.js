@@ -27,11 +27,8 @@ if(!(accountId && eventId && recommendationId)){
          window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
         }
  
-         const sellSheetUrl=await fetchSellSheets('boom');
+         const sellSheetUrl=await fetchSellSheets(liquidName);
          if(sellSheetUrl){
-          
-            // const sellSheetImg = document.getElementById('sell-sheet');
-             //sellSheetImg.src =sellSheetUrl
              console.log(sellSheetUrl, 'sellSheetImg');
              $("#sell-sheet").attr("src",sellSheetUrl);
          }

@@ -358,3 +358,20 @@ exports.fetchMedia = async (req, res) => {
         res.status(500).json({ isError: false, isAuth: true, images: [] });
     }
 };
+
+exports.updateGeolocation = async (req, res) => {
+    let conn = req.conn;
+    const {items}=req.body
+    try {
+        const payload= items.filter((item)=>{
+            const { Geolocation__Latitude__s,Geolocation__Longitude__s,Id}=item
+            return { Geolocation__Latitude__s,Geolocation__Longitude__s,Id}
+        })
+        const result=    await conn.sobject('Account').update(payload)
+        res.status(200).json({isError : false,isAuth : true,result});
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).json({ isError: false, isAuth: true,err: e });
+    }
+};

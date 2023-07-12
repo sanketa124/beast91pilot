@@ -1,6 +1,6 @@
 const CONTRACT_URLS={
   OFF_PREMISE:"https://form.jotform.com/231873132476054",
-  ON_PREMISE:"https://form.jotform.com/231894930377063"
+  ON_PREMISE:"https://form.jotform.com/231904837281459"
 }
 
 let accountId=localStorage.getItem('accountId') 
@@ -117,7 +117,8 @@ return title+html
 }
 
 const initializeRecommendations=async()=>{
-
+  localStorage.removeItem('recommendationId')
+  localStorage.removeItem('promotionId')
 try{
   const columnConditions={
     'Active__c': true
@@ -129,6 +130,7 @@ try{
   const existingProducts = [];
   const promotions = [];
   const result = (await filterDbData('recommendations', columnConditions)) || [];
+  console.log('week filter value',weekFilterValue)
   result.map((recommendation) => {
     const {Recommended_SKU__r,Outlet_Name__r}=recommendation
     const skuRecommendationCondition=Recommended_SKU__r?.Size_ID__r?.Volume_Unit__c

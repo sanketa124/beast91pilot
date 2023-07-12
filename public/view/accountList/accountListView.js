@@ -4,6 +4,12 @@ initializeAccount = (accountLists) => {
 
 
 };
+
+$(document).ready(function () {
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+  });
+
+  
 let cardSection = document.querySelector('#listOfAcc');
 
 showListOfAccount = (i = 0) => {
@@ -61,7 +67,7 @@ showListOfAccount = (i = 0) => {
         if(i?.Geolocation__c != null || i?.Geolocation__c != undefined){
             // let map = "https://maps.google.com?q="+i?.Geolocation__c?.latitude+','+i?.Geolocation__c?.longitude;
             // $('.loc').prop('href',map)
-            loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i?.Geolocation__c?.latitude ? i?.Geolocation__c?.latitude : '')},${(i?.Geolocation__c?.longitude ? i?.Geolocation__c?.longitude : '')}"><span>${(i?.Geolocation__c?.latitude ? i?.Geolocation__c?.latitude : '')},${(i?.Geolocation__c?.longitude ? i?.Geolocation__c?.longitude : '')}</span></a>`
+            loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i?.Geolocation__c?.latitude ? i?.Geolocation__c?.latitude : '')},${(i?.Geolocation__c?.longitude ? i?.Geolocation__c?.longitude : '')}"><span>Directions</span></a>`
             //console.log("https://maps.google.com?q="+i?.Geolocation__c?.latitude+','+i?.Geolocation__c?.longitude);
             
           }
@@ -84,6 +90,8 @@ showListOfAccount = (i = 0) => {
                 </label>
                 <label> ${( i.BillingStreet? '#' : '' )+ ( i.BillingStreet? i.BillingStreet : '' )}</label>
                 <label>${(loc?loc:'')} </label>
+                <label><span class="updateLoc" onclick="goToGeoLocation('${AccId}')">Update Location  </span> <span class="tooltipIcon"><img class="infoIcon" data-toggle="tooltip" data-placement="top" title="Update the location when you are at the outlet entrance to capture accurate geotag" src="/media/icons/meetGreetInfo.png"/>
+                </span></label>
              </div>
              <div class="col-xs-4 pl-0 text-right">
                 <ul>
@@ -117,6 +125,11 @@ getLapsedDate = (target) => {
     d2 = new Date(target);
   return Math.trunc((d2.getTime() - d1.getTime()) / 1000 / 60 / 60 / 24);
 };
+
+
+goToGeoLocation = (AccId) => {
+    window.location.href = `/view/geoLocation/geoLocationAdd.html?accountId=${AccId}&fromAccountListing=${true}`
+  }
 
 accountDetail =async (accountIndex) => {
     const recordTypeName = listOfAccount[accountIndex].RecordType.DeveloperName;

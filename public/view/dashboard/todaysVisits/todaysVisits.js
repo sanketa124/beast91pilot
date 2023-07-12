@@ -1,6 +1,7 @@
 let getDisable = sessionStorage.getItem('disablesection');
 let cardSection = document.querySelector('.cardSectionList');
 let visitProgress = document.querySelector('.visitProgress');
+let isEndDay = false
 
 $(document).ready(function () {
   $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -17,7 +18,8 @@ $(document).ready(function () {
 //   }`
 // }
 
-showTodaysVisit = (todaysVisit, currentCheckIn) => {
+showTodaysVisit = async (todaysVisit, currentCheckIn) => {
+  $(".cardSectionList").empty();
   let VisitDate;
   let IsCheckedIn = false;
   let IsCheckedOut = false;
@@ -61,6 +63,8 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
 
   for (let i of finalArray) {
     console.log(finalArray, 'todaysVisit')
+    let dailyTracker = await getItemFromStore('dailyTracker',fetchCurrentDateIdStr());
+    isEndDay = (dailyTracker.End_Date_Time) ? true : false
     let temp1;
     if (i?.Recent_Activity_Date_Time__c) {
       VisitDate = new Date(i?.Recent_Activity_Date_Time__c)
@@ -112,7 +116,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
       // let map = "https://maps.google.com?q="+i.Geolocation__c?.latitude+','+i.Geolocation__c?.longitude;
       // $('.loc').prop('href',map)
       // loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')},${(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')}"><span>${(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')},${(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')}</span></a>`
-      loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')},${(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')}"><span>Open Maps</span></a>`
+      loc = `<a class="loc" target="_blank" href="https://maps.google.com?q=${(i.Geolocation__c?.latitude ? i.Geolocation__c?.latitude : '')},${(i.Geolocation__c?.longitude ? i.Geolocation__c?.longitude : '')}"><span>Directions</span></a>`
 
     }
 
@@ -146,7 +150,7 @@ showTodaysVisit = (todaysVisit, currentCheckIn) => {
             </ul>
          </div>
       </div>
-        ${(i.Completed__c == true) ? `` : `<button id="checkin_"${AccId} onclick="handleCheckIn('${event_Id}','${AccId}')" class="btn btn-small">Check-In</button>` }
+        ${(i.Completed__c == true || isEndDay == true) ? `` : `<button id="checkin_"${AccId} onclick="handleCheckIn('${event_Id}','${AccId}')" class="btn btn-small">Check-In</button>` }
       </div>
 </div>`
   }

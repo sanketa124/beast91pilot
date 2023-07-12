@@ -4,7 +4,8 @@ const initializeLoadingPage = async() => {
     const nonSales = await isTechnicianAuditorFuncHelper();
     let loginData = await loginDataFetch();
       await itemsFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
-     await pushPOSMItems(loginData[0].username,loginData[0].password);
+      await pushPOSMItems(loginData[0].username,loginData[0].password);
+      await pushSalesOrder(loginData[0].username,loginData[0].password);
       // showNotification({message : 'Items sync complete!'});
       progressBarLoad(20);
       await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
@@ -33,6 +34,10 @@ const initializeLoadingPage = async() => {
       
       await libraryFilesFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime);
      
+
+      /*** Account Geolocation Update */
+      await updateAccountGeolocations(loginData[0].username,loginData[0].password);
+
      /** Recommendations and Samples */
       await pushApprovedRecommendationObjects(loginData[0].username,loginData[0].password);
       await syncSamples(loginData[0].username,loginData[0].password);

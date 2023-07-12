@@ -59,5 +59,5 @@ finish=async()=>{
     await writeData('accepted_recommendations',recommendation)
     let urlParams = new URLSearchParams(window.location.search);
     const accountId = urlParams.get('accountId');
-    window.location.href = `/view/sales/recomendation.html?acountId=${accountId}`
+    window.location.href = `/view/sales/recomendation.html?accountId=${accountId}`
 }

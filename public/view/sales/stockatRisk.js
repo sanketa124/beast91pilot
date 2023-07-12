@@ -67,28 +67,53 @@ displayProducts = () => {
   }
 }
 
-
 const toBase64 = (file) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () => resolve(reader.result);
   reader.onerror = error => reject(error);
 });
+
 const fileInput = async (event, itemMaster) => {
   console.log('itemMaster', itemMaster)
   const key = $(event).attr('id');
   const fileInput = $(event).prop('files')[0];
-  console.log('fileInput', fileInput)
+
   // var options = {
   //   maxSizeMB: 0.1,
   //   maxWidthOrHeight: 1920,
   //   useWebWorker: true
   // };
-  //const compressedFile = await imageCompression(fileInput, options);
-  uploadBase64Value(key, fileInput);
-
-
+  //const compressedFile =  imageCompression(fileInput);
+  imageCompression(fileInput, 0.7, function (compressedFile) {
+    uploadBase64Value(key, compressedFile);
+  });
 };
+
+const imageCompression = (file, quality, callback) => {
+  var reader = new FileReader();
+  reader.onload = function (event) {
+    var img = new Image();
+    img.src = event.target.result;
+
+    img.onload = function () {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob(function (blob) {
+        var compressedFile = new File([blob], file.name, {
+          type: file.type,
+          lastModified: Date.now()
+        });
+        callback(compressedFile);
+      }, file.type, quality);
+    };
+  };
+  reader.readAsDataURL(file);
+}
+
 
 const uploadBase64Value = async (key, fileInput) => {
   const index = stockVisbility.stock_at_risk_images.findIndex(obj => obj.id === key);
