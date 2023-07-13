@@ -121,11 +121,13 @@ const uploadBase64Value = async (key, fileInput) => {
     stockVisbility.stock_at_risk_images.splice(index, 1);
   }
 
+  const itemImage = (stockVisbility.stockVisibilityChilds.find(obj => obj['Item_Master'] === key) || {})['name'];
+  console.log('foundValue',itemImage)
   const newImgPath = await toBase64(fileInput);
   let newImg = {
-    PathOnClient: accoutnDetails.Name + ' | Stock at Risk | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date() + '.' + fileInput.type.split('/').pop(),
+    PathOnClient: accoutnDetails.Name + ' | Stock at Risk | ' + itemImage + ' | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date() + '.' + fileInput.type.split('/').pop(),
     VersionData: newImgPath.replace(/^data:image\/[a-z]+;base64,/, ""),
-    Title: accoutnDetails.Name + ' | Stock at Risk | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date(),
+    Title: accoutnDetails.Name + ' | Stock at Risk |  ' + itemImage + ' | ' + stockVisbility.recordTypeName + ' | ' + stockVisbility.Geolocation_Latitude + ' ' + stockVisbility.Geolocation_Longitude + ' | ' + new Date(),
     id: key
   }
   stockVisbility['stock_at_risk_images'].push(newImg);
