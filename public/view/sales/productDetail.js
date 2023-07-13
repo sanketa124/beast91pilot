@@ -35,10 +35,8 @@ if(!(accountId && eventId && recommendationId)){
          
         
          const channel=recommendation?.Outlet_Name__r?.Channel__c
-         const newOrExistingStore= recommendation?.New_or_Existing__c
-         console.log('New Or Exiting',newOrExistingStore)
-         if(channel==='On-Premise' && newOrExistingStore==='New'){
-         /*** Create Sample Parent only for New Outlet with On-Premise Channel */
+         if(channel==='On-Premise'){
+         /*** Create Sample only for  On-Premise Channel */
          const UNSYNCED_SAMPLE_SCHEMA="Unsynced_Sample"
          const sampleTag=`sample-${accountId}-${eventId}`;
          const sample=await getItemFromStore(`${UNSYNCED_SAMPLE_SCHEMA}`,sampleTag)
@@ -85,7 +83,7 @@ if(recommendation?.Promotion_Name__c){
 }
 else{
     /** Handle SKU Recommendations */
-if(channel==='On-Premise' && newOrExistingStore==='New' ){
+if(channel==='On-Premise'){
   window.location.href = `/view/sales/sampleTasting.html?accountId=${accountId}`
 }
 else{

@@ -16,6 +16,7 @@ finalSubmit = async () => {
     let loginData = await loginDataFetch();
       await itemsFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
       await pushPOSMItems(loginData[0].username,loginData[0].password);
+      await pushSalesOrder(loginData[0].username,loginData[0].password);
       // showNotification({message : 'Items sync complete!'});
       progressBarLoad(20);
       await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
@@ -43,7 +44,11 @@ finalSubmit = async () => {
       
       await libraryFilesFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime);
      
+      /** Sync account geolocation */
+      await updateAccountGeolocations(loginData[0].username,loginData[0].password);
+
      /** Recommendations and Samples */
+      await updateAccountGeolocations(loginData[0].username,loginData[0].password);
       await pushApprovedRecommendationObjects(loginData[0].username,loginData[0].password);
       await syncSamples(loginData[0].username,loginData[0].password);
       await fetchRecommendations(loginData[0].username,loginData[0].password);
