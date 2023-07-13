@@ -1,4 +1,5 @@
 const inventoryTable = document.getElementById('inventoryTable');
+const getDateHeading = document.getElementById('dateHeading')
 // Assuming you have an array called marketInventory
 const marketInventory = [
     { date: '10-11-2023', item: 'Item number 1', quantity: 1 },
@@ -51,8 +52,8 @@ const prepareTable = async () => {
         const itemCell = createTableCell(itemName, 6);
         const quantityCell = createTableCell(item.Closing_Stock__c, 6);
 
-        const getDateHeading = document.getElementById('dateHeading')
         const date = new Date(item.Inventory_Date__c)
+        console.log("Get Headding===>",getDateHeading)
         getDateHeading.textContent = `Date: ${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
 
         //row.appendChild(dateCell);

@@ -84,7 +84,7 @@
                                 <button class="btn btn-sm btn-primary" id="startDayTime" data-toggle="modal" data-target="#startVisit">Start Day</button>
                             </div>
                             <div class="col-xs-6 text-right">
-                                <button class="btn btn-sm btn-primary" id="endDayTime" data-toggle="modal" data-target="#endVisit">End Day</button>
+                                <button class="btn btn-sm btn-primary" id="endDayTime" data-toggle="modal" data-target="#endVisit" onclick="CompletedEventValidator()">End Day</button>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body text-center">
-                        <h5>Your PJP compliance is not complete, Are you sure you want to end your visit ? </h5>
+                        <h5 id="endDayModal">Your PJP compliance is not complete, Are you sure you want to end your visit ? </h5>
                     </div>
                     <div class="modal-footer text-center">
                         <button type="button" data-dismiss="modal" onclick="handleEndDayHandler()"

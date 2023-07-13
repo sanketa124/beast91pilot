@@ -3,7 +3,7 @@ const slabsTable = document.getElementById('individualSlabs')
 
 async function createSlabRows() {
 
-    const group_id = "0129B0000004L9xQAE"
+    //const group_id = "0129B0000004L9xQAE"
 
     let payOutSlabs = await readAllData('payOutSlabs');
     let urlParams = new URLSearchParams(window.location.search);
@@ -17,8 +17,8 @@ async function createSlabRows() {
     let requiredPayOutSlabs = []
 
     //Off-PREM or On-Prem Group will not have Industry_Segment__c
-    if ((accountDetail.Channel__c == "Off-Premise" && accountDetail.RecordTypeId == group_id)
-        || (accountDetail.Channel__c == "On-Premise" && accountDetail.RecordTypeId == group_id)
+    if ((accountDetail.Channel__c == "Off-Premise" && accountDetail.RecordType.DeveloperName.toLowerCase() == "group")
+        || (accountDetail.Channel__c == "On-Premise" && accountDetail.RecordType.DeveloperName.toLowerCase() == "group")
     ) {
         console.log("I am inside offline group premise")
         requiredPayOutSlabs = payOutSlabs.filter((eachPayOutSlab) => {
@@ -155,7 +155,7 @@ async function createSlabRows() {
 
             tempString = `
                     <tr class="activeTr" id=${uniqueId - [i]}>
-                    <td>>${filterInnnovationSlabs[i].Min_Range__c}</td>
+                    <td>>${filterInnnovationSlabs[i].Min_Range__c-1}</td>
                     <td>${filterInnnovationSlabs[i].Mass__c}</td>
                     <td>${filterInnnovationSlabs[i].Premium__c}</td>
                     <td>${filterInnnovationSlabs[i].Innovation__c}</td>

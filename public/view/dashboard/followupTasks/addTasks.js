@@ -41,6 +41,23 @@ submitForms = async() =>{
     $('#submitForm').modal('hide');
     if(task?.Id){
         await writeData('taskOriginal',task)
+        const {
+            Subject,
+            Priority,
+            ActivityDate,
+            WhatId ,
+            Status,
+            Id
+        }=task
+        await writeData('taskSync', {
+            Subject,
+            Priority,
+            ActivityDate,
+            WhatId ,
+            Status,
+            Id,
+            Unique_Identifier__c:Id
+        })
     }
     window.location.href = 'followupTasks.html'
 }

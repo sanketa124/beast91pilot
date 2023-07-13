@@ -1,3 +1,4 @@
+const fileUpload = require('./fileUploadController.js');
 exports.fetchPayOutSlabs = async (req, res) => {
     try {
         let sfConnection = req.conn;
@@ -130,6 +131,7 @@ exports.postPOSMItems = async (req, res) => {
                         delete eachLineItem.quantity
                         delete eachLineItem.image
                         delete eachLineItem.checkBox
+                        delete eachLineItem.Id
                         return {
                             ...eachLineItem,
                             POSM_Requisition__c: createRequisition.id
@@ -150,8 +152,8 @@ exports.postPOSMItems = async (req, res) => {
 
                 if(req.body.data.posm[i].images.length > 0){
                     console.log("Images to be posted===>",req.body.data.posm[i].images)
-                    let createImages = await sfConnection.sobject('ContentVersion').create(req.body.data.posm[i].images)
-    
+                    //let createImages = await sfConnection.sobject('ContentVersion').create(req.body.data.posm[i].images)
+                    let createImages = await fileUpload.uploadFile(req.conn, req.body.data.posm[i].images, req.body.data.posm[i].Outlet__c);
                     console.log("Create Images===>",JSON.stringify(createImages))
                 }
 
@@ -221,29 +223,41 @@ exports.postSalesOrder = async (req, res) => {
                      Id = ${existingSalesOrder.Id}
                       `
                     // Delete Child Elements and create them again
-                    let deleteLineItems = `DELETE FROM ${salesLineItemsTable} WHERE SO__c = '${existingSalesOrder.Id}'`
+                    let getLineItems = await sfConnection.query(`SELECT Id FROM ${salesLineItemsTable} WHERE SO__c = '${existingSalesOrder.Id}'`);
 
-                    if (deleteLineItems && eachSalesOrder.products.length > 0) {
-                        //Create the Line Items
-                        let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
-                            return {
-                                Item_Name__c: eachLineItem.Product__c,
-                                Cases__c: eachLineItem.quantity,
-                                SO__c: existingSalesOrder.Id
+                    console.log("ACCCC===>",getLineItems)
+
+                    let getLineItemIds = getLineItems.records.map((eachLineItem) => eachLineItem.Id)
+
+                    console.log("GET LINE ITEM IDSS===>",getLineItemIds)
+
+                    if(getLineItemIds.length>0){
+                        let deleteItems = await sfConnection.sobject(salesLineItemsTable).del(getLineItemIds)
+
+                        console.log("Deleted Line Items===>",JSON.stringify(deleteItems))
+
+                        if (deleteItems && eachSalesOrder.products.length > 0) {
+                            //Create the Line Items
+                            let salesOrderLineItems = eachSalesOrder.products.map((eachLineItem) => {
+                                return {
+                                    Item_Name__c: eachLineItem.Product__c,
+                                    Cases__c: eachLineItem.quantity,
+                                    SO__c: existingSalesOrder.Id
+                                }
+                            })
+            
+                            let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
+            
+                            console.log("Creating line itemss====>", JSON.stringify(createLineItems))
+            
+                            if (createLineItems) {
+                                console.log("Sales order created successfully")
+                            } else {
+                                console.log("Error in creating Sales Orders")
                             }
-                        })
-        
-                        let createLineItems = await sfConnection.sobject('Sales_Order_Line_Items__c').create(salesOrderLineItems)
-        
-                        console.log("Creating line itemss====>", JSON.stringify(createLineItems))
-        
-                        if (createLineItems) {
-                            console.log("Sales order created successfully")
-                        } else {
-                            console.log("Error in creating Sales Orders")
                         }
-                    }
-                    
+
+                    }                    
                     
                 }else{
                                     
@@ -319,9 +333,19 @@ exports.fetchSample = async (req, res) => {
         }
         queryString = queryString.slice(0, -1); // remove trailing comma
         queryString += ' FROM ' + table;
-        //queryString += ` WHERE App_Id__c='123' `;
+        queryString += ` WHERE SO__c = 'a0SBi0000004X3pMAE' `;
         console.log(queryString)
-        let goals = await sfConnection.query(queryString);
+        //let goals = await sfConnection.query(queryString)
+        let goals = await sfConnection.query(`SELECT Id FROM ${table} WHERE SO__c = 'a0SBi0000004X3pMAE'`);
+        console.log("Goals===>",goals)
+        let getLineItemIds = goals.records.map((eachLineItem) => eachLineItem.Id)
+
+        if(getLineItemIds.length>0){
+            let deleteItems = await sfConnection.sobject(table).del(getLineItemIds)
+
+            console.log("Deleted Line Items===>",deleteItems)
+
+        }
         //let sobjectUpsert = await sfConnection.upsert(table,goals.records[0],goals.records[0].Id)
         //console.log("Upsert====>",sobjectUpsert)
         let timeoutHandler;

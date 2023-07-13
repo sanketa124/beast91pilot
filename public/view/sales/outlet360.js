@@ -335,13 +335,10 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
 
   const populateCompetitorInsight = (insights) => {
     const tableBody = document.getElementById("competitor-performance");
-    if (tableBody) {
-      let html = '';
-      insights.forEach((insightObject) => {
-        if(insightObject.Name){
-          html += `<tr>
+    const individualInsightClosure=(insightObject,defaultName)=>{
+     return `<tr>
           <td>
-              <strong>${insightObject && insightObject.Name ? insightObject.Name : ''}</strong>
+              <strong>${insightObject && insightObject.Name ? insightObject.Name : defaultName}</strong>
           </td>
           <td>
               ${insightObject && insightObject.Volume_MTD__c ? insightObject.Volume_MTD__c : 0}
@@ -358,12 +355,30 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
           <td>
               ${Math.round(insightObject && insightObject.Premium_Market_Share_LM__c ? insightObject.Premium_Market_Share_LM__c : 0)}%
           </td>
-        </tr>`;
-        }
-      
-      });
-  
-      tableBody.innerHTML = html;
+        </tr>`
+    }
+
+    const ABIObject= insights.find((item)=>{
+      return item.Name==='ABI'
+    })
+
+    const HeinekenObject= insights.find((item)=>{
+      return item.Name==='Heineken'
+    })
+
+    const CarlsbergObject= insights.find((item)=>{
+      return item.Name==='Carlsberg'
+    })
+
+    const B9Object= insights.find((item)=>{
+      return item.Name==='B9'
+    })
+    if (tableBody) {
+      let abiHtml=individualInsightClosure(ABIObject,"ABI")
+      let heinekenHtml=individualInsightClosure(HeinekenObject,"Heineken")
+      let carlsbergHtml= individualInsightClosure(CarlsbergObject,"Carlsberg")
+      let b9Html= individualInsightClosure(B9Object,"B9")
+      tableBody.innerHTML= abiHtml+heinekenHtml+carlsbergHtml+b9Html
     } else {
       console.error("Element with ID 'competitor-performance' not found.");
     }
@@ -372,15 +387,41 @@ const eventId =localStorage.getItem('eventId')|| urlParams.get('eventId');
   const populateOrderFrequencies=(insights)=>{
     const tableHeader = document.getElementById("order-frequencies-names");
     const tableBody = document.getElementById("order-frequencies");
-    let tableheaderHtml=''
-    let tableBodyHtml=''
+    const ABIObject= insights.find((item)=>{
+      return item.Name==='ABI'
+    })
+
+    const HeinekenObject= insights.find((item)=>{
+      return item.Name==='Heineken'
+    })
+
+    const CarlsbergObject= insights.find((item)=>{
+      return item.Name==='Carlsberg'
+    })
+
+    const B9Object= insights.find((item)=>{
+      return item.Name==='B9'
+    })
+    const orderFrequencyHeaderClosure=(item,defaultName)=>{
+       return `<th class="colorViolet">${item?.Name || defaultName}</th>`
+
+    }
+    const orderFrequencyContentClosure=(item,defaultName)=>{
+        return ` <td> ${item?.Order_Frequency_MTD__c || "0"} </td>`
+   }
     if(tableHeader && tableBody){
-      insights.forEach((item)=>{
-        tableheaderHtml+=`<th class="colorViolet">${item.Name}</th>`
-        tableBodyHtml+=` <td> ${item.Order_Frequency_MTD__c} </td>`
-      })
-      tableHeader.innerHTML=tableheaderHtml
-      tableBody.innerHTML=tableBodyHtml
+      let abiHtml=orderFrequencyContentClosure(ABIObject,"ABI")
+      let heinekenHtml=orderFrequencyContentClosure(HeinekenObject,"Heineken")
+      let carlsbergHtml= orderFrequencyContentClosure(CarlsbergObject,"Carlsberg")
+      let b9Html= orderFrequencyContentClosure(B9Object,"B9")
+
+      let abiHtmlHeaderHtml=orderFrequencyHeaderClosure(ABIObject,"ABI")
+      let heinekenHeaderHtml=orderFrequencyHeaderClosure(HeinekenObject,"Heineken")
+      let carlsbergHeaderHtml= orderFrequencyHeaderClosure(CarlsbergObject,"Carlsberg")
+      let b9HeaderHtml= orderFrequencyHeaderClosure(B9Object,"B9")
+      tableHeader.innerHTML=abiHtmlHeaderHtml+heinekenHeaderHtml+carlsbergHeaderHtml+b9HeaderHtml
+      tableBody.innerHTML=abiHtml+ heinekenHtml+ carlsbergHtml+b9Html
+  
     }
   }
 

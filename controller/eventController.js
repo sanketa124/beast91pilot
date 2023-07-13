@@ -1,3 +1,4 @@
+const fileUpload = require('./fileUploadController.js');
 
 exports.fetchEvents = async (req, res) => {
     try {
@@ -480,10 +481,10 @@ exports.objectiveSync = async (req, res) => {
         let kycDetail = req.body.kycDetail;
         let salesOrder = req.body.salesOrder;
         let stockVisibilites = req.body.stockVisibility;
-        if (stockVisibilites.length > 0) {
-            { stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0 && delete stockVisibilites[0]['stock_at_risk_images'] }
-            { stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion.length > 0 && delete stockVisibilites[0]['liquidPromotion'] }
-        }
+        // if (stockVisibilites.length > 0) {
+        //     { stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0 && delete stockVisibilites[0]['stock_at_risk_images'] }
+        //     { stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion.length > 0 && delete stockVisibilites[0]['liquidPromotion'] }
+        // }
         let sfConnection = req.conn;
         let competitorInsight = req.body.competitorInsight;
         let dailyTracker = req.body.dailyTracker;
@@ -609,39 +610,47 @@ exports.objectiveSync = async (req, res) => {
         }
         dealerWiseVisitInfo = await sfConnection.apex.post('/ObjectivesCheckoutHelper/', body);
 
-        const stockVisibilityReqData = {
-            conn: req.conn,
-            stockVisibilityBody: req.body.stockVisibility
-        }
-        { req.body.stockVisibility.length > 0 && await (postStockVisibiltyData(stockVisibilityReqData, res)) }
+        // const stockVisibilityReqData = {
+        //     conn: req.conn,
+        //     stockVisibilityBody: req.body.stockVisibility
+        // }
+        // { req.body.stockVisibility.length > 0 && await (postStockVisibiltyData(stockVisibilityReqData, res)) }
 
-        if (stockVisibilites && stockVisibilites.length > 0 && (stockVisibilites[0].stock_at_risk_images && stockVisibilites[0].stock_at_risk_images.length > 0)) {
-            const imageBodyArr = stockVisibilites[0].stock_at_risk_images;
-            const imageBody = imageBodyArr.map(obj => {
-                const updatedObj = { ...obj };
-                delete updatedObj['id'];
-                return updatedObj;
-            });
-            await postStockImages(req.conn, imageBody);
-        }
+        if (stockVisibilites.length > 0) {
+            for (let i = 0; i < stockVisibilites.length; i++) {
+                const stockVisibilityReqData = {
+                    conn: req.conn,
+                    stockVisibilityBody: stockVisibilites[i]
+                }
+                await (postStockVisibiltyData(stockVisibilityReqData, res));
+                if (stockVisibilites[i].stock_at_risk_images && stockVisibilites[i].stock_at_risk_images.length > 0) {
+                    const imageBodyArr = stockVisibilites[i].stock_at_risk_images;
+                    const imageBody = imageBodyArr.map(obj => {
+                        const updatedObj = { ...obj };
+                        delete updatedObj['id'];
+                        return updatedObj;
+                    });
+                    await fileUpload.uploadFile(req.conn, imageBody, stockVisibilites[i].accountId);
+                }
 
-        if (stockVisibilites && stockVisibilites.length > 0 && (stockVisibilites[0].visibilityImages && stockVisibilites[0].visibilityImages.length > 0)) {
-            const imageBodyArr = stockVisibilites[0].visibilityImages;
-            const imageBody = imageBodyArr.map(obj => {
-                const updatedObj = { ...obj };
-                delete updatedObj['id'];
-                return updatedObj;
-            });
-            await postStockImages(req.conn, imageBody);
-        }
-
-        if (stockVisibilites && stockVisibilites.length > 0 && stockVisibilites[0].liquidPromotion) {
-            const promotionBody = stockVisibilites[0].liquidPromotion && stockVisibilites[0].liquidPromotion;
-            const liquidPromotionData = {
-                conn: req.conn,
-                liquidPromotionData: promotionBody
+                if (stockVisibilites[i].visibilityImages && stockVisibilites[i].visibilityImages.length > 0) {
+                    const imageBodyArr = stockVisibilites[i].visibilityImages;
+                    const imageBody = imageBodyArr.map(obj => {
+                        const updatedObj = { ...obj };
+                        delete updatedObj['id'];
+                        return updatedObj;
+                    });
+                    await fileUpload.uploadFile(req.conn, imageBody, stockVisibilites[i].accountId)
+                }
+                if (stockVisibilites[i].liquidPromotion) {
+                    const promotionBody = stockVisibilites[i].liquidPromotion && stockVisibilites[i].liquidPromotion;
+                    const liquidPromotionData = {
+                        conn: req.conn,
+                        liquidPromotionData: promotionBody
+                    }
+                    await updateLiquidPromotion(liquidPromotionData, res);
+                }
             }
-            await updateLiquidPromotion(liquidPromotionData, res);
         }
 
         dealerWiseVisitInfoJSON = JSON.parse(dealerWiseVisitInfo);
@@ -911,7 +920,7 @@ exports.objectiveSync = async (req, res) => {
 
 const postStockVisibiltyData = async (req) => {
     let sfConnection = req.conn;
-    let stockVisibilites = req.stockVisibilityBody[0];
+    let stockVisibilites = req.stockVisibilityBody;
 
     const dataToInsert = {
         Account__c: stockVisibilites.accountId,
@@ -1107,21 +1116,6 @@ const draftProcessesHelper = (req) => {
         i.App_Created_Date__c = formatDate(i.App_Created_Date__c);
     }
     return draftProcesses;
-};
-
-
-const postStockImages = async (conn, imageBody) => {
-    //console.log('imageBody',imageBody)
-    try {
-        let sfConnection = conn;
-        const contentVersionData = imageBody;
-        let createFile = await sfConnection.sobject('ContentVersion').create(contentVersionData)
-        console.log("CreateFile", createFile[0] && createFile[0].errors)
-    }
-    catch (e) {
-        console.log(e);
-    }
-
 };
 
 exports.fetchDayWiseEventsAndTask = async (req, res) => {

@@ -627,11 +627,11 @@ const checkforPreSalesOrder = () => {
       handleReasonSelectOption(selectionMap.keys())
       return true;
     }
-    else if (document.getElementById('reasonBox')) {
-      $('#confirmOrder').modal('hide');
-      alert("Please fill the reasons before moving forward")
-      return true
-    }
+    // else if (document.getElementById('reasonBox')) {
+    //   $('#confirmOrder').modal('hide');
+    //   alert("Please fill the reasons before moving forward")
+    //   return true
+    // }
     else {
       console.log("I am in zeroSales Order not selection Map", selectionMap.size)
       $('#confirmOrder').modal('hide');
@@ -651,11 +651,11 @@ const checkforPreSalesOrder = () => {
       handleLessReasonSelectOption(lessReasonSelect);
       return true
     }
-    else if (document.getElementById('lessBox')) {
-      $('#confirmOrder').modal('hide');
-      alert("Please fill the reasons before moving forward")
-      return true
-    }
+    // else if (document.getElementById('lessBox')) {
+    //   $('#confirmOrder').modal('hide');
+    //   alert("Please fill the reasons before moving forward")
+    //   return true
+    // }
     else {
       $('#confirmOrder').modal('hide');
       $('#reasonForLessProduct').modal('show');
@@ -990,7 +990,12 @@ function goSales() {
   let urlParam = new URLSearchParams(window.location.search);
   const accountID = urlParam.get('accountId')
   localStorage.setItem('itemsToBeDisplayed',JSON.stringify(defaultItems))
-  window.location.href = `/view/objectives/salesOrder/distributorReport.html?accountId=${accountID}`
+  const individual = urlParam.get('individual')
+  if (individual == 'true') {
+    window.location.href = `/view/objectives/salesOrder/distributorReport.html?accountId=${accountID}&individual=true`
+  } else {
+    window.location.href = `/view/objectives/salesOrder/distributorReport.html?accountId=${accountID}`
+  }
 }
 
 function goBackToSales(){

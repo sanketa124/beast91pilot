@@ -141,6 +141,7 @@ try{
     && (recommendation?.Is_Accepted__c===false)
     && (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
     && (recommendation?.Week__c === weekFilterValue)
+    && recommendation?.Recommended_SKU__r?.Liquid_Layer__c
 
     const promotionCondition= recommendation?.Promotion_Name__c  && recommendation?.Is_Accepted__c===false &&  (Outlet_Name__r?.Account_ID_18_digit__c===accountId)
 

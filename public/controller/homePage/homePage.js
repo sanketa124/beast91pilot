@@ -1,5 +1,6 @@
 let dailyTracker = {};
 let mappingStandardEventIds = new Map();
+
 const fetchTodayVisit =async () => {
 
     const dateId = fetchCurrentDateIdStr();
@@ -266,9 +267,64 @@ createModalPopUp = (msg,confirmHandler) =>{
     $('#app').append(tmp);
 };
 
-handleEndDayHandler = () => {
+handleEndDayHandler = async() => {
    EndDayConfirm();
 };
+
+CompletedEventValidator = async () =>{
+    const events  = await readAllData('events')
+    let accountList = [];
+    let pulloutApproval = [];
+    let eventsSync = await readAllData('eventsSync');// For Checked Status Since syncing will happen later so we require current status of the event
+    
+    let eventStatusMap = new Map();
+    eventsSync.forEach(ele => {
+        let eventDate = new Date (ele.Actual_Start_Visit);
+        let currentDate = new Date();
+        eventDate.setHours(0,0,0,0);
+        currentDate.setHours(0,0,0,0);
+        if(eventDate.getTime()===currentDate.getTime() ){
+            eventStatusMap.set(ele.Account,ele.Completed);// Account wise status of event since only account is link between Event Sync and Event IndexedDB and Only 1 event can be their for 1 account in single day
+        }
+    });
+    events.forEach(ele => {
+        if(ele.Type_of_Visit__c === 'Planned'){
+            if(ele.Draft_Pullout__r){
+                let eventDate = new Date ((ele.Start_date_and_time__c).substring(0,(ele.Start_date_and_time__c).length-2)+':00');
+                let currentDate = new Date();
+                eventDate.setHours(0,0,0,0);
+                currentDate.setHours(0,0,0,0);
+                if(eventDate.getTime()===currentDate.getTime()){
+                    pulloutApproval.push({...ele.Account__r,eventId :ele.Id,Start_date_and_time__c:ele.eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Start_date_and_time__c,Completed__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Completed__c,Actual_End_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_End_Visit__c, Actual_Start_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_Start_Visit__c});
+                }
+            }
+            else{
+                let eventDate = new Date ((ele.Start_date_and_time__c).substring(0,(ele.Start_date_and_time__c).length-2)+':00');
+                let currentDate = new Date();
+                eventDate.setHours(0,0,0,0);
+                currentDate.setHours(0,0,0,0);
+                if(eventDate.getTime()===currentDate.getTime()){
+                accountList.push({...ele.Account__r,eventId :ele.Id,Start_date_and_time__c:ele.Start_date_and_time__c,Completed__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Completed__c,Actual_End_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_End_Visit__c, Actual_Start_Visit__c : eventStatusMap.has(ele.Account__c) ? eventStatusMap.get(ele.Account__c) : ele.Actual_Start_Visit__c });
+                }
+            }
+        }
+        
+    });
+
+    const completedVisits = accountList.filter((visit) => {
+        console.log(visit,"visit");
+        if (visit.Completed__c == true) {
+            return visit
+          }
+      });
+
+    if(accountList.length != completedVisits.length){
+        $('#endVisit .modal-body').html('Your PJP compliance is not complete, Are you sure you want to end your visit ?');
+    }else{
+        $('#endVisit .modal-body').html('Are you sure you want to end your visit ?');
+    }   
+
+}
 EndDayConfirm = async () => {
     $('#loader-main').css('display','block');
     dailyTracker = await getItemFromStore('dailyTracker',fetchCurrentDateIdStr());
@@ -287,7 +343,35 @@ EndDayConfirm = async () => {
     if(navigator.onLine){
         let loginData = await loginDataFetch(); 
         let nonSales = await isTechnicianAuditorFuncHelper();
-        await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
+        await itemsFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);
+        await pushSalesOrder(loginData[0].username,loginData[0].password);
+        await pushPOSMItems(loginData[0].username,loginData[0].password);
+        await objectivePushHelper(loginData[0].username,loginData[0].password,loginData[0].syncDateTime,nonSales);      
+        await accountFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime);
+        await itemImagesFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime);
+        await eventsFetch(loginData[0].username,loginData[0].password,nonSales);
+        await payOutSlabsFetch(loginData[0].username,loginData[0].password);
+        await accountGoalsFetch(loginData[0].username,loginData[0].password);
+        await marketInventoriesFetch(loginData[0].username,loginData[0].password);
+
+        await libraryFilesFetch(loginData[0].username,loginData[0].password,loginData[0].syncDateTime);
+        /*** Account Geolocation Update */
+        await updateAccountGeolocations(loginData[0].username,loginData[0].password);
+
+        /** Recommendations and Samples */
+        await pushApprovedRecommendationObjects(loginData[0].username,loginData[0].password);
+        await syncSamples(loginData[0].username,loginData[0].password);
+        await fetchRecommendations(loginData[0].username,loginData[0].password);
+        await recommendationWeekFilter(loginData[0].username,loginData[0].password);
+        await recommendationFeedbackMeta(loginData[0].username,loginData[0].password);
+        /*** Outlet 360 */
+        await outlet360AccountGoalsTarget(loginData[0].username,loginData[0].password);
+        await outlet360Records(loginData[0].username,loginData[0].password);
+        await outlet360RetailDepletion(loginData[0].username,loginData[0].password);
+        await outlet360AccountGoals(loginData[0].username,loginData[0].password);
+        await outlet360VisibilityScores(loginData[0].username,loginData[0].password);
+        await outlet360Events(loginData[0].username,loginData[0].password);
+        await outlet360PosItemRequisition(loginData[0].username,loginData[0].password);
     }
     //$('.cardSectionList').css('display','none');
     $(".cardSectionList").empty();
