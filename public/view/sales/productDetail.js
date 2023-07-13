@@ -16,10 +16,10 @@ if(!(accountId && eventId && recommendationId)){
        }
 
        if(recommendation?.Promotion_Name__c){
-        const sellSheetUrl=await fetchSellSheets('boom');
-        if(sellSheetUrl){
-            $("#sell-sheet").attr("src",sellSheetUrl);
-        }
+        // const sellSheetUrl=await fetchSellSheets(nu);
+        // if(sellSheetUrl){
+        //     $("#sell-sheet").attr("src",sellSheetUrl);
+        // }
        }
        else{
         const liquidName= recommendation?.Variant_Name__c
