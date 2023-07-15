@@ -44,7 +44,7 @@ const createSampleLineItem=async()=>{
   const recommendation= await getItemFromStore('recommendations',recommendationId)
   const liquidName=recommendation?.Variant_Name__c
   const packType=recommendation?.Recommended_SKU__r?.Size_ID__r.Volume_Unit__c +" ml"
-  const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_Layer__c
+  const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_ID__c
   if(!liquidName && packType && liquidLayerId){
     window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
   }
@@ -81,30 +81,30 @@ const createSampleLineItem=async()=>{
   return {sampleItem,sampleLineItem,liquidName,packType}
 }
 
-const deleteSampleLineItem= async()=>{
-   /*** get Liquid Name and Packtype (i.e 330ml, 500ml, 650ml ...) */
-   const recommendation= await getItemFromStore('recommendations',recommendationId)
-   const liquidName=recommendation?.Variant_Name__c
-   const packType=recommendation?.Recommended_SKU__r?.Size_ID__r.Volume_Unit__c +" ml"
-   const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_Layer__c
-   if(!liquidName && packType && liquidLayerId){
-     window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
-   }
+// const deleteSampleLineItem= async()=>{
+//    /*** get Liquid Name and Packtype (i.e 330ml, 500ml, 650ml ...) */
+//    const recommendation= await getItemFromStore('recommendations',recommendationId)
+//    const liquidName=recommendation?.Variant_Name__c
+//    const packType=recommendation?.Recommended_SKU__r?.Size_ID__r.Volume_Unit__c +" ml"
+//    const liquidLayerId=recommendation?.Recommended_SKU__r?.Liquid_Layer__c
+//    if(!liquidName && packType && liquidLayerId){
+//      window.location.href='/view/dashboard/todaysVisits/todaysVisits.html'
+//    }
  
-  /*** Delete sample Line Item for the Parent sample*/
-   const sampleTag=`sample-${accountId}-${eventId}`
-   const sampleLineItemTag= `lineItem-${accountId}-${eventId}-${liquidLayerId}`
-   let sampleItem= await getItemFromStore(`${UNSYNCED_SAMPLE_SCHEMA}`, sampleTag)
-  //move back to the recommendations in the event the sample parent is not present
-  if(sampleItem?.children?.length){
-    let children= sampleItem.children.filter((item)=>{
-        return item.sampleTag===sampleLineItemTag
-    })
-    await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`,{...sampleItem,children})
-    await deleteItemFromData(`${UNSYNCED_SAMPLE_ITEM_SCHEMA}`,sampleLineItemTag)
+//   /*** Delete sample Line Item for the Parent sample*/
+//    const sampleTag=`sample-${accountId}-${eventId}`
+//    const sampleLineItemTag= `lineItem-${accountId}-${eventId}-${liquidLayerId}`
+//    let sampleItem= await getItemFromStore(`${UNSYNCED_SAMPLE_SCHEMA}`, sampleTag)
+//   //move back to the recommendations in the event the sample parent is not present
+//   if(sampleItem?.children?.length){
+//     let children= sampleItem.children.filter((item)=>{
+//         return item.sampleTag===sampleLineItemTag
+//     })
+//     await writeData(`${UNSYNCED_SAMPLE_SCHEMA}`,{...sampleItem,children})
+//     await deleteItemFromData(`${UNSYNCED_SAMPLE_ITEM_SCHEMA}`,sampleLineItemTag)
   
-  }
-}
+//   }
+// }
 
 
 
