@@ -24,7 +24,6 @@ const uploadFile = async (conn, imageBody, accountID) => {
                 await sfConnection.sobject('ContentDocumentLink').create(dataForContentDoc);
             }
         }
-        console.log("CreatedFile", createdFile[1])
     }
     catch (e) {
         console.log(e);
